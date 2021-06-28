@@ -16,6 +16,9 @@ public class TileMapManager : MonoBehaviour
 
     public TileCell center_cell { get { return (gridCells[(gridCells.Count - 1) / 2]); } }
 
+    [SerializeField]
+    private bool _useGizemos = true;
+
     public void Awake()
     {
         if (instance == null)
@@ -33,9 +36,9 @@ public class TileMapManager : MonoBehaviour
     }
     public void GenerateGrid()
     {
-
-        float halfWidth = firstCell.bounds.size.x / 2;
-        float halfHeight = firstCell.bounds.size.y / 2;
+        float _sizePandingFactor = 0.95f;
+        float halfWidth = firstCell.bounds.size.x / 2 * _sizePandingFactor;
+        float halfHeight = firstCell.bounds.size.y / 2 * _sizePandingFactor;
 
         int _counter = 0;
         for (int i = 0; i < mapSize.x; i++)
@@ -155,5 +158,24 @@ public class TileMapManager : MonoBehaviour
         return res.ToArray();
     }
 
+    public void OnDrawGizmos()
+    {
+        if (!_useGizemos)
+            return;
+        //temp 
+        Gizmos.color = Color.yellow;
+        float _sizePandingFactor = 0.95f;
+        float _width = firstCell.bounds.size.x * _sizePandingFactor;
+        float _height = firstCell.bounds.size.y * _sizePandingFactor;
 
+        Vector3 _coner1 = firstCell.transform.position + new Vector3(0, _height * mapSize.y);
+        Vector3 _coner2 = firstCell.transform.position + new Vector3(_width * mapSize.x, _height * mapSize.y);
+        Vector3 _coner3 = firstCell.transform.position + new Vector3(_width * mapSize.x, 0);
+
+        Gizmos.DrawLine(firstCell.transform.position, _coner1);
+        Gizmos.DrawLine(_coner1, _coner2);
+        Gizmos.DrawLine(_coner2, _coner3);
+        Gizmos.DrawLine(_coner3, firstCell.transform.position);
+    }
 }
+
