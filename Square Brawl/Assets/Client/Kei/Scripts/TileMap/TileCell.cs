@@ -44,8 +44,14 @@ public class TileCell : MonoBehaviour
         spriteRenderer.color = Color.white;
     }
 
-    public void SetusedColor() {
+    public void SetusedColor()
+    {
         spriteRenderer.color = Color.green;
+    }
+
+    public void SetColor(Color _color)
+    {
+        spriteRenderer.color = _color;
     }
 }
 

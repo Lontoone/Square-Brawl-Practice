@@ -13,7 +13,20 @@ public class TileMapEditorControl : MonoBehaviour
 
     [SerializeField]
     List<TileCell> previewTileCells = new List<TileCell>();
-    Dictionary<int, bool> m_cellIsSelectedMap = new Dictionary<int, bool>();
+    public Dictionary<int, CellState> cellIsSelectedMap = new Dictionary<int, CellState>();
+    private Dictionary<CellState, Color> cellStateColor = new Dictionary<CellState, Color>() {
+        { CellState.NONE, Color.white },
+        { CellState.CELL, Color.green },
+        { CellState.SAW, Color.green },
+        { CellState.EMPTY, Color.green },
+    };
+    public enum CellState
+    {
+        NONE = 0,
+        CELL = 1,
+        SAW = 2,
+        EMPTY = 3
+    }
 
 
     public void Start()
@@ -52,7 +65,7 @@ public class TileMapEditorControl : MonoBehaviour
         //temp: Clear preview color
         for (int i = 0; i < TileMapManager.instance.gridCells.Count; i++)
         {
-            if (!m_cellIsSelectedMap[TileMapManager.instance.gridCells[i].grid_index])
+            if (cellIsSelectedMap[TileMapManager.instance.gridCells[i].grid_index] == CellState.NONE)
             {
                 TileMapManager.instance.gridCells[i].SetWhiteColor();
             }
@@ -69,7 +82,7 @@ public class TileMapEditorControl : MonoBehaviour
                 TileCell _cell = _cellTrans.GetComponent<TileCell>();
                 previewTileCells.Add(_cell);
 
-                if (!m_cellIsSelectedMap[_cell.grid_index])
+                if (cellIsSelectedMap[_cell.grid_index] == CellState.NONE)
                 {
                     _cell.SetHoverColor();
                 }
@@ -85,7 +98,7 @@ public class TileMapEditorControl : MonoBehaviour
     {
         for (int i = 0; i < TileMapManager.instance.mapSize.x * TileMapManager.instance.mapSize.y; i++)
         {
-            m_cellIsSelectedMap.Add(i, false);
+            cellIsSelectedMap.Add(i, CellState.NONE);
         }
     }
 
@@ -115,7 +128,7 @@ public class TileMapEditorControl : MonoBehaviour
     {
         for (int i = 0; i < previewTileCells.Count; i++)
         {
-            m_cellIsSelectedMap[previewTileCells[i].grid_index] = true;
+            cellIsSelectedMap[previewTileCells[i].grid_index] = CellState.CELL;
             previewTileCells[i].SetusedColor();
         }
     }
@@ -124,7 +137,7 @@ public class TileMapEditorControl : MonoBehaviour
     {
         for (int i = 0; i < previewTileCells.Count; i++)
         {
-            m_cellIsSelectedMap[previewTileCells[i].grid_index] = false;
+            cellIsSelectedMap[previewTileCells[i].grid_index] = CellState.NONE;
             previewTileCells[i].SetWhiteColor();
         }
     }
@@ -134,5 +147,20 @@ public class TileMapEditorControl : MonoBehaviour
         isBuild = _isBuild;
     }
 
+    public void SetUpMapData(MapData _data)
+    {        
+        for (int i = 0; i < _data.cellDatas.Count; i++)
+        {
+            cellIsSelectedMap[i] = _data.cellDatas[i].state;
+            SetCellStateColor(i, _data.cellDatas[i].state);
+        }
 
+    }
+
+    private void SetCellStateColor(int _index, CellState _state)
+    {
+        TileCell _cell = TileMapManager.instance.gridCells[_index];
+        _cell.SetColor(cellStateColor[_state]);
+    }
 }
+

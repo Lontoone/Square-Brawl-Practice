@@ -10,6 +10,7 @@ public class TileMapManager : MonoBehaviour
     public SpriteRenderer firstCell;
 
     public Vector2Int mapSize = new Vector2Int(10, 5);
+    public int cellCount { get { return mapSize.x * mapSize.y; } }
 
     public List<TileCell> gridCells = new List<TileCell>();
 

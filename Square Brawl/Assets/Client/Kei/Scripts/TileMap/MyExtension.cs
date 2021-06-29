@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 //using AutoMapper;  //Require download from Nuget
 
@@ -60,7 +61,7 @@ public static class MyExtension
     public static Vector2Int Abs(this Vector2Int v2)
     {
         return new Vector2Int(Mathf.Abs(v2.x), Mathf.Abs(v2.y));
-    }    
+    }
 
     //檢查該v2是否在grid範圍內
     public static bool IsInsideGridRange(this Vector2Int v2, Vector2Int _mapSize)
@@ -78,6 +79,12 @@ public static class MyExtension
             return true;
         }
     }
+
+    public static string CombinePersistentPath(this string _path)
+    {
+        return Path.Combine(Application.persistentDataPath, _path);
+    }
+
     /*
     public static bool IsSameSide(this Player.PlayerSide side, Player.PlayerSide _test_side)
     {
@@ -86,15 +93,15 @@ public static class MyExtension
     }
     */
 
-     /*
-    //取得該卡片的所在cell
-    public static Transform GetCellTransform(this TileCell c)
-    {
-        if (c != null)
-            return c.transform.parent;
-        else
-            return null;
-    } */
+    /*
+   //取得該卡片的所在cell
+   public static Transform GetCellTransform(this TileCell c)
+   {
+       if (c != null)
+           return c.transform.parent;
+       else
+           return null;
+   } */
     /*
     //取得該卡片的所在cell
     public static CellControl GetCell(this Card c)
