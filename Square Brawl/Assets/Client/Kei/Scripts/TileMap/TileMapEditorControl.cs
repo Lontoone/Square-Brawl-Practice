@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TileMapEditorControl : MonoBehaviour
 {
@@ -45,6 +46,22 @@ public class TileMapEditorControl : MonoBehaviour
     }
     public void Update()
     {
+#if ENABLE_INPUT_SYSTEM
+        Debug.Log(Mouse.current.leftButton.wasPressedThisFrame);
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            inMouseHolding = true;
+        }
+        if (Mouse.current.leftButton.wasReleasedThisFrame)
+        {
+            inMouseHolding = false;
+        }
+        if (inMouseHolding)
+        {
+            Select(_currentMouseHoverCellId);
+        }
+#endif
+#if ENABLE_LEGACY_INPUT_MANAGER
         if (Input.GetMouseButtonDown(0))
         {
             inMouseHolding = true;
@@ -57,6 +74,7 @@ public class TileMapEditorControl : MonoBehaviour
         {
             Select(_currentMouseHoverCellId);
         }
+#endif
     }
     public void SetPreviewRange(int _centerGridId)
     {
@@ -148,7 +166,7 @@ public class TileMapEditorControl : MonoBehaviour
     }
 
     public void SetUpMapData(MapData _data)
-    {        
+    {
         for (int i = 0; i < _data.cellDatas.Count; i++)
         {
             cellIsSelectedMap[i] = _data.cellDatas[i].state;

@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class TileCell : MonoBehaviour
+public class TileCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public int grid_index;
     [HideInInspector]
@@ -20,7 +21,17 @@ public class TileCell : MonoBehaviour
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
-
+#if ENABLE_INPUT_SYSTEM
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        OnCellMouseEnter?.Invoke(grid_index);
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        OnCellMouseDown?.Invoke(grid_index);
+    }
+#endif
+#if ENABLE_LEGACY_INPUT_MANAGER
     public void OnMouseEnter()
     {
         OnCellMouseEnter?.Invoke(grid_index);
@@ -33,7 +44,7 @@ public class TileCell : MonoBehaviour
     {
         OnCellMouseDown?.Invoke(grid_index);
     }
-
+#endif
     public void SetHoverColor()
     {
 
@@ -53,6 +64,8 @@ public class TileCell : MonoBehaviour
     {
         spriteRenderer.color = _color;
     }
+
+
 }
 
 
