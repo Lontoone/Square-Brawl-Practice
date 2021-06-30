@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,21 +15,14 @@ public class TileMapEditorControl : MonoBehaviour
 
     [SerializeField]
     List<TileCell> previewTileCells = new List<TileCell>();
-    public Dictionary<int, CellState> cellIsSelectedMap = new Dictionary<int, CellState>();
+    public Dictionary<int, CellState> cellStateMap = new Dictionary<int, CellState>();
+
     private Dictionary<CellState, Color> cellStateColor = new Dictionary<CellState, Color>() {
         { CellState.NONE, Color.white },
         { CellState.CELL, Color.green },
         { CellState.SAW, Color.green },
         { CellState.EMPTY, Color.green },
     };
-    public enum CellState
-    {
-        NONE = 0,
-        CELL = 1,
-        SAW = 2,
-        EMPTY = 3
-    }
-
 
     public void Start()
     {
@@ -37,6 +31,8 @@ public class TileMapEditorControl : MonoBehaviour
         TileCell.OnCellMouseExit += SetPreviousId;
         //TileCell.OnCellMouseDown += Select;
         rangeData.ReadData();
+
+        TileMapManager.instance.GenerateGrid();
     }
     public void OnDestroy()
     {
@@ -47,7 +43,6 @@ public class TileMapEditorControl : MonoBehaviour
     public void Update()
     {
 #if ENABLE_INPUT_SYSTEM
-        Debug.Log(Mouse.current.leftButton.wasPressedThisFrame);
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             inMouseHolding = true;
@@ -83,7 +78,7 @@ public class TileMapEditorControl : MonoBehaviour
         //temp: Clear preview color
         for (int i = 0; i < TileMapManager.instance.gridCells.Count; i++)
         {
-            if (cellIsSelectedMap[TileMapManager.instance.gridCells[i].grid_index] == CellState.NONE)
+            if (cellStateMap[TileMapManager.instance.gridCells[i].grid_index] == CellState.NONE)
             {
                 TileMapManager.instance.gridCells[i].SetWhiteColor();
             }
@@ -100,14 +95,22 @@ public class TileMapEditorControl : MonoBehaviour
                 TileCell _cell = _cellTrans.GetComponent<TileCell>();
                 previewTileCells.Add(_cell);
 
-                if (cellIsSelectedMap[_cell.grid_index] == CellState.NONE)
+                if (cellStateMap[_cell.grid_index] == CellState.NONE)
                 {
                     _cell.SetHoverColor();
                 }
             }
         }
     }
+    public bool MatchState(int _index, params CellState[] _states)
+    {
+        return _states.ToList().Contains(cellStateMap[_index]);
+    }
 
+    public bool CompareState(int _index, int _index2)
+    {
+        return cellStateMap[_index] == cellStateMap[_index2];
+    }
     private void SetPreviousId(int _prev)
     {
         _previousMouseHoverCellId = _prev;
@@ -116,7 +119,7 @@ public class TileMapEditorControl : MonoBehaviour
     {
         for (int i = 0; i < TileMapManager.instance.mapSize.x * TileMapManager.instance.mapSize.y; i++)
         {
-            cellIsSelectedMap.Add(i, CellState.NONE);
+            cellStateMap.Add(i, CellState.NONE);
         }
     }
 
@@ -146,7 +149,7 @@ public class TileMapEditorControl : MonoBehaviour
     {
         for (int i = 0; i < previewTileCells.Count; i++)
         {
-            cellIsSelectedMap[previewTileCells[i].grid_index] = CellState.CELL;
+            cellStateMap[previewTileCells[i].grid_index] = CellState.CELL;
             previewTileCells[i].SetusedColor();
         }
     }
@@ -155,7 +158,7 @@ public class TileMapEditorControl : MonoBehaviour
     {
         for (int i = 0; i < previewTileCells.Count; i++)
         {
-            cellIsSelectedMap[previewTileCells[i].grid_index] = CellState.NONE;
+            cellStateMap[previewTileCells[i].grid_index] = CellState.NONE;
             previewTileCells[i].SetWhiteColor();
         }
     }
@@ -167,12 +170,20 @@ public class TileMapEditorControl : MonoBehaviour
 
     public void SetUpMapData(MapData _data)
     {
+        ReSetMap();
         for (int i = 0; i < _data.cellDatas.Count; i++)
         {
-            cellIsSelectedMap[i] = _data.cellDatas[i].state;
-            SetCellStateColor(i, _data.cellDatas[i].state);
+            cellStateMap[_data.cellDatas[i].index] = _data.cellDatas[i].state;
+            SetCellStateColor(_data.cellDatas[i].index, _data.cellDatas[i].state);
         }
-
+    }
+    private void ReSetMap()
+    {
+        for (int i = 0; i < TileMapManager.instance.cellCount; i++)
+        {
+            cellStateMap[i] = CellState.NONE;
+            SetCellStateColor(i, CellState.NONE);
+        }
     }
 
     private void SetCellStateColor(int _index, CellState _state)
@@ -181,4 +192,5 @@ public class TileMapEditorControl : MonoBehaviour
         _cell.SetColor(cellStateColor[_state]);
     }
 }
+
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TileMapManager : MonoBehaviour
@@ -33,7 +34,7 @@ public class TileMapManager : MonoBehaviour
     }
     public void Start()
     {
-        GenerateGrid();
+        //GenerateGrid(); 
     }
     public void GenerateGrid()
     {
@@ -88,6 +89,26 @@ public class TileMapManager : MonoBehaviour
         }
     }
 
+    public TileCell[] GetSelectRangeCells(SelectRangeData _range, int _cellIndex)
+    {
+        List<TileCell> res = new List<TileCell>();
+        Vector2Int _centerCell = CellToVector2(gridCells[_cellIndex].transform);
+
+        for (int i = 0; i < _range.range.Count; i++)
+        {
+            Transform _cellTrans = Vector2ToCell(_centerCell + _range.range[i]);
+            if (_cellTrans != null)
+            {
+                TileCell _cell = _cellTrans.GetComponent<TileCell>();
+                res.Add(_cell);
+            }
+            else
+            {
+                res.Add(null);
+            }
+        }
+        return res.ToArray();
+    }
 
     public TileCell[] GetRowCell(int x_from, int x_to, int y)
     {

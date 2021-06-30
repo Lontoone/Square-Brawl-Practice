@@ -44,7 +44,8 @@ public class TileCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         OnCellMouseDown?.Invoke(grid_index);
     }
-#endif
+#endif    
+
     public void SetHoverColor()
     {
 
@@ -66,6 +67,28 @@ public class TileCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
 
+}
+
+public enum CellState
+{
+    NONE = 0,
+    CELL = 1,
+    SAW = 2,
+    EMPTY = 3
+}
+public enum CellOrientation
+{
+    TOP_LEFT = 0,
+    TOP_MIDDLE = 1,
+    TOP_RIGHT = 2,
+
+    MIDDLE_LEFT = 3,
+    MIDDLE_FILL = 4,
+    MIDDLE_RIGHT = 5,
+
+    BOTTOM_LEFT = 6,
+    BOTTOM_MIDDLE = 7,
+    BOTTOM_RIGHT = 8,
 }
 
 
