@@ -13,8 +13,9 @@ public class PlayerController : MonoBehaviour
     public float JumpForce;
     public float FlyForce;
     public float DownForce;
-    private Vector2 _inputPosX;
-    private Vector2 _inputPosY;
+    public Vector2 _inputPos;
+
+    private bool _canSpin;
 
     [HeaderAttribute("GroundCheck Setting")]
     public float FootOffset;
@@ -36,7 +37,6 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInputManager _inputAction;
 
-
     private void Awake()
     {
         _inputAction = new PlayerInputManager();
@@ -57,9 +57,13 @@ public class PlayerController : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _photonView = GetComponent<PhotonView>();
         _camera = Camera.main;
-        _inputAction.Player.Jump.performed += _ => PlayerJumpTest();
-        _inputAction.Player.Movement.performed += ctx => PlayerMoveTest(ctx.ReadValue<Vector2>());
-        //_inputAction.Player.Rotation.performed += ctx => PlayerRotationTest(ctx.ReadValue<Vector2>());
+
+        _canSpin = true;
+
+        _inputAction.Player.Jump.performed += _ => PlayerJump();
+        _inputAction.Player.Movement.performed += ctx => GetMovementValue(ctx.ReadValue<Vector2>());
+        _inputAction.Player.MouseRotation.performed += ctx => MouseSpin(ctx.ReadValue<Vector2>());
+        _inputAction.Player.GamePadRotation.performed += ctx => GamePadSpin(ctx.ReadValue<Vector2>());
         /*if (!_photonView.IsMine)
         {
             Destroy(_rigidbody2D);
@@ -72,7 +76,21 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }*/
-        PlayerRotation();
+
+        //Player Spin
+        if (_canSpin && _inputPos.x != 0)
+        {
+            if (_inputPos.x != 0 && _inputPos.y != 0)
+            {
+                Physics2D.maxRotationSpeed = 12;
+            }
+            else
+            {
+                Physics2D.maxRotationSpeed = 6;
+            }
+            _rigidbody2D.AddTorque(-5 * _inputPos.x);
+            _canSpin = false;
+        }
 
         GroundCheckEvent();//Is Grounding?
     }
@@ -83,41 +101,51 @@ public class PlayerController : MonoBehaviour
             return;
         }*/
 
-
         PlayerMovement();
     }
 
     void PlayerMovement()
     {
         //Player Move
-        _rigidbody2D.AddForce(MoveSpeed * _inputPosX);
-        //Player Spin
-        _rigidbody2D.AddTorque(-5*_inputPosX.x);
+        _rigidbody2D.AddForce(MoveSpeed * new Vector2(_inputPos.x, 0)) ;
 
-        if (_inputPosY.y > 0)//Player Fly
+        if (_inputPos.y > 0)//Player Fly
         {
-            _rigidbody2D.AddForce(FlyForce * new Vector2(0,_inputPosY.y));
+            _rigidbody2D.AddForce(FlyForce * new Vector2(0,_inputPos.y));
         }
-        else if(_inputPosY.y < 0)//Player Down
+        else if(_inputPos.y < 0)//Player Down
         {
-            _rigidbody2D.AddForce(DownForce * new Vector2(0, _inputPosY.y));
+            _rigidbody2D.AddForce(DownForce * new Vector2(0, _inputPos.y));
         }
     }
 
-    /*void OnMovement(InputValue value)
+    void GetMovementValue(Vector2 diretion)
     {
-        Vector2 _inputMovement = value.Get<Vector2>();
-        _inputPosX = new Vector2(_inputMovement.x, 0);
-        _inputPosY = new Vector2(0, _inputMovement.y);
-    }*/
+        Vector2 _inputMovement = diretion;
+        _inputPos = new Vector2(_inputMovement.x, _inputMovement.y);
+    }
 
-    /*void OnJump(InputValue value)
+    private void PlayerJump()
     {
         if (_isGround)
         {
             _rigidbody2D.AddForce(JumpForce * Vector3.up);
         }
-    }*/
+    }
+
+    void MouseSpin(Vector2 _mousePos)
+    {
+        Vector2 _mouseWorldPos = _camera.ScreenToWorldPoint(_mousePos);
+        Vector2 _targetDir = _mouseWorldPos - new Vector2(ShootDir.position.x, ShootDir.position.y);
+        float _angle = Mathf.Atan2(_targetDir.y, _targetDir.x) * Mathf.Rad2Deg;
+        ShootDir.rotation = Quaternion.Euler(new Vector3(0, 0, _angle));
+    }
+
+    void GamePadSpin(Vector2 _mousePos)
+    {
+        float _angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg;
+        ShootDir.rotation = Quaternion.Euler(new Vector3(0, 0, _angle));
+    }
 
     //Ground Check
     void GroundCheckEvent()
@@ -128,7 +156,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D upCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.up, GroundDistance);
         if (leftCheck || rightCheck || downCheck|| upCheck)
         {
-            _isGround = true;
+            _isGround = _canSpin = true;
         }
         else
         {
@@ -144,33 +172,5 @@ public class PlayerController : MonoBehaviour
         Color color = hit ? Color.red : Color.green;
         Debug.DrawRay(pos + offset, rayDirection * lengh, color);
         return hit;
-    }
-
-
-
-
-    void PlayerMoveTest(Vector2 diretion)
-    {
-        Vector2 _inputMovement = diretion;
-        _inputPosX = new Vector2(_inputMovement.x, 0);
-        _inputPosY = new Vector2(0, _inputMovement.y);
-    }
-    private void PlayerJumpTest()
-    {
-        if (_isGround)
-        {
-            _rigidbody2D.AddForce(JumpForce * Vector3.up);
-        }
-    }
-
-    void PlayerRotation()
-    {
-        Vector2 mousePos = _inputAction.Player.Rotation.ReadValue<Vector2>();
-        Vector3 mouseWorldPos = _camera.ScreenToWorldPoint(mousePos);
-        Vector3 targetDir = mouseWorldPos - ShootDir.localPosition;
-        float angle = Mathf.Atan2(targetDir.y, targetDir.x) * Mathf.Rad2Deg;
-        ShootDir.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-
-    }
-    
+    }    
 }

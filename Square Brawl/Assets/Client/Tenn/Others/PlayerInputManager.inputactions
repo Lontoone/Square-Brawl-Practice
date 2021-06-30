@@ -22,9 +22,17 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "Rotation",
+                    "name": "MouseRotation",
                     "type": "PassThrough",
                     "id": "5c8fcb4b-9236-459d-80ef-e04fddbe10ee",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "GamePadRotation",
+                    "type": "PassThrough",
+                    "id": "2aa7affa-badf-4b92-87ca-84f4ab897a34",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
@@ -187,23 +195,23 @@
                 },
                 {
                     "name": "",
-                    "id": "06478627-d093-4c34-a8b1-83c626e3a6fc",
+                    "id": "2b723f36-4185-40d0-88de-55435409db43",
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
-                    "action": "Rotation",
+                    "action": "MouseRotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "99b6ac77-00f0-4a5f-94b8-aee63e7fb997",
+                    "id": "e7321d18-c827-4e29-9eab-d27a20e7b793",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "GamePad",
-                    "action": "Rotation",
+                    "action": "GamePadRotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

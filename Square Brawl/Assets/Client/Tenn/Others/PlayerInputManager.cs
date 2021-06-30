@@ -35,9 +35,17 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Rotation"",
+                    ""name"": ""MouseRotation"",
                     ""type"": ""PassThrough"",
                     ""id"": ""5c8fcb4b-9236-459d-80ef-e04fddbe10ee"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""GamePadRotation"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""2aa7affa-badf-4b92-87ca-84f4ab897a34"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -200,23 +208,23 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""06478627-d093-4c34-a8b1-83c626e3a6fc"",
+                    ""id"": ""2b723f36-4185-40d0-88de-55435409db43"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",
-                    ""action"": ""Rotation"",
+                    ""action"": ""MouseRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""99b6ac77-00f0-4a5f-94b8-aee63e7fb997"",
+                    ""id"": ""e7321d18-c827-4e29-9eab-d27a20e7b793"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""GamePad"",
-                    ""action"": ""Rotation"",
+                    ""action"": ""GamePadRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -240,7 +248,8 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Rotation = m_Player.FindAction("Rotation", throwIfNotFound: true);
+        m_Player_MouseRotation = m_Player.FindAction("MouseRotation", throwIfNotFound: true);
+        m_Player_GamePadRotation = m_Player.FindAction("GamePadRotation", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -292,14 +301,16 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Rotation;
+    private readonly InputAction m_Player_MouseRotation;
+    private readonly InputAction m_Player_GamePadRotation;
     public struct PlayerActions
     {
         private @PlayerInputManager m_Wrapper;
         public PlayerActions(@PlayerInputManager wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Rotation => m_Wrapper.m_Player_Rotation;
+        public InputAction @MouseRotation => m_Wrapper.m_Player_MouseRotation;
+        public InputAction @GamePadRotation => m_Wrapper.m_Player_GamePadRotation;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -315,9 +326,12 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                @Rotation.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotation;
-                @Rotation.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotation;
-                @Rotation.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotation;
+                @MouseRotation.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseRotation;
+                @MouseRotation.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseRotation;
+                @MouseRotation.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseRotation;
+                @GamePadRotation.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamePadRotation;
+                @GamePadRotation.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamePadRotation;
+                @GamePadRotation.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamePadRotation;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -328,9 +342,12 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @Rotation.started += instance.OnRotation;
-                @Rotation.performed += instance.OnRotation;
-                @Rotation.canceled += instance.OnRotation;
+                @MouseRotation.started += instance.OnMouseRotation;
+                @MouseRotation.performed += instance.OnMouseRotation;
+                @MouseRotation.canceled += instance.OnMouseRotation;
+                @GamePadRotation.started += instance.OnGamePadRotation;
+                @GamePadRotation.performed += instance.OnGamePadRotation;
+                @GamePadRotation.canceled += instance.OnGamePadRotation;
             }
         }
     }
@@ -357,6 +374,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnRotation(InputAction.CallbackContext context);
+        void OnMouseRotation(InputAction.CallbackContext context);
+        void OnGamePadRotation(InputAction.CallbackContext context);
     }
 }
