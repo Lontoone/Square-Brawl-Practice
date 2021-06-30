@@ -25,13 +25,41 @@ public class PlayerController : MonoBehaviour
 
     public LayerMask GroundLayer;
 
+
+
+    [HeaderAttribute("Other Setting")]
+    public Transform ShootDir;
+
+    private Camera _camera;
+
     private PhotonView _photonView;
+
+    private PlayerInputManager _inputAction;
+
+
+    private void Awake()
+    {
+        _inputAction = new PlayerInputManager();
+    }
+
+    private void OnEnable()
+    {
+        _inputAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _inputAction.Disable();
+    }
 
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _photonView = GetComponent<PhotonView>();
-
+        _camera = Camera.main;
+        _inputAction.Player.Jump.performed += _ => PlayerJumpTest();
+        _inputAction.Player.Movement.performed += ctx => PlayerMoveTest(ctx.ReadValue<Vector2>());
+        //_inputAction.Player.Rotation.performed += ctx => PlayerRotationTest(ctx.ReadValue<Vector2>());
         /*if (!_photonView.IsMine)
         {
             Destroy(_rigidbody2D);
@@ -44,7 +72,8 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }*/
-        //PlayerJump();
+        PlayerRotation();
+
         GroundCheckEvent();//Is Grounding?
     }
     void FixedUpdate()
@@ -53,7 +82,7 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }*/
-        //PlayerMoving();
+
 
         PlayerMovement();
     }
@@ -75,20 +104,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnMovement(InputValue value)
+    /*void OnMovement(InputValue value)
     {
         Vector2 _inputMovement = value.Get<Vector2>();
         _inputPosX = new Vector2(_inputMovement.x, 0);
         _inputPosY = new Vector2(0, _inputMovement.y);
-    }
+    }*/
 
-    void OnJump(InputValue value)
+    /*void OnJump(InputValue value)
     {
         if (_isGround)
         {
             _rigidbody2D.AddForce(JumpForce * Vector3.up);
         }
-    }
+    }*/
 
     //Ground Check
     void GroundCheckEvent()
@@ -120,34 +149,28 @@ public class PlayerController : MonoBehaviour
 
 
 
-    void PlayerMoving()
+    void PlayerMoveTest(Vector2 diretion)
     {
-        if (Input.GetKey(KeyCode.A))
-        {
-            _rigidbody2D.AddForce(MoveSpeed * Vector2.left);
-            _rigidbody2D.AddTorque(5);
-            Debug.Log(_rigidbody2D.angularVelocity);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            _rigidbody2D.AddForce(MoveSpeed * Vector2.right);
-            _rigidbody2D.AddTorque(-5);
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            _rigidbody2D.AddForce(DownSpeed * Vector2.down);
-        }
+        Vector2 _inputMovement = diretion;
+        _inputPosX = new Vector2(_inputMovement.x, 0);
+        _inputPosY = new Vector2(0, _inputMovement.y);
     }
-
-    void PlayerJump()
+    private void PlayerJumpTest()
     {
-        if (Input.GetKeyDown(KeyCode.W) && _isGround)
+        if (_isGround)
         {
             _rigidbody2D.AddForce(JumpForce * Vector3.up);
         }
-        else if (Input.GetKey(KeyCode.W) && !_isGround)
-        {
-            _rigidbody2D.AddForce(3f * Vector3.up);
-        }
     }
+
+    void PlayerRotation()
+    {
+        Vector2 mousePos = _inputAction.Player.Rotation.ReadValue<Vector2>();
+        Vector3 mouseWorldPos = _camera.ScreenToWorldPoint(mousePos);
+        Vector3 targetDir = mouseWorldPos - ShootDir.localPosition;
+        float angle = Mathf.Atan2(targetDir.y, targetDir.x) * Mathf.Rad2Deg;
+        ShootDir.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+    }
+    
 }
