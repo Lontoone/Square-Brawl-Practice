@@ -9,6 +9,9 @@ public class SaveTile : MonoBehaviour
     public SelectRangeData checkRange;
 
     private TileMapEditorControl tilemapEditor;
+
+    public TileImageCollection imageCollection; //TEST
+
     public void Start()
     {
         tilemapEditor = FindObjectOfType<TileMapEditorControl>();
@@ -24,8 +27,12 @@ public class SaveTile : MonoBehaviour
             //if (tilemapEditor.cellStateMap[i] != CellState.NONE)
             if (!tilemapEditor.MatchState(i, CellState.NONE, CellState.EMPTY))
             {
-                CellData _cell = new CellData(i, tilemapEditor.cellStateMap[i], CheckCellOrientation(i));
+                CellOrientation _orientation = CheckCellOrientation(i);
+                CellData _cell = new CellData(i, tilemapEditor.cellStateMap[i], _orientation);
                 _mapData.cellDatas.Add(_cell);
+
+                //Test:
+                SetTillImage(TileMapManager.instance.gridCells[i], (int)_orientation);
             }
         }
         Debug.Log("Save!");
@@ -43,8 +50,53 @@ public class SaveTile : MonoBehaviour
         TileCell _leftCell = CheckCell(_cellIndex, _cellsToCheck[2]) ? _cellsToCheck[2] : null;
         TileCell _rightCell = CheckCell(_cellIndex, _cellsToCheck[3]) ? _cellsToCheck[3] : null;
 
-        //Top 
-        if (_topCell == null && _leftCell == null && (_rightCell != null || _bottomCell != null))
+        //Single
+        if (_topCell == null && _bottomCell == null && _leftCell == null && _rightCell == null)
+        {
+            return CellOrientation.SINGLE;
+        }
+        else if (_topCell == null && _bottomCell == null && _leftCell == null && _rightCell != null)
+        {
+            return CellOrientation.SINGLE_LEFT;
+        }
+        else if (_topCell == null && _bottomCell == null && _leftCell != null && _rightCell != null)
+        {
+            return CellOrientation.SINGLE_MIDDLE;
+        }
+        else if (_topCell != null && _bottomCell != null && _leftCell == null && _rightCell == null)
+        {
+            return CellOrientation.SINGLE_BRIDGE;
+        }
+        else if (_topCell == null && _bottomCell == null && _leftCell != null && _rightCell == null)
+        {
+            return CellOrientation.SINGLE_RIGHT;
+        }
+        else if (_topCell == null && _bottomCell != null && _leftCell == null && _rightCell == null)
+        {
+            return CellOrientation.SINGLE_TOP;
+        }
+        else if (_topCell != null && _bottomCell == null && _leftCell == null && _rightCell == null)
+        {
+            return CellOrientation.SINGLE_BOTTOM;
+        }
+
+
+        //Middle
+        else if (_topCell != null && _leftCell != null && _rightCell != null && _bottomCell != null)
+        {
+            return CellOrientation.MIDDLE_FILL;
+        }
+        else if (_topCell != null && _leftCell == null && _rightCell != null && _bottomCell != null)
+        {
+            return CellOrientation.MIDDLE_LEFT;
+        }
+        else if (_topCell != null && _rightCell == null && _leftCell != null && _bottomCell != null)
+        {
+            return CellOrientation.MIDDLE_RIGHT;
+        }
+        
+        //Top
+        else if (_topCell == null && _leftCell == null)
         {
             return CellOrientation.TOP_LEFT;
         }
@@ -52,25 +104,12 @@ public class SaveTile : MonoBehaviour
         {
             return CellOrientation.TOP_MIDDLE;
         }
-        else if (_topCell == null && _rightCell != null && (_leftCell != null || _bottomCell != null))
+        else if (_topCell == null && _rightCell == null)
         {
             return CellOrientation.TOP_RIGHT;
         }
 
-        //Middle
-        else if (_topCell != null && _leftCell == null && (_rightCell != null || _bottomCell != null))
-        {
-            return CellOrientation.MIDDLE_LEFT;
-        }
-        else if (_topCell != null && _leftCell != null && _rightCell != null && _bottomCell != null)
-        {
-            return CellOrientation.MIDDLE_FILL;
-        }
-        else if (_topCell != null && _rightCell != null && (_leftCell != null || _bottomCell != null))
-        {
-            return CellOrientation.MIDDLE_RIGHT;
-        }
-
+     
         //Bottom
         else if (_topCell != null && _leftCell == null && _bottomCell == null)
         {
@@ -80,7 +119,7 @@ public class SaveTile : MonoBehaviour
         {
             return CellOrientation.BOTTOM_MIDDLE;
         }
-        else if (_topCell != null && _rightCell != null && (_leftCell != null || _bottomCell == null))
+        else if (_topCell != null && _rightCell == null && (_leftCell != null || _bottomCell == null))
         {
             return CellOrientation.BOTTOM_RIGHT;
         }
@@ -96,6 +135,11 @@ public class SaveTile : MonoBehaviour
         return tilemapEditor.CompareState(_cellIndex, _target.grid_index);
     }
 
+    //TEMP
+    private void SetTillImage(TileCell _cell, int _orientation)
+    {
+        _cell.spriteRenderer.sprite = imageCollection.GetSprite(_orientation);
+    }
 }
 [System.Serializable]
 public class MapData

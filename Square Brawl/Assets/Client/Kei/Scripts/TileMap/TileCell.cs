@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TileCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class TileCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,IPointerDownHandler
 {
     public int grid_index;
     [HideInInspector]
@@ -27,6 +27,10 @@ public class TileCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         OnCellMouseEnter?.Invoke(grid_index);
     }
     public void OnPointerExit(PointerEventData eventData)
+    {
+        OnCellMouseExit?.Invoke(grid_index);
+    }
+    public void OnPointerDown(PointerEventData eventData)
     {
         OnCellMouseDown?.Invoke(grid_index);
     }
@@ -66,7 +70,6 @@ public class TileCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         spriteRenderer.color = _color;
     }
 
-
 }
 
 public enum CellState
@@ -89,6 +92,15 @@ public enum CellOrientation
     BOTTOM_LEFT = 6,
     BOTTOM_MIDDLE = 7,
     BOTTOM_RIGHT = 8,
+
+    SINGLE = 9,
+
+    SINGLE_LEFT = 10,
+    SINGLE_MIDDLE = 11,
+    SINGLE_RIGHT = 12,
+    SINGLE_TOP = 13,
+    SINGLE_BOTTOM = 14,
+    SINGLE_BRIDGE = 15,
 }
 
 
