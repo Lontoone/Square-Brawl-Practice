@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class ShootSpuare : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
-    public Transform target;
+    public float Speed;
 
     private PhotonView _photonView;
-
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         _photonView = GetComponent<PhotonView>();
-        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
+
+    // Update is called once per frame
     void Update()
     {
         /*if (!_photonView.IsMine)
         {
             return;
         }*/
-        transform.position = target.position;
+        transform.Translate(Vector2.right* Speed * Time.deltaTime);
     }
 }
