@@ -56,7 +56,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""id"": ""365bdfae-b71a-4034-8b83-d40b5fdddaef"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press""
+                    ""interactions"": ""Press(behavior=2)""
                 },
                 {
                     ""name"": ""Fire2"",
@@ -64,7 +64,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""id"": ""bb5a359c-6907-4e65-aeb7-361ad9565210"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press""
+                    ""interactions"": ""Press(behavior=2)""
                 }
             ],
             ""bindings"": [

@@ -42,9 +42,12 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInputManager _inputAction;
 
+    public static PlayerController Instance;
+
     private void Awake()
     {
         _inputAction = new PlayerInputManager();
+        Instance = this;
     }
 
     private void OnEnable()
@@ -74,8 +77,6 @@ public class PlayerController : MonoBehaviour
         _inputAction.Player.Movement.performed += ctx => GetMovementValue(ctx.ReadValue<Vector2>());
         _inputAction.Player.MouseRotation.performed += ctx => MouseSpin(ctx.ReadValue<Vector2>());
         _inputAction.Player.GamePadRotation.performed += ctx => GamePadSpin(ctx.ReadValue<Vector2>());
-        _inputAction.Player.Fire1.performed += _ => PlayerFire1();
-        _inputAction.Player.Fire2.performed += _ => PlayerFire2();
         
         /*if (!_photonView.IsMine)
         {
@@ -183,15 +184,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void PlayerFire1()
+    public void PlayerRecoil(float _shootRecoil)
     {
-        ObjectsPool.Instance.SpawnFromPool("Bullet", ShootDir.position, ShootDir.rotation, null);
-        //GameObject obj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bullet"), ShootDir.position, ShootDir.rotation);
-    }
+        float x = Mathf.Cos(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
+        float y = Mathf.Sin(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180) ;
 
-    void PlayerFire2()
-    {
-       // ObjectsPool.Instance.SpawnFromPool("Bullet", ShootDir.position, ShootDir.rotation, null);
+        _rigidbody2D.AddForce(-_shootRecoil * new Vector2(x, y));
     }
 
     //Ground Check

@@ -5,7 +5,9 @@ using Photon.Pun;
 
 public class Bullet : MonoBehaviour
 {
-    public float Speed;
+    public float ShootSpeed;
+
+    public GameObject ExploseEffectObj;
 
     private PhotonView _photonView;
     // Start is called before the first frame update
@@ -21,6 +23,15 @@ public class Bullet : MonoBehaviour
         {
             return;
         }*/
-        transform.Translate(Vector2.right* Speed * Time.deltaTime);
+        transform.Translate(Vector2.right* ShootSpeed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            Instantiate(ExploseEffectObj, transform.position, transform.rotation);
+            Destroy(gameObject);
+        }
     }
 }
