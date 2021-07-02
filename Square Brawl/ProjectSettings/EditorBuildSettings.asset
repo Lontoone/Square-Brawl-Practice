@@ -11,5 +11,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Client/Tenn/Scenes/GameScene.unity
     guid: ffa73f2e2a0283e409bc098c27de3a06
+  - enabled: 1
+    path: Assets/Client/Kei/TileMapTest-Start.unity
+    guid: 451eb6dd2947dcd4b9882fba70d82878
+  - enabled: 1
+    path: Assets/Client/Kei/GridSample.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Client/Kei/CustomeLevel.unity
+    guid: 5b747444932f1f045b420b4eea691970
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: c7689fbbf44369a4fa08a9b16dc789b2, type: 2}

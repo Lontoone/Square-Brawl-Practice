@@ -7,13 +7,16 @@ public class TileMapSetUpManager : MonoBehaviour
 {
     public SelectRangeData detecateRange;
 
-    public static string levelFileName; //temp
+    private string levelFileName; //temp
 
     private List<TileCell> activeTileCells = new List<TileCell>();
 
     private void Start()
     {
         TileMapManager.instance.GenerateGrid();
+
+        //TEMP
+        levelFileName = LoadMapUIControl.currentSelectedFile;
 
         //temp
         MapData _mapData = SaveAndLoad.Load<MapData>(levelFileName.CombinePersistentPath());
@@ -26,27 +29,33 @@ public class TileMapSetUpManager : MonoBehaviour
         int _dataCount = 0;
         for (int i = 0; i < TileMapManager.instance.cellCount; i++)
         {
-            //CellData _cellData = _mapData.cellDatas[_dataCount];
             TileCell _cell = TileMapManager.instance.gridCells[i];
+
             if (i == _mapData.cellDatas[_dataCount].index)
             {
+                TileMapManager.instance.cellStateMap[i] = _mapData.cellDatas[_dataCount].state;
                 activeTileCells.Add(_cell);
-                _dataCount = Mathf.Clamp(_dataCount + 1, 0, _mapData.cellDatas.Count - 1); ;
+                _dataCount = Mathf.Clamp(_dataCount + 1, 0, _mapData.cellDatas.Count - 1);
             }
             else
             {
+                TileMapManager.instance.cellStateMap[i] = CellState.NONE ;
                 //empty cell
                 _cell.gameObject.SetActive(false);
             }
         }
 
+    }
+    private void SetUpCellOrientation()
+    {
+
         //Set up image
-        for (int i=0; i <activeTileCells.Count;i++) {
+        for (int i = 0; i < activeTileCells.Count; i++)
+        {
             TileStyleManager.instance.SetCell(activeTileCells[i].grid_index);
             TileStyleManager.instance.SetNearbyCell(activeTileCells[i].grid_index);
         }
 
     }
-    private void SetUpCellOrientation() { }
 
 }

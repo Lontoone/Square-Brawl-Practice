@@ -33,7 +33,8 @@ public class TileStyleManager : MonoBehaviour
 
     public void SetCell(int _index)
     {
-        if (TileMapManager.instance.cellStateMap[_index] == CellState.NONE)
+        CellState _state;
+        if (TileMapManager.instance.cellStateMap.TryGetValue(_index, out _state) && _state == CellState.NONE)
         {
             //Set none to white
             SetTillImage(TileMapManager.instance.gridCells[_index], 255);
@@ -70,7 +71,7 @@ public class TileStyleManager : MonoBehaviour
         float _res = 0;
         for (int i = 0; i < 8; i++)
         {
-            if (CheckCellIsSameState(_center, _jiugongge[i]))
+            if (_jiugongge.Length > 0 && CheckCellIsSameState(_center, _jiugongge[i]))
             {
                 int _pow = (7 - i);
                 _res += Mathf.Pow(2, _pow);
@@ -81,7 +82,7 @@ public class TileStyleManager : MonoBehaviour
     }
     private bool CheckCellIsSameState(TileCell _center, TileCell _target)
     {
-        if (_target == null)
+        if (_target == null || _center == null)
         {
             return false;
         }

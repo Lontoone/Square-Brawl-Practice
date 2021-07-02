@@ -92,6 +92,10 @@ public class TileMapManager : MonoBehaviour
 
     public TileCell[] GetSelectRangeCells(SelectRangeData _range, int _cellIndex)
     {
+        if (_range.range.Count == 0)
+        {
+            _range.ReadData();
+        }
         List<TileCell> res = new List<TileCell>();
         Vector2Int _centerCell = CellToVector2(gridCells[_cellIndex].transform);
 

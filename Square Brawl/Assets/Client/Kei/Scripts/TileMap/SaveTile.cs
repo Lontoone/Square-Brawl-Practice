@@ -15,7 +15,6 @@ public class SaveTile : MonoBehaviour
 
     public void Start()
     {
-
         LoadMapUIControl.OnLevelFileLoaded += SetFileNameOnLoad;
         tilemapEditor = FindObjectOfType<TileMapEditorControl>();
         checkRange.ReadData();
