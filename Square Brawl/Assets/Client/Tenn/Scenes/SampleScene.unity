@@ -1273,7 +1273,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 1.0964e-41, z: 0, w: -22.398438}
+  m_BoundingSphereOverride: {x: 8.52e-43, y: 9.4e-44, z: 0, w: 2.0572567}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1641,7 +1641,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -5.1, y: -103.6}
+  m_AnchoredPosition: {x: -5.1, y: -103.6001}
   m_SizeDelta: {x: 552.87555, y: 64.72591}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &786875886

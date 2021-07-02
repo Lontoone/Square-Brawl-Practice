@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     public float DownForce;//Player Down Force
     public float SpinForce;//Player Spin Force
     public float SpinInGroundForce;//Player Spin In Ground Force
+    public float Damage;
+    public float PlayerHp;
     private Vector2 _inputPos;//Keyboard Input Pos
 
     private bool _canSpin;//Player Can Spin?
@@ -35,19 +37,20 @@ public class PlayerController : MonoBehaviour
     public Transform ShootDir;//Shoot Point
 
     public GameObject ShootPointObj;//Shoot Point Prefab
+    public GameObject _shootObj;
 
     private Camera _camera;
 
-    private PhotonView _photonView;
+    private PhotonView _pv;
 
     private PlayerInputManager _inputAction;
 
-    public static PlayerController Instance;
-
+    private PlayerManager _playerManager;
     private void Awake()
     {
         _inputAction = new PlayerInputManager();
-        Instance = this;
+        _pv = GetComponent<PhotonView>();
+        _playerManager = PhotonView.Find((int)_pv.InstantiationData[0]).GetComponent<PlayerManager>();
     }
 
     private void OnEnable()
@@ -63,42 +66,44 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _photonView = GetComponent<PhotonView>();
         _camera = Camera.main;
 
-        //GameObject _ShootObj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "ShootSpinPointMid"), Vector3.zero, Quaternion.identity);
-        GameObject _ShootObj = Instantiate(ShootPointObj, Vector3.zero, Quaternion.identity);
-        ShootSpinMidPos = _ShootObj.transform;
-        ShootDir = _ShootObj.transform.GetChild(0);
+        _shootObj = PhotonView.Find((int)_pv.InstantiationData[0]).GetComponent<PlayerManager>()._shootObj;
+        //GameObject _ShootObj = Instantiate(ShootPointObj, Vector3.zero, Quaternion.identity);
+        if (_pv.IsMine)
+        {
+            ShootSpinMidPos = _shootObj.transform;
+            ShootDir = _shootObj.transform.GetChild(0);
+
+            _inputAction.Player.Jump.performed += _ => PlayerJump();
+            _inputAction.Player.Movement.performed += ctx => GetMovementValue(ctx.ReadValue<Vector2>());
+            _inputAction.Player.MouseRotation.performed += ctx => MouseSpin(ctx.ReadValue<Vector2>());
+            _inputAction.Player.GamePadRotation.performed += ctx => GamePadSpin(ctx.ReadValue<Vector2>());
+        }
 
         _canSpin = true;
-
-        _inputAction.Player.Jump.performed += _ => PlayerJump();
-        _inputAction.Player.Movement.performed += ctx => GetMovementValue(ctx.ReadValue<Vector2>());
-        _inputAction.Player.MouseRotation.performed += ctx => MouseSpin(ctx.ReadValue<Vector2>());
-        _inputAction.Player.GamePadRotation.performed += ctx => GamePadSpin(ctx.ReadValue<Vector2>());
         
-        /*if (!_photonView.IsMine)
+        if (!_pv.IsMine)
         {
             Destroy(_rigidbody2D);
-        }*/
+        }
     }
 
     void Update()
     {
-        /*if (!_photonView.IsMine) 
+        if (!_pv.IsMine) 
         {
             return;
-        }*/
+        }
 
         GroundCheckEvent();//Is Grounding?
     }
     void FixedUpdate()
     {
-        /*if (!_photonView.IsMine)
+        if (!_pv.IsMine)
         {
             return;
-        }*/
+        }
 
         PlayerMovement();//Player Move
 
@@ -169,7 +174,7 @@ public class PlayerController : MonoBehaviour
 
     void MouseSpin(Vector2 _mousePos)
     {
-       　Vector2 _mouseWorldPos = _camera.ScreenToWorldPoint(_mousePos);
+        Vector2 _mouseWorldPos = _camera.ScreenToWorldPoint(_mousePos);
         Vector2 _targetDir = _mouseWorldPos - new Vector2(ShootSpinMidPos.position.x, ShootSpinMidPos.position.y);
         float _angle = Mathf.Atan2(_targetDir.y, _targetDir.x) * Mathf.Rad2Deg;
         ShootSpinMidPos.rotation = Quaternion.Euler(new Vector3(0, 0, _angle));
@@ -186,6 +191,10 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerRecoil(float _shootRecoil)
     {
+        if (!_pv.IsMine)
+        {
+            return;
+        }
         float x = Mathf.Cos(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
         float y = Mathf.Sin(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180) ;
 
@@ -224,5 +233,40 @@ public class PlayerController : MonoBehaviour
         Color color = hit ? Color.red : Color.green;
         Debug.DrawRay(pos + offset, rayDirection * lengh, color);
         return hit;
-    }    
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Bullet"))
+        {
+            if (other.gameObject.GetComponent<PhotonView>().IsMine == false)
+            {
+                TakeDamage(other.gameObject.GetComponent<Bullet>().ShootDamage);
+            }
+        }
+    }
+
+    public void TakeDamage(float _damage)
+    {
+        _pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage);
+    }
+
+    [PunRPC]
+    void Rpc_TakeDamage(float _damage)
+    {
+        if (!_pv.IsMine)
+        {
+            return;
+        }
+        PlayerHp -= _damage;
+        if (PlayerHp <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        _playerManager.Die();
+    }
 }

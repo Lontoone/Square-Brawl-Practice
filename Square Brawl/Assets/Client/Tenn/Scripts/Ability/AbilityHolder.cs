@@ -2,19 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class AbilityHolder : MonoBehaviour
 {
-    public Ability ability;
     private float _cooldownTime;
     private float _activeTime;
+    private float isCdAddCount;
 
     public bool isSkill01;
+    protected bool _isFire01;
+    protected bool _isFire02;
 
-    private bool _isFire01;
-    private bool _isFire02;
+    public Ability ability;
 
     private PlayerInputManager _inputAction;
+
+    private PhotonView _pv;
+
     private enum AbilityState
     {
         Ready,
@@ -26,6 +30,7 @@ public class AbilityHolder : MonoBehaviour
 
     void Awake()
     {
+        _pv = GetComponent<PhotonView>();
         _inputAction = new PlayerInputManager();
     }
     private void OnEnable()
@@ -41,6 +46,9 @@ public class AbilityHolder : MonoBehaviour
     private void Start()
     {
         ability.Initalize(gameObject);
+
+        _activeTime = ability.CoolDownTime;
+
         if (isSkill01)
         {
             _inputAction.Player.Fire1.performed += _ => PlayerFire1Down();
@@ -76,25 +84,36 @@ public class AbilityHolder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!_pv.IsMine)
+        {
+            return;
+        }
+
         switch (_state)
         {
             case AbilityState.Ready:
                 if (_isFire01||_isFire02)
                 {
                     ability.Activate();
-                    _state = AbilityState.Active;
-                    _activeTime = ability.ActiveTime;
-                }
-                break;
-            case AbilityState.Active:
-                if (_activeTime > 0)
-                {
-                    _activeTime -= Time.deltaTime;
+
+                    SpecialEvent();
+                    
+                    if(!ability.isCdCanAdd&&!ability.isHaveTwoCd)
+                    {
+                        _cooldownTime = ability.CoolDownTime;
+                    }
+                    
+                    _state = AbilityState.CoolDown;
                 }
                 else
                 {
-                    _state = AbilityState.CoolDown;
-                    _cooldownTime = ability.CoolDownTime;
+                    if (ability.isCdCanAdd)
+                    {
+                        if (_activeTime > ability.CoolDownTime)
+                        {
+                            _activeTime -= Time.deltaTime/3;
+                        }
+                    }
                 }
                 break;
             case AbilityState.CoolDown:
@@ -109,5 +128,43 @@ public class AbilityHolder : MonoBehaviour
                 break;
         }
 
+
+        void SpecialEvent()
+        {
+            if (ability.isCdCanAdd)//CubeShot
+            {
+                isCdAddCount += 1;
+                if (isCdAddCount % 3 == 0)
+                {
+                    _cooldownTime = _activeTime += 0.05f;
+                }
+                else
+                {
+                    _cooldownTime = _activeTime;
+                }
+            }
+            else if (ability.isHaveTwoCd)//Aevolver
+            {
+                isCdAddCount += 1;
+
+                if (_isFire01)
+                {
+                    _isFire01 = false;
+                }
+                else if (_isFire02)
+                {
+                    _isFire02 = false;
+                }
+
+                if (isCdAddCount % 6 == 0)
+                {
+                    _cooldownTime = 2;
+                }
+                else
+                {
+                    _cooldownTime = ability.CoolDownTime;
+                }
+            }
+        }
     }
 }

@@ -7,19 +7,19 @@ public class ShootSpuare : MonoBehaviour
 {
     public Transform target;
 
-    private PhotonView _photonView;
+    private PhotonView _pv;
 
     private void Start()
     {
-        _photonView = GetComponent<PhotonView>();
+        _pv = GetComponent<PhotonView>();
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
     void Update()
     {
-        /*if (!_photonView.IsMine)
+        if (!_pv.IsMine)
         {
             return;
-        }*/
+        }
         transform.position = target.position;
     }
 }

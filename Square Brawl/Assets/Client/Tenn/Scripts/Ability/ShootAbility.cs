@@ -10,7 +10,8 @@ public class ShootAbility : Ability
     public float ShootRecoil;
     public float BeShootElasticity;
     public float BulletScaleValue;
-    public bool IsCanContinuous;
+    public bool IsDontContinuous;
+    public bool IsDontShootStraight;
 
     private ShootTriggerable _shoot;
 
@@ -22,7 +23,8 @@ public class ShootAbility : Ability
         _shoot.ShootRecoil = ShootRecoil;
         _shoot.BeShootElasticity = BeShootElasticity;
         _shoot.BulletScaleValue = BulletScaleValue;
-        _shoot.IsCanContinuous = IsCanContinuous;
+        _shoot.IsDontContinuous = IsDontContinuous;
+        _shoot.IsDontShootStraight = IsDontShootStraight;
     }
 
     public override void Activate()

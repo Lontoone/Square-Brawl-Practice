@@ -66,3 +66,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83865728b97752e468409ec26468b7c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shootObj: {fileID: 0}
