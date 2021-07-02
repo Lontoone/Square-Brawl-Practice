@@ -62,7 +62,7 @@ public class TileCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void SetusedColor()
     {
-        spriteRenderer.color = Color.green;
+        spriteRenderer.color = Color.blue;
     }
 
     public void SetColor(Color _color)

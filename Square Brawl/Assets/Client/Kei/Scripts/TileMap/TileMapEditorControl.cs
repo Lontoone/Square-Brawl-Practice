@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.InputSystem;
 public class TileMapEditorControl : MonoBehaviour
 {
     public SelectRangeData rangeData;
+    public static event Action<int> OnCellChanged;
     public bool isBuild = true;
     private bool inMouseHolding = false;
 
@@ -15,13 +17,18 @@ public class TileMapEditorControl : MonoBehaviour
 
     [SerializeField]
     List<TileCell> previewTileCells = new List<TileCell>();
-    public Dictionary<int, CellState> cellStateMap = new Dictionary<int, CellState>();
+    //public Dictionary<int, CellState> cellStateMap = new Dictionary<int, CellState>();
+    private Dictionary<int, CellState> cellStateMap
+    {
+        get { return TileMapManager.instance.cellStateMap; }
+        set { TileMapManager.instance.cellStateMap = value; }
+    }
 
     private Dictionary<CellState, Color> cellStateColor = new Dictionary<CellState, Color>() {
         { CellState.NONE, Color.white },
-        { CellState.CELL, Color.green },
-        { CellState.SAW, Color.green },
-        { CellState.EMPTY, Color.green },
+        { CellState.CELL, Color.blue },
+        { CellState.SAW, Color.blue },
+        { CellState.EMPTY, Color.blue },
     };
 
     public void Start()
@@ -29,7 +36,9 @@ public class TileMapEditorControl : MonoBehaviour
         InitDict();
         TileCell.OnCellMouseEnter += SetPreviewRange;
         TileCell.OnCellMouseExit += SetPreviousId;
-        //TileCell.OnCellMouseDown += Select;
+
+        LoadMapUIControl.OnLevelFileLoaded += Load;
+
         rangeData.ReadData();
 
         TileMapManager.instance.GenerateGrid();
@@ -38,7 +47,9 @@ public class TileMapEditorControl : MonoBehaviour
     {
         TileCell.OnCellMouseEnter -= SetPreviewRange;
         TileCell.OnCellMouseExit -= SetPreviousId;
-        //TileCell.OnCellMouseDown -= Select;
+
+        LoadMapUIControl.OnLevelFileLoaded -= Load;
+
     }
     public void Update()
     {
@@ -135,7 +146,6 @@ public class TileMapEditorControl : MonoBehaviour
         {
             return;
         }
-
         if (isBuild)
         {
             DoSelect();
@@ -151,6 +161,8 @@ public class TileMapEditorControl : MonoBehaviour
         {
             cellStateMap[previewTileCells[i].grid_index] = CellState.CELL;
             previewTileCells[i].SetusedColor();
+
+            OnCellChanged?.Invoke(previewTileCells[i].grid_index);
         }
     }
 
@@ -160,6 +172,8 @@ public class TileMapEditorControl : MonoBehaviour
         {
             cellStateMap[previewTileCells[i].grid_index] = CellState.NONE;
             previewTileCells[i].SetWhiteColor();
+
+            OnCellChanged?.Invoke(previewTileCells[i].grid_index);
         }
     }
 
@@ -190,6 +204,15 @@ public class TileMapEditorControl : MonoBehaviour
     {
         TileCell _cell = TileMapManager.instance.gridCells[_index];
         _cell.SetColor(cellStateColor[_state]);
+    }
+
+    private void Load(string _path)
+    {
+        //reset picture
+        MapData mapData = SaveAndLoad.Load<MapData>(_path);
+
+        //Load to map
+        SetUpMapData(mapData);
     }
 }
 

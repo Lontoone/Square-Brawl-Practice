@@ -14,6 +14,7 @@ public class TileMapManager : MonoBehaviour
     public int cellCount { get { return mapSize.x * mapSize.y; } }
 
     public List<TileCell> gridCells = new List<TileCell>();
+    public Dictionary<int, CellState> cellStateMap = new Dictionary<int, CellState>();
 
 
     public TileCell center_cell { get { return (gridCells[(gridCells.Count - 1) / 2]); } }

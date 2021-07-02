@@ -7,7 +7,7 @@ public class TileMapSetUpManager : MonoBehaviour
 {
     public SelectRangeData detecateRange;
 
-    public string levelFileName; //temp
+    public static string levelFileName; //temp
 
     private List<TileCell> activeTileCells = new List<TileCell>();
 
@@ -23,10 +23,29 @@ public class TileMapSetUpManager : MonoBehaviour
 
     private void SetUpLevelTiles(MapData _mapData)
     {
+        int _dataCount = 0;
         for (int i = 0; i < TileMapManager.instance.cellCount; i++)
         {
-            //CellData _cell =_mapData.cellDatas.
+            //CellData _cellData = _mapData.cellDatas[_dataCount];
+            TileCell _cell = TileMapManager.instance.gridCells[i];
+            if (i == _mapData.cellDatas[_dataCount].index)
+            {
+                activeTileCells.Add(_cell);
+                _dataCount = Mathf.Clamp(_dataCount + 1, 0, _mapData.cellDatas.Count - 1); ;
+            }
+            else
+            {
+                //empty cell
+                _cell.gameObject.SetActive(false);
+            }
         }
+
+        //Set up image
+        for (int i=0; i <activeTileCells.Count;i++) {
+            TileStyleManager.instance.SetCell(activeTileCells[i].grid_index);
+            TileStyleManager.instance.SetNearbyCell(activeTileCells[i].grid_index);
+        }
+
     }
     private void SetUpCellOrientation() { }
 
