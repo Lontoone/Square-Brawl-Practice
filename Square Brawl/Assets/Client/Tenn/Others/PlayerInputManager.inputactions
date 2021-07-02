@@ -255,6 +255,17 @@
                 },
                 {
                     "name": "",
+                    "id": "076244f3-591c-4548-9a13-c5ca60c5114e",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "a455265e-4d3c-49c8-b5ad-ac8feaeabca0",
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
@@ -271,6 +282,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
+                    "action": "Fire2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5b86fb38-b1c0-4993-b4d2-7a001b0ff5ff",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Fire2",
                     "isComposite": false,
                     "isPartOfComposite": false
