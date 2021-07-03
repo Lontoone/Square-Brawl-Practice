@@ -311,6 +311,203 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""39ceab52-a3a0-4753-ba39-a8eb2611e8bc"",
+            ""actions"": [
+                {
+                    ""name"": ""UI Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""9f8fa373-f46e-465e-99c1-312e4b3229d4"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""confirm click"",
+                    ""type"": ""Button"",
+                    ""id"": ""a722fc6c-933e-48fc-89ab-4a5e45881ff2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""back click"",
+                    ""type"": ""Button"",
+                    ""id"": ""99d3498f-2551-4400-9261-ab1dd3706f6c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""0d05ecc1-ca30-4118-8ad2-f69a0d518dcc"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UI Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""23e6c011-9c5e-46bf-b855-491bbbe9fe99"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""UI Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""7411b4f0-5a61-403e-9e5a-61f650478c0a"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""UI Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""a7dbdba2-7ebb-417f-80b1-a970a73a7d12"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""UI Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""50cf3f3e-fa5b-4fa5-8c1a-ccdf384f397e"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""UI Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Arrow"",
+                    ""id"": ""e6ff18d5-abc3-444a-9b53-ea8fdce10a04"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UI Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""2f83725a-05c1-4ad0-aa6a-f943d55ca7b2"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""UI Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""281dda97-f5a2-459e-bf20-dad7ea12ab28"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""UI Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""538012aa-0be4-4cf7-892a-813f59eefdb2"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""UI Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""7903fced-6874-428a-8fec-44b63010f3fb"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""UI Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8b9673bf-fcb3-4159-8002-47c34e064c80"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""UI Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89b6f0d0-bc77-4907-9020-e2882cb5c900"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""confirm click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c4935acb-98b5-4af0-868a-fa415f0b612f"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""confirm click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8279352e-c798-478c-aa39-beb107104d2e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""back click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fee87b8f-5c7e-4ac1-9f44-d4f938f8b0d6"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""back click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -334,6 +531,11 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         m_Player_GamePadRotation = m_Player.FindAction("GamePadRotation", throwIfNotFound: true);
         m_Player_Fire1 = m_Player.FindAction("Fire1", throwIfNotFound: true);
         m_Player_Fire2 = m_Player.FindAction("Fire2", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_UIMovement = m_UI.FindAction("UI Movement", throwIfNotFound: true);
+        m_UI_confirmclick = m_UI.FindAction("confirm click", throwIfNotFound: true);
+        m_UI_backclick = m_UI.FindAction("back click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -452,6 +654,55 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_UIMovement;
+    private readonly InputAction m_UI_confirmclick;
+    private readonly InputAction m_UI_backclick;
+    public struct UIActions
+    {
+        private @PlayerInputManager m_Wrapper;
+        public UIActions(@PlayerInputManager wrapper) { m_Wrapper = wrapper; }
+        public InputAction @UIMovement => m_Wrapper.m_UI_UIMovement;
+        public InputAction @confirmclick => m_Wrapper.m_UI_confirmclick;
+        public InputAction @backclick => m_Wrapper.m_UI_backclick;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            {
+                @UIMovement.started -= m_Wrapper.m_UIActionsCallbackInterface.OnUIMovement;
+                @UIMovement.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnUIMovement;
+                @UIMovement.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnUIMovement;
+                @confirmclick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirmclick;
+                @confirmclick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirmclick;
+                @confirmclick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirmclick;
+                @backclick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnBackclick;
+                @backclick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnBackclick;
+                @backclick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnBackclick;
+            }
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @UIMovement.started += instance.OnUIMovement;
+                @UIMovement.performed += instance.OnUIMovement;
+                @UIMovement.canceled += instance.OnUIMovement;
+                @confirmclick.started += instance.OnConfirmclick;
+                @confirmclick.performed += instance.OnConfirmclick;
+                @confirmclick.canceled += instance.OnConfirmclick;
+                @backclick.started += instance.OnBackclick;
+                @backclick.performed += instance.OnBackclick;
+                @backclick.canceled += instance.OnBackclick;
+            }
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -478,5 +729,11 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         void OnGamePadRotation(InputAction.CallbackContext context);
         void OnFire1(InputAction.CallbackContext context);
         void OnFire2(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnUIMovement(InputAction.CallbackContext context);
+        void OnConfirmclick(InputAction.CallbackContext context);
+        void OnBackclick(InputAction.CallbackContext context);
     }
 }
