@@ -1,22 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using BasicTools.ButtonInspector;
 using DG.Tweening;
 using TMPro;
 
 public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
-    /*[TextArea(3,5)]
-    [SerializeField] private string text;
-    [SerializeField] private TMP_Text button_text;
-    private string debugtext;*/
     
-    [SerializeField] private GameObject m_button;
-    
-    
+    [SerializeField] private GameObject m_button_text;
+    [Space(10)]
+    [Button("Set original position", "setf_pos")]
+    [SerializeField] private bool set_pos;
+    [Space(10)]
+    [SerializeField] private float to_x;
+    [SerializeField] private float to_y;
+    private Vector3 pos;
+
     private enum Easetype
     {
         Unset = 0,
@@ -57,100 +58,61 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         InOutFlash = 35
 
     }
+    [Space(10)]
     [SerializeField] private Easetype easetype;
-    [SerializeField] private float to_x;
-    //[FormerlySerializedAs(m_button.postion)]
-    [SerializeField] private float to_y;
     [SerializeField] private float duration=1f;
     
    
 
-    /*void Awake()
+    void Awake()
     {
-        GameObject m_button;
-        button_text = GetComponent<TMP_Text>();
-        //button_text.text = text;
-        button_text.enableWordWrapping = true;
-        button_text.alignment = TextAlignmentOptions.Center;
-
-
-
-        //if (GetComponentInParent(typeof(Canvas)) as Canvas == null)
-        //{
-        //    GameObject canvas = new GameObject("Canvas", typeof(Canvas));
-        //    gameObject.transform.SetParent(canvas.transform);
-        //    canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-
-        //    // Set RectTransform Size
-        //    gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 300);
-        //    m_textMeshPro.fontSize = 48;
-        //}
-
-
-    }*/
+       
+    }
 
     void Start()
     {
-        
-        /*//button_text.ForceMeshUpdate(true);
-        button = GetComponent<TMP_Text>().transform;
-        button_text = GetComponent<TMP_Text>();
-        debugtext = GetComponent<TMP_Text>().text;
-        //button_text.text = text;
-       */
+        pos = m_button_text.transform.localPosition;
     }
-    GameObject test;
+
+    void Update()
+    {
+        Debug.Log(m_button_text.name+": \n\tX: "+pos.x +", Y: "+pos.y);
+        Debug.Log(easetype.ToString() + (int)easetype);
+    }
+
+    public void setf_pos()
+    {
+        pos = m_button_text.transform.localPosition;
+    }
     public void highlighted()
     {
-        //button_text.text = text;
-        m_button.transform.DOLocalMoveX(to_x, duration).SetEase(current_easetype(easetype));
-        //m_button.transform.DOLocalMoveY(to_y, duration).SetEase(current_easetype(easetype));
-        //button_text.transform.DOLocalMove(to_vector, duration).SetEase(current_easetype(easetype));
-        //Debug.Log("pointer enter");
-
-
+        m_button_text.transform.DOLocalMoveX(pos.x + to_x, duration).SetEase(current_easetype(easetype));
+        m_button_text.transform.DOLocalMoveY(pos.y + to_y, duration).SetEase(current_easetype(easetype));
     }
 
     public void idle()
     {
-        //button_text.text = debugtext;
-        m_button.transform.DOLocalMoveX(0, duration).SetEase(current_easetype(easetype));
-        m_button.transform.DOLocalMoveY(to_y, duration).SetEase(current_easetype(easetype));
-        //button_text.transform.DOLocalMove(-to_vector, duration).SetEase(current_easetype(easetype));
-        //Debug.Log("pointer exit"+debugtext);
-        //yield return null;
+        m_button_text.transform.DOLocalMoveX(pos.x, duration).SetEase(current_easetype(easetype));
+        m_button_text.transform.DOLocalMoveY(pos.y, duration).SetEase(current_easetype(easetype));
     }
-    // Start is called before the first frame update
-    /*IEnumerator Start()
-    {
-        
-    }*/
+
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //Debug.Log("pointerenter");
+        highlighted();
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        //Debug.Log("pointerexit");
+        idle();
     }
 
     public virtual void OnSelect(BaseEventData eventData)
     {
-        //Execute(EventTriggerType.Select, eventData);
+        highlighted();
     }
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
-        //Execute(EventTriggerType.Deselect, eventData);
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        //current_easetype = Ease.(easetype.ToString);
-        to_y = m_button.transform.localPosition.y;
-        Debug.Log(easetype.ToString()+ (int)easetype);
-        //button_text.transform.DoMove(new Vector3(10,0,0),0.5f);
-        //OnMouseEnter();
+        idle();
     }
 
     private Ease current_easetype (Easetype easetype)
