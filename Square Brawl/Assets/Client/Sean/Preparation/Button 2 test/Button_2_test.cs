@@ -76,8 +76,10 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     void Update()
     {
+        /*
         Debug.Log(m_button_text.name+": \n\tX: "+pos.x +", Y: "+pos.y);
         Debug.Log(easetype.ToString() + (int)easetype);
+        */
     }
 
     public void setf_pos()
