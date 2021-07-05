@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class TileMapEditorControl : MonoBehaviour
 {
     public SelectRangeData rangeData;
+    public CellState buildType = CellState.CELL;
     public static event Action<int> OnCellChanged;
     public bool isBuild = true;
     private bool inMouseHolding = false;
@@ -27,15 +28,16 @@ public class TileMapEditorControl : MonoBehaviour
     private Dictionary<CellState, Color> cellStateColor = new Dictionary<CellState, Color>() {
         { CellState.NONE, Color.white },
         { CellState.CELL, Color.blue },
-        { CellState.SAW, Color.blue },
-        { CellState.EMPTY, Color.blue },
+        { CellState.SAW, Color.cyan },
+        { CellState.EMPTY, Color.cyan },
     };
 
     public void Start()
     {
         InitDict();
         TileCell.OnCellMouseEnter += SetPreviewRange;
-        TileCell.OnCellMouseExit += SetPreviousId;
+        TileCell.OnCellMouseExit += ClearPreviewCell;
+        //TileCell.OnCellMouseExit += SetPreviousId;
 
         LoadMapUIControl.OnLevelFileLoaded += Load;
 
@@ -46,7 +48,8 @@ public class TileMapEditorControl : MonoBehaviour
     public void OnDestroy()
     {
         TileCell.OnCellMouseEnter -= SetPreviewRange;
-        TileCell.OnCellMouseExit -= SetPreviousId;
+        TileCell.OnCellMouseExit -= ClearPreviewCell;
+        //TileCell.OnCellMouseExit -= SetPreviousId;
 
         LoadMapUIControl.OnLevelFileLoaded -= Load;
 
@@ -82,19 +85,23 @@ public class TileMapEditorControl : MonoBehaviour
         }
 #endif
     }
+
+    public void ClearPreviewCell(int _centerGridid)
+    {
+        TileCell[] leavedCell = TileMapManager.instance.GetSelectRangeCells(rangeData, _centerGridid);
+
+        foreach (TileCell _cell in leavedCell)
+        {
+            //if (cellStateMap[_cell.grid_index] == CellState.NONE)
+            if (previewTileCells.Remove(_cell) && cellStateMap[_cell.grid_index] == CellState.NONE)
+            {
+                _cell.SetWhiteColor();
+            }
+        }
+    }
     public void SetPreviewRange(int _centerGridId)
     {
         _currentMouseHoverCellId = _centerGridId;
-
-        //temp: Clear preview color
-        for (int i = 0; i < TileMapManager.instance.gridCells.Count; i++)
-        {
-            if (cellStateMap[TileMapManager.instance.gridCells[i].grid_index] == CellState.NONE)
-            {
-                TileMapManager.instance.gridCells[i].SetWhiteColor();
-            }
-            previewTileCells.Clear();
-        }
 
         Vector2Int _centerCell = TileMapManager.instance.CellToVector2(TileMapManager.instance.gridCells[_centerGridId].transform);
 
@@ -122,6 +129,7 @@ public class TileMapEditorControl : MonoBehaviour
     {
         return cellStateMap[_index] == cellStateMap[_index2];
     }
+
     private void SetPreviousId(int _prev)
     {
         _previousMouseHoverCellId = _prev;
@@ -146,40 +154,106 @@ public class TileMapEditorControl : MonoBehaviour
         {
             return;
         }
+
         if (isBuild)
         {
-            DoSelect();
+            DoSelect(TileMapManager.instance.gridCells[_center]);
+            //DoSelect();
         }
         else
         {
             DeSelect();
         }
+        _previousMouseHoverCellId = _currentMouseHoverCellId;
     }
-    private void DoSelect()
+    private void DoSelect(TileCell _center)
     {
+        //Test if is interset another saw?
+        if (buildType != CellState.CELL && IsInterset(_center, rangeData))
+        {
+            return;
+        }
+
         for (int i = 0; i < previewTileCells.Count; i++)
         {
-            cellStateMap[previewTileCells[i].grid_index] = CellState.CELL;
-            previewTileCells[i].SetusedColor();
+            if (cellStateMap[previewTileCells[i].grid_index] == CellState.NONE)
+            {
+                if (buildType == CellState.CELL)
+                {
+                    BuildSingleCell(previewTileCells[i]);
+                }
+                else if (buildType == CellState.SAW)
+                {
 
-            OnCellChanged?.Invoke(previewTileCells[i].grid_index);
+                    TileCell cell = BuildSingleCell(previewTileCells[i]);
+                    if (cell != _center)
+                    {
+                        cellStateMap[cell.grid_index] = CellState.EMPTY;
+                    }
+                    else
+                    {
+                        cell.conboundRange.data = rangeData.data;
+                    }
+                    cell.conboundCenter = _center;
+                }
+
+                OnCellChanged?.Invoke(previewTileCells[i].grid_index);
+            }
         }
     }
+
+    private TileCell BuildSingleCell(TileCell _cell)
+    {
+        cellStateMap[_cell.grid_index] = buildType;
+        _cell.SetColor(cellStateColor[buildType]);
+        _cell.conboundCenter = _cell;
+        return _cell;
+    }
+    //private void BuildSaw(TileCell _target , TileCell _center) {}
 
     private void DeSelect()
     {
         for (int i = 0; i < previewTileCells.Count; i++)
         {
-            cellStateMap[previewTileCells[i].grid_index] = CellState.NONE;
-            previewTileCells[i].SetWhiteColor();
+            //Check if is single cell or counbound cell?  (single cell's conboundCenter = self)
+            if (previewTileCells[i].conboundCenter == previewTileCells[i])
+            {
+                cellStateMap[previewTileCells[i].grid_index] = CellState.NONE;
+                previewTileCells[i].SetWhiteColor();
+                
+                OnCellChanged?.Invoke(previewTileCells[i].grid_index);
+            }
+            else if (previewTileCells[i].conboundCenter != null)
+            {
+                //Find the center, and clear cells around it.
+                TileCell _conboundCenter = previewTileCells[i].conboundCenter;
+                TileCell[] _conboundCells = TileMapManager.instance.GetSelectRangeCells(_conboundCenter.conboundRange, _conboundCenter.grid_index);
 
-            OnCellChanged?.Invoke(previewTileCells[i].grid_index);
+                foreach (TileCell _cell in _conboundCells)
+                {
+                    if (_cell == null) { continue; }
+
+                    cellStateMap[_cell.grid_index] = CellState.NONE;
+                    _cell.SetColor(cellStateColor[CellState.NONE]);
+                    previewTileCells.Remove(_cell);
+
+                    OnCellChanged?.Invoke(_cell.grid_index);
+                }
+            }
+
         }
     }
 
-    public void SetIsBuilding(bool _isBuild)
+    private bool IsInterset(TileCell _center, SelectRangeData _range)
     {
-        isBuild = _isBuild;
+        foreach (TileCell _cell in TileMapManager.instance.GetSelectRangeCells(_range, _center.grid_index))
+        {
+            if (_cell != null && cellStateMap[_cell.grid_index] != CellState.NONE)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void SetUpMapData(MapData _data)
@@ -213,6 +287,29 @@ public class TileMapEditorControl : MonoBehaviour
 
         //Load to map
         SetUpMapData(mapData);
+    }
+
+    /*BUTTON FUNCTION*/
+    public void SetIsBuilding(bool _isBuild)
+    {
+        isBuild = _isBuild;
+    }
+
+    public void SetBuildCell()
+    {
+        SetBuildType(CellState.CELL);
+    }
+    public void SetBuildSaw()
+    {
+        SetBuildType(CellState.SAW);
+    }
+    public void SetBuildEmpty()
+    {
+        SetBuildType(CellState.EMPTY);
+    }
+    public void SetBuildType(CellState _state)
+    {
+        buildType = _state;
     }
 }
 

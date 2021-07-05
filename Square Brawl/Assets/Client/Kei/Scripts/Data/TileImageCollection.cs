@@ -25,17 +25,17 @@ public class TileImageCollection : ScriptableObject
     }
     private static List<TileImage> tileImages = new List<TileImage>()
     {
-        { new TileImage("Fill",0,5,160,32,4,1,36,129,161,37,128,33,164) },
+        { new TileImage("Fill",0,5,160,32,4,1,36,129,161,37,128,33,164,132,133,165) },
 
-        { new TileImage("Three Sides -0",64,224,192,68,96,100,229,65,69,169,97,196,193,225,228,197) },
-        { new TileImage("Three Sides -90",8,41,12,44,137,9,168,136,172,13,40,141,45,140) },
-        { new TileImage("Three Sides -180",2,7,34,3,38,6,131,134,35,39,130,135,163 , 167) },
+        { new TileImage("Three Sides -0",64,224,192,68,96,100,229,65,69,169,97,196,193,225,228,197,101) },
+        { new TileImage("Three Sides -90",8,41,12,44,137,9,168,136,172,13,40,141,45,140,173) },
+        { new TileImage("Three Sides -180",2,7,34,3,38,6,131,134,35,39,130,135,163,162,166 , 167) },
         { new TileImage("Three Sides -270",16,148,48,17,145,176,144,52,20,177,49,149,53,21,181,180) },
 
-        { new TileImage("Two Sides and One Corner -0",72,73,201,200,77,205,204) },
+        { new TileImage("Two Sides and One Corner -0",72,73,201,200,77,205,204,76) },
         { new TileImage("Two Sides and One Corner -90",10,42,14,142,46,138,170,174) },
-        { new TileImage("Two Sides and One Corner -180",18,146,147,19,51,50,179) },
-        { new TileImage("Two Sides and One Corner -270",80,84,112,117,113,85,116) },
+        { new TileImage("Two Sides and One Corner -180",18,146,147,19,51,50,179,178) },
+        { new TileImage("Two Sides and One Corner -270",80,84,112,117,113,85,116,81) },
 
         { new TileImage("Two Adjacent Sides -0",104,232,233,105,236,109,108,237) },
         { new TileImage("Two Adjacent Sides -90",11,43,47,15,143,175,171,139) },
@@ -108,22 +108,6 @@ public class TileImageCollection : ScriptableObject
             Debug.Log("<color=red>tile image not found " + _index + "</color>");
             return (dataMap[255]);
         }
-
-        /*
-        TileImage _image = tileImages.Find(x => x.indexs.Contains(_index));
-        if (_image != null)
-        {
-            Debug.Log("tile image found " + _index + "  " + _image.name);
-            return _image.sprite;
-        }
-        else
-        {
-            Debug.Log("<color=red>tile image not found " + "</color>");
-            //return null;
-            //return fill
-            return tileImages.Find(x => x.indexs.Contains(0)).sprite;
-        }
-        */
     }
 
 }
@@ -131,7 +115,6 @@ public class TileImageCollection : ScriptableObject
 [System.Serializable]
 public class TileImage
 {
-    //[ReadOnly]
     public string name;
     public List<int> indexs;
     public Sprite sprite;

@@ -9,7 +9,10 @@ public class TileCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public int grid_index;
     [HideInInspector]
     public SpriteRenderer spriteRenderer;
-    public Color onHoverColor, onSelectColor, rangeHintColor;
+    //[HideInInspector]
+    public TileCell conboundCenter;
+    public SelectRangeData conboundRange;
+    //public Color onHoverColor, onSelectColor, rangeHintColor;
 
     //public static event Action<int> OnCellHover;
     public static event Action<int> OnCellMouseEnter;
@@ -53,7 +56,7 @@ public class TileCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void SetHoverColor()
     {
 
-        spriteRenderer.color = onHoverColor;
+        spriteRenderer.color = Color.red;
     }
     public void SetWhiteColor()
     {
@@ -71,7 +74,7 @@ public class TileCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
 }
-
+[System.Serializable]
 public enum CellState
 {
     NONE = 0,
@@ -79,28 +82,4 @@ public enum CellState
     SAW = 2,
     EMPTY = 3
 }
-public enum CellOrientation
-{
-    TOP_LEFT = 0,
-    TOP_MIDDLE = 1,
-    TOP_RIGHT = 2,
-
-    MIDDLE_LEFT = 3,
-    MIDDLE_FILL = 4,
-    MIDDLE_RIGHT = 5,
-
-    BOTTOM_LEFT = 6,
-    BOTTOM_MIDDLE = 7,
-    BOTTOM_RIGHT = 8,
-
-    SINGLE = 9,
-
-    SINGLE_LEFT = 10,
-    SINGLE_MIDDLE = 11,
-    SINGLE_RIGHT = 12,
-    SINGLE_TOP = 13,
-    SINGLE_BOTTOM = 14,
-    SINGLE_BRIDGE = 15,
-}
-
 
