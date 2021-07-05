@@ -283,8 +283,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e82092aac93c214b9f9d51f20c78096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ability: {fileID: 11400000, guid: 5a978b1f581c0234d86759abff1dde2a, type: 2}
   isSkill01: 0
+  ability: {fileID: 11400000, guid: 5a978b1f581c0234d86759abff1dde2a, type: 2}
 --- !u!114 &5027208668263305897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,8 +373,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e82092aac93c214b9f9d51f20c78096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ability: {fileID: 11400000, guid: bdb3e33ac269f114d85bf77bd9ed9ff1, type: 2}
   isSkill01: 1
+  ability: {fileID: 11400000, guid: bdb3e33ac269f114d85bf77bd9ed9ff1, type: 2}
 --- !u!114 &5027208668654856541
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class ShootAbility : Ability
     public bool IsDontContinuous;
     public bool IsDontShootStraight;
 
-    private ShootTriggerable _shoot;
+    public ShootTriggerable _shoot;
 
     public override void Initalize(GameObject _obj)
     {

@@ -6,7 +6,6 @@ using System.IO;
 
 public class ObjectsPool : MonoBehaviour
 {
-    public Transform Clone;
     [System.Serializable]
     public class Pool
     {
@@ -19,23 +18,33 @@ public class ObjectsPool : MonoBehaviour
 
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionary;
-
+    public PhotonView _pv;
     void Awake()
     {
         Instance = this;
+
+        _pv=GetComponent<PhotonView>();
 
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
 
         foreach (Pool pool in pools)
         {
+            if (!_pv.IsMine)
+            {
+                return;
+            }
+
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
             for (int i = 0; i < pool.size; i++)
             {
-                GameObject obj = Instantiate(pool.prefab, Clone);
-                obj.transform.parent = transform;
-                obj.SetActive(false);
+                //GameObject obj = Instantiate(pool.prefab, transform);
+                
+                GameObject obj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bullet"), new Vector3(15,0,0), Quaternion.identity);
                 objectPool.Enqueue(obj);
+                
+                //obj.transform.parent = transform;
+                //obj.SetActive(false);
             }
 
             poolDictionary.Add(pool.tag, objectPool);
@@ -44,6 +53,11 @@ public class ObjectsPool : MonoBehaviour
 
     public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation,Transform transform)
     {
+        if (!_pv.IsMine)
+        {
+            return null;
+        }
+
         if (!poolDictionary.ContainsKey(tag))
         {
             Debug.LogWarning("pool with tag");
@@ -52,7 +66,7 @@ public class ObjectsPool : MonoBehaviour
 
         GameObject objectToSpawn = poolDictionary[tag].Dequeue();
 
-        objectToSpawn.SetActive(true);
+        //objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
         objectToSpawn.transform.parent = transform;
@@ -68,6 +82,4 @@ public class ObjectsPool : MonoBehaviour
 
         return objectToSpawn;
     }
-
-
 }

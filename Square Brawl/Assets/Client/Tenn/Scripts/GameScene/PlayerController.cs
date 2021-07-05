@@ -80,20 +80,19 @@ public class PlayerController : MonoBehaviour
             _inputAction.Player.MouseRotation.performed += ctx => MouseSpin(ctx.ReadValue<Vector2>());
             _inputAction.Player.GamePadRotation.performed += ctx => GamePadSpin(ctx.ReadValue<Vector2>());
         }
-
-        _canSpin = true;
-        
-        if (!_pv.IsMine)
+        else
         {
             Destroy(_rigidbody2D);
         }
+
+        _canSpin = true;
     }
 
     void Update()
     {
         if (!_pv.IsMine) 
         {
-            return;
+           return;
         }
 
         GroundCheckEvent();//Is Grounding?
@@ -191,12 +190,12 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerRecoil(float _shootRecoil)
     {
-        if (!_pv.IsMine)
-        {
-            return;
-        }
+       // if (!_pv.IsMine)
+      //  {
+      //     return;
+      //  }
         float x = Mathf.Cos(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
-        float y = Mathf.Sin(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180) ;
+        float y = Mathf.Sin(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
 
         _rigidbody2D.AddForce(-_shootRecoil * new Vector2(x, y));
     }
@@ -239,9 +238,19 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Bullet"))
         {
-            if (other.gameObject.GetComponent<PhotonView>().IsMine == false)
+            Bullet _bullet = other.gameObject.GetComponent<Bullet>();
+            if (!_bullet._pv.IsMine)
             {
-                TakeDamage(other.gameObject.GetComponent<Bullet>().ShootDamage);
+                if (_pv.IsMine)
+                {
+                    _bullet._pv.RPC("DisableObj", RpcTarget.All);
+                    float x = Mathf.Cos(other.gameObject.transform.eulerAngles.z * Mathf.PI / 180);
+                    float y = Mathf.Sin(other.gameObject.transform.eulerAngles.z * Mathf.PI / 180);
+                    _rigidbody2D.AddForce(other.gameObject.GetComponent<Bullet>().BeShootElasticity * new Vector2(x, y));
+                    TakeDamage(other.gameObject.GetComponent<Bullet>().ShootDamage);
+                   // _bullet._pv.RPC("DisableObj", RpcTarget.All);
+                }
+                //other.gameObject.SetActive(false);
             }
         }
     }
@@ -254,10 +263,6 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     void Rpc_TakeDamage(float _damage)
     {
-        if (!_pv.IsMine)
-        {
-            return;
-        }
         PlayerHp -= _damage;
         if (PlayerHp <= 0)
         {

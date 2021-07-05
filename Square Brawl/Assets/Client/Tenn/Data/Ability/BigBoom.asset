@@ -14,10 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: BigBoom
   Sound: {fileID: 0}
-  ActiveTime: 0
   CoolDownTime: 2
+  isCdCanAdd: 0
+  isHaveTwoCd: 0
   ShootDamage: 50
   ShootSpeed: 7
   ShootRecoil: 150
-  BeShootElasticity: 0
+  BeShootElasticity: 1500
   BulletScaleValue: 0.2
+  IsDontContinuous: 0
+  IsDontShootStraight: 0
+  _shoot: {fileID: 0}

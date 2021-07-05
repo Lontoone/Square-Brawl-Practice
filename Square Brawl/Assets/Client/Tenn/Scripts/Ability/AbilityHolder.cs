@@ -45,19 +45,22 @@ public class AbilityHolder : MonoBehaviour
 
     private void Start()
     {
-        ability.Initalize(gameObject);
-
-        _activeTime = ability.CoolDownTime;
-
-        if (isSkill01)
+        if (_pv.IsMine)
         {
-            _inputAction.Player.Fire1.performed += _ => PlayerFire1Down();
-            _inputAction.Player.Fire1.canceled += _ => PlayerFire1Up();
-        }
-        else
-        {
-            _inputAction.Player.Fire2.performed += _ => PlayerFire2Down();
-            _inputAction.Player.Fire2.canceled += _ => PlayerFire2Up();
+            ability.Initalize(gameObject);
+
+            _activeTime = ability.CoolDownTime;
+
+            if (isSkill01)
+            {
+                _inputAction.Player.Fire1.performed += _ => PlayerFire1Down();
+                _inputAction.Player.Fire1.canceled += _ => PlayerFire1Up();
+            }
+            else
+            {
+                _inputAction.Player.Fire2.performed += _ => PlayerFire2Down();
+                _inputAction.Player.Fire2.canceled += _ => PlayerFire2Up();
+            }
         }
     }
 

@@ -126,6 +126,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShootSpeed: 0
+  ShootDamage: 0
+  BeShootElasticity: 0
+  BulletScaleValue: 0
+  _OriginSpeed: 0
+  IsDontShootStraight: 0
   ExploseEffectObj: {fileID: 1753829585539416712, guid: 973c7741567174141a5a3a8b93d80f93, type: 3}
 --- !u!114 &2692789842222703818
 MonoBehaviour:

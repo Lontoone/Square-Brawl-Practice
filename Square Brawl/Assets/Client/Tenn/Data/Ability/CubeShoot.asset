@@ -20,7 +20,8 @@ MonoBehaviour:
   ShootDamage: 20
   ShootSpeed: 10
   ShootRecoil: 70
-  BeShootElasticity: 0
+  BeShootElasticity: 100
   BulletScaleValue: 0.2
   IsDontContinuous: 0
   IsDontShootStraight: 1
+  _shoot: {fileID: 0}
