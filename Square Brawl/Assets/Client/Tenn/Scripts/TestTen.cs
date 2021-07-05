@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class TestTen : MonoBehaviour
 {
     private PlayerInputManager _inputAction;
     public Rigidbody2D _rb;
