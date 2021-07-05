@@ -88,12 +88,14 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     public void highlighted()
     {
-        m_button_text.transform.DOLocalMoveX(pos.x + to_x, duration).SetEase(current_easetype(easetype));
-        m_button_text.transform.DOLocalMoveY(pos.y + to_y, duration).SetEase(current_easetype(easetype));
+        DOTween.To(()=> m_button_text.transform.localPosition, x=>m_button_text.transform.localPosition = x,new Vector3(pos.x + to_x, pos.y + to_y),duration); //lambda
+        //m_button_text.transform.DOLocalMoveX(pos.x + to_x, duration).SetEase(current_easetype(easetype));
+        //m_button_text.transform.DOLocalMoveY(pos.y + to_y, duration).SetEase(current_easetype(easetype));
     }
 
     public void idle()
     {
+        //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x*5, pos.y + to_y*5), duration*5);
         m_button_text.transform.DOLocalMoveX(pos.x, duration).SetEase(current_easetype(easetype));
         m_button_text.transform.DOLocalMoveY(pos.y, duration).SetEase(current_easetype(easetype));
     }

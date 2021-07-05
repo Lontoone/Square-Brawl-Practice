@@ -714,13 +714,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4906136465232805579, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_characterSpacing
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 8549213684443351076, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_Name
       value: Button test
       objectReference: {fileID: 0}
     - target: {fileID: 8549213684443351077, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: to_x
-      value: 250
+      value: 310
       objectReference: {fileID: 0}
     - target: {fileID: 8549213684443351077, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: duration
@@ -743,8 +747,12 @@ PrefabInstance:
       value: 240
       objectReference: {fileID: 0}
     - target: {fileID: 9069586901810637336, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 9069586901810637336, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -240
+      value: -300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
