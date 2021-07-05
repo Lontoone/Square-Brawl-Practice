@@ -16,7 +16,7 @@ public class Mousepos : MonoBehaviour
     void Update()
     {
         pos = Camera.main.ScreenToViewportPoint(Mouse.current.position.ReadValue());
-        Debug.Log(pos);
+        //Debug.Log(pos);
         m_mouse.transform.position =new Vector3(pos.x*Screen.width , pos.y*Screen.height,0);
     }
 }
