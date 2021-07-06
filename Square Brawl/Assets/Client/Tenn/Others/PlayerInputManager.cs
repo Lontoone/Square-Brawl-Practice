@@ -476,6 +476,17 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""e80d6aac-20a8-4a34-95dd-61debdc7a208"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""confirm click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c4935acb-98b5-4af0-868a-fa415f0b612f"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",

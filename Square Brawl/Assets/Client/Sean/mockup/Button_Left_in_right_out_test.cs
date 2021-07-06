@@ -62,6 +62,7 @@ public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler
     [Space(10)]
     [SerializeField] private Easetype easetype;
     [SerializeField] private float duration = 1f;
+    [SerializeField] private float m_outdistance = 5;
     private Coroutine _c_idle;
     private Sequence _moveSequence;
 
@@ -76,7 +77,7 @@ public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler
     void Start()
     {
         pos = m_button_text.transform.localPosition;
-        Debug.Log("pos"+pos);
+        //Debug.Log("pos"+pos);
     }
    
     public void setf_pos()
@@ -99,7 +100,7 @@ public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler
         _moveSequence = DOTween.Sequence();
         m_button_text.transform.localPosition = new Vector3(pos.x + to_x, pos.y + to_y, pos.z);
         _moveSequence.Append(
-                m_button_text.transform.DOLocalMove(new Vector3(pos.x + to_x * 3, pos.y + to_y * 3), duration).SetEase(current_easetype(easetype))
+                m_button_text.transform.DOLocalMove(new Vector3(pos.x + to_x * m_outdistance, pos.y + to_y * m_outdistance), duration * m_outdistance).SetEase(current_easetype(easetype))
             ); ;
     }
 
