@@ -61,17 +61,13 @@ public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler
     }
     [Space(10)]
     [SerializeField] private Easetype easetype;
-<<<<<<< HEAD:Square Brawl/Assets/Client/Sean/Preparation/Button 2 test/Button_2_test.cs
     [SerializeField] private float duration = 1f;
 
     private Coroutine _c_idle;
     private Sequence _moveSequence;
-=======
-    [SerializeField] private float duration=1f;
     
    
 
->>>>>>> 0f8741b (button dotween amend):Square Brawl/Assets/Client/Sean/Preparation/Button 2 test/Button_Left_in_right_out_test.cs
     void Awake()
     {
        
@@ -90,7 +86,6 @@ public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler
     public void highlighted()
     {
         Debug.Log("m_button_text.transform.position" + m_button_text.transform.position);
-<<<<<<< HEAD:Square Brawl/Assets/Client/Sean/Preparation/Button 2 test/Button_2_test.cs
         //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x, pos.y + to_y), duration); //lambda
         _moveSequence.Kill();
         _moveSequence = DOTween.Sequence();
@@ -98,16 +93,13 @@ public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler
         _moveSequence.Append(
                m_button_text.transform.DOLocalMoveX(pos.x + to_x, duration).SetEase(current_easetype(easetype))
            ); ;
-=======
         DOTween.To(()=> m_button_text.transform.localPosition, x=>m_button_text.transform.localPosition = x,new Vector3(pos.x + to_x, pos.y + to_y),duration).SetEase(current_easetype(easetype)); //lambda
         //m_button_text.transform.DOLocalMoveX(pos.x + to_x, duration).SetEase(current_easetype(easetype));
         //m_button_text.transform.DOLocalMoveY(pos.y + to_y, duration).SetEase(current_easetype(easetype));
->>>>>>> 0f8741b (button dotween amend):Square Brawl/Assets/Client/Sean/Preparation/Button 2 test/Button_Left_in_right_out_test.cs
     }
 
     public IEnumerator idle()
     {
-<<<<<<< HEAD:Square Brawl/Assets/Client/Sean/Preparation/Button 2 test/Button_2_test.cs
         //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x, pos.y), duration);
         //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x * 5, pos.y + to_y * 5), duration);
         _moveSequence.Kill();
@@ -119,15 +111,12 @@ public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler
 
         yield return new WaitForSeconds(duration * 2);
         m_button_text.transform.localPosition = pos;
-=======
         //Debug.Log("inidle");
         DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x, pos.y), duration).SetEase(current_easetype(easetype));
         //m_button_text.transform.DOLocalMoveX(pos.x, duration).SetEase(current_easetype(easetype));
         //m_button_text.transform.DOLocalMoveY(pos.y, duration).SetEase(current_easetype(easetype));
         
         yield return new WaitForSeconds(duration*2);
->>>>>>> 0f8741b (button dotween amend):Square Brawl/Assets/Client/Sean/Preparation/Button 2 test/Button_Left_in_right_out_test.cs
-
         m_button_text.transform.localPosition = pos;
     }
 
