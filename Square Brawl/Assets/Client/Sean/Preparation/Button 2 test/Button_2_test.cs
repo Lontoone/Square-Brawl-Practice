@@ -9,7 +9,7 @@ using TMPro;
 
 public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
-    
+
     [SerializeField] private GameObject m_button_text;
     [Space(10)]
     [Button("Set original position", "setf_pos")]
@@ -61,19 +61,19 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     [Space(10)]
     [SerializeField] private Easetype easetype;
-    [SerializeField] private float duration=1f;
-    
-   
+    [SerializeField] private float duration = 1f;
+
+    private Coroutine _c_idle;
 
     void Awake()
     {
-       
+
     }
 
     void Start()
     {
         pos = m_button_text.transform.localPosition;
-        Debug.Log("pos"+pos);
+        Debug.Log("pos" + pos);
     }
 
     void Update()
@@ -91,15 +91,17 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void highlighted()
     {
         Debug.Log("m_button_text.transform.position" + m_button_text.transform.position);
-        DOTween.To(()=> m_button_text.transform.localPosition, x=>m_button_text.transform.localPosition = x,new Vector3(pos.x + to_x, pos.y + to_y),duration); //lambda
+        DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x, pos.y + to_y), duration); //lambda
     }
 
     public IEnumerator idle()
     {
         //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x, pos.y), duration);
         DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x * 5, pos.y + to_y * 5), duration);
-        yield return new WaitForSeconds(duration*2);
+        yield return new WaitForSeconds(duration * 2);
         m_button_text.transform.localPosition = pos;
+
+        _c_idle = null;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -108,7 +110,10 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        StartCoroutine(idle());
+        if (_c_idle == null)
+        {
+            _c_idle = StartCoroutine(idle());
+        }
     }
 
     public virtual void OnSelect(BaseEventData eventData)
@@ -121,14 +126,14 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         idle();
     }
 
-    private Ease current_easetype (Easetype easetype)
+    private Ease current_easetype(Easetype easetype)
     {
         switch (easetype)
         {
             case Easetype.Unset:
                 return Ease.Unset;
 
-            case Easetype.Linear :
+            case Easetype.Linear:
                 return Ease.Linear;
 
             case Easetype.InSine:
