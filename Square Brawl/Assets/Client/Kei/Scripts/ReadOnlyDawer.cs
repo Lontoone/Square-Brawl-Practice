@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -34,4 +35,4 @@ public class Test
     [ReadOnly] public int b;
     [ReadOnly] public Material c;
     [ReadOnly] public List<int> d = new List<int>();
-}
+}*/

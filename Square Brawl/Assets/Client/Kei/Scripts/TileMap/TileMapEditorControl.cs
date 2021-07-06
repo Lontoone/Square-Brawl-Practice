@@ -142,12 +142,6 @@ public class TileMapEditorControl : MonoBehaviour
         }
     }
 
-    public void SetSelectRange(TextAsset _selectRangeData)
-    {
-        rangeData.data = _selectRangeData;
-        rangeData.ReadData();
-    }
-
     public void Select(int _center)
     {
         if (_currentMouseHoverCellId == _previousMouseHoverCellId)
@@ -168,7 +162,7 @@ public class TileMapEditorControl : MonoBehaviour
     }
     private void DoSelect(TileCell _center)
     {
-        //Test if is interset another saw?
+        //Test if is interset another cell?
         if (buildType != CellState.CELL && IsInterset(_center, rangeData))
         {
             return;
@@ -290,6 +284,12 @@ public class TileMapEditorControl : MonoBehaviour
     }
 
     /*BUTTON FUNCTION*/
+    public void SetSelectRange(TextAsset _selectRangeData)
+    {
+        rangeData.data = _selectRangeData;
+        rangeData.ReadData();
+    }
+
     public void SetIsBuilding(bool _isBuild)
     {
         isBuild = _isBuild;
