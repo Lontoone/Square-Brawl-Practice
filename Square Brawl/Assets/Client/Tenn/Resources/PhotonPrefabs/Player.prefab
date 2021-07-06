@@ -192,15 +192,14 @@ MonoBehaviour:
   JumpForce: 750
   FlyForce: 7
   DownForce: 20
-  SpinForce: -30
+  SpinForce: -20
   SpinInGroundForce: -5
   Damage: 0
   PlayerHp: 100
+  _inputPos: {x: 0, y: 0}
   FootOffset: 0
   GroundDistance: 0.45
   PlayerWidth: 0
-  _isGround: 0
-  _isWall: 0
   GroundLayer:
     serializedVersion: 2
     m_Bits: 256

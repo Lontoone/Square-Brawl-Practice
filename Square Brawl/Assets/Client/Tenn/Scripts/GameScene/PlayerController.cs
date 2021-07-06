@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public float SpinInGroundForce;//Player Spin In Ground Force
     public float Damage;
     public float PlayerHp;
-    private Vector2 _inputPos;//Keyboard Input Pos
+    public Vector2 _inputPos;//Keyboard Input Pos
 
     private bool _canSpin;//Player Can Spin?
 
@@ -25,9 +25,11 @@ public class PlayerController : MonoBehaviour
     public float FootOffset;
     public float GroundDistance;
     public float PlayerWidth;
-    
-    public bool _isGround;//Player Is Ground?
-    public bool _isWall;//Player Is Wall?
+
+    private bool _isGround;//Player Is Ground?
+    private bool _isWall;//Player Is Wall?
+    private bool _isJump;//Player Is Jump?
+    private bool _isCheckSpin;//Is Check Spin?
 
     public LayerMask GroundLayer;
 
@@ -75,7 +77,8 @@ public class PlayerController : MonoBehaviour
             ShootSpinMidPos = _shootObj.transform;
             ShootDir = _shootObj.transform.GetChild(0);
 
-            _inputAction.Player.Jump.performed += _ => PlayerJump();
+            _inputAction.Player.Jump.performed += _ => PlayerJumpDown();
+            _inputAction.Player.Jump.canceled += _ => PlayerJumpUp();
             _inputAction.Player.Movement.performed += ctx => GetMovementValue(ctx.ReadValue<Vector2>());
             _inputAction.Player.MouseRotation.performed += ctx => MouseSpin(ctx.ReadValue<Vector2>());
             _inputAction.Player.GamePadRotation.performed += ctx => GamePadSpin(ctx.ReadValue<Vector2>());
@@ -114,7 +117,7 @@ public class PlayerController : MonoBehaviour
         //Player Move
         _rigidbody2D.AddForce(MoveSpeed * new Vector2(_inputPos.x, 0)) ;
 
-        if (_inputPos.y > 0)//Player Fly
+        if (_inputPos.y > 0&&!_isWall&&!_isGround)//Player Fly
         {
             _rigidbody2D.AddForce(FlyForce * new Vector2(0,_inputPos.y));
         }
@@ -122,11 +125,50 @@ public class PlayerController : MonoBehaviour
         {
             _rigidbody2D.AddForce(DownForce * new Vector2(0, _inputPos.y));
         }
+
+        if ((_isGround || _isWall)&&_isJump)
+        {
+            _rigidbody2D.AddForce(JumpForce * Vector3.up);
+            StartCoroutine(IsJumpRecover());
+        }
+    }
+
+    IEnumerator IsJumpRecover()
+    {
+        _isJump = false;
+        yield return new WaitForSeconds(0.3f);
+        _isJump = true ;
     }
 
     void GetMovementValue(Vector2 diretion)
     {
         Vector2 _inputMovement = diretion;
+        if (_inputMovement.x > 0.5)
+        {
+            _inputMovement.x = 1;
+        }
+        else if(_inputMovement.x < -0.5)
+        {
+            _inputMovement.x = -1;
+        }
+        else
+        {
+            _inputMovement.x = 0;
+        }
+
+        if (_inputMovement.y > 0.5)
+        {
+            _inputMovement.y = 1;
+        }
+        else if (_inputMovement.y < -0.5)
+        {
+            _inputMovement.y = -1;
+        }
+        else
+        {
+            _inputMovement.y = 0;
+        }
+
         _inputPos = new Vector2(_inputMovement.x, _inputMovement.y);
     }
 
@@ -134,7 +176,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_canSpin && _inputPos.x != 0)
         {
-            if (_inputPos.x != 0 && _inputPos.y != 0)
+            if (_inputPos.x != 0 && _isCheckSpin)
             {
                 Physics2D.maxRotationSpeed = 30;
             }
@@ -143,32 +185,40 @@ public class PlayerController : MonoBehaviour
                 Physics2D.maxRotationSpeed = 6;
             }
 
-            if (_isGround && _inputPos.y == 0)
+            if (_isGround && !_isCheckSpin)
             {
                 _rigidbody2D.AddTorque(SpinInGroundForce * _inputPos.x);
-            }
-            else if (_isGround && _inputPos.y > 0)
-            {
-                _rigidbody2D.AddTorque(SpinForce * _inputPos.x);
+                //Debug.Log("IsGround");
             }
             else if (_isWall)
             {
                 _rigidbody2D.AddTorque(SpinInGroundForce * _inputPos.x);
+                //Debug.Log("IsWall");
+            }
+            else if (_isGround && _isCheckSpin)
+            {
+                _rigidbody2D.AddTorque(SpinForce * _inputPos.x);
+                _isCheckSpin = false;
+                //Debug.Log("IsGroundJump");
             }
             else if (!_isWall&&!_isGround)
             {
                 _rigidbody2D.AddTorque(SpinForce * _inputPos.x);
+                //Debug.Log("IsNotGroundWall");
             }
             _canSpin = false;
         }
     }
 
-    private void PlayerJump()
+    private void PlayerJumpDown()
     {
-        if (_isGround||_isWall)
-        {
-            _rigidbody2D.AddForce(JumpForce * Vector3.up);
-        }
+        _isJump = _isCheckSpin = true;    
+    }
+
+    private void PlayerJumpUp()
+    {
+        _isJump = _isCheckSpin = false;
+        StopAllCoroutines();
     }
 
     void MouseSpin(Vector2 _mousePos)
@@ -181,7 +231,7 @@ public class PlayerController : MonoBehaviour
 
     void GamePadSpin(Vector2 _mousePos)
     {
-        if (_mousePos.x != 0)
+        if (_mousePos.x >= 0.3f || _mousePos.x <= -0.3f|| _mousePos.y >= 0.3f || _mousePos.y <= -0.3f)
         {
             float _angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg;
             ShootSpinMidPos.rotation = Quaternion.Euler(new Vector3(0, 0, _angle));
@@ -190,10 +240,6 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerRecoil(float _shootRecoil)
     {
-       // if (!_pv.IsMine)
-      //  {
-      //     return;
-      //  }
         float x = Mathf.Cos(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
         float y = Mathf.Sin(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
 
