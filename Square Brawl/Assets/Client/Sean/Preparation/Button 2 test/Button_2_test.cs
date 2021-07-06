@@ -92,21 +92,14 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         Debug.Log("m_button_text.transform.position" + m_button_text.transform.position);
         DOTween.To(()=> m_button_text.transform.localPosition, x=>m_button_text.transform.localPosition = x,new Vector3(pos.x + to_x, pos.y + to_y),duration); //lambda
-        //m_button_text.transform.DOLocalMoveX(pos.x + to_x, duration).SetEase(current_easetype(easetype));
-        //m_button_text.transform.DOLocalMoveY(pos.y + to_y, duration).SetEase(current_easetype(easetype));
     }
 
     public IEnumerator idle()
     {
-        Debug.Log("inidle");
-        DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x*5, pos.y + to_y*5), duration);
-        //m_button_text.transform.DOLocalMoveX(pos.x, duration).SetEase(current_easetype(easetype));
-        //m_button_text.transform.DOLocalMoveY(pos.y, duration).SetEase(current_easetype(easetype));
-        
+        //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x, pos.y), duration);
+        DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x * 5, pos.y + to_y * 5), duration);
         yield return new WaitForSeconds(duration*2);
-        Debug.Log("duration"+duration*2);
-        m_button_text.transform.position = pos;
-        Debug.Log("m_button_text.transform.position" + m_button_text.transform.position);
+        m_button_text.transform.localPosition = pos;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -115,9 +108,7 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("pointerexit");
         StartCoroutine(idle());
-        Debug.Log("outidle");
     }
 
     public virtual void OnSelect(BaseEventData eventData)
