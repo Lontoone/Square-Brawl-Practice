@@ -64,7 +64,7 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private float duration = 1f;
 
     private Coroutine _c_idle;
-
+    private Sequence _moveSequence;
     void Awake()
     {
 
@@ -75,15 +75,7 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         pos = m_button_text.transform.localPosition;
         Debug.Log("pos" + pos);
     }
-
-    void Update()
-    {
-        /*
-        Debug.Log(m_button_text.name+": \n\tX: "+pos.x +", Y: "+pos.y);
-        Debug.Log(easetype.ToString() + (int)easetype);
-        */
-    }
-
+   
     public void setf_pos()
     {
         pos = m_button_text.transform.localPosition;
@@ -91,13 +83,26 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void highlighted()
     {
         Debug.Log("m_button_text.transform.position" + m_button_text.transform.position);
-        DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x, pos.y + to_y), duration); //lambda
+        //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x, pos.y + to_y), duration); //lambda
+        _moveSequence.Kill();
+        _moveSequence = DOTween.Sequence();
+        m_button_text.transform.localPosition = pos;
+        _moveSequence.Append(
+               m_button_text.transform.DOLocalMoveX(pos.x + to_x, duration).SetEase(current_easetype(easetype))
+           ); ;
     }
 
     public IEnumerator idle()
     {
         //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x, pos.y), duration);
-        DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x * 5, pos.y + to_y * 5), duration);
+        //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x * 5, pos.y + to_y * 5), duration);
+        _moveSequence.Kill();
+        _moveSequence = DOTween.Sequence();
+         m_button_text.transform.localPosition = new Vector3(pos.x + to_x, pos.y, pos.z);
+        _moveSequence.Append(
+                m_button_text.transform.DOLocalMoveX(pos.x + to_x * 5, duration).SetEase(current_easetype(easetype))
+            ); ;
+
         yield return new WaitForSeconds(duration * 2);
         m_button_text.transform.localPosition = pos;
 
