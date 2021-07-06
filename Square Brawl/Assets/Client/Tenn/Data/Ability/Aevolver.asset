@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Aevolver
   Sound: {fileID: 0}
-  CoolDownTime: 0.5
+  CoolDownTime: 0.3
   isCdCanAdd: 0
   isHaveTwoCd: 1
   ShootDamage: 25

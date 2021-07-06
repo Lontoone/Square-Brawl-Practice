@@ -10,13 +10,20 @@ public class Bullet : MonoBehaviour, IPoolObject
     public float BeShootElasticity;
     public float BulletScaleValue;
     public float _OriginSpeed;
+    public Vector3 Pos;
     public bool IsDontShootStraight;
+
+    public NetWorkPlayer netWork;
 
     public GameObject ExploseEffectObj;
 
+    private Rigidbody2D _rb;
+
     public PhotonView _pv;
+    bool isTest;
     void Start()
     {
+        _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
         if (_pv.IsMine)
         {
@@ -34,14 +41,9 @@ public class Bullet : MonoBehaviour, IPoolObject
 
     void Update()
     {
-        if (!_pv.IsMine)
+        if(_OriginSpeed != ShootSpeed&& _pv.IsMine)
         {
-            return;
-        }
-
-        if(_OriginSpeed != ShootSpeed)
-        {
-            _pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue , transform.position , transform.rotation , IsDontShootStraight, BeShootElasticity);
+            _pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight, transform.position);
             if (IsDontShootStraight)
             {
                 transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-10, 11));
@@ -49,7 +51,12 @@ public class Bullet : MonoBehaviour, IPoolObject
             _OriginSpeed = ShootSpeed;
         }
 
-        transform.Translate(Vector2.right * ShootSpeed * Time.deltaTime);
+        //transform.Translate(Vector2.right * ShootSpeed * Time.deltaTime);
+    }
+
+    void FixedUpdate()
+    {
+        _rb.velocity = transform.right * ShootSpeed;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -63,10 +70,9 @@ public class Bullet : MonoBehaviour, IPoolObject
         }
     }
     [PunRPC]
-    public void SetStatus(float _speed, float _damage, float _scaleValue , Vector3 _position , Quaternion _rotation ,bool IsDontShoot,float _elasticity)
+    public void SetStatus(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot,Vector3 _Pos)
     {
-        transform.position = _position;
-        transform.rotation = _rotation;
+        Pos = _Pos;
         ShootSpeed = _speed;
         ShootDamage = _damage;
         BulletScaleValue = _scaleValue;

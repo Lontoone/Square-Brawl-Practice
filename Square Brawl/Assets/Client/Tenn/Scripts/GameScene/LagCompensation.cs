@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class NetWorkPlayer : MonoBehaviour, IPunObservable
+public class LagCompensation : MonoBehaviour, IPunObservable
 {
     private PhotonView _pv;
 
@@ -15,8 +15,6 @@ public class NetWorkPlayer : MonoBehaviour, IPunObservable
     double lastPacketTime = 0;
     public Vector3 positionAtLastPacket = Vector3.zero;
     public Quaternion rotationAtLastPacket = Quaternion.identity;
-    public Bullet bullet;
-    public bool isTest;
     void Start()
     {
         _pv = GetComponent<PhotonView>();
@@ -27,16 +25,13 @@ public class NetWorkPlayer : MonoBehaviour, IPunObservable
     {
         if (!_pv.IsMine)
         {
-            if(isTest)
-            {
-                //Lag compensation
-                double timeToReachGoal = currentPacketTime - lastPacketTime;
-                currentTime += Time.deltaTime;
+            //Lag compensation
+            double timeToReachGoal = currentPacketTime - lastPacketTime;
+            currentTime += Time.deltaTime;
 
-                //Update remote player
-                transform.position = Vector3.Lerp(positionAtLastPacket, latestPos, (float)(currentTime / timeToReachGoal));
-                transform.rotation = Quaternion.Lerp(rotationAtLastPacket, latestRot, (float)(currentTime / timeToReachGoal));
-            }
+            //Update remote player
+            transform.position = Vector3.Lerp(positionAtLastPacket, latestPos, (float)(currentTime / timeToReachGoal));
+            transform.rotation = Quaternion.Lerp(rotationAtLastPacket, latestRot, (float)(currentTime / timeToReachGoal));
         }
     }
 
@@ -57,15 +52,7 @@ public class NetWorkPlayer : MonoBehaviour, IPunObservable
             currentTime = 0.0f;
             lastPacketTime = currentPacketTime;
             currentPacketTime = info.SentServerTime;
-            if (!_pv.IsMine && !isTest)
-            {
-                positionAtLastPacket = bullet.Pos;
-                isTest = true;
-            }
-            else
-            {
-                positionAtLastPacket = transform.position;
-            }
+            positionAtLastPacket = transform.position;
             rotationAtLastPacket = transform.rotation;
         }
     }

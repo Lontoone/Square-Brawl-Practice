@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 2522906236797354442}
   - component: {fileID: 3816931437818426734}
   - component: {fileID: 7911123566367830646}
+  - component: {fileID: -4437623775389832098}
   m_Layer: 0
   m_Name: ShootSpinPointMid
   m_TagString: Untagged
@@ -144,11 +145,11 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 2
+  observableSearch: 0
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 7911123566367830646}
+  - {fileID: -4437623775389832098}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -159,7 +160,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2522906236797354440}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
@@ -168,3 +169,17 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &-4437623775389832098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2522906236797354440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b81812b39cb1fb44a29c68d08ba8458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionAtLastPacket: {x: 0, y: 0, z: 0}
+  rotationAtLastPacket: {x: 0, y: 0, z: 0, w: 1}

@@ -9,10 +9,16 @@ public class ShootSpuare : MonoBehaviour
 
     private PhotonView _pv;
 
+    private LagCompensation _lag;
+
     private void Start()
     {
         _pv = GetComponent<PhotonView>();
-        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        _lag = GetComponent<LagCompensation>();
+        if (_pv.IsMine)
+        {
+            target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        }
     }
     void Update()
     {

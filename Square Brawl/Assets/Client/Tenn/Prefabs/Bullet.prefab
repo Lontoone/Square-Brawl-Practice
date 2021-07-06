@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2692789842222703818}
   - component: {fileID: 377335194376747612}
   - component: {fileID: -6267399239202891930}
+  - component: {fileID: 2855389030963062836}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -130,8 +131,11 @@ MonoBehaviour:
   BeShootElasticity: 0
   BulletScaleValue: 0
   _OriginSpeed: 0
+  Pos: {x: 0, y: 0, z: 0}
   IsDontShootStraight: 0
+  netWork: {fileID: 0}
   ExploseEffectObj: {fileID: 1753829585539416712, guid: 973c7741567174141a5a3a8b93d80f93, type: 3}
+  _pv: {fileID: 0}
 --- !u!114 &2692789842222703818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,7 +151,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 2
+  observableSearch: 0
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
@@ -192,3 +196,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2855389030963062836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605878311421778680}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f05b4a02c8a994389b28e2d336e3f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionAtLastPacket: {x: 0, y: 0, z: 0}
+  rotationAtLastPacket: {x: 0, y: 0, z: 0, w: 1}
+  bullet: {fileID: 220368708551339052}
+  isTest: 0

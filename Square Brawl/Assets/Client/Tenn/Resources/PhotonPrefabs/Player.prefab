@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8409160876358866299}
   - component: {fileID: 8254836085007883891}
   - component: {fileID: 2345071304635974111}
+  - component: {fileID: 6465978218336231163}
   - component: {fileID: 1039284880012196707}
   m_Layer: 0
   m_Name: Player
@@ -152,11 +153,11 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 2
+  observableSearch: 0
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 8254836085007883891}
+  - {fileID: 6465978218336231163}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -167,7 +168,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2345071304635974106}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
@@ -207,6 +208,20 @@ MonoBehaviour:
   ShootDir: {fileID: 0}
   ShootPointObj: {fileID: 2522906236797354440, guid: c171d46b00bf04d489b5a7c55b83a931, type: 3}
   _shootObj: {fileID: 0}
+--- !u!114 &6465978218336231163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2345071304635974106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b81812b39cb1fb44a29c68d08ba8458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionAtLastPacket: {x: 0, y: 0, z: 0}
+  rotationAtLastPacket: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &1039284880012196707
 MonoBehaviour:
   m_ObjectHideFlags: 0

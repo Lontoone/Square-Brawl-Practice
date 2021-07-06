@@ -287,17 +287,13 @@ public class PlayerController : MonoBehaviour
             Bullet _bullet = other.gameObject.GetComponent<Bullet>();
             if (!_bullet._pv.IsMine)
             {
-                if (_pv.IsMine)
-                {
-                    _bullet._pv.RPC("DisableObj", RpcTarget.All);
-                    float x = Mathf.Cos(other.gameObject.transform.eulerAngles.z * Mathf.PI / 180);
-                    float y = Mathf.Sin(other.gameObject.transform.eulerAngles.z * Mathf.PI / 180);
-                    _rigidbody2D.AddForce(other.gameObject.GetComponent<Bullet>().BeShootElasticity * new Vector2(x, y));
-                    TakeDamage(other.gameObject.GetComponent<Bullet>().ShootDamage);
-                   // _bullet._pv.RPC("DisableObj", RpcTarget.All);
-                }
-                //other.gameObject.SetActive(false);
+                _bullet._pv.RPC("DisableObj", RpcTarget.All);
+                float x = Mathf.Cos(other.gameObject.transform.eulerAngles.z * Mathf.PI / 180);
+                float y = Mathf.Sin(other.gameObject.transform.eulerAngles.z * Mathf.PI / 180);
+                _rigidbody2D.AddForce(other.gameObject.GetComponent<Bullet>().BeShootElasticity * new Vector2(x, y));
+                TakeDamage(other.gameObject.GetComponent<Bullet>().ShootDamage);
             }
+            other.gameObject.SetActive(false);
         }
     }
 
