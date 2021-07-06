@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -72,6 +73,7 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     void Start()
     {
         pos = m_button_text.transform.localPosition;
+        Debug.Log("pos"+pos);
     }
 
     void Update()
@@ -88,16 +90,23 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     public void highlighted()
     {
+        Debug.Log("m_button_text.transform.position" + m_button_text.transform.position);
         DOTween.To(()=> m_button_text.transform.localPosition, x=>m_button_text.transform.localPosition = x,new Vector3(pos.x + to_x, pos.y + to_y),duration); //lambda
         //m_button_text.transform.DOLocalMoveX(pos.x + to_x, duration).SetEase(current_easetype(easetype));
         //m_button_text.transform.DOLocalMoveY(pos.y + to_y, duration).SetEase(current_easetype(easetype));
     }
 
-    public void idle()
+    public IEnumerator idle()
     {
-        //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x*5, pos.y + to_y*5), duration*5);
-        m_button_text.transform.DOLocalMoveX(pos.x, duration).SetEase(current_easetype(easetype));
-        m_button_text.transform.DOLocalMoveY(pos.y, duration).SetEase(current_easetype(easetype));
+        Debug.Log("inidle");
+        DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x*5, pos.y + to_y*5), duration);
+        //m_button_text.transform.DOLocalMoveX(pos.x, duration).SetEase(current_easetype(easetype));
+        //m_button_text.transform.DOLocalMoveY(pos.y, duration).SetEase(current_easetype(easetype));
+        
+        yield return new WaitForSeconds(duration*2);
+        Debug.Log("duration"+duration*2);
+        m_button_text.transform.position = pos;
+        Debug.Log("m_button_text.transform.position" + m_button_text.transform.position);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -106,7 +115,9 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        idle();
+        Debug.Log("pointerexit");
+        StartCoroutine(idle());
+        Debug.Log("outidle");
     }
 
     public virtual void OnSelect(BaseEventData eventData)
