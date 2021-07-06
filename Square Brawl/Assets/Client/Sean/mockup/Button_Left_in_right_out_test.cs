@@ -7,9 +7,9 @@ using BasicTools.ButtonInspector;
 using DG.Tweening;
 using TMPro;
 
-public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
-
+    
     [SerializeField] private GameObject m_button_text;
     [Space(10)]
     [Button("Set original position", "setf_pos")]
@@ -62,18 +62,21 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [Space(10)]
     [SerializeField] private Easetype easetype;
     [SerializeField] private float duration = 1f;
-
     private Coroutine _c_idle;
     private Sequence _moveSequence;
+
+    
+   
+
     void Awake()
     {
-
+       
     }
 
     void Start()
     {
         pos = m_button_text.transform.localPosition;
-        Debug.Log("pos" + pos);
+        Debug.Log("pos"+pos);
     }
    
     public void setf_pos()
@@ -82,31 +85,22 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     public void highlighted()
     {
-        Debug.Log("m_button_text.transform.position" + m_button_text.transform.position);
-        //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x, pos.y + to_y), duration); //lambda
         _moveSequence.Kill();
         _moveSequence = DOTween.Sequence();
         m_button_text.transform.localPosition = pos;
         _moveSequence.Append(
-               m_button_text.transform.DOLocalMoveX(pos.x + to_x, duration).SetEase(current_easetype(easetype))
+               m_button_text.transform.DOLocalMove(new Vector3(pos.x + to_x, pos.y + to_y), duration).SetEase(current_easetype(easetype))
            ); ;
     }
 
-    public IEnumerator idle()
+    public void idle()
     {
-        //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x, pos.y), duration);
-        //DOTween.To(() => m_button_text.transform.localPosition, x => m_button_text.transform.localPosition = x, new Vector3(pos.x + to_x * 5, pos.y + to_y * 5), duration);
         _moveSequence.Kill();
         _moveSequence = DOTween.Sequence();
-         m_button_text.transform.localPosition = new Vector3(pos.x + to_x, pos.y, pos.z);
+        m_button_text.transform.localPosition = new Vector3(pos.x + to_x, pos.y + to_y, pos.z);
         _moveSequence.Append(
-                m_button_text.transform.DOLocalMoveX(pos.x + to_x * 5, duration).SetEase(current_easetype(easetype))
+                m_button_text.transform.DOLocalMove(new Vector3(pos.x + to_x * 3, pos.y + to_y * 3), duration).SetEase(current_easetype(easetype))
             ); ;
-
-        yield return new WaitForSeconds(duration * 2);
-        m_button_text.transform.localPosition = pos;
-
-        _c_idle = null;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -115,10 +109,7 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (_c_idle == null)
-        {
-            _c_idle = StartCoroutine(idle());
-        }
+        idle();
     }
 
     public virtual void OnSelect(BaseEventData eventData)
@@ -131,14 +122,14 @@ public class Button_2_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         idle();
     }
 
-    private Ease current_easetype(Easetype easetype)
+    private Ease current_easetype (Easetype easetype)
     {
         switch (easetype)
         {
             case Easetype.Unset:
                 return Ease.Unset;
 
-            case Easetype.Linear:
+            case Easetype.Linear :
                 return Ease.Linear;
 
             case Easetype.InSine:
