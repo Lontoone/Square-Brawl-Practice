@@ -35,6 +35,7 @@ public class TileMapSetUpManager : MonoBehaviour
             {
                 TileMapManager.instance.cellStateMap[i] = _mapData.cellDatas[_dataCount].state;
                 activeTileCells.Add(_cell);
+                //_dataCount++;
                 _dataCount = Mathf.Clamp(_dataCount + 1, 0, _mapData.cellDatas.Count - 1);
             }
             else
@@ -48,7 +49,6 @@ public class TileMapSetUpManager : MonoBehaviour
     }
     private void SetUpCellOrientation()
     {
-
         //Set up image
         for (int i = 0; i < activeTileCells.Count; i++)
         {

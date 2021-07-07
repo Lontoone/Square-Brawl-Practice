@@ -85,7 +85,9 @@ public class TileImageCollection : ScriptableObject
         { new TileImage("One Corner -180",254) },
         { new TileImage("One Corner -270",251) },
 
-        { new TileImage("Empty",255) }
+        { new TileImage("Empty",255) },
+
+        { new TileImage("Saw",300) }
 
     };
 

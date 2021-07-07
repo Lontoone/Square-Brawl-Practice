@@ -39,6 +39,12 @@ public class TileStyleManager : MonoBehaviour
             //Set none to white
             SetTillImage(TileMapManager.instance.gridCells[_index], 255);
         }
+        else if (_state == CellState.SAW)
+        {
+            SetTillImage(TileMapManager.instance.gridCells[_index], 300);
+            TileCell _cell = TileMapManager.instance.gridCells[_index];
+            _cell.gameObject.AddComponent<Saw>();
+        }
         else
         {
             int _tileCondition = CheckCellOrientation(_index);
