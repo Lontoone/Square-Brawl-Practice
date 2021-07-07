@@ -26,6 +26,8 @@ public class LoadMapUIControl : MonoBehaviour
     public void LoadMapList()
     {
         ClearContainer();
+        if (!Directory.Exists(SaveTile.SAVE_FOLDER.CombinePersistentPath())) { return; }
+
         filePaths = Directory.GetFiles(SaveTile.SAVE_FOLDER.CombinePersistentPath());
         for (int i = 0; i < filePaths.Length; i++)
         {
