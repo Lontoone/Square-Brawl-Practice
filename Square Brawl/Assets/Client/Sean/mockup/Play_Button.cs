@@ -12,10 +12,7 @@ namespace Easetype {}
 
 public class Play_Button : MonoBehaviour//, ISelectHandler, IDeselectHandler
 {
-
-    private InputAction play_button_action;
-    private PlayerInputManager _play_button_inputAction;
-    private BaseEventData eventData;
+    public int m_ButtonIndex;
     private Gamepad gamepad = Gamepad.current;
     private Keyboard keyboard = Keyboard.current;
     [SerializeField] private GameObject play_button;
@@ -32,7 +29,7 @@ public class Play_Button : MonoBehaviour//, ISelectHandler, IDeselectHandler
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         if (keyboard != null)
         {
@@ -63,7 +60,7 @@ public class Play_Button : MonoBehaviour//, ISelectHandler, IDeselectHandler
             }
         }
 
-    }
+    }*/
 
     private void EnterLobby() 
     {

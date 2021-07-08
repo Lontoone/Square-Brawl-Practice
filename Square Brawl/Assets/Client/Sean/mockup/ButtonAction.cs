@@ -7,13 +7,16 @@ using BasicTools.ButtonInspector;
 using DG.Tweening;
 using TMPro;
 
-public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
-    
+    [SerializeField] public int m_ButtonIndex;
+    [SerializeField] private Button m_button;   
     [SerializeField] private GameObject m_button_text;
     [Space(10)]
     [Button("Set original position", "setf_pos")]
     [SerializeField] private bool set_pos;
+    [Space(10)]
+    [SerializeField] private GameObject m_AimObject;
     [Space(10)]
     [SerializeField] private float to_x;
     [SerializeField] private float to_y;
@@ -63,6 +66,7 @@ public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler
     [SerializeField] private Easetype easetype;
     [SerializeField] private float duration = 1f;
     [SerializeField] private float m_outdistance = 5;
+    private bool m_SelectedState;
     private Coroutine _c_idle;
     private Sequence _moveSequence;
 
@@ -86,6 +90,7 @@ public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler
     }
     public void highlighted()
     {
+        m_AimObject.transform.position = m_button_text.transform.position;
         _moveSequence.Kill();
         _moveSequence = DOTween.Sequence();
         m_button_text.transform.localPosition = pos;
@@ -104,9 +109,19 @@ public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler
             ); ;
     }
 
+    public void Deselected()
+    {
+        _moveSequence.Kill();
+        m_button_text.transform.localPosition = pos;
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
-        highlighted();
+        if (m_SelectedState == false)
+        {
+            highlighted();
+        }
+        m_SelectedState = true;
     }
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -115,12 +130,21 @@ public class Button_Left_in_right_out_test : MonoBehaviour, IPointerEnterHandler
 
     public virtual void OnSelect(BaseEventData eventData)
     {
-        highlighted();
+        if (m_SelectedState == false) 
+        {
+            highlighted();
+        }
+        m_SelectedState = true;
     }
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
         idle();
+    }
+
+    public int ReturnIndex() 
+    {
+        return m_ButtonIndex;
     }
 
     private Ease current_easetype (Easetype easetype)

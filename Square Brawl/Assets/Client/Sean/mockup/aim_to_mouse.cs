@@ -4,7 +4,8 @@ using UnityEngine.InputSystem;
 public class aim_to_mouse : MonoBehaviour
 {
     private PlayerInputManager _inputAction;
-    [SerializeField] private GameObject aim_object;
+    [SerializeField] private GameObject m_aim_pos;
+    [SerializeField] private GameObject m_aim_object;
     [SerializeField] private float distance;
     private Vector2 object_pos;
     private Vector2 _mouseWorldPos;
@@ -12,11 +13,12 @@ public class aim_to_mouse : MonoBehaviour
 
     private void Start()
     {
-        object_pos = aim_object.transform.position;
+        
     }
 
     void Update()
     {
+        object_pos = m_aim_pos.transform.position;
         Aim_to_mouse();
     }
     
@@ -28,8 +30,8 @@ public class aim_to_mouse : MonoBehaviour
 
         float vector_length = Vector3.Magnitude(local_mouseWorldPos);
         float _angle = Mathf.Atan2(local_mouseWorldPos.y, local_mouseWorldPos.x) * Mathf.Rad2Deg;
-        aim_object.transform.position = new Vector3((local_mouseWorldPos.x / vector_length) * distance + object_pos.x, +(local_mouseWorldPos.y / vector_length) * distance + object_pos.y, 0);
-        aim_object.transform.rotation = Quaternion.Euler(new Vector3(0, 0, _angle));
+        m_aim_object.transform.position = new Vector3((local_mouseWorldPos.x / vector_length) * distance + object_pos.x, +(local_mouseWorldPos.y / vector_length) * distance + object_pos.y, 0);
+        m_aim_object.transform.rotation = Quaternion.Euler(new Vector3(0, 0, _angle));
 
         /*Debug.Log("\nlocal_mouseWorldPos = " + Mouse.current.position.ReadValue() 
                 + "\nobject_pos = " + object_pos 
