@@ -128,12 +128,13 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         idle();
         m_MouseSelectedState = false;
+        m_KeySelectedState = false;
     }
 
     public virtual void OnSelect(BaseEventData eventData)
     {
         m_KeySelectedState = true;
-        if (m_MouseSelectedState != true && m_KeySelectedState == true) 
+        if (m_MouseSelectedState != true && m_KeySelectedState == true)
         {
             highlighted();
         }
@@ -142,6 +143,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public virtual void OnDeselect(BaseEventData eventData)
     {
         idle();
+        m_MouseSelectedState = false;
         m_KeySelectedState = false;
     }
 

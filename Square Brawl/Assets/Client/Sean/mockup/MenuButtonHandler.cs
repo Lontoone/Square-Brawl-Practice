@@ -1,17 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ButtonHandler : MonoBehaviour
+public class MenuButtonHandler : MonoBehaviour
 {
     [SerializeField] private GameObject m_ButtonHandler;
+    [SerializeField] private GameObject m_FirstSelectedButton;
     [SerializeField] private GameObject m_PlayButton;
     [SerializeField] private GameObject m_ButtonUp;
     [SerializeField] private GameObject m_ButtonDown;
     [SerializeField] private GameObject m_ButtonLeft;
     [SerializeField] private GameObject m_ButtonRight;
+    public GameObject[] m_ButtonArray;
+    public MenuButtonHandler(GameObject[] m_ButtonArray) { this.m_ButtonArray = m_ButtonArray; }
+
     [Space (10)]
-    [SerializeField] private float duration = 0.5f;
+    [SerializeField] private float m_Moveduration = 0.5f;
 
 
 
@@ -36,6 +42,11 @@ public class ButtonHandler : MonoBehaviour
 
     public void EnableButton()
     {
+        m_ButtonUp.GetComponent<Button>().interactable = true;
+        m_ButtonDown.GetComponent<Button>().interactable = true;
+        m_ButtonLeft.GetComponent<Button>().interactable = true;
+        m_ButtonRight.GetComponent<Button>().interactable = true;
+        m_PlayButton.GetComponent<Button>().interactable = true;
         m_ButtonUp.SetActive(true);
         m_ButtonDown.SetActive(true);
         m_ButtonLeft.SetActive(true);
@@ -46,16 +57,18 @@ public class ButtonHandler : MonoBehaviour
     {
         StartCoroutine(DelayDisable());
     }
-    private IEnumerator DelayDisable() 
+    private IEnumerator DelayDisable()
     {
-        yield return new WaitForSeconds(duration);
+        m_ButtonUp.GetComponent<Button>().interactable = false;
+        m_ButtonDown.GetComponent<Button>().interactable = false;
+        m_ButtonLeft.GetComponent<Button>().interactable = false;
+        m_ButtonRight.GetComponent<Button>().interactable = false;
+        m_PlayButton.GetComponent<Button>().interactable = false;
+        yield return new WaitForSeconds(m_Moveduration);
         m_ButtonUp.SetActive(false);
         m_ButtonDown.SetActive(false);
         m_ButtonLeft.SetActive(false);
         m_ButtonRight.SetActive(false);
         m_PlayButton.SetActive(false);
     }
-
-
-
 }

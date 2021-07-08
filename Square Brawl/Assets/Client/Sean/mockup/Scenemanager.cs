@@ -68,12 +68,14 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
     }
     public void EnterOption()
     {
+        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + to_x, m_Menu.transform.localPosition.y + to_y,0),duration).SetEase(current_easetype.GetEasetype(easetype));
         m_Option.transform.DOLocalMove(new Vector3(0, m_Option.transform.localPosition.y + to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
     }
 
     public void ExitOption()
     {
+        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
         m_Option.transform.DOLocalMove(new Vector3(Screen.width, m_Option.transform.localPosition.y + -to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
     }
@@ -86,5 +88,10 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
     public void ExitLobby()
     {
         m_Menu.transform.DOScale(new Vector3(1, 1, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
+    }
+
+    public void DiesableOnClickEffect()
+    {
+        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
     }
 }
