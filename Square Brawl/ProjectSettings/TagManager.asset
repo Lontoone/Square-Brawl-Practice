@@ -8,6 +8,8 @@ TagManager:
   - Ground
   - Bullet
   - ObjectPool
+  - MidPos
+  - Test
   layers:
   - Default
   - TransparentFX

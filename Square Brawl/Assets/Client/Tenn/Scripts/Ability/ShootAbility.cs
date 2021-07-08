@@ -13,23 +13,23 @@ public class ShootAbility : Ability
     public bool IsDontContinuous;
     public bool IsDontShootStraight;
 
-    public ShootTriggerable _shoot;
+    private AttackTriggerable _attack;
 
     public override void Initalize(GameObject _obj)
     {
-        _shoot = _obj.GetComponent<ShootTriggerable>();
-        _shoot.ShootDamage = ShootDamage;
-        _shoot.ShootSpeed = ShootSpeed;
-        _shoot.ShootRecoil = ShootRecoil;
-        _shoot.BeShootElasticity = BeShootElasticity;
-        _shoot.BulletScaleValue = BulletScaleValue;
-        _shoot.IsDontContinuous = IsDontContinuous;
-        _shoot.IsDontShootStraight = IsDontShootStraight;
+        _attack = _obj.GetComponent<AttackTriggerable>();
+        _attack.WeaponDamage = ShootDamage;
+        _attack.WeaponSpeed = ShootSpeed;
+        _attack.WeaponRecoil = ShootRecoil;
+        _attack.BeElasticity = BeShootElasticity;
+        _attack.WeaponScaleValue = BulletScaleValue;
+        _attack.IsDontContinuous = IsDontContinuous;
+        _attack.IsDontShootStraight = IsDontShootStraight;
     }
 
     public override void Activate()
     {
-        _shoot.Fire();
+        _attack.Fire();
     }
 }
     

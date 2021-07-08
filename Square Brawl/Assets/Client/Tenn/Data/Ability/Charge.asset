@@ -9,18 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c3fd8551facdb34bb9f744451517de0, type: 3}
-  m_Name: Aevolver
+  m_Script: {fileID: 11500000, guid: 6671e81e5ec06cf45b42c8d6435a8fc7, type: 3}
+  m_Name: Charge
   m_EditorClassIdentifier: 
-  Name: Aevolver
+  Name: Charge
   Sound: {fileID: 0}
-  CoolDownTime: 0.3
+  CoolDownTime: 3
   isCdCanAdd: 0
-  isHaveTwoCd: 1
-  ShootDamage: 10
-  ShootSpeed: 20
-  ShootRecoil: 300
-  BeShootElasticity: 800
-  BulletScaleValue: 0.15
-  IsDontContinuous: 0
-  IsDontShootStraight: 0
+  isHaveTwoCd: 0
+  ChargeDamage: 10
+  ChargeSpeed: 1200
+  BeElasticity: 800
+  _shoot: {fileID: 0}

@@ -5,27 +5,13 @@ using Photon.Pun;
 
 public class ShootSpuare : MonoBehaviour
 {
-    public Transform target;
+    public PlayerController _playerController;
 
-    private PhotonView _pv;
-
-    private LagCompensation _lag;
-
-    private void Start()
-    {
-        _pv = GetComponent<PhotonView>();
-        _lag = GetComponent<LagCompensation>();
-        if (_pv.IsMine)
-        {
-            target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        }
-    }
     void Update()
     {
-        if (!_pv.IsMine)
+        if (_playerController._pv.IsMine)
         {
-            return;
+            transform.eulerAngles = new Vector3(0, 0, _playerController.ShootSpinAngle);
         }
-        transform.position = target.position;
     }
 }
