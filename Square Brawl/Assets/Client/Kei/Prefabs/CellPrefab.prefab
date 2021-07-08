@@ -98,9 +98,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid_index: 0
   spriteRenderer: {fileID: 0}
-  onHoverColor: {r: 1, g: 0, b: 0, a: 1}
-  onSelectColor: {r: 0, g: 0, b: 0, a: 0}
-  rangeHintColor: {r: 0, g: 0, b: 0, a: 0}
+  conboundCenter: {fileID: 0}
+  conboundRange:
+    data: {fileID: 0}
+    range: []
 --- !u!61 &913758580300549198
 BoxCollider2D:
   m_ObjectHideFlags: 0
