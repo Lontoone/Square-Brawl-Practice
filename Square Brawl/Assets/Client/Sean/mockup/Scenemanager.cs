@@ -35,7 +35,7 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
     void Start()
     {
         current_easetype = new Easetype.Current_easetype();
-        pos = m_Menu.transform.localPosition;
+        //pos = m_Menu.transform.localPosition;
     }
 
     // Update is called once per frame
@@ -68,14 +68,14 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
     }
     public void EnterOption()
     {
-        m_Menu.transform.DOLocalMove(new Vector3(pos.x + to_x,pos.y + to_y,0),duration).SetEase(current_easetype.GetEasetype(easetype));
-        m_Option.transform.DOLocalMove(new Vector3(pos.x + to_x, pos.y + to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
+        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + to_x, m_Menu.transform.localPosition.y + to_y,0),duration).SetEase(current_easetype.GetEasetype(easetype));
+        m_Option.transform.DOLocalMove(new Vector3(0, m_Option.transform.localPosition.y + to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
     }
 
     public void ExitOption()
     {
-        m_Menu.transform.DOLocalMove(new Vector3(pos.x + -to_x, pos.y + -to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
-        m_Option.transform.DOLocalMove(new Vector3(pos.x + -to_x, pos.y + -to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
+        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
+        m_Option.transform.DOLocalMove(new Vector3(Screen.width, m_Option.transform.localPosition.y + -to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
     }
 
     public void EnterLobby()

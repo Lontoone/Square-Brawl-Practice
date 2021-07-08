@@ -64,14 +64,13 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
     [Space(10)]
     [SerializeField] private Easetype easetype;
-    [SerializeField] private float duration = 1f;
+    [SerializeField] public float m_duration = 1f;
     [SerializeField] private float m_outdistance = 5;
-    private bool m_SelectedState;
     private Coroutine _c_idle;
     private Sequence _moveSequence;
 
-    
-   
+    private bool m_MouseSelectedState = false;
+    private bool m_KeySelectedState = false;
 
     void Awake()
     {
@@ -88,6 +87,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         pos = m_button_text.transform.localPosition;
     }
+
     public void highlighted()
     {
         m_AimObject.transform.position = m_button_text.transform.position;
@@ -95,7 +95,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         _moveSequence = DOTween.Sequence();
         m_button_text.transform.localPosition = pos;
         _moveSequence.Append(
-               m_button_text.transform.DOLocalMove(new Vector3(pos.x + to_x, pos.y + to_y), duration).SetEase(current_easetype(easetype))
+               m_button_text.transform.DOLocalMove(new Vector3(pos.x + to_x, pos.y + to_y), m_duration).SetEase(current_easetype(easetype))
            ); ;
     }
 
@@ -105,7 +105,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         _moveSequence = DOTween.Sequence();
         m_button_text.transform.localPosition = new Vector3(pos.x + to_x, pos.y + to_y, pos.z);
         _moveSequence.Append(
-                m_button_text.transform.DOLocalMove(new Vector3(pos.x + to_x * m_outdistance, pos.y + to_y * m_outdistance), duration * m_outdistance).SetEase(current_easetype(easetype))
+                m_button_text.transform.DOLocalMove(new Vector3(pos.x + to_x * m_outdistance, pos.y + to_y * m_outdistance), m_duration * m_outdistance).SetEase(current_easetype(easetype))
             ); ;
     }
 
@@ -117,29 +117,32 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (m_SelectedState == false)
+        m_MouseSelectedState = true;
+        if (m_KeySelectedState != true && m_MouseSelectedState == true)
         {
             highlighted();
+
         }
-        m_SelectedState = true;
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         idle();
+        m_MouseSelectedState = false;
     }
 
     public virtual void OnSelect(BaseEventData eventData)
     {
-        if (m_SelectedState == false) 
+        m_KeySelectedState = true;
+        if (m_MouseSelectedState != true && m_KeySelectedState == true) 
         {
             highlighted();
         }
-        m_SelectedState = true;
     }
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
         idle();
+        m_KeySelectedState = false;
     }
 
     public int ReturnIndex() 
