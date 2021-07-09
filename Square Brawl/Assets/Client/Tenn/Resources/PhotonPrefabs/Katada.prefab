@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 3200001445375640412}
   - component: {fileID: -6354790548580462332}
   - component: {fileID: 8228388715443629524}
+  - component: {fileID: 7699014908509974731}
   m_Layer: 0
   m_Name: Katada
-  m_TagString: Untagged
+  m_TagString: Katada
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,14 +26,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5644386042236273782}
-  m_LocalRotation: {x: -0, y: -0, z: 0.36009637, w: 0.93291515}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.42, y: -3.63, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 5953257386892755425}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 42.212}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-6354790548580462332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51,7 +52,8 @@ MonoBehaviour:
   observableSearch: 2
   Synchronization: 3
   OwnershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 8228388715443629524}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -69,8 +71,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 0
   Damage: 0
-  BeShootElasticity: 0
+  _beElasticityDir: 0
+  BeAttackElasticity: 0
   IsKatadaReverse: 0
+  _pv: {fileID: -6354790548580462332}
+--- !u!61 &7699014908509974731
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5644386042236273782}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 2.2446082, y: -0.0051043034}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.4999051, y: 0.4823146}
+  m_EdgeRadius: 0
 --- !u!1 &5872186073863259506
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +113,7 @@ GameObject:
   - component: {fileID: 1907453053994865242}
   m_Layer: 0
   m_Name: Square
-  m_TagString: BulletSpawnPos
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,8 +126,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5872186073863259506}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.018, y: 0, z: 0}
-  m_LocalScale: {x: 0.41136, y: 0.15, z: 0.3}
+  m_LocalPosition: {x: 2.245, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.15, z: 0.3}
   m_Children: []
   m_Father: {fileID: 3200001445375640412}
   m_RootOrder: 0
@@ -141,9 +171,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 9
+  m_SortingOrder: 11
   m_Sprite: {fileID: 21300000, guid: e974a4f257444824d954bd1b6732d950, type: 3}
-  m_Color: {r: 1, g: 0.5411765, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.9635534, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

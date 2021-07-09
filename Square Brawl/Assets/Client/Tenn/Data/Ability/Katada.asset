@@ -18,5 +18,5 @@ MonoBehaviour:
   isCdCanAdd: 1
   isHaveTwoCd: 0
   KatadaDamage: 25
-  KatadaSpeed: 5
+  KatadaSpeed: 15
   BeElasticity: 500

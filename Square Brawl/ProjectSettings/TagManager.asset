@@ -10,6 +10,7 @@ TagManager:
   - ObjectPool
   - MidPos
   - Test
+  - Katada
   layers:
   - Default
   - TransparentFX

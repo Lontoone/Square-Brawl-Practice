@@ -45,6 +45,10 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         if (_pv.IsMine)
         {
             _pv.RPC("EnableObj", RpcTarget.All);
+            if (IsDontShootStraight)
+            {
+                transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-10, 11));
+            }
             _pv.RPC("ResetPos", RpcTarget.Others, transform.position, transform.rotation);
         }
     }

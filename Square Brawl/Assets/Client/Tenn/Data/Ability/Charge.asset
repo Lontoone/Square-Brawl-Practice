@@ -17,7 +17,6 @@ MonoBehaviour:
   CoolDownTime: 3
   isCdCanAdd: 0
   isHaveTwoCd: 0
-  ChargeDamage: 10
+  ChargeDamage: 50
   ChargeSpeed: 1200
   BeElasticity: 800
-  _shoot: {fileID: 0}

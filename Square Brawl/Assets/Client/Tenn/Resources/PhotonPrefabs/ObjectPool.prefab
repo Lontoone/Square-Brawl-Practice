@@ -48,6 +48,9 @@ MonoBehaviour:
   - tag: Bullet
     prefab: {fileID: 2972441576947534130, guid: 07c04703d2cbe3b4396c0f4020cbb023, type: 3}
     size: 10
+  - tag: Katada
+    prefab: {fileID: 5644386042236273782, guid: 7c3728d0867985948b00829e7578c259, type: 3}
+    size: 5
   _pv: {fileID: 0}
 --- !u!114 &7958008732146023615
 MonoBehaviour:

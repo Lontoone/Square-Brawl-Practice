@@ -45,9 +45,6 @@ public class PlayerController : MonoBehaviour,IPunObservable
     public Rigidbody2D SpinObject;
     public Transform ShootDir;//Shoot Point
 
-    public GameObject ShootPointObj;//Shoot Point Prefab
-    public GameObject _shootObj;
-
     private Camera _camera;
 
     public PhotonView _pv;
@@ -58,7 +55,8 @@ public class PlayerController : MonoBehaviour,IPunObservable
 
     private Vector2 _newPos;
     private Quaternion _newDir;
-    public Quaternion _newShootPointDir;
+    private Quaternion _newShootPointDir;
+    private float _newDirZ;
     private void Awake()
     {
         _inputAction = new PlayerInputManager();
@@ -80,14 +78,11 @@ public class PlayerController : MonoBehaviour,IPunObservable
     {
         _rb = GetComponent<Rigidbody2D>();
         _camera = Camera.main;
-        //_shootObj = GameObject.FindGameObjectWithTag("Test");
-        //_shootObj = PhotonView.Find((int)_pv.InstantiationData[0]).GetComponent<PlayerManager>()._shootObj;
-        //GameObject _ShootObj = Instantiate(ShootPointObj, Vector3.zero, Quaternion.identity);
+
         if (_pv.IsMine)
         {
             ShootSpinMidPos = transform.GetChild(0).GetComponent<Transform>();
             SpinObject = transform.GetChild(1).GetComponent<Rigidbody2D>();
-            //ShootSpinMidPos = _shootObj.transform;
             ShootDir = ShootSpinMidPos.transform.GetChild(0);
 
             _inputAction.Player.Jump.performed += _ => PlayerJumpDown();
@@ -96,33 +91,39 @@ public class PlayerController : MonoBehaviour,IPunObservable
             _inputAction.Player.MouseRotation.performed += ctx => MouseSpin(ctx.ReadValue<Vector2>());
             _inputAction.Player.GamePadRotation.performed += ctx => GamePadSpin(ctx.ReadValue<Vector2>());
         }
-        else
-        {
-           // Destroy(_rigidbody2D);
-        }
 
         _canSpin = true;
     }
 
     void Update()
     {
-        if (IsChargeChange != IsCharge)
+        if (!_pv.IsMine)
         {
-            DirX = Mathf.Cos(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
-            DirY = Mathf.Sin(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
-            _pv.RPC("SetStatus", RpcTarget.All, IsCharge, BeElasticity, Damage, DirX, DirY);
-            IsChargeChange = IsCharge;
+            //_rb.position = Vector2.Lerp(_rb.position, _newPos, 10 * Time.deltaTime);
+            //transform.rotation = Quaternion.Lerp(transform.rotation, _newDir, 15 * Time.deltaTime);
+            ShootSpinMidPos.transform.rotation = Quaternion.Lerp(ShootSpinMidPos.transform.rotation, _newShootPointDir, 15 * Time.deltaTime);
         }
+        else
+        {
+            if (IsChargeChange != IsCharge)
+            {
+                DirX = Mathf.Cos(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
+                DirY = Mathf.Sin(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
+                _pv.RPC("SetStatus", RpcTarget.All, IsCharge, BeElasticity, Damage, DirX, DirY);
+                IsChargeChange = IsCharge;
+            }
 
-        GroundCheckEvent();//Is Grounding?
+            GroundCheckEvent();//Is Grounding?
+        }
     }
     void FixedUpdate()
     {
         if (!_pv.IsMine)
         {
-            _rb.position = Vector2.Lerp(_rb.position, _newPos, 10*Time.fixedDeltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, _newDir, 15*Time.fixedDeltaTime);
-            ShootSpinMidPos.transform.rotation = Quaternion.Lerp(ShootSpinMidPos.transform.rotation, _newShootPointDir, 15*Time.fixedDeltaTime);
+            _rb.position = Vector2.MoveTowards(_rb.position, _newPos, Time.fixedDeltaTime);
+            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, Time.fixedDeltaTime);
+           // transform.rotation = Quaternion.Lerp(transform.rotation, _newDir, 15*Time.fixedDeltaTime);
+           // ShootSpinMidPos.transform.rotation = Quaternion.Lerp(ShootSpinMidPos.transform.rotation, _newShootPointDir, 15*Time.fixedDeltaTime);
         }
         else
         {
@@ -313,19 +314,17 @@ public class PlayerController : MonoBehaviour,IPunObservable
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        /*if (other.gameObject.CompareTag("Bullet"))
+        if (other.gameObject.CompareTag("Katada")&&_pv.IsMine)
         {
-            Bullet _bullet = other.gameObject.GetComponent<Bullet>();
-            if (!_bullet._pv.IsMine)
+            Katada _katada = other.gameObject.GetComponent<Katada>();
+            if (!_katada._pv.IsMine)
             {
-                _bullet._pv.RPC("DisableObj", RpcTarget.All);
-                float x = Mathf.Cos(other.gameObject.transform.eulerAngles.z * Mathf.PI / 180);
-                float y = Mathf.Sin(other.gameObject.transform.eulerAngles.z * Mathf.PI / 180);
-                _rigidbody2D.AddForce(other.gameObject.GetComponent<Bullet>().BeShootElasticity * new Vector2(x, y));
-                TakeDamage(other.gameObject.GetComponent<Bullet>().ShootDamage);
+                _katada._pv.RPC("DisableObj", RpcTarget.All);
+                float x = Mathf.Cos(_katada._beElasticityDir * Mathf.PI / 180);
+                float y = Mathf.Sin(_katada._beElasticityDir * Mathf.PI / 180);
+                TakeDamage(_katada.Damage, _katada.BeAttackElasticity,x,y);
             }
-            other.gameObject.SetActive(false);
-        }*/
+        }
     }
 
     public void TakeDamage(float _damage,float _elasticty,float _bullletDirX,float _bullletDirY)
@@ -364,20 +363,24 @@ public class PlayerController : MonoBehaviour,IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(_rb.position);
-            stream.SendNext(transform.rotation);
+            //stream.SendNext(transform.rotation);
+            stream.SendNext(_rb.rotation);
             stream.SendNext(ShootSpinMidPos.transform.rotation);
             stream.SendNext(_rb.velocity);
+            stream.SendNext(_rb.angularVelocity);
         }
         else
         {
             _newPos = (Vector2)stream.ReceiveNext();
-            _newDir = (Quaternion)stream.ReceiveNext();
+            //_newDir = (Quaternion)stream.ReceiveNext();
+            _newDirZ = (float)stream.ReceiveNext();
             _newShootPointDir = (Quaternion)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();
+            _rb.angularVelocity = (float)stream.ReceiveNext();
 
-            //float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
-            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.001f);
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing()*0.001f);
             _newPos += (_rb.velocity * lag);
+            _newDirZ += (_rb.angularVelocity * lag);
         }
     }
 }

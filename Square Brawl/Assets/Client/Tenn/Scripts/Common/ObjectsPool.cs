@@ -40,7 +40,7 @@ public class ObjectsPool : MonoBehaviour
             {
                 //GameObject obj = Instantiate(pool.prefab, transform);
                 
-                GameObject obj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bullet"), new Vector3(15,0,0), Quaternion.identity);
+                GameObject obj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", pool.tag), new Vector3(15,0,0), Quaternion.identity);
                 objectPool.Enqueue(obj);
                 
                 //obj.transform.parent = transform;

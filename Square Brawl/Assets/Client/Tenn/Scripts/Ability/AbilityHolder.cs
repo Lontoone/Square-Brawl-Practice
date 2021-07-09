@@ -114,7 +114,7 @@ public class AbilityHolder : MonoBehaviour
                     {
                         if (_activeTime > ability.CoolDownTime)
                         {
-                            _activeTime -= Time.deltaTime/3;
+                            _activeTime -= Time.deltaTime/5;
                         }
                     }
                 }
@@ -134,7 +134,7 @@ public class AbilityHolder : MonoBehaviour
 
         void SpecialEvent()
         {
-            if (ability.isCdCanAdd)//CubeShot
+            if (ability.isCdCanAdd)//CubeShot and Katada
             {
                 isCdAddCount += 1;
                 if (isCdAddCount % 3 == 0)
