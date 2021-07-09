@@ -8,14 +8,19 @@ public class MenuManager : MonoBehaviour
     public void Awake()
     {
         instance = this;
+        foreach (Menu _menu in FindObjectsOfType<Menu>())
+        {
+            menus.Add(_menu);
+        }
+        OpenMenu("title");
     }
 
 
-    [SerializeField] Menu[] menus;
+    List<Menu> menus = new List<Menu>();    
 
     public void OpenMenu(string menuName)
     {
-        for (int i = 0; i < menus.Length; i++)
+        for (int i = 0; i < menus.Count; i++)
         {
             if (menus[i].menuName.Equals(menuName))
             {
@@ -31,7 +36,7 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu(Menu menu)
     {
-        for (int i = 0; i < menus.Length; i++)
+        for (int i = 0; i < menus.Count; i++)
         {
             if (menus[i].open)
             {

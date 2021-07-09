@@ -70,6 +70,7 @@ public static class MyPhotonExtension
         return res;
     }
 
+
     public static ExitGames.Client.Photon.Hashtable WrapToHash(Object[] key_value_array)
     {
         ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();

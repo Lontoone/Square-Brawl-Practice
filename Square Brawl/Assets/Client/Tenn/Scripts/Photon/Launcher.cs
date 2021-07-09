@@ -125,6 +125,12 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
+
+    }
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        base.OnPlayerLeftRoom(otherPlayer);
+        LocalDataManager.RemovePlayer((int)otherPlayer.CustomProperties[CustomPropertyCode.PLAYERINDEX]);
     }
 
     public void StartGame()
