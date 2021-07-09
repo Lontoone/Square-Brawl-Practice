@@ -26,15 +26,19 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
     [SerializeField] private GameObject m_MapSelection;
     [SerializeField] private GameObject m_WeaponSelection;
     [SerializeField] private GameObject m_ScoreInfo;
-    private Easetype.Current_easetype current_easetype;
+    private Easetype.Current_easetype scene_current_easetype;
     [SerializeField] Easetype.Current_easetype.Easetype easetype;
     [SerializeField] float duration = 1f;
     [SerializeField] private float to_x;
     [SerializeField] private float to_y;
     private Vector3 pos;
+
+    private void Awake()
+    {
+        scene_current_easetype = new Easetype.Current_easetype();
+    }
     void Start()
     {
-        current_easetype = new Easetype.Current_easetype();
         //pos = m_Menu.transform.localPosition;
     }
 
@@ -69,25 +73,25 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
     public void EnterOption()
     {
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + to_x, m_Menu.transform.localPosition.y + to_y,0),duration).SetEase(current_easetype.GetEasetype(easetype));
-        m_Option.transform.DOLocalMove(new Vector3(0, m_Option.transform.localPosition.y + to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
+        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + to_x, m_Menu.transform.localPosition.y + to_y,0),duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Option.transform.DOLocalMove(new Vector3(0, m_Option.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
     public void ExitOption()
     {
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
-        m_Option.transform.DOLocalMove(new Vector3(Screen.width, m_Option.transform.localPosition.y + -to_y, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
+        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Option.transform.DOLocalMove(new Vector3(Screen.width, m_Option.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
     public void EnterLobby()
     {
-        m_Menu.transform.DOScale(new Vector3(10, 10, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
+        m_Menu.transform.DOScale(new Vector3(10, 10, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
     public void ExitLobby()
     {
-        m_Menu.transform.DOScale(new Vector3(1, 1, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
+        m_Menu.transform.DOScale(new Vector3(1, 1, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
     public void DiesableOnClickEffect()
