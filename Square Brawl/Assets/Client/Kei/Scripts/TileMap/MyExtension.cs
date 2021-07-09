@@ -5,7 +5,7 @@ using UnityEngine;
 //using AutoMapper;  //Require download from Nuget
 
 
-public static class MyExtension
+public static class MyTileGridExtension
 {
     public static GameObject GetRayHit2D(Vector2 mouseInput, LayerMask layerMask = default)
     {
