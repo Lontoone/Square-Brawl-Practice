@@ -24,6 +24,15 @@ public class TileStyleManager : MonoBehaviour
 
         TileMapEditorControl.OnCellChanged += SetCell;
         TileMapEditorControl.OnCellChanged += SetNearbyCell;
+
+        /*
+        WaitForFixedUpdate _wait = new WaitForFixedUpdate();
+        while (TileMapManager.instance == null)
+        {
+            yield return _wait;
+        }
+        */
+        
     }
     private void OnDestroy()
     {
@@ -43,7 +52,11 @@ public class TileStyleManager : MonoBehaviour
         {
             SetTillImage(TileMapManager.instance.gridCells[_index], 300);
             TileCell _cell = TileMapManager.instance.gridCells[_index];
-            _cell.gameObject.AddComponent<Saw>();
+
+            if (_cell.GetComponent<Saw>() != null)
+            {
+                _cell.gameObject.AddComponent<Saw>();
+            }
         }
         else
         {
@@ -83,7 +96,7 @@ public class TileStyleManager : MonoBehaviour
                 _res += Mathf.Pow(2, _pow);
             }
         }
-        Debug.Log("cell " + _cellIndex + " condition " + _res);
+        //Debug.Log("cell " + _cellIndex + " condition " + _res);
         return (int)_res;
     }
     private bool CheckCellIsSameState(TileCell _center, TileCell _target)
@@ -97,6 +110,16 @@ public class TileStyleManager : MonoBehaviour
 
     private void SetTillImage(TileCell _cell, int _conditionCode)
     {
+        //Debug.Log(_cell.grid_index + " " + imageCollection.name);
         _cell.spriteRenderer.sprite = imageCollection.GetSprite(_conditionCode);
     }
+
+    public void ApplyNewStyle()
+    {
+        for (int i = 0; i < TileMapManager.instance.gridCells.Count; i++)
+        {
+            SetCell(i);
+        }
+    }
+
 }

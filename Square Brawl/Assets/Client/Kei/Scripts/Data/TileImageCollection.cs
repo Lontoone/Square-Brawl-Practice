@@ -18,7 +18,7 @@ public class TileImageCollection : ScriptableObject
             //log to dictionary
             for (int j = 0; j < tileImages[i].indexs.Count; j++)
             {
-                Debug.Log("map add " + tileImages[i].name + "  " + tileImages[i].indexs[j]);
+                //Debug.Log("map add " + tileImages[i].name + "  " + tileImages[i].indexs[j]);
                 dataMap.Add(tileImages[i].indexs[j], _sp);
             }
         }

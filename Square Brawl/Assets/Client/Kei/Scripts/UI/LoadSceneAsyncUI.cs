@@ -11,12 +11,8 @@ public class LoadSceneAsyncUI : MonoBehaviour
     public void LoadScene()
     {
         SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        //SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        screenImage.gameObject.SetActive(true);
     }
-    /*
-    private void OnCameraCallback(string _sceneName,Camera _camer) {
-        if (_sceneName==sceneName) {
-            screenImage.render
-        }
-    }*/
 
 }

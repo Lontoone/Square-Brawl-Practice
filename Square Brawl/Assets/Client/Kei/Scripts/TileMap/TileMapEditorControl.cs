@@ -32,9 +32,8 @@ public class TileMapEditorControl : MonoBehaviour
         { CellState.EMPTY, Color.cyan },
     };
 
-    public void Start()
+    public IEnumerator Start()
     {
-        InitDict();
         TileCell.OnCellMouseEnter += SetPreviewRange;
         TileCell.OnCellMouseExit += ClearPreviewCell;
         //TileCell.OnCellMouseExit += SetPreviousId;
@@ -43,7 +42,15 @@ public class TileMapEditorControl : MonoBehaviour
 
         rangeData.ReadData();
 
+        //Wait for tile map to gernerate:
+        WaitForEndOfFrame _wait = new WaitForEndOfFrame();
+        while (TileMapManager.instance == null)
+        {
+            yield return _wait;
+        }
+        InitDict();
         TileMapManager.instance.GenerateGrid();
+        //TileStyleManager.instance.ApplyNewStyle();
     }
     public void OnDestroy()
     {
@@ -214,7 +221,7 @@ public class TileMapEditorControl : MonoBehaviour
             {
                 cellStateMap[previewTileCells[i].grid_index] = CellState.NONE;
                 previewTileCells[i].SetWhiteColor();
-                
+
                 OnCellChanged?.Invoke(previewTileCells[i].grid_index);
             }
             else if (previewTileCells[i].conboundCenter != null)
@@ -222,6 +229,9 @@ public class TileMapEditorControl : MonoBehaviour
                 //Find the center, and clear cells around it.
                 TileCell _conboundCenter = previewTileCells[i].conboundCenter;
                 TileCell[] _conboundCells = TileMapManager.instance.GetSelectRangeCells(_conboundCenter.conboundRange, _conboundCenter.grid_index);
+
+                //remove center cell's saw (TODO:做成通用類型)
+                DeleteSpecialCell(_conboundCenter);
 
                 foreach (TileCell _cell in _conboundCells)
                 {
@@ -235,6 +245,15 @@ public class TileMapEditorControl : MonoBehaviour
                 }
             }
 
+        }
+    }
+    private void DeleteSpecialCell(TileCell _cell)
+    {
+        //TODO:做成泛型?
+        Saw saw = _cell.GetComponent<Saw>();
+        if (saw != null)
+        {
+            Destroy(saw);
         }
     }
 

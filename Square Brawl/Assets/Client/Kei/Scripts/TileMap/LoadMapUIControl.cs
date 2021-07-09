@@ -20,7 +20,8 @@ public class LoadMapUIControl : MonoBehaviour
         editorControl = FindObjectOfType<TileMapEditorControl>();
         saveTile = FindObjectOfType<SaveTile>();
 
-        LoadMapList();
+        btnContainer.SetActive(false);
+        //LoadMapList();
     }
 
     public void LoadMapList()
