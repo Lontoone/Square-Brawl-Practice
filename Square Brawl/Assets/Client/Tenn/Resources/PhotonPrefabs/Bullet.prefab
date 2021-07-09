@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4325683395466346470}
   - component: {fileID: 8462599747966626384}
   - component: {fileID: 1309057978684482397}
-  - component: {fileID: -2974669996319835523}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Bullet
@@ -125,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f704a38b0d29e424593ceef0d4cefcb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShootSpeed: 0
+  ShootSpeed: 20
   ShootDamage: 0
   BeShootElasticity: 0
   BulletScaleValue: 0
@@ -134,6 +133,8 @@ MonoBehaviour:
   IsDontShootStraight: 0
   ExploseEffectObj: {fileID: 1753829585539416712, guid: 973c7741567174141a5a3a8b93d80f93, type: 3}
   _pv: {fileID: 0}
+  _networkPosition: {x: 0, y: 0}
+  _networkRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!50 &8462599747966626384
 Rigidbody2D:
   serializedVersion: 4
@@ -174,27 +175,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: -2974669996319835523}
+  - {fileID: 4325683395466346470}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-2974669996319835523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2972441576947534130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91f05b4a02c8a994389b28e2d336e3f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pv: {fileID: 1309057978684482397}
-  _networkPosition: {x: 0, y: 0}
-  _beginPos: {x: 0, y: 0}
-  _networkRotation: {x: 0, y: 0, z: 0, w: 0}
-  _rb: {fileID: 8462599747966626384}
-  bullet: {fileID: 4325683395466346470}
-  isReset: 0
-  isReset2: 0

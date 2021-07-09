@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 using System.IO;
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour,IPunObservable
 {
     [HeaderAttribute("Player Setting")]
-    private Rigidbody2D _rigidbody2D;
+    private Rigidbody2D _rb;
 
     public float MoveSpeed;//Player Move Speed
     public float JumpForce;//Player Jump Force
@@ -55,6 +55,10 @@ public class PlayerController : MonoBehaviour
     private PlayerInputManager _inputAction;
 
     private PlayerManager _playerManager;
+
+    private Vector2 _newPos;
+    private Quaternion _newDir;
+    public Quaternion _newShootPointDir;
     private void Awake()
     {
         _inputAction = new PlayerInputManager();
@@ -74,7 +78,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         _camera = Camera.main;
         //_shootObj = GameObject.FindGameObjectWithTag("Test");
         //_shootObj = PhotonView.Find((int)_pv.InstantiationData[0]).GetComponent<PlayerManager>()._shootObj;
@@ -102,16 +106,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!_pv.IsMine) 
-        {
-           return;
-        }
-
-        if (IsChargeChange!= IsCharge)
+        if (IsChargeChange != IsCharge)
         {
             DirX = Mathf.Cos(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
             DirY = Mathf.Sin(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
-            _pv.RPC("SetStatus", RpcTarget.All, IsCharge, BeElasticity,Damage,DirX,DirY);
+            _pv.RPC("SetStatus", RpcTarget.All, IsCharge, BeElasticity, Damage, DirX, DirY);
             IsChargeChange = IsCharge;
         }
 
@@ -121,31 +120,34 @@ public class PlayerController : MonoBehaviour
     {
         if (!_pv.IsMine)
         {
-            return;
+            _rb.position = Vector2.Lerp(_rb.position, _newPos, 15 * Time.fixedDeltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, _newDir, 15 * Time.deltaTime);
+            ShootSpinMidPos.transform.rotation = Quaternion.Lerp(ShootSpinMidPos.transform.rotation, _newShootPointDir, 15 * Time.fixedDeltaTime);
         }
-
-        PlayerMovement();//Player Move
-
-        PlayerSpin();//Player Spin
+        else
+        {
+            PlayerMovement();//Player Move
+            PlayerSpin();//Player Spin
+        }
     }
 
     void PlayerMovement()
     {
         //Player Move
-        _rigidbody2D.AddForce(MoveSpeed * new Vector2(_inputPos.x, 0)) ;
+        _rb.AddForce(MoveSpeed * new Vector2(_inputPos.x, 0)) ;
 
         if (_inputPos.y > 0&&!_isWall&&!_isGround)//Player Fly
         {
-            _rigidbody2D.AddForce(FlyForce * new Vector2(0,_inputPos.y));
+            _rb.AddForce(FlyForce * new Vector2(0,_inputPos.y));
         }
         else if(_inputPos.y < 0&&!_isGround)//Player Down
         {
-            _rigidbody2D.AddForce(DownForce * new Vector2(0, _inputPos.y));
+            _rb.AddForce(DownForce * new Vector2(0, _inputPos.y));
         }
 
         if ((_isGround || _isWall)&&_isJump)
         {
-            _rigidbody2D.AddForce(JumpForce * Vector3.up);
+            _rb.AddForce(JumpForce * Vector3.up);
             StartCoroutine(IsJumpRecover());
         }
     }
@@ -204,23 +206,23 @@ public class PlayerController : MonoBehaviour
 
             if (_isGround && !_isCheckSpin)
             {
-                _rigidbody2D.AddTorque(SpinInGroundForce * _inputPos.x);
+                _rb.AddTorque(SpinInGroundForce * _inputPos.x);
                 //Debug.Log("IsGround");
             }
             else if (_isWall)
             {
-                _rigidbody2D.AddTorque(SpinInGroundForce * _inputPos.x);
+                _rb.AddTorque(SpinInGroundForce * _inputPos.x);
                 //Debug.Log("IsWall");
             }
             else if (_isGround && _isCheckSpin)
             {
-                _rigidbody2D.AddTorque(SpinForce * _inputPos.x);
+                _rb.AddTorque(SpinForce * _inputPos.x);
                 _isCheckSpin = false;
                 //Debug.Log("IsGroundJump");
             }
             else if (!_isWall&&!_isGround)
             {
-                _rigidbody2D.AddTorque(SpinForce * _inputPos.x);
+                _rb.AddTorque(SpinForce * _inputPos.x);
                 //Debug.Log("IsNotGroundWall");
             }
             _canSpin = false;
@@ -260,7 +262,7 @@ public class PlayerController : MonoBehaviour
         DirX = Mathf.Cos(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
         DirY = Mathf.Sin(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
 
-        _rigidbody2D.AddForce(-Recoil * new Vector2(DirX, DirY));
+        _rb.AddForce(-Recoil * new Vector2(DirX, DirY));
     }
 
     //Ground Check
@@ -328,7 +330,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float _damage,float _elasticty,float _bullletDirX,float _bullletDirY)
     {
-        _rigidbody2D.AddForce(_elasticty * new Vector2(_bullletDirX, _bullletDirY));
+        _rb.AddForce(_elasticty * new Vector2(_bullletDirX, _bullletDirY));
         _pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage);
     }
 
@@ -355,5 +357,26 @@ public class PlayerController : MonoBehaviour
         Damage = _damage;
         DirX = _dirX;
         DirY = _dirY;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(_rb.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(ShootSpinMidPos.transform.rotation);
+            stream.SendNext(_rb.velocity);
+        }
+        else
+        {
+            _newPos = (Vector2)stream.ReceiveNext();
+            _newDir = (Quaternion)stream.ReceiveNext();
+            _newShootPointDir = (Quaternion)stream.ReceiveNext();
+            _rb.velocity = (Vector2)stream.ReceiveNext();
+
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+            _newPos += (_rb.velocity * lag);
+        }
     }
 }

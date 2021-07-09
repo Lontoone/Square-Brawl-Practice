@@ -131,9 +131,8 @@ MonoBehaviour:
   BeShootElasticity: 0
   BulletScaleValue: 0
   _OriginSpeed: 0
-  Pos: {x: 0, y: 0, z: 0}
+  _pos: {x: 0, y: 0, z: 0}
   IsDontShootStraight: 0
-  netWork: {fileID: 0}
   ExploseEffectObj: {fileID: 1753829585539416712, guid: 973c7741567174141a5a3a8b93d80f93, type: 3}
   _pv: {fileID: 0}
 --- !u!114 &2692789842222703818
@@ -155,7 +154,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 377335194376747612}
+  - {fileID: 2855389030963062836}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -166,7 +165,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1605878311421778680}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
@@ -203,12 +202,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1605878311421778680}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91f05b4a02c8a994389b28e2d336e3f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionAtLastPacket: {x: 0, y: 0, z: 0}
-  rotationAtLastPacket: {x: 0, y: 0, z: 0, w: 1}
+  _pv: {fileID: 0}
+  _networkPosition: {x: 0, y: 0}
+  _beginPos: {x: 0, y: 0}
+  _networkRotation: {x: 0, y: 0, z: 0, w: 0}
+  _rb: {fileID: 0}
   bullet: {fileID: 220368708551339052}
-  isTest: 0
+  isReset: 0
+  isReset2: 0

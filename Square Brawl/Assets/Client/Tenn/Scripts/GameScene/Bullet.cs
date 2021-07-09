@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Bullet : MonoBehaviour, IPoolObject
+public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
 {
     public float ShootSpeed;
     public float ShootDamage;
@@ -21,19 +21,22 @@ public class Bullet : MonoBehaviour, IPoolObject
     private Rigidbody2D _rb;
 
     public PhotonView _pv;
-    bool isTest;
+
+    public Vector2 _networkPosition;
+    public Vector2 _beginPos;
+    public Quaternion _networkRotation;
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
         if (_pv.IsMine)
         {
-            //_pv.RPC("DisableObj", RpcTarget.All);
-            _pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight, transform.position);
+            _pv.RPC("DisableObj", RpcTarget.All);
+            /*_pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight, transform.position);
             if (IsDontShootStraight)
             {
                 transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-10, 11));
-            }
+            }*/
         }
     }
 
@@ -41,21 +44,21 @@ public class Bullet : MonoBehaviour, IPoolObject
     {
         if (_pv.IsMine)
         {
-            _pv.RPC("EnableObj", RpcTarget.All);
+            _pv.RPC("EnableObj", RpcTarget.All,transform.position,transform.rotation);
         }
     }
 
     void Update()
     {
-       /* if(_OriginSpeed != ShootSpeed&& _pv.IsMine)
+        if(_OriginSpeed != ShootSpeed&& _pv.IsMine)
         {
-            _pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight, transform.position);
+            _pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight);
             if (IsDontShootStraight)
             {
                 transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-10, 11));
             }
             _OriginSpeed = ShootSpeed;
-        }*/
+        }
 
         _mPrevPos = transform.position;
 
@@ -64,11 +67,12 @@ public class Bullet : MonoBehaviour, IPoolObject
         {
             if (hits[i].collider.gameObject.CompareTag("Player"))
             {
-                if (_pv.IsMine != hits[i].collider.gameObject.GetComponent<PlayerController>()._pv.IsMine)
+                PlayerController _playerController = hits[i].collider.gameObject.GetComponent<PlayerController>();
+                if (_pv.IsMine != _playerController._pv.IsMine&& _playerController._pv.IsMine)
                 {
                     float DirX = Mathf.Cos(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
                     float DirY = Mathf.Sin(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
-                    hits[i].collider.gameObject.GetComponent<PlayerController>().TakeDamage(ShootDamage, BeShootElasticity, DirX, DirY);
+                    _playerController.TakeDamage(ShootDamage, BeShootElasticity, DirX, DirY);
                     _pv.RPC("DisableObj", RpcTarget.All);
                 }
                 //gameObject.SetActive(false);
@@ -83,6 +87,10 @@ public class Bullet : MonoBehaviour, IPoolObject
         {
             _rb.velocity = transform.right * ShootSpeed;
         }
+        else if (!_pv.IsMine)
+        {
+            _rb.position = Vector2.Lerp(_rb.position, _networkPosition, 5*Time.fixedDeltaTime);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -96,9 +104,8 @@ public class Bullet : MonoBehaviour, IPoolObject
         }
     }
     [PunRPC]
-    public void SetStatus(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot,Vector3 _Pos)
+    public void SetStatus(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot)
     {
-        _pos = _Pos;
         ShootSpeed = _speed;
         ShootDamage = _damage;
         BulletScaleValue = _scaleValue;
@@ -113,8 +120,30 @@ public class Bullet : MonoBehaviour, IPoolObject
     }
 
     [PunRPC]
-    public void EnableObj()
+    public void EnableObj(Vector3 pos,Quaternion dir)
     {
         gameObject.SetActive(true);
+        transform.position = pos;
+        transform.rotation = dir;
+    }
+
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(_rb.position);
+            //stream.SendNext(transform.rotation);
+            stream.SendNext(_rb.velocity);
+        }
+        else
+        {
+            _networkPosition = (Vector2)stream.ReceiveNext();
+            //_networkRotation = (Quaternion)stream.ReceiveNext();
+            _rb.velocity = (Vector2)stream.ReceiveNext();
+
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+            _networkPosition += (_rb.velocity * lag);
+        }
     }
 }

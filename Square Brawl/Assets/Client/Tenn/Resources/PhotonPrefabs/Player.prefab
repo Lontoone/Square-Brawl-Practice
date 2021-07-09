@@ -106,7 +106,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 3208715282992985051}
+  - {fileID: 2110465305499821295}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -144,12 +144,13 @@ MonoBehaviour:
   GroundLayer:
     serializedVersion: 2
     m_Bits: 256
-  ShootSpinMidPos: {fileID: 0}
+  ShootSpinMidPos: {fileID: 5898218076483180907}
   SpinObject: {fileID: 0}
   ShootDir: {fileID: 0}
   ShootPointObj: {fileID: 2522906236797354440, guid: c171d46b00bf04d489b5a7c55b83a931, type: 3}
   _shootObj: {fileID: 0}
   _pv: {fileID: 0}
+  _newShootPointDir: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &3724183295208971859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,7 +188,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2110465305499821290}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5bbba33a076e6874191fa162373a327f, type: 3}
   m_Name: 
@@ -450,7 +451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkill01: 1
-  ability: {fileID: 11400000, guid: 1b2c1511d1522c2458fc3e780989b664, type: 2}
+  ability: {fileID: 11400000, guid: bdb3e33ac269f114d85bf77bd9ed9ff1, type: 2}
 --- !u!114 &8648748878293601389
 MonoBehaviour:
   m_ObjectHideFlags: 0

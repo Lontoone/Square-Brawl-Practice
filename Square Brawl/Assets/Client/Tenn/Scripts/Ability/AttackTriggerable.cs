@@ -25,9 +25,9 @@ public class AttackTriggerable : MonoBehaviour
     {
         BulletSpawnPos = GameObject.FindGameObjectWithTag("BulletSpawnPos");
 
-        GameObject _bulletObj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bullet"), BulletSpawnPos.transform.position, BulletSpawnPos.transform.rotation);
+        //GameObject _bulletObj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bullet"), BulletSpawnPos.transform.position, BulletSpawnPos.transform.rotation);
 
-        //GameObject _bulletObj = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<ObjectsPool>().SpawnFromPool("Bullet", BulletSpawnPos.transform.position, BulletSpawnPos.transform.rotation,null);
+        GameObject _bulletObj = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<ObjectsPool>().SpawnFromPool("Bullet", BulletSpawnPos.transform.position, BulletSpawnPos.transform.rotation,null);
 
         _bullet = _bulletObj.GetComponent<Bullet>();
 
