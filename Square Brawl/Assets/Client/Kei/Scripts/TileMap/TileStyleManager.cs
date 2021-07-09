@@ -114,8 +114,9 @@ public class TileStyleManager : MonoBehaviour
         _cell.spriteRenderer.sprite = imageCollection.GetSprite(_conditionCode);
     }
 
-    public void ApplyNewStyle()
+    public void ApplyNewStyle(TileImageCollection _data)
     {
+        imageCollection = _data;
         for (int i = 0; i < TileMapManager.instance.gridCells.Count; i++)
         {
             SetCell(i);
