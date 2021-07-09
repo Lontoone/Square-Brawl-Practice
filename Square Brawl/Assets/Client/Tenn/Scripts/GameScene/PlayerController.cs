@@ -120,9 +120,9 @@ public class PlayerController : MonoBehaviour,IPunObservable
     {
         if (!_pv.IsMine)
         {
-            _rb.position = Vector2.Lerp(_rb.position, _newPos, 15 * Time.fixedDeltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, _newDir, 15 * Time.deltaTime);
-            ShootSpinMidPos.transform.rotation = Quaternion.Lerp(ShootSpinMidPos.transform.rotation, _newShootPointDir, 15 * Time.fixedDeltaTime);
+            _rb.position = Vector2.Lerp(_rb.position, _newPos, 10*Time.fixedDeltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, _newDir, 15*Time.fixedDeltaTime);
+            ShootSpinMidPos.transform.rotation = Quaternion.Lerp(ShootSpinMidPos.transform.rotation, _newShootPointDir, 15*Time.fixedDeltaTime);
         }
         else
         {
@@ -375,7 +375,8 @@ public class PlayerController : MonoBehaviour,IPunObservable
             _newShootPointDir = (Quaternion)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();
 
-            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+            //float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.001f);
             _newPos += (_rb.velocity * lag);
         }
     }

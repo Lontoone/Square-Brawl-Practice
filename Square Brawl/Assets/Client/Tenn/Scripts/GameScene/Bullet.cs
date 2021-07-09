@@ -44,7 +44,8 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     {
         if (_pv.IsMine)
         {
-            _pv.RPC("EnableObj", RpcTarget.All,transform.position,transform.rotation);
+            _pv.RPC("EnableObj", RpcTarget.All);
+            _pv.RPC("ResetPos", RpcTarget.Others, transform.position, transform.rotation);
         }
     }
 
@@ -89,7 +90,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
         else if (!_pv.IsMine)
         {
-            _rb.position = Vector2.Lerp(_rb.position, _networkPosition, 5*Time.fixedDeltaTime);
+            _rb.position = Vector2.Lerp(_rb.position, _networkPosition, 5 * Time.fixedDeltaTime);
         }
     }
 
@@ -120,11 +121,17 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     }
 
     [PunRPC]
-    public void EnableObj(Vector3 pos,Quaternion dir)
+    public void EnableObj()
     {
         gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    public void ResetPos(Vector3 pos, Quaternion dir)
+    {
         transform.position = pos;
         transform.rotation = dir;
+        _networkPosition = pos;
     }
 
 
@@ -133,16 +140,15 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(_rb.position);
-            //stream.SendNext(transform.rotation);
             stream.SendNext(_rb.velocity);
         }
         else
         {
             _networkPosition = (Vector2)stream.ReceiveNext();
-            //_networkRotation = (Quaternion)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();
 
-            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+            // float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.001f);
             _networkPosition += (_rb.velocity * lag);
         }
     }
