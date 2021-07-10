@@ -58,7 +58,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         pos = m_button_text.transform.localPosition;
         menu_current_easetype = new Easetype.Current_easetype();
         m_TextLength = m_button_text.text.Length;
-
+        charIdlePostion = new Vector3[m_TextLength]; 
         if (dotweentype == Dotweentype.m_char)
         {
             textArray = Generate(m_button_text, m_transform);
@@ -96,16 +96,17 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         string tmpstring = m_Text.text;
         char[] tmpchar = tmpstring.ToCharArray();
         TextMeshProUGUI[] textArray = new TextMeshProUGUI[length];
+        TextMeshProUGUI[] m_textArray = new TextMeshProUGUI[length];
         //Debug.Log(length + "\t" + tmpstring + "\t" + tmpchar + "\t" + textArray);
         for (int counter = 0; counter < length; counter++)
         {
             textArray[counter] = m_Text.GetComponent<TextMeshProUGUI>();
             textArray[counter].text = tmpchar[counter].ToString();
-            textArray[counter] =Instantiate(textArray[counter], m_Text.transform.position, m_Text.transform.rotation, m_transform);
+            m_textArray[counter] =Instantiate(textArray[counter], m_Text.transform.position, m_Text.transform.rotation, m_transform);
             //Debug.Log("tmpchar[" + counter + "]\t" + tmpchar[counter].ToString() + tmpchar[counter].ToString().GetType() +
             //      "\ttextArray[" + counter + "]\t" + textArray[counter].text + textArray[counter].text.GetType() + "\n");
         }
-        return textArray;
+        return m_textArray;
     }
     public void HighlightedChar()
     {
@@ -164,7 +165,8 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                     break;
 
                 case Direction.GoLeft:
-                    Debug.Log(m_button_text.text + (m_TextLength - 1 - i) + m_button_text.characterSpacing);
+                    Debug.Log("textArray[" + i + "].text" + textArray[i].text);
+                    //Debug.Log(m_button_text.text + (m_TextLength - 1 - i) + m_button_text.characterSpacing);
                     _moveSequence_char.Append(textArray[i].transform.DOLocalMove(new Vector3(pos.x + to_x + (-(m_button_text.characterSpacing *(m_TextLength - 1 - i))), pos.y + to_y), char_duration)
                                     .SetEase(menu_current_easetype.GetEasetype(char_easetype)));
                     break;
@@ -177,8 +179,8 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                 default:
                     break;
             }
-            Debug.Log("textArray[" + i + "].transform.localPosition" + textArray[i].transform.localPosition);
-            //charIdlePostion[i]= textArray[i].transform.localPosition;s
+            Debug.Log("textArray[" + i + "].text" + textArray[i].text + "textArray[" + i + "].transform.localPosition" + textArray[i].transform.localPosition);
+            charIdlePostion[i]= textArray[i].transform.localPosition;
         }
     }
 
