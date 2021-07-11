@@ -10,25 +10,36 @@ using DG.Tweening;
 using TMPro;
 namespace Easetype {}
 
-public class Play_Button : MonoBehaviour//, ISelectHandler, IDeselectHandler
+public class Play_Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     public int m_ButtonIndex;
     private Gamepad gamepad = Gamepad.current;
     private Keyboard keyboard = Keyboard.current;
+    [Header ("Play Button")]
     [SerializeField] private GameObject play_button;
     private Button button_button;
     private RectTransform button_rect;
-    private Easetype.Current_easetype current_easetype;
+    private Easetype.Current_easetype m_PlayButtonCurrentEasetype;
     [SerializeField] Easetype.Current_easetype.Easetype easetype;
-    [SerializeField] float duration =1f;
+    [SerializeField] float m_duration =1f;
+    
+    [Space(10)]
+    [Header("Aim Object")]
+    private AimAction m_aimAction;
+    [SerializeField] private GameObject m_AimObject;
+    [SerializeField] Easetype.Current_easetype.Easetype m_AimEasetype;
+    private Easetype.Current_easetype m_AimCurrentEasetype;
+    [SerializeField] float m_aimduration = 0.3f;
+    
+
     void Start()
     {
         //button_rect = play_button.transform;
         button_button = play_button.GetComponent<Button>();
-        current_easetype =new Easetype.Current_easetype();
+        m_PlayButtonCurrentEasetype = new Easetype.Current_easetype();
+        m_AimCurrentEasetype = new Easetype.Current_easetype();
     }
 
-    // Update is called once per frame
     /*void Update()
     {
         if (keyboard != null)
@@ -64,14 +75,12 @@ public class Play_Button : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private void EnterLobby() 
     {
-        //Debug.Log("easetype:" + easetype);
-        //play_button.transform.DOScale(new Vector3((Mathf.Pow(GetComponent<Renderer>().bounds.size.x, 2))/Screen.width, (Mathf.Pow(GetComponent<Renderer>().bounds.size.y, 2)) / Screen.height, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
-        play_button.transform.DOScale(new Vector3(10,10,0), duration).SetEase(current_easetype.GetEasetype(easetype));
+        play_button.transform.DOScale(new Vector3(10,10,0), m_duration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(easetype));
     }
 
     private void ExitLobby() 
     {
-        play_button.transform.DOScale(new Vector3(1, 1, 0), duration).SetEase(current_easetype.GetEasetype(easetype));
+        play_button.transform.DOScale(new Vector3(1, 1, 0), m_duration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(easetype));
     }
     /*
     private void ChangeButtonColor()
@@ -81,6 +90,20 @@ public class Play_Button : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_button.colors = cb;
 
     }
+    */
+    public virtual void OnPointerEnter(PointerEventData eventData)
+    {
+        //m_aimAction.AimFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
+        AimAction.AimFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
+    }
+
+    public virtual void OnPointerExit(PointerEventData eventData)
+    {
+        //m_aimAction.AimUnFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
+        AimAction.AimUnFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
+        
+    }
+
     public virtual void OnSelect(BaseEventData eventData)
     {
         
@@ -89,5 +112,5 @@ public class Play_Button : MonoBehaviour//, ISelectHandler, IDeselectHandler
     public virtual void OnDeselect(BaseEventData eventData)
     {
         
-    }*/
+    }
 }

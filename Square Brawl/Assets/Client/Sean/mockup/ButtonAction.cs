@@ -48,7 +48,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField] float char_duration = 1f;
     [SerializeField] private float char_outdistance = 5;
 
-    //
+    
     private bool m_MouseSelectedState = false;
     private bool m_KeySelectedState = false;
     TextMeshProUGUI[] textArray;
@@ -68,7 +68,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void HighlightedString()
     {
-        Debug.Log("HighlightedString");
+        //Debug.Log("HighlightedString");
         _moveSequence_stirng.Kill();
         _moveSequence_stirng = DOTween.Sequence();
         m_button_text.transform.localPosition = pos;
@@ -79,7 +79,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void IdleString()
     {
-        Debug.Log("IdleString");
+        //Debug.Log("IdleString");
         _moveSequence_stirng.Kill();
         _moveSequence_stirng = DOTween.Sequence();
         m_button_text.transform.localPosition = new Vector3(pos.x + to_x, pos.y + to_y, pos.z);
@@ -109,7 +109,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
     public void HighlightedChar()
     {
-        Debug.Log("HighlightedChar");
+        //Debug.Log("HighlightedChar");
         _moveSequence_char.Kill();
         _moveSequence_char = DOTween.Sequence();
 
@@ -191,6 +191,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void IdleChar()
     {
+        //Debug.Log("IdleChar");
         _moveSequence_char.Kill();
         _moveSequence_char = DOTween.Sequence();
 
