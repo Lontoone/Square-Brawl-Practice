@@ -10,7 +10,7 @@ using DG.Tweening;
 using TMPro;
 namespace Easetype {}
 
-public class Play_Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     public int m_ButtonIndex;
     private Gamepad gamepad = Gamepad.current;
