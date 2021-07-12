@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -42,22 +43,22 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
         {
             if (i < m_DefaultIndex-1)
             {
-                m_SettingOptionList[i].transform.localPosition = new Vector3(-m_outdistance, 0, 0);
+                m_SettingOptionList[i].transform.localPosition = new Vector3(-m_SettingOptionList[i].rectTransform.sizeDelta.x, 0, 0);
             }
             else if (i == m_DefaultIndex-1)
             {
             }
             else if (i > m_DefaultIndex-1)
             {
-                m_SettingOptionList[i].transform.localPosition = new Vector3(m_outdistance, 0, 0);
+                m_SettingOptionList[i].transform.localPosition = new Vector3(m_SettingOptionList[i].rectTransform.sizeDelta.x, 0, 0);
             }
         }
-        //Debug.Log(m_SettingOptionList[0].bounds); //?
+        //Debug.Log(m_SettingOptionList[0].text + "\t" + m_SettingOptionList[0] + "\t" + m_SettingOptionList[0].rectTransform.sizeDelta);
     }
     public void ChangeCurrentSettingOption()
     {
         Debug.Log("ChangeCurrentSettingOption");
-
+        
     }
 
     public void IncreaseIndex()
@@ -67,7 +68,7 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
             m_SettingSequence.Kill();
             m_SettingSequence = DOTween.Sequence();
             m_SettingSequence.Append(m_SettingOptionList[m_CurrentIndex].transform
-                                .DOLocalMoveX(-m_outdistance,m_duration))
+                                .DOLocalMoveX(-m_SettingOptionList[m_CurrentIndex].rectTransform.sizeDelta.x, m_duration))
                                 .SetEase(m_current_easetype.GetEasetype(m_easetype));
             
             m_CurrentIndex++;
@@ -86,7 +87,7 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
             m_SettingSequence.Kill();
             m_SettingSequence = DOTween.Sequence();
             m_SettingSequence.Append(m_SettingOptionList[m_CurrentIndex].transform
-                                .DOLocalMoveX(m_outdistance, m_duration))
+                                .DOLocalMoveX(m_SettingOptionList[m_CurrentIndex].rectTransform.sizeDelta.x, m_duration))
                                 .SetEase(m_current_easetype.GetEasetype(m_easetype));
             m_CurrentIndex--;
             m_SettingSequence.Append(m_SettingOptionList[m_CurrentIndex].transform
