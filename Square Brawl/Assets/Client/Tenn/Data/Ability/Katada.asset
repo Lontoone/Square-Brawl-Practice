@@ -15,8 +15,9 @@ MonoBehaviour:
   Name: Katada
   Sound: {fileID: 0}
   CoolDownTime: 0.3
+  Damage: 25
+  Speed: 15
+  Recoil: 0
+  BeElasticity: 500
   isCdCanAdd: 1
   isHaveTwoCd: 0
-  KatadaDamage: 25
-  KatadaSpeed: 15
-  BeElasticity: 500

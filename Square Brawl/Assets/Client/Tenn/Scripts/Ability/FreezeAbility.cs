@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Abilities/ChargeAbility")]
-public class ChargeAbiliy : Ability
+[CreateAssetMenu(menuName = "Abilities/FreezeAbility")]
+public class FreezeAbility : Ability
 {
     public override void Initalize(GameObject _obj)
     {
         _attack = _obj.GetComponent<AttackTriggerable>();
-        _attack.WeaponDamage = Damage;
-        _attack.WeaponSpeed = Speed;
-        _attack.BeElasticity = BeElasticity;
+        _attack.WeaponRecoil = Recoil;
     }
 
     public override void Activate()
     {
-        _attack.Charge();
+        _attack.Freeze();
     }
 }

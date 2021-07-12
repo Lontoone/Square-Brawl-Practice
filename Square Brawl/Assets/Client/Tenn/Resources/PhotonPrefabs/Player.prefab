@@ -137,14 +137,18 @@ MonoBehaviour:
   DirY: 0
   ShootSpinAngle: 0
   _inputPos: {x: 0, y: 0}
+  IsFreeze: 0
+  IsFreezeChange: 0
   IsCharge: 0
-  IsChargeChange: 0
   FootOffset: 0
   GroundDistance: 0.45
   PlayerWidth: 0
   GroundLayer:
     serializedVersion: 2
     m_Bits: 256
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 0
   ShootSpinMidPos: {fileID: 5898218076483180907}
   SpinObject: {fileID: 0}
   ShootDir: {fileID: 0}
@@ -470,7 +474,8 @@ MonoBehaviour:
   WeaponScaleValue: 0
   IsDontContinuous: 0
   IsDontShootStraight: 0
-  IsKatadaReverse: 0
+  FreezeTime: 0
+  IsSpeicalBool: 0
 --- !u!114 &5771716123695693227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,7 +564,8 @@ MonoBehaviour:
   WeaponScaleValue: 0
   IsDontContinuous: 0
   IsDontShootStraight: 0
-  IsKatadaReverse: 0
+  FreezeTime: 0
+  IsSpeicalBool: 0
 --- !u!114 &762097059166178785
 MonoBehaviour:
   m_ObjectHideFlags: 0

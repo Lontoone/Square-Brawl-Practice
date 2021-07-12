@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     public float BulletScaleValue;
     public float _OriginSpeed;
 
-    private Vector3 _mPrevPos;
+    private Vector3 _prevPos;
     public Vector3 _pos;
 
     public bool IsDontShootStraight;
@@ -55,35 +55,9 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
 
     void Update()
     {
-        if(_OriginSpeed != ShootSpeed&& _pv.IsMine)
-        {
-            _pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight);
-            if (IsDontShootStraight)
-            {
-                transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-10, 11));
-            }
-            _OriginSpeed = ShootSpeed;
-        }
+        ResetValue();//Reset Bullet Value
 
-        _mPrevPos = transform.position;
-
-        RaycastHit2D[] hits = Physics2D.RaycastAll(_mPrevPos, (transform.position - _mPrevPos).normalized, (transform.position - _mPrevPos).magnitude);
-        for (int i = 0; i < hits.Length; i++)
-        {
-            if (hits[i].collider.gameObject.CompareTag("Player"))
-            {
-                PlayerController _playerController = hits[i].collider.gameObject.GetComponent<PlayerController>();
-                if (_pv.IsMine != _playerController._pv.IsMine&& _playerController._pv.IsMine)
-                {
-                    float DirX = Mathf.Cos(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
-                    float DirY = Mathf.Sin(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
-                    _playerController.TakeDamage(ShootDamage, BeShootElasticity, DirX, DirY);
-                    _pv.RPC("DisableObj", RpcTarget.All);
-                }
-                //gameObject.SetActive(false);
-            }
-        }
-        //transform.Translate(Vector2.right * ShootSpeed * Time.deltaTime);
+        BulletCollider();//Bullet Collider Raycast
     }
 
     void FixedUpdate()
@@ -98,16 +72,48 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    void BulletCollider()
     {
-        if (other.gameObject.CompareTag("Ground"))
+        _prevPos = transform.position + new Vector3(transform.localScale.x / 2 , 0 , 0 );
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(_prevPos, (transform.position - _prevPos).normalized, (transform.position - _prevPos).magnitude);
+
+        for (int i = 0; i < hits.Length; i++)
         {
-            if (_pv.IsMine)
+            if (hits[i].collider.gameObject.CompareTag("Player"))
             {
-                _pv.RPC("DisableObj", RpcTarget.All);
+                PlayerController _playerController = hits[i].collider.gameObject.GetComponent<PlayerController>();
+                if (_pv.IsMine != _playerController._pv.IsMine && _playerController._pv.IsMine)
+                {
+                    float DirX = Mathf.Cos(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
+                    float DirY = Mathf.Sin(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
+                    _playerController.TakeDamage(ShootDamage, BeShootElasticity, DirX, DirY);
+                    _pv.RPC("DisableObj", RpcTarget.All);
+                }
+            }
+            else if (hits[i].collider.gameObject.CompareTag("Ground"))
+            {
+                if (_pv.IsMine)
+                {
+                    _pv.RPC("DisableObj", RpcTarget.All);
+                }
             }
         }
     }
+
+    void ResetValue()
+    {
+        if (_OriginSpeed != ShootSpeed && _pv.IsMine)
+        {
+            _pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight);
+            if (IsDontShootStraight)
+            {
+                transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-10, 11));
+            }
+            _OriginSpeed = ShootSpeed;
+        }
+    }
+
     [PunRPC]
     public void SetStatus(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot)
     {

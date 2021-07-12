@@ -13,7 +13,10 @@ public class AttackTriggerable : MonoBehaviour
     [HideInInspector] public float WeaponScaleValue;
     [HideInInspector] public bool IsDontContinuous;
     [HideInInspector] public bool IsDontShootStraight;
-    public bool IsKatadaReverse;
+
+    public float FreezeTime;
+
+    public bool IsSpeicalBool;
 
     private GameObject _bulletSpawnPos;
     private GameObject _karataSpawnPos;
@@ -30,7 +33,6 @@ public class AttackTriggerable : MonoBehaviour
 
     public void Fire()
     {
-
         //GameObject _bulletObj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bullet"), BulletSpawnPos.transform.position, BulletSpawnPos.transform.rotation);
 
         GameObject _bulletObj = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<ObjectsPool>().SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation,null);
@@ -53,24 +55,38 @@ public class AttackTriggerable : MonoBehaviour
         _playerController.PlayerRecoil(-WeaponSpeed);
         _playerController.BeElasticity = BeElasticity;
         _playerController.Damage = WeaponDamage;
-        StartCoroutine(ChargeIsFalse());
+        StartCoroutine(IsBoolChangeFalse());
     }
 
     public void Katada()
     {
-        IsKatadaReverse = !IsKatadaReverse;
+        IsSpeicalBool = !IsSpeicalBool;
         //GameObject _katadaObj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Katada"), BulletSpawnPos.transform.position, BulletSpawnPos.transform.rotation);
         GameObject _katadaObj = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<ObjectsPool>().SpawnFromPool("Katada", _karataSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         _katada = _katadaObj.GetComponent<Katada>();
-        _katada.IsKatadaReverse = IsKatadaReverse;
+        _katada.IsKatadaReverse = IsSpeicalBool;
         _katada.Damage = WeaponDamage;
         _katada.BeAttackElasticity = BeElasticity;
         _katada.Speed = WeaponSpeed;
     }
 
-    IEnumerator ChargeIsFalse()
+    public void Freeze()
+    {
+        _playerController.IsFreeze = true;
+        _playerController.PlayerRecoil(WeaponRecoil);
+        StartCoroutine(IsFreezeChangeFalse());
+    }
+
+    IEnumerator IsBoolChangeFalse()
     {
         yield return new WaitForSeconds(0.5f);
         _playerController.IsCharge = false;
+    }
+
+    IEnumerator IsFreezeChangeFalse()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _playerController.IsFreeze = false;
+        _playerController.IsFreezeChange = false;
     }
 }

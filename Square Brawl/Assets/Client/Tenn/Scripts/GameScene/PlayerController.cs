@@ -21,11 +21,14 @@ public class PlayerController : MonoBehaviour,IPunObservable
     public float BeElasticity;//Player BeElasticity
     public float DirX, DirY;
     public float ShootSpinAngle;
+    private Vector3 _freezeLeftRay;
     public Vector2 _inputPos;//Keyboard Input Pos
 
     private bool _canSpin;//Player Can Spin?
+    public bool IsFreeze;
+    public bool IsFreezeChange;
     public bool IsCharge;
-    public bool IsChargeChange;
+    private bool _isChargeChange;
 
     [HeaderAttribute("GroundCheck Setting")]
     public float FootOffset;
@@ -38,7 +41,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
     private bool _isCheckSpin;//Is Check Spin?
 
     public LayerMask GroundLayer;
-
+    public LayerMask PlayerLayer;
 
     [HeaderAttribute("Other Setting")]
     public Transform ShootSpinMidPos;//ShootSpinMid Object Pos
@@ -105,16 +108,22 @@ public class PlayerController : MonoBehaviour,IPunObservable
         }
         else
         {
-            if (IsChargeChange != IsCharge)
+            if (_isChargeChange != IsCharge)
             {
                 DirX = Mathf.Cos(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
                 DirY = Mathf.Sin(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
                 _pv.RPC("SetStatus", RpcTarget.All, IsCharge, BeElasticity, Damage, DirX, DirY);
-                IsChargeChange = IsCharge;
+                _isChargeChange = IsCharge;
             }
 
             GroundCheckEvent();//Is Grounding?
         }
+
+        if (IsFreeze)
+        {
+            PlayerFreezeRaycast(2, 5);
+        }
+        
     }
     void FixedUpdate()
     {
@@ -264,6 +273,25 @@ public class PlayerController : MonoBehaviour,IPunObservable
         DirY = Mathf.Sin(ShootSpinMidPos.eulerAngles.z * Mathf.PI / 180);
 
         _rb.AddForce(-Recoil * new Vector2(DirX, DirY));
+    }
+
+    void PlayerFreezeRaycast(float _viewDistance, int viewCount)
+    {
+        if (!IsFreezeChange)
+        {
+            _freezeLeftRay = Quaternion.Euler(0, 0, ShootSpinMidPos.eulerAngles.z - 22.5f) * Vector2.right * _viewDistance;
+            IsFreezeChange = true;
+        }
+
+        for (int i = 0; i <= viewCount; i++)
+        {
+            Vector3 _freezeRay = Quaternion.Euler(0, 0, (45 / viewCount) * i) * _freezeLeftRay;
+            Vector3 _pos = transform.position;
+            int mask = LayerMask.GetMask("Player");
+            RaycastHit2D FreezeHit = Physics2D.Raycast(_pos, _freezeRay, _viewDistance, mask);
+            Color color = FreezeHit ? Color.red : Color.green;
+            Debug.DrawLine(_pos, _pos + _freezeRay, color);
+        }
     }
 
     //Ground Check
