@@ -68,7 +68,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         }
         else if (!_pv.IsMine)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, _newSyncDir, 30 * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, _newSyncDir, 15 * Time.deltaTime);
         }
 
     }
