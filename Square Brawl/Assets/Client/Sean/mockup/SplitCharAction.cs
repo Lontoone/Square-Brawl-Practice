@@ -16,7 +16,10 @@ namespace ToSplitChar
         public struct SplitChar
         {
             public TextMeshProUGUI m_Text;
-            
+            public Transform m_transform;
+            [HideInInspector]
+            public TextMeshProUGUI[] textArray;
+
             [Space(15)]
             public Direction m_Direction;
             public float ToX;
@@ -29,21 +32,31 @@ namespace ToSplitChar
             public float m_Outdistance;
         }
 
-        [SerializeField] public SplitChar m_SplitChar;
-        private TextMeshProUGUI[] textArray;
+        //private TextMeshProUGUI[] m_SplitChar.textArray;
         private Sequence _moveSequence_char;
         private Vector3 pos;
         private Vector3[] charIdlePostion;
+        private int m_TextLength;
 
 
-        public void SetUp()
+        public SplitChar SetUp(SplitChar m_Text)
         {
-            Generate(m_SplitChar.m_Text, m_SplitChar.m_Text.transform);
-            pos = m_SplitChar.m_Text.transform.localPosition;
-            charIdlePostion = new Vector3[m_SplitChar.m_Text.text.Length];
+            m_TextLength = m_Text.m_Text.text.Length;
+            m_current_easetype = new Easetype.Current_easetype();
+            m_Text.textArray = Generate(m_Text.m_Text, m_Text.m_transform);
+            pos = m_Text.m_Text.transform.localPosition;
+            charIdlePostion = new Vector3[m_TextLength];
+
+            return m_Text;
+            //Debug.Log(m_TextLength);
+            /*
+            for (int i = 0; i < m_TextLength; i++)
+            {
+                Debug.Log(m_SplitChar.m_Text.name + "\t" + i + m_SplitChar.textArray[i].text);
+            }*/
         }
 
-        public TextMeshProUGUI[] Generate(TextMeshProUGUI m_Text, Transform m_transform)
+        private TextMeshProUGUI[] Generate(TextMeshProUGUI m_Text, Transform m_transform)
         {
             int length = m_Text.text.Length;
             string tmpstring = m_Text.text;
@@ -53,87 +66,88 @@ namespace ToSplitChar
 
             for (int counter = 0; counter < length; counter++)
             {
-                textArray[counter] = GetComponent<TextMeshProUGUI>();
+                textArray[counter] = m_Text.GetComponent<TextMeshProUGUI>();
                 textArray[counter].text = tmpchar[counter].ToString();
                 m_textArray[counter] =Instantiate(textArray[counter], m_Text.transform.position, m_Text.transform.rotation, m_transform);
             }
             return m_textArray;
         }
-        /*   //todo
+
         public void HighlightedChar(SplitChar m_SplitChar)
         {
+
             //Debug.Log("HighlightedChar");
             _moveSequence_char.Kill();
             _moveSequence_char = DOTween.Sequence();
 
-            for (int i = 0; i < m_SplitChar.m_Text.text.Length; i++)
+            for (int i = 0; i < m_TextLength; i++)
             {
-                textArray[i].transform.localPosition = pos;
+                m_SplitChar.textArray[i].transform.localPosition = pos;
                 switch (m_SplitChar.m_Direction)
                 {
 
                     case Direction.GoUp://todo
-                        if (i <= (m_SplitChar.m_Text.text.Length - 1) / 2)
+                        if (i <= (m_TextLength - 1) / 2)
                         {
-                            _moveSequence_char.Append(textArray[i].transform
+                            _moveSequence_char.Append(m_SplitChar.textArray[i].transform
                                                 .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX, pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration / 2)
                                                 .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)))
 
-                                              .Join(textArray[(m_SplitChar.m_Text.text.Length - 1) - i].transform
+                                              .Join(m_SplitChar.textArray[(m_TextLength - 1) - i].transform
                                                 .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX, pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration / 2)
                                                 .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)))
 
-                                              .Append((textArray[i].transform
-                                                .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX + (-(m_SplitChar.m_Text.characterSpacing * (((m_SplitChar.m_Text.text.Length - 1) / 2) - i + 0.5f))), pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration))
+                                              .Append((m_SplitChar.textArray[i].transform
+                                                .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX + (-(m_SplitChar.m_Text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f))), pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration))
                                                 .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)))
 
-                                              .Join((textArray[(m_SplitChar.m_Text.text.Length - 1) - i].transform
-                                                .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX + (m_SplitChar.m_Text.characterSpacing * (((m_SplitChar.m_Text.text.Length - 1) / 2) - i + 0.5f)), pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration))
+                                              .Join((m_SplitChar.textArray[(m_TextLength - 1) - i].transform
+                                                .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX + (m_SplitChar.m_Text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f)), pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration))
                                                 .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)));
 
-                            charIdlePostion[i] = new Vector3(pos.x + m_SplitChar.ToX + (-(m_SplitChar.m_Text.characterSpacing * (((m_SplitChar.m_Text.text.Length - 1) / 2) - i + 0.5f))), pos.y + m_SplitChar.ToY);
-                            charIdlePostion[(m_SplitChar.m_Text.text.Length - 1) - i] = new Vector3(pos.x + m_SplitChar.ToX + (m_SplitChar.m_Text.characterSpacing * (((m_SplitChar.m_Text.text.Length - 1) / 2) - i + 0.5f)), pos.y + m_SplitChar.ToY);
+                            charIdlePostion[i] = new Vector3(pos.x + m_SplitChar.ToX + (-(m_SplitChar.m_Text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f))), pos.y + m_SplitChar.ToY);
+                            charIdlePostion[(m_TextLength - 1) - i] = new Vector3(pos.x + m_SplitChar.ToX + (m_SplitChar.m_Text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f)), pos.y + m_SplitChar.ToY);
                         }
                         break;
 
                     case Direction.GoDown://todo
-                        if (i <= (m_SplitChar.m_Text.text.Length - 1) / 2)
+                        if (i <= (m_TextLength - 1) / 2)
                         {
-                            _moveSequence_char.Append(textArray[i].transform
-                                                .DOLocalMove(new Vector3(pos.x + to_x, pos.y + to_y), char_duration / 2)
-                                                .SetEase(menu_current_easetype.GetEasetype(char_easetype)))
+                            _moveSequence_char.Append(m_SplitChar.textArray[i].transform
+                                                .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX, pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration / 2)
+                                                .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)))
 
-                                              .Join(textArray[(m_TextLength - 1) - i].transform
-                                                .DOLocalMove(new Vector3(pos.x + to_x, pos.y + to_y), char_duration / 2)
-                                                .SetEase(menu_current_easetype.GetEasetype(char_easetype)))
+                                              .Join(m_SplitChar.textArray[(m_TextLength - 1) - i].transform
+                                                .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX, pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration / 2)
+                                                .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)))
 
-                                              .Append((textArray[i].transform
-                                                .DOLocalMove(new Vector3(pos.x + to_x + (-(m_button_text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f))), pos.y + to_y), char_duration))
-                                                .SetEase(menu_current_easetype.GetEasetype(char_easetype)))
+                                              .Append((m_SplitChar.textArray[i].transform
+                                                .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX + (-(m_SplitChar.m_Text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f))), pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration))
+                                                .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)))
 
-                                              .Join((textArray[(m_TextLength - 1) - i].transform
-                                                .DOLocalMove(new Vector3(pos.x + to_x + (m_button_text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f)), pos.y + to_y), char_duration))
-                                                .SetEase(menu_current_easetype.GetEasetype(char_easetype)));
+                                              .Join((m_SplitChar.textArray[(m_TextLength - 1) - i].transform
+                                                .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX + (m_SplitChar.m_Text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f)), pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration))
+                                                .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)));
 
-                            charIdlePostion[i] = new Vector3(pos.x + to_x + (-(m_button_text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f))), pos.y + to_y);
-                            charIdlePostion[(m_TextLength - 1) - i] = new Vector3(pos.x + to_x + (m_button_text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f)), pos.y + to_y);
+                            charIdlePostion[i] = new Vector3(pos.x + m_SplitChar.ToX + (-(m_SplitChar.m_Text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f))), pos.y + m_SplitChar.ToY);
+                            charIdlePostion[(m_TextLength - 1) - i] = new Vector3(pos.x + m_SplitChar.ToX + (m_SplitChar.m_Text.characterSpacing * (((m_TextLength - 1) / 2) - i + 0.5f)), pos.y + m_SplitChar.ToY);
                         }
                         break;
 
                     case Direction.GoLeft:
-                        _moveSequence_char.Append(textArray[i].transform
-                                            .DOLocalMove(new Vector3(pos.x + to_x + (-(m_button_text.characterSpacing * (m_TextLength - 1 - i))), pos.y + to_y), char_duration)
-                                            .SetEase(menu_current_easetype.GetEasetype(char_easetype)));
+                        _moveSequence_char.Append(m_SplitChar.textArray[i].transform
+                                            .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX + (-(m_SplitChar.m_Text.characterSpacing * (m_TextLength - 1 - i))), pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration)
+                                            .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)));
 
-                        charIdlePostion[i] = new Vector3(pos.x + to_x + (-(m_button_text.characterSpacing * (m_TextLength - 1 - i))), pos.y + to_y);
+                        charIdlePostion[i] = new Vector3(pos.x + m_SplitChar.ToX + (-(m_SplitChar.m_Text.characterSpacing * (m_TextLength - 1 - i))), pos.y + m_SplitChar.ToY);
                         break;
 
                     case Direction.GoRight:
-                        _moveSequence_char.Append(textArray[(m_TextLength - 1) - i].transform
-                                            .DOLocalMove(new Vector3(pos.x + to_x + (m_button_text.characterSpacing * ((m_TextLength - 1) - i)), pos.y + to_y), char_duration)
-                                            .SetEase(menu_current_easetype.GetEasetype(char_easetype)));
+                        _moveSequence_char.Append(m_SplitChar.textArray[(m_TextLength - 1) - i].transform
+                                            .DOLocalMove(new Vector3(pos.x + m_SplitChar.ToX + (m_SplitChar.m_Text.characterSpacing * ((m_TextLength - 1) - i)), pos.y + m_SplitChar.ToY), m_SplitChar.m_Duration)
+                                            .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)));
 
-                        charIdlePostion[(m_TextLength - 1) - i] = new Vector3(pos.x + to_x + (m_button_text.characterSpacing * ((m_TextLength - 1) - i)), pos.y + to_y);
+                        charIdlePostion[(m_TextLength - 1) - i] = new Vector3(pos.x + m_SplitChar.ToX + (m_SplitChar.m_Text.characterSpacing * ((m_TextLength - 1) - i)), pos.y + m_SplitChar.ToY);
                         break;
 
                     default:
@@ -142,7 +156,7 @@ namespace ToSplitChar
             }
         }
 
-        public void IdleChar()
+        public void IdleChar(SplitChar m_SplitChar)
         {
             //Debug.Log("IdleChar");
             _moveSequence_char.Kill();
@@ -150,18 +164,18 @@ namespace ToSplitChar
 
             for (int i = 0; i < m_TextLength; i++)
             {
-                switch (direction)
+                switch (m_SplitChar.m_Direction)
                 {
                     case Direction.GoUp:
                         if (i <= (m_TextLength - 1) / 2)
                         {
-                            _moveSequence_char.Append(textArray[((m_TextLength - 1) / 2) - i].transform
-                                                .DOLocalMove(new Vector3(charIdlePostion[((m_TextLength - 1) / 2) - i].x + to_x, charIdlePostion[((m_TextLength - 1) / 2) - i].y + to_y * stirng_outdistance), char_duration)
-                                                .SetEase(menu_current_easetype.GetEasetype(char_easetype)))
+                            _moveSequence_char.Append(m_SplitChar.textArray[((m_TextLength - 1) / 2) - i].transform
+                                                .DOLocalMove(new Vector3(charIdlePostion[((m_TextLength - 1) / 2) - i].x + m_SplitChar.ToX, charIdlePostion[((m_TextLength - 1) / 2) - i].y + m_SplitChar.ToY * m_SplitChar.m_Outdistance), m_SplitChar.m_Duration)
+                                                .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)))
 
-                                              .Join(textArray[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].transform
-                                                .DOLocalMove(new Vector3(charIdlePostion[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].x + to_x, charIdlePostion[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].y + to_y * stirng_outdistance), char_duration)
-                                                .SetEase(menu_current_easetype.GetEasetype(char_easetype)));
+                                              .Join(m_SplitChar.textArray[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].transform
+                                                .DOLocalMove(new Vector3(charIdlePostion[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].x + m_SplitChar.ToX, charIdlePostion[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].y + m_SplitChar.ToY * m_SplitChar.m_Outdistance), m_SplitChar.m_Duration)
+                                                .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)));
 
                         }
                         break;
@@ -169,32 +183,32 @@ namespace ToSplitChar
                     case Direction.GoDown:
                         if (i <= (m_TextLength - 1) / 2)
                         {
-                            _moveSequence_char.Append(textArray[((m_TextLength - 1) / 2) - i].transform
-                                                .DOLocalMove(new Vector3(charIdlePostion[((m_TextLength - 1) / 2) - i].x + to_x, charIdlePostion[((m_TextLength - 1) / 2) - i].y + to_y * stirng_outdistance), char_duration)
-                                                .SetEase(menu_current_easetype.GetEasetype(char_easetype)))
+                            _moveSequence_char.Append(m_SplitChar.textArray[((m_TextLength - 1) / 2) - i].transform
+                                                .DOLocalMove(new Vector3(charIdlePostion[((m_TextLength - 1) / 2) - i].x + m_SplitChar.ToX, charIdlePostion[((m_TextLength - 1) / 2) - i].y + m_SplitChar.ToY * m_SplitChar.m_Outdistance), m_SplitChar.m_Duration)
+                                                .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)))
 
-                                              .Join(textArray[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].transform
-                                                .DOLocalMove(new Vector3(charIdlePostion[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].x + to_x, charIdlePostion[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].y + to_y * stirng_outdistance), char_duration)
-                                                .SetEase(menu_current_easetype.GetEasetype(char_easetype)));
+                                              .Join(m_SplitChar.textArray[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].transform
+                                                .DOLocalMove(new Vector3(charIdlePostion[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].x + m_SplitChar.ToX, charIdlePostion[((m_TextLength - 1) + i) - ((m_TextLength - 1) / 2)].y + m_SplitChar.ToY * m_SplitChar.m_Outdistance), m_SplitChar.m_Duration)
+                                                .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)));
                         }
                         break;
 
                     case Direction.GoLeft:
-                        _moveSequence_char.Append(textArray[i].transform
-                                            .DOLocalMove(new Vector3(charIdlePostion[i].x + (to_x * char_outdistance) + (-(m_button_text.characterSpacing * (m_TextLength - 1 - i))), charIdlePostion[i].y + to_y), char_duration)
-                                            .SetEase(menu_current_easetype.GetEasetype(char_easetype)));
+                        _moveSequence_char.Append(m_SplitChar.textArray[i].transform
+                                            .DOLocalMove(new Vector3(charIdlePostion[i].x + (m_SplitChar.ToX * m_SplitChar.m_Outdistance) + (-(m_SplitChar.m_Text.characterSpacing * (m_TextLength - 1 - i))), charIdlePostion[i].y + m_SplitChar.ToY), m_SplitChar.m_Duration)
+                                            .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)));
                         break;
 
                     case Direction.GoRight:
-                        _moveSequence_char.Append(textArray[(m_TextLength - 1) - i].transform
-                                            .DOLocalMove(new Vector3(charIdlePostion[(m_TextLength - 1) - i].x + (to_x * char_outdistance) + (m_button_text.characterSpacing * ((m_TextLength - 1) - i)), charIdlePostion[(m_TextLength - 1) - i].y + to_y), char_duration)
-                                            .SetEase(menu_current_easetype.GetEasetype(char_easetype)));
+                        _moveSequence_char.Append(m_SplitChar.textArray[(m_TextLength - 1) - i].transform
+                                            .DOLocalMove(new Vector3(charIdlePostion[(m_TextLength - 1) - i].x + (m_SplitChar.ToX * m_SplitChar.m_Outdistance) + (m_SplitChar.m_Text.characterSpacing * ((m_TextLength - 1) - i)), charIdlePostion[(m_TextLength - 1) - i].y + m_SplitChar.ToY), m_SplitChar.m_Duration)
+                                            .SetEase(m_current_easetype.GetEasetype(m_SplitChar.m_Easetype)));
                         break;
 
                     default:
                         break;
                 }
             }
-        }*/
+        }
     }
 }

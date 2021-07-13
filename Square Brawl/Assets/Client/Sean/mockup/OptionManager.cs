@@ -27,7 +27,10 @@ public class OptionManager : MonoBehaviour
             }
             else
             {
-                m_Option[i].GetComponent<ButtonAction>().IdleChar();
+                m_Option[i].GetComponent<ButtonAction>().SplitCharAction.IdleChar(m_Option[i].GetComponent<ButtonAction>().m_Char);
+                m_Option[i].GetComponent<ButtonAction>().IdleIcon();
+                m_Option[i].GetComponent<ButtonAction>().m_MouseSelectedState = false;
+                m_Option[i].GetComponent<ButtonAction>().m_KeySelectedState = false;
             }
         }
     }

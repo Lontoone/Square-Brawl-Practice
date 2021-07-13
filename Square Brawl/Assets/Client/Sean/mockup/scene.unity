@@ -2488,6 +2488,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.ToX
+      value: -350
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_duration
       value: 0.5
       objectReference: {fileID: 0}
@@ -2524,8 +2528,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.m_Direction
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: stirng_outdistance
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.m_Outdistance
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8549213684443351076, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_Name
@@ -3572,10 +3584,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ButtonIndex: 1
-  m_button: {fileID: 614112544}
+  m_button: {fileID: 882569796}
   m_Icon: {fileID: 430150084}
   m_button_text: {fileID: 882569798}
-  m_transform: {fileID: 1584937354}
   m_AimObject: {fileID: 1175739082}
   to_x: 350
   to_y: 0
@@ -3583,10 +3594,17 @@ MonoBehaviour:
   string_easetype: 0
   string_duration: 1
   stirng_outdistance: 5
-  direction: 3
-  char_easetype: 13
-  char_duration: 0.05
-  char_outdistance: 5
+  SplitCharAction: {fileID: 0}
+  m_Char:
+    m_Text: {fileID: 882569798}
+    m_transform: {fileID: 1584937354}
+    textArray: []
+    m_Direction: 3
+    ToX: 350
+    ToY: 0
+    m_Easetype: 0
+    m_Duration: 0.03
+    m_Outdistance: 5
 --- !u!1001 &624657942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6204,7 +6222,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: to_x
-      value: 350
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: easetype
@@ -6213,6 +6231,10 @@ PrefabInstance:
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: direction
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.ToX
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_duration
@@ -6251,8 +6273,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.m_Direction
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: stirng_outdistance
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.m_Outdistance
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8549213684443351076, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_Name
@@ -7322,6 +7352,10 @@ PrefabInstance:
       value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.ToY
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_duration
       value: 0.5
       objectReference: {fileID: 0}
@@ -7360,6 +7394,10 @@ PrefabInstance:
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: stirng_outdistance
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.m_Outdistance
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8549213684443351076, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_Name
@@ -7785,10 +7823,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ButtonIndex: 0
-  m_button: {fileID: 1218993869}
+  m_button: {fileID: 1779951523}
   m_Icon: {fileID: 1666969633}
   m_button_text: {fileID: 1779951525}
-  m_transform: {fileID: 738547338}
   m_AimObject: {fileID: 1175739082}
   to_x: 350
   to_y: 0
@@ -7796,10 +7833,17 @@ MonoBehaviour:
   string_easetype: 0
   string_duration: 1
   stirng_outdistance: 5
-  direction: 3
-  char_easetype: 13
-  char_duration: 0.05
-  char_outdistance: 5
+  SplitCharAction: {fileID: 0}
+  m_Char:
+    m_Text: {fileID: 1779951525}
+    m_transform: {fileID: 738547338}
+    textArray: []
+    m_Direction: 3
+    ToX: 350
+    ToY: 0
+    m_Easetype: 0
+    m_Duration: 0.03
+    m_Outdistance: 5
 --- !u!1001 &1226527597
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8196,6 +8240,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.ToX
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_duration
       value: 0.5
       objectReference: {fileID: 0}
@@ -8222,6 +8270,14 @@ PrefabInstance:
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_outdistance
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.m_Direction
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.m_Outdistance
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8549213684443351076, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_Name
@@ -8521,14 +8577,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c32a9e61dc5064194119d01da207b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SplitChar:
-    m_Text: {fileID: 0}
-    m_Direction: 0
-    ToX: 0
-    ToY: 0
-    m_Easetype: 0
-    m_Duration: 0
-    m_Outdistance: 0
 --- !u!114 &1282370059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9378,6 +9426,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.ToY
+      value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_duration
       value: 0.5
       objectReference: {fileID: 0}
@@ -9414,8 +9466,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.m_Direction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: stirng_outdistance
-      value: 5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118956296709806560, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
+      propertyPath: m_Char.m_Outdistance
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8549213684443351076, guid: dc0e994de046e6b47a504757cc9e3896, type: 3}
       propertyPath: m_Name
@@ -13762,10 +13822,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ButtonIndex: 4
-  m_button: {fileID: 2549637379523355103}
+  m_button: {fileID: 13805070523974856}
   m_Icon: {fileID: 0}
   m_button_text: {fileID: 8656981593789616901}
-  m_transform: {fileID: 2054267015463971008}
   m_AimObject: {fileID: 1175739082}
   to_x: 350
   to_y: 0
@@ -13773,10 +13832,17 @@ MonoBehaviour:
   string_easetype: 0
   string_duration: 1
   stirng_outdistance: 5
-  direction: 3
-  char_easetype: 13
-  char_duration: 0.08
-  char_outdistance: 5
+  SplitCharAction: {fileID: 0}
+  m_Char:
+    m_Text: {fileID: 8656981593789616901}
+    m_transform: {fileID: 2054267015463971008}
+    textArray: []
+    m_Direction: 3
+    ToX: 350
+    ToY: 0
+    m_Easetype: 0
+    m_Duration: 0.03
+    m_Outdistance: 5
 --- !u!114 &7087975126425273130
 MonoBehaviour:
   m_ObjectHideFlags: 0

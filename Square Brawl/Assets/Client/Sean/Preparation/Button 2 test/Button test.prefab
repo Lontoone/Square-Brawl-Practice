@@ -637,16 +637,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ButtonIndex: 0
-  m_button: {fileID: 2258553339206323217}
+  m_button: {fileID: 4324815020589852934}
+  m_Icon: {fileID: 0}
   m_button_text: {fileID: 4906136465232805579}
   m_transform: {fileID: 2357606972631434510}
   m_AimObject: {fileID: 0}
   to_x: 300
   to_y: 0
   dotweentype: 0
-  easetype: 21
-  m_duration: 1
-  m_outdistance: 5
+  string_easetype: 0
+  string_duration: 1
+  stirng_outdistance: 5
+  SplitCharAction: {fileID: 0}
+  m_Char:
+    m_Text: {fileID: 4906136465232805579}
+    m_transform: {fileID: 2357606972631434510}
+    textArray: []
+    m_Direction: 0
+    ToX: 0
+    ToY: 0
+    m_Easetype: 12
+    m_Duration: 0.08
+    m_Outdistance: 5
 --- !u!114 &2258553339206323217
 MonoBehaviour:
   m_ObjectHideFlags: 0
