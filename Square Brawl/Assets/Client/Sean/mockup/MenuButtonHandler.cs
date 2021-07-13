@@ -13,8 +13,8 @@ public class MenuButtonHandler : MonoBehaviour
     [SerializeField] private GameObject m_ButtonDown;
     [SerializeField] private GameObject m_ButtonLeft;
     [SerializeField] private GameObject m_ButtonRight;
-    public GameObject[] m_ButtonArray;
-    public MenuButtonHandler(GameObject[] m_ButtonArray) { this.m_ButtonArray = m_ButtonArray; }
+    [HideInInspector]
+    public static int m_CurrentIndex;
 
     [Space (10)]
     [SerializeField] private float m_Moveduration = 0.5f;

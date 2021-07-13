@@ -33,12 +33,29 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
     [SerializeField] private float to_y;
     private Vector3 pos;
 
+    [SerializeField] private Color32 m_Green;
+    [SerializeField] private Color32 m_Orange;
+    [SerializeField] private Color32 m_Red;
+    [SerializeField] private Color32 m_Blue;
+
+    public static Color32 green;
+    public static Color32 orange;
+    public static Color32 red;
+    public static Color32 blue;
+
+
     private void Awake()
     {
+        m_Option.SetActive(false);
         scene_current_easetype = new Easetype.Current_easetype();
+        green = m_Green;
+        orange = m_Orange;
+        red = m_Red;
+        blue = m_Blue;
     }
     void Start()
     {
+        
         //pos = m_Menu.transform.localPosition;
     }
 
@@ -72,6 +89,7 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
     }
     public void EnterOption()
     {
+        m_Option.SetActive(true);
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + to_x, m_Menu.transform.localPosition.y + to_y,0),duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_Option.transform.DOLocalMove(new Vector3(0, m_Option.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
@@ -79,6 +97,7 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     public void ExitOption()
     {
+        m_Option.SetActive(false);
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_Option.transform.DOLocalMove(new Vector3(Screen.width, m_Option.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));

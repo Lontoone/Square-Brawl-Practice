@@ -15,13 +15,12 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
     [SerializeField] private Button m_Header;
     //[SerializeField] private TextMeshProUGUI m_PropertyReference;
     [SerializeField] private GameObject m_Dot;
-    [ColorUsage(true)]
-    [SerializeField] private Color m_Color;
+    
     [SerializeField] private GameObject m_LeftButton;
     [SerializeField] private GameObject m_RightButton;
     [Space (10)]
     [SerializeField] private int m_DefaultIndex;
-    [SerializeField] private TextMeshProUGUI[] m_SettingOptionList;
+    [SerializeField] private TextMeshProUGUI[] m_SettingSelectionList;
 
     private int m_CurrentIndex = 0;
 
@@ -39,18 +38,18 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
         
         m_current_easetype = new Easetype.Current_easetype();
         m_CurrentIndex = m_DefaultIndex-1;
-        for (int i = 0;i < m_SettingOptionList.Length ;i++ )
+        for (int i = 0;i < m_SettingSelectionList.Length ;i++ )
         {
             if (i < m_DefaultIndex-1)
             {
-                m_SettingOptionList[i].transform.localPosition = new Vector3(-m_SettingOptionList[i].rectTransform.sizeDelta.x, 0, 0);
+                m_SettingSelectionList[i].transform.localPosition = new Vector3(-m_SettingSelectionList[i].rectTransform.sizeDelta.x, 0, 0);
             }
             else if (i == m_DefaultIndex-1)
             {
             }
             else if (i > m_DefaultIndex-1)
             {
-                m_SettingOptionList[i].transform.localPosition = new Vector3(m_SettingOptionList[i].rectTransform.sizeDelta.x, 0, 0);
+                m_SettingSelectionList[i].transform.localPosition = new Vector3(m_SettingSelectionList[i].rectTransform.sizeDelta.x, 0, 0);
             }
         }
         //Debug.Log(m_SettingOptionList[0].text + "\t" + m_SettingOptionList[0] + "\t" + m_SettingOptionList[0].rectTransform.sizeDelta);
@@ -63,16 +62,17 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
 
     public void IncreaseIndex()
     {
-        if (m_CurrentIndex < m_SettingOptionList.Length-1)
+        OnClickAnimation(m_RightButton);
+        if (m_CurrentIndex < m_SettingSelectionList.Length-1)
         {
             m_SettingSequence.Kill();
             m_SettingSequence = DOTween.Sequence();
-            m_SettingSequence.Append(m_SettingOptionList[m_CurrentIndex].transform
-                                .DOLocalMoveX(-m_SettingOptionList[m_CurrentIndex].rectTransform.sizeDelta.x, m_duration))
+            m_SettingSequence.Append(m_SettingSelectionList[m_CurrentIndex].transform
+                                .DOLocalMoveX(-m_SettingSelectionList[m_CurrentIndex].rectTransform.sizeDelta.x, m_duration))
                                 .SetEase(m_current_easetype.GetEasetype(m_easetype));
             
             m_CurrentIndex++;
-            m_SettingSequence.Append(m_SettingOptionList[m_CurrentIndex].transform
+            m_SettingSequence.Append(m_SettingSelectionList[m_CurrentIndex].transform
                                 .DOLocalMoveX(0, m_duration))
                                 .SetEase(m_current_easetype.GetEasetype(m_easetype));
         }
@@ -82,15 +82,16 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
 
     public void DecreaseIndex()
     {
+        OnClickAnimation(m_LeftButton);
         if (m_CurrentIndex > 0)
         {
             m_SettingSequence.Kill();
             m_SettingSequence = DOTween.Sequence();
-            m_SettingSequence.Append(m_SettingOptionList[m_CurrentIndex].transform
-                                .DOLocalMoveX(m_SettingOptionList[m_CurrentIndex].rectTransform.sizeDelta.x, m_duration))
+            m_SettingSequence.Append(m_SettingSelectionList[m_CurrentIndex].transform
+                                .DOLocalMoveX(m_SettingSelectionList[m_CurrentIndex].rectTransform.sizeDelta.x, m_duration))
                                 .SetEase(m_current_easetype.GetEasetype(m_easetype));
             m_CurrentIndex--;
-            m_SettingSequence.Append(m_SettingOptionList[m_CurrentIndex].transform
+            m_SettingSequence.Append(m_SettingSelectionList[m_CurrentIndex].transform
                                 .DOLocalMoveX(0, m_duration))
                                 .SetEase(m_current_easetype.GetEasetype(m_easetype));
         }
@@ -99,31 +100,37 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
     }
     public void ColorIn(GameObject gameObject)
     {
-        gameObject.GetComponent<Image>().DOColor(m_Color, m_duration).SetEase(m_current_easetype.GetEasetype(m_easetype));
+        gameObject.GetComponent<Image>().DOColor(Scenemanager.green, m_duration).SetEase(m_current_easetype.GetEasetype(m_easetype));
     }
 
     public void ColorOut(GameObject gameObject)
     {
-        gameObject.GetComponent<Image>().DOColor(new Color(0.9f, 0.9f, 0.9f, 1), m_duration).SetEase(m_current_easetype.GetEasetype(m_easetype));
+        gameObject.GetComponent<Image>().DOColor(new Color32(230, 230, 230, 0), m_duration).SetEase(m_current_easetype.GetEasetype(m_easetype));
+    }
+
+    public void OnClickAnimation(GameObject gameObject)
+    {
+        Debug.Log("OnclickAnimation");
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        m_Dot.GetComponent<Image>().DOColor(m_Color, m_duration).SetEase(m_current_easetype.GetEasetype(m_easetype));
+        ColorIn(m_Dot);
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        m_Dot.GetComponent<Image>().DOColor(new Color(0.9f, 0.9f, 0.9f, 1), m_duration).SetEase(m_current_easetype.GetEasetype(m_easetype));
+        ColorOut(m_Dot);
     }
 
     public virtual void OnSelect(BaseEventData eventData)
     {
-
+        ColorIn(m_Dot);
     }
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
-
+        ColorOut(m_Dot);
     }
 }
+

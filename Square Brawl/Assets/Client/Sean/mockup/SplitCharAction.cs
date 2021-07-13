@@ -59,7 +59,7 @@ namespace ToSplitChar
             }
             return m_textArray;
         }
-        /*
+        /*   //todo
         public void HighlightedChar(SplitChar m_SplitChar)
         {
             //Debug.Log("HighlightedChar");

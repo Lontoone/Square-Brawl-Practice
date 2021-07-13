@@ -29,17 +29,17 @@ public class LineTest : MonoBehaviour
             new Vector3 (m_localposition.x + m_size.x / 2, m_localposition.y - m_size.y / 2)
         };
 
-        for (int i = 0; i < 4; i++)
+        /*for (int i = 0; i < 4; i++)
         {
             Debug.Log(m_vertex[i]);
-        }
+        }*/
         //Debug.Log(m_Line.transform.GetComponent<RectTransform>().sizeDelta.x + "\t" + m_Line.transform.GetComponent<RectTransform>().sizeDelta.y);
         
     }
 
     public void SetVertex()
     {
-        Debug.Log("SetVertex");
+        //Debug.Log("SetVertex");
         for (int i = 0; i < 4; i++ )
         {
             m_Line.GetComponentInChildren<LineRenderer>().SetPosition(i, m_vertex[i]);
