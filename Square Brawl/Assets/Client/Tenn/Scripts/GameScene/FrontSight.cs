@@ -9,8 +9,9 @@ public class FrontSight : MonoBehaviour
 
     private void Start()
     {
-        _playerController.GetComponent<PlayerController>();
+        _playerController=GetComponentInParent<PlayerController>();
     }
+
     void Update()
     {
         if (_playerController.Pv.IsMine)

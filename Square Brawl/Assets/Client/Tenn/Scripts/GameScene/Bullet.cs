@@ -87,14 +87,14 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                     float DirX = Mathf.Cos(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
                     float DirY = Mathf.Sin(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
                     _playerController.TakeDamage(BulletDamage, BulletBeElasticity, DirX, DirY);
-                    _pv.RPC("DisableObj", RpcTarget.All);
+                    _pv.RPC("Rpc_DisableObj", RpcTarget.All);
                 }
             }
             else if (hits[i].collider.gameObject.CompareTag("Ground"))
             {
                 if (_pv.IsMine)
                 {
-                    _pv.RPC("DisableObj", RpcTarget.All);
+                    _pv.RPC("Rpc_DisableObj", RpcTarget.All);
                 }
             }
         }

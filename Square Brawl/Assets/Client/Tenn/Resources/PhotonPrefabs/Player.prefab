@@ -463,7 +463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkill01: 1
-  ability: {fileID: 11400000, guid: 77772a7a5e396a44cbd0d336c74cb376, type: 2}
+  ability: {fileID: 11400000, guid: 1b2c1511d1522c2458fc3e780989b664, type: 2}
 --- !u!114 &8648748878293601389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,7 +483,6 @@ MonoBehaviour:
   WeaponScaleValue: 0
   IsDontContinuous: 0
   IsDontShootStraight: 0
-  FreezeTime: 0
   IsSpeicalBool: 0
 --- !u!114 &5771716123695693227
 MonoBehaviour:
@@ -553,7 +552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkill01: 0
-  ability: {fileID: 11400000, guid: f1ce1e1a7823d3f44b264b3256968d55, type: 2}
+  ability: {fileID: 11400000, guid: aafe5b5f16e9f0a4a9d55ac2e8977bab, type: 2}
 --- !u!114 &8648748878713665433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,7 +572,6 @@ MonoBehaviour:
   WeaponScaleValue: 0
   IsDontContinuous: 0
   IsDontShootStraight: 0
-  FreezeTime: 0
   IsSpeicalBool: 0
 --- !u!114 &762097059166178785
 MonoBehaviour:

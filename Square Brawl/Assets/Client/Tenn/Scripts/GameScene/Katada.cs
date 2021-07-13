@@ -83,14 +83,14 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     }
 
     [PunRPC]
-    public void EnableObj(float _dirZ)
+    public void Rpc_EnableObj(float _dirZ)
     {
         gameObject.SetActive(true);
         BeElasticityDir = _dirZ;
     }
 
     [PunRPC]
-    public void ResetPos(Vector3 _pos, Quaternion _dir)
+    public void Rpc_ResetPos(Vector3 _pos, Quaternion _dir)
     {
         transform.position = _pos;
         transform.rotation = _dir;
