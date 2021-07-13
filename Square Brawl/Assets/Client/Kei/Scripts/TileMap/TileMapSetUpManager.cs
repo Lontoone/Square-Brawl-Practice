@@ -24,11 +24,15 @@ public class TileMapSetUpManager : MonoBehaviour
         SetUpLevelTiles(_mapData);
         SetUpCellOrientation();*/
     }
-    public void SetUpLevel(MapData _mapData) {
-        TileMapManager.instance.GenerateGrid();
+    public void SetUpLevel(MapData _mapData)
+    {
+        if (TileMapManager.instance.gridCells.Count == 0)
+        {
+            TileMapManager.instance.GenerateGrid();
+        }
 
         //TEMP
-        levelFileName = LoadMapUIControl.currentSelectedFile;
+        //levelFileName = LoadMapUIControl.currentSelectedFile;
 
         //temp
         //MapData _mapData = SaveAndLoad.Load<MapData>(levelFileName.CombinePersistentPath());
@@ -38,6 +42,7 @@ public class TileMapSetUpManager : MonoBehaviour
 
     private void SetUpLevelTiles(MapData _mapData)
     {
+        activeTileCells.Clear();
         int _dataCount = 0;
         for (int i = 0; i < TileMapManager.instance.cellCount; i++)
         {
@@ -52,7 +57,7 @@ public class TileMapSetUpManager : MonoBehaviour
             }
             else
             {
-                TileMapManager.instance.cellStateMap[i] = CellState.NONE ;
+                TileMapManager.instance.cellStateMap[i] = CellState.NONE;
                 //empty cell
                 _cell.gameObject.SetActive(false);
             }
