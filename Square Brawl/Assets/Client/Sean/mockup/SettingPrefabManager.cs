@@ -30,7 +30,7 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
     [SerializeField] Easetype.Current_easetype.Easetype m_easetype;
     private Easetype.Current_easetype m_current_easetype;
     [SerializeField] float m_duration = 1f;
-    [SerializeField] private float m_outdistance = 500;
+    //[SerializeField] private float m_outdistance = 500;
     [SerializeField] private Sequence m_SettingSequence;
 
 
