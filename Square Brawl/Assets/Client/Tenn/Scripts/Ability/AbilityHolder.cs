@@ -15,8 +15,8 @@ public class AbilityHolder : MonoBehaviour
 
     public Ability ability;
 
+    private PlayerController _playerController;
     private PlayerInputManager _inputAction;
-
     private PhotonView _pv;
 
     private enum AbilityState
@@ -30,6 +30,7 @@ public class AbilityHolder : MonoBehaviour
 
     void Awake()
     {
+        _playerController = GetComponentInParent<PlayerController>();
         _pv = GetComponent<PhotonView>();
         _inputAction = new PlayerInputManager();
     }
@@ -87,7 +88,7 @@ public class AbilityHolder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_pv.IsMine)
+        if (!_pv.IsMine || _playerController.IsBeFreeze)
         {
             return;
         }

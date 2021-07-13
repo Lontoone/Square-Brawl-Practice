@@ -5,14 +5,14 @@ using Photon.Pun;
 
 public class Katada : MonoBehaviour,IPoolObject,IPunObservable
 {
-    public float Speed;
-    private float _originSpeed;
-    public float Damage;
-    public float _beElasticityDir;
-    private float _dir;
-    public float BeAttackElasticity;
+    public float KatadaSpeed;//Katada Speed
+    public float KatadaDamage;//Katada Damage
+    public float KatadaBeElasticity;//Katada BeElasticity
+    public float BeElasticityDir;//Be Elasticity Direction
+    private float _originSpeed;//Origin Speed
+    private float _dir;//Katada Mid Direction
 
-    public bool IsKatadaReverse;
+    public bool IsKatadaReverse;//Is Katada Reverse?
 
     private Quaternion _newSyncDir;
 
@@ -22,7 +22,8 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     {
         if (_pv.IsMine)
         {
-            _pv.RPC("EnableObj", RpcTarget.All,transform.eulerAngles.z);
+            _pv.RPC("Rpc_EnableObj", RpcTarget.All,transform.eulerAngles.z);
+
             if (IsKatadaReverse)
             {
                 _dir = transform.eulerAngles.z + 45;
@@ -33,7 +34,9 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
                 _dir = transform.eulerAngles.z - 45;
                 transform.eulerAngles = new Vector3(0, 0, _dir);
             }
-            _pv.RPC("ResetPos", RpcTarget.Others, transform.position, transform.rotation);
+
+            _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
+
             StartCoroutine(DestroyObj());
         }
     }
@@ -42,7 +45,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         _pv = GetComponent<PhotonView>();
         if (_pv.IsMine)
         {
-            _pv.RPC("DisableObj", RpcTarget.All);
+            _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
     }
 
@@ -51,19 +54,19 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     {
         if (_pv.IsMine)
         {
-            if (_originSpeed != Speed && _pv.IsMine)
+            if (_originSpeed != KatadaSpeed && _pv.IsMine)
             {
-                _pv.RPC("SetStatus", RpcTarget.Others, Damage, BeAttackElasticity);
-                _originSpeed = Speed;
+                _pv.RPC("Rpc_SetValue", RpcTarget.Others, KatadaDamage, KatadaBeElasticity);
+                _originSpeed = KatadaSpeed;
             }
 
             if (IsKatadaReverse)
             {
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, _dir + 90), Time.deltaTime * Speed);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, _dir + 90), Time.deltaTime * KatadaSpeed);
             }
             else
             {
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, _dir - 90), Time.deltaTime * Speed);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, _dir - 90), Time.deltaTime * KatadaSpeed);
             }
         }
         else if (!_pv.IsMine)
@@ -76,14 +79,14 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     IEnumerator DestroyObj()
     {
         yield return new WaitForSeconds(0.4f);
-        _pv.RPC("DisableObj", RpcTarget.All);
+        _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
     [PunRPC]
     public void EnableObj(float _dirZ)
     {
         gameObject.SetActive(true);
-        _beElasticityDir = _dirZ;
+        BeElasticityDir = _dirZ;
     }
 
     [PunRPC]
@@ -95,16 +98,16 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     }
 
     [PunRPC]
-    public void DisableObj()
+    public void Rpc_DisableObj()
     {
         gameObject.SetActive(false);
     }
 
     [PunRPC]
-    public void SetStatus(float _damage, float _elasticity)
+    public void Rpc_SetValue(float _damage, float _elasticity)
     {
-        Damage = _damage;
-        BeAttackElasticity = _elasticity;
+        KatadaDamage = _damage;
+        KatadaBeElasticity = _elasticity;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

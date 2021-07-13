@@ -14,43 +14,37 @@ public class AttackTriggerable : MonoBehaviour
     [HideInInspector] public bool IsDontContinuous;
     [HideInInspector] public bool IsDontShootStraight;
 
-    public float FreezeTime;
-
     public bool IsSpeicalBool;
 
     private GameObject _bulletSpawnPos;
-    private GameObject _karataSpawnPos;
+    private GameObject _bulletMidSpawnPos;
     private PlayerController _playerController;
+    private ObjectsPool _objectsPool;
     private Bullet _bullet;
     private Katada _katada;
 
     private void Start()
     {
         _bulletSpawnPos = GameObject.FindGameObjectWithTag("BulletSpawnPos");
-        _karataSpawnPos = GameObject.FindGameObjectWithTag("MidPos");
+        _bulletMidSpawnPos = GameObject.FindGameObjectWithTag("MidPos");
         _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        _objectsPool = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<ObjectsPool>();
     }
 
     public void Fire()
     {
-        //GameObject _bulletObj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bullet"), BulletSpawnPos.transform.position, BulletSpawnPos.transform.rotation);
-
-        GameObject _bulletObj = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<ObjectsPool>().SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation,null);
-
+        GameObject _bulletObj = _objectsPool.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation,null);
         _bullet = _bulletObj.GetComponent<Bullet>();
-
-        _bullet.ShootSpeed = WeaponSpeed;
-        _bullet.ShootDamage = WeaponDamage;
+        _bullet.BulletSpeed = WeaponSpeed;
+        _bullet.BulletDamage = WeaponDamage;
         _bullet.IsDontShootStraight = IsDontShootStraight;
         _bullet.BulletScaleValue = WeaponScaleValue;
-        _bullet.BeShootElasticity = BeElasticity;
-
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().PlayerRecoil(WeaponRecoil);
+        _bullet.BulletBeElasticity = BeElasticity;
+        _playerController.PlayerRecoil(WeaponRecoil);
     }
 
     public void Charge()
     {
-        //_playerController.MoveSpeed = ShootSpeed;
         _playerController.IsCharge = true;
         _playerController.PlayerRecoil(-WeaponSpeed);
         _playerController.BeElasticity = BeElasticity;
@@ -61,19 +55,19 @@ public class AttackTriggerable : MonoBehaviour
     public void Katada()
     {
         IsSpeicalBool = !IsSpeicalBool;
-        //GameObject _katadaObj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Katada"), BulletSpawnPos.transform.position, BulletSpawnPos.transform.rotation);
-        GameObject _katadaObj = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<ObjectsPool>().SpawnFromPool("Katada", _karataSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        GameObject _katadaObj = _objectsPool.SpawnFromPool("Katada", _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         _katada = _katadaObj.GetComponent<Katada>();
         _katada.IsKatadaReverse = IsSpeicalBool;
-        _katada.Damage = WeaponDamage;
-        _katada.BeAttackElasticity = BeElasticity;
-        _katada.Speed = WeaponSpeed;
+        _katada.KatadaDamage = WeaponDamage;
+        _katada.KatadaBeElasticity = BeElasticity;
+        _katada.KatadaSpeed = WeaponSpeed;
     }
 
     public void Freeze()
     {
-        _playerController.IsFreeze = true;
+        _playerController.IsShootFreeze = true;
         _playerController.PlayerRecoil(WeaponRecoil);
+        _objectsPool.SpawnFromPool("FreezeShoot", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         StartCoroutine(IsFreezeChangeFalse());
     }
 
@@ -86,7 +80,7 @@ public class AttackTriggerable : MonoBehaviour
     IEnumerator IsFreezeChangeFalse()
     {
         yield return new WaitForSeconds(0.5f);
-        _playerController.IsFreeze = false;
+        _playerController.IsShootFreeze = false;
         _playerController.IsFreezeChange = false;
     }
 }

@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 2110465305499821295}
   - component: {fileID: 3724183295208971859}
   - component: {fileID: 8283430219793616977}
-  m_Layer: 0
+  - component: {fileID: 107689950042319731}
+  m_Layer: 11
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -135,10 +136,10 @@ MonoBehaviour:
   BeElasticity: 0
   DirX: 0
   DirY: 0
-  ShootSpinAngle: 0
-  _inputPos: {x: 0, y: 0}
-  IsFreeze: 0
+  FrontSightAngle: 0
+  IsShootFreeze: 0
   IsFreezeChange: 0
+  IsBeFreeze: 0
   IsCharge: 0
   FootOffset: 0
   GroundDistance: 0.45
@@ -146,13 +147,10 @@ MonoBehaviour:
   GroundLayer:
     serializedVersion: 2
     m_Bits: 256
-  PlayerLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  ShootSpinMidPos: {fileID: 5898218076483180907}
-  SpinObject: {fileID: 0}
-  ShootDir: {fileID: 0}
-  _pv: {fileID: 0}
+  FrontSightMidPos: {fileID: 0}
+  FrontSightPos: {fileID: 0}
+  FrontSightRb: {fileID: 0}
+  Pv: {fileID: 0}
 --- !u!114 &3724183295208971859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,6 +197,18 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
+--- !u!114 &107689950042319731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110465305499821290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca9719e89b1ff1a4580d0b01bc34ace9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5898218075960249730
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +220,7 @@ GameObject:
   - component: {fileID: 5898218075960249733}
   - component: {fileID: 5898218075960249732}
   m_Layer: 0
-  m_Name: Square
+  m_Name: FrontSight
   m_TagString: BulletSpawnPos
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -292,7 +302,7 @@ GameObject:
   - component: {fileID: 5898218076483180907}
   - component: {fileID: 5898218076483180906}
   m_Layer: 0
-  m_Name: ShootSpinPoint
+  m_Name: FrontSightMidPos
   m_TagString: MidPos
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -325,7 +335,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1bf9cc30485eed4c8af98bab536588a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerController: {fileID: 2110465305499821295}
 --- !u!1 &6171248690131371004
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,7 +463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkill01: 1
-  ability: {fileID: 11400000, guid: f1ce1e1a7823d3f44b264b3256968d55, type: 2}
+  ability: {fileID: 11400000, guid: 77772a7a5e396a44cbd0d336c74cb376, type: 2}
 --- !u!114 &8648748878293601389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,7 +553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkill01: 0
-  ability: {fileID: 11400000, guid: 1b2c1511d1522c2458fc3e780989b664, type: 2}
+  ability: {fileID: 11400000, guid: f1ce1e1a7823d3f44b264b3256968d55, type: 2}
 --- !u!114 &8648748878713665433
 MonoBehaviour:
   m_ObjectHideFlags: 0

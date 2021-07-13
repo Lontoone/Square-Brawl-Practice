@@ -51,6 +51,9 @@ MonoBehaviour:
   - tag: Katada
     prefab: {fileID: 5644386042236273782, guid: 7c3728d0867985948b00829e7578c259, type: 3}
     size: 5
+  - tag: FreezeShoot
+    prefab: {fileID: 5657758444619143484, guid: 3ca3ca1951297594facb8ca79a165741, type: 3}
+    size: 2
   _pv: {fileID: 0}
 --- !u!114 &7958008732146023615
 MonoBehaviour:

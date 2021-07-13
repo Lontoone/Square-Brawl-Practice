@@ -5,22 +5,21 @@ using Photon.Pun;
 
 public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
 {
-    public float ShootSpeed;
-    public float ShootDamage;
-    public float BeShootElasticity;
-    public float BulletScaleValue;
-    public float _OriginSpeed;
+    [HeaderAttribute("Bullet Setting")]
+    public float BulletSpeed;//Bullet Speed
+    public float BulletDamage;//Bullet Damage
+    public float BulletBeElasticity;//Bullet Be Elasticity
+    public float BulletScaleValue;//Bullet Scale Value
+    private float _originSpeed;//Bullet Origin Speed
 
-    private Vector3 _prevPos;
-    public Vector3 _pos;
+    private Vector3 _originPos;//Bullet Origin Position
 
-    public bool IsDontShootStraight;
-
-    public GameObject ExploseEffectObj;
+    public bool IsDontShootStraight;//Is Dont Shoot Straighr line?
 
     private Rigidbody2D _rb;
 
-    public PhotonView _pv;
+    [HeaderAttribute("Sync Setting")]
+    private PhotonView _pv;
 
     public Vector2 _networkPosition;
     public Vector2 _beginPos;
@@ -31,7 +30,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         _pv = GetComponent<PhotonView>();
         if (_pv.IsMine)
         {
-            _pv.RPC("DisableObj", RpcTarget.All);
+            _pv.RPC("Rpc_DisableObj", RpcTarget.All);
             /*_pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight, transform.position);
             if (IsDontShootStraight)
             {
@@ -44,12 +43,12 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     {
         if (_pv.IsMine)
         {
-            _pv.RPC("EnableObj", RpcTarget.All);
+            _pv.RPC("Rpc_EnableObj", RpcTarget.All);
             if (IsDontShootStraight)
             {
                 transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-10, 11));
             }
-            _pv.RPC("ResetPos", RpcTarget.Others, transform.position, transform.rotation);
+            _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
         }
     }
 
@@ -64,7 +63,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     {
         if (_pv.IsMine)
         {
-            _rb.velocity = transform.right * ShootSpeed;
+            _rb.velocity = transform.right * BulletSpeed;
         }
         else if (!_pv.IsMine)
         {
@@ -74,20 +73,20 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
 
     void BulletCollider()
     {
-        _prevPos = transform.position + new Vector3(transform.localScale.x / 2 , 0 , 0 );
+        _originPos = transform.position + new Vector3(transform.localScale.x / 2 , 0 , 0 );
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(_prevPos, (transform.position - _prevPos).normalized, (transform.position - _prevPos).magnitude);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(_originPos, (transform.position - _originPos).normalized, (transform.position - _originPos).magnitude);
 
         for (int i = 0; i < hits.Length; i++)
         {
             if (hits[i].collider.gameObject.CompareTag("Player"))
             {
                 PlayerController _playerController = hits[i].collider.gameObject.GetComponent<PlayerController>();
-                if (_pv.IsMine != _playerController._pv.IsMine && _playerController._pv.IsMine)
+                if (_pv.IsMine != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
                 {
                     float DirX = Mathf.Cos(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
                     float DirY = Mathf.Sin(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
-                    _playerController.TakeDamage(ShootDamage, BeShootElasticity, DirX, DirY);
+                    _playerController.TakeDamage(BulletDamage, BulletBeElasticity, DirX, DirY);
                     _pv.RPC("DisableObj", RpcTarget.All);
                 }
             }
@@ -103,41 +102,41 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
 
     void ResetValue()
     {
-        if (_OriginSpeed != ShootSpeed && _pv.IsMine)
+        if (_originSpeed != BulletSpeed && _pv.IsMine)
         {
-            _pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight);
+            _pv.RPC("Rpc_SetValue", RpcTarget.All, BulletSpeed, BulletDamage, BulletScaleValue, BulletBeElasticity, IsDontShootStraight);
             if (IsDontShootStraight)
             {
                 transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-10, 11));
             }
-            _OriginSpeed = ShootSpeed;
+            _originSpeed = BulletSpeed;
         }
     }
 
     [PunRPC]
-    public void SetStatus(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot)
+    public void Rpc_SetValue(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot)
     {
-        ShootSpeed = _speed;
-        ShootDamage = _damage;
+        BulletSpeed = _speed;
+        BulletDamage = _damage;
         BulletScaleValue = _scaleValue;
-        BeShootElasticity = _elasticity;
+        BulletBeElasticity = _elasticity;
         IsDontShootStraight = IsDontShoot;
     }
 
     [PunRPC]
-    public void DisableObj()
+    public void Rpc_DisableObj()
     {
         gameObject.SetActive(false);
     }
 
     [PunRPC]
-    public void EnableObj()
+    public void Rpc_EnableObj()
     {
         gameObject.SetActive(true);
     }
 
     [PunRPC]
-    public void ResetPos(Vector3 pos, Quaternion dir)
+    public void Rpc_ResetPos(Vector3 pos, Quaternion dir)
     {
         transform.position = pos;
         transform.rotation = dir;
@@ -156,8 +155,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         {
             _networkPosition = (Vector2)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();
-
-            // float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+            _rb.velocity = (Vector2)stream.ReceiveNext();
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.001f);
             _networkPosition += (_rb.velocity * lag);
         }
