@@ -1,0 +1,66 @@
+﻿using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class ColorSelectManager : MonoBehaviourPunCallbacks
+{
+    public Transform playerItemContainer;
+    public ColorSelectPlayerItemControl playerItemPrefab;
+
+    public Transform buttonItemContainer;
+    public ColorSetButton buttonItemPrefab;
+
+    private void Start()
+    {
+        CreatePlayerItem();
+        CreateButtonItem();
+    }
+
+    private void CreateButtonItem()
+    {
+        for (int i = 0; i < CustomPropertyCode.COLORS.Length; i++)
+        {
+            ColorSetButton _button = Instantiate(buttonItemPrefab, parent: buttonItemContainer);
+            _button.colorImage.color = CustomPropertyCode.COLORS[i];
+            _button.colorIndex = i;
+        }
+    }
+
+    private void CreatePlayerItem()
+    {
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            {
+                //foreach player data:
+                ColorSelectPlayerItemControl _item = Instantiate(playerItemPrefab, parent: playerItemContainer);
+                Player _player = PhotonNetwork.PlayerList[i];
+                Debug.Log(_player == null);
+                _item.SetPlayer(_player);
+            }
+        }
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        object _data;
+        //if someone updates it's team color code
+        //  =>find the matching player item and update
+        if (changedProps.TryGetValue(CustomPropertyCode.TEAM_CODE, out _data))
+        {
+            int _colorCode = (int)_data;
+            ColorSelectPlayerItemControl _item = FindObjectsOfType<ColorSelectPlayerItemControl>().ToList().Find(x => x.player == targetPlayer);
+            if (_item == null)
+            {
+                Debug.Log("Cant find the item");
+                return;
+            }
+            _item.SetColor(CustomPropertyCode.COLORS[_colorCode]);
+
+        }
+    }
+
+}

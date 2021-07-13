@@ -7,7 +7,6 @@ using UnityEngine.EventSystems;
 public class TileCell : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     public int grid_index;
-    [HideInInspector]
     public SpriteRenderer spriteRenderer;
     //[HideInInspector]
     public TileCell conboundCenter;

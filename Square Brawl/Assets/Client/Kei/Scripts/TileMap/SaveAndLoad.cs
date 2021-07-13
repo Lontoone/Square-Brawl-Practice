@@ -38,8 +38,6 @@ public class SaveAndLoad : MonoBehaviour
             //解析
             Data = JsonUtility.FromJson<T>(json);
 
-            Debug.Log("Load:" + Data);
-
             stream.Close();
             return Data;
         }

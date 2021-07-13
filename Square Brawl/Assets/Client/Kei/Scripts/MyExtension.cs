@@ -32,6 +32,7 @@ public static class MyPhotonExtension
             return obj;
         }
     }
+
     /*
     public static T CloneData<T>(T origin_data)
     {

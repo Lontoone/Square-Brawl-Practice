@@ -1,23 +1,31 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager instance;
+
     public void Awake()
     {
         instance = this;
+        /*
         foreach (Menu _menu in FindObjectsOfType<Menu>())
         {
             menus.Add(_menu);
-        }
+        }*/
         OpenMenu("title");
     }
 
 
-    List<Menu> menus = new List<Menu>();    
-
+    public List<Menu> menus = new List<Menu>();
+    /*
+    public void CallOpenMenuRpc(string _menuName)
+    {
+        //PhotonNetwork.RPC("OpenMenu", RpcTarget.All, _menuName);
+    }*/
+    [PunRPC]
     public void OpenMenu(string menuName)
     {
         for (int i = 0; i < menus.Count; i++)

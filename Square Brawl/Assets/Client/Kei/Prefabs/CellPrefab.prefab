@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid_index: 0
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 913758580300549187}
   conboundCenter: {fileID: 0}
   conboundRange:
     data: {fileID: 0}

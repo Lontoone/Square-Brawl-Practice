@@ -21,7 +21,7 @@ public class LoadMapUIControl : MonoBehaviour
         saveTile = FindObjectOfType<SaveTile>();
 
         btnContainer.SetActive(false);
-        //LoadMapList();
+        LoadMapList();
     }
 
     public void LoadMapList()
@@ -42,6 +42,8 @@ public class LoadMapUIControl : MonoBehaviour
             });
             _btn.GetComponentInChildren<Text>().text = Path.GetFileName(_path);
         }
+
+      
     }
 
     private void ClearContainer()
@@ -51,15 +53,6 @@ public class LoadMapUIControl : MonoBehaviour
             Destroy(child.gameObject);
         }
     }
-    /*
-    public void Load(string _path)
-    {
-        //TODO: reset picture
-        MapData mapData = SaveAndLoad.Load<MapData>(_path);
-        saveTile.saveName.text = Path.GetFileName(_path);
-        //TODO: Load to map
-        editorControl.SetUpMapData(mapData);
-    }*/
-
+   
 
 }

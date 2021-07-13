@@ -13,6 +13,7 @@ public class TileMapSetUpManager : MonoBehaviour
 
     private void Start()
     {
+        /*
         TileMapManager.instance.GenerateGrid();
 
         //TEMP
@@ -20,6 +21,17 @@ public class TileMapSetUpManager : MonoBehaviour
 
         //temp
         MapData _mapData = SaveAndLoad.Load<MapData>(levelFileName.CombinePersistentPath());
+        SetUpLevelTiles(_mapData);
+        SetUpCellOrientation();*/
+    }
+    public void SetUpLevel(MapData _mapData) {
+        TileMapManager.instance.GenerateGrid();
+
+        //TEMP
+        levelFileName = LoadMapUIControl.currentSelectedFile;
+
+        //temp
+        //MapData _mapData = SaveAndLoad.Load<MapData>(levelFileName.CombinePersistentPath());
         SetUpLevelTiles(_mapData);
         SetUpCellOrientation();
     }

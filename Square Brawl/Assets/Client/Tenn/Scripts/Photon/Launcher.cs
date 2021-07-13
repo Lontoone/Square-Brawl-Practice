@@ -135,6 +135,54 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
-        PhotonNetwork.LoadLevel(1);
+        //PhotonNetwork.LoadLevel(1);
+        ConfirmPlayers();
+        MenuManager.instance.OpenMenu("characterselection");
+        //Sync Room
+        SyncMenu("characterselection");
+        /*
+        PhotonNetwork.CurrentRoom.SetCustomProperties(MyPhotonExtension.WrapToHash(
+                                                                        new object[] {
+                                                                            CustomPropertyCode.ROOM_MENU,
+                                                                            "characterselection"
+                                                                        }));*/
+    }
+    //Not really using
+    private void ConfirmPlayers()
+    {
+        //Add Player to local list:
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            //int _playerIndex = PhotonNetwork.PlayerList[i].CustomProperties[];
+            LocalDataManager.AddPlayer(PhotonNetwork.PlayerList[i]);
+            Debug.Log("Add Player " + PhotonNetwork.PlayerList[i].NickName);
+        }
+    }
+
+
+    public void ModeSelect()
+    {
+        MenuManager.instance.OpenMenu("mode");
+        SyncMenu("mode");
+    }
+    public void MapSelect()
+    {
+        MenuManager.instance.OpenMenu("map");
+        SyncMenu("map");
+    }
+    public void WeaponSelect()
+    {
+        MenuManager.instance.OpenMenu("weapon");
+        SyncMenu("weapon");
+    }
+
+
+    private void SyncMenu(string _menuName)
+    {
+        PhotonNetwork.CurrentRoom.SetCustomProperties(MyPhotonExtension.WrapToHash(
+                                                                        new object[] {
+                                                                            CustomPropertyCode.ROOM_MENU,
+                                                                            _menuName
+                                                                        }));
     }
 }

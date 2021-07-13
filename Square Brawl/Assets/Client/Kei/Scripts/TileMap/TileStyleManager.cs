@@ -25,14 +25,6 @@ public class TileStyleManager : MonoBehaviour
         TileMapEditorControl.OnCellChanged += SetCell;
         TileMapEditorControl.OnCellChanged += SetNearbyCell;
 
-        /*
-        WaitForFixedUpdate _wait = new WaitForFixedUpdate();
-        while (TileMapManager.instance == null)
-        {
-            yield return _wait;
-        }
-        */
-        
     }
     private void OnDestroy()
     {
