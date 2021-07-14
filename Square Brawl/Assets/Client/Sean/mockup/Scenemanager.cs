@@ -19,8 +19,9 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
     [SerializeField] private GameObject m_Mapeditor;
     [SerializeField] private GameObject m_Control;
     [SerializeField] private GameObject m_Lobby;
-    [SerializeField] private GameObject m_EnterRoomName;
-    [SerializeField] private GameObject m_RoomName;
+    [SerializeField] private GameObject m_CreateRoom;
+    [SerializeField] private GameObject m_RoomList;
+    [SerializeField] private GameObject m_Room;
     [SerializeField] private GameObject m_Characterselection;
     [SerializeField] private GameObject m_Gamemode;
     [SerializeField] private GameObject m_MapSelection;
