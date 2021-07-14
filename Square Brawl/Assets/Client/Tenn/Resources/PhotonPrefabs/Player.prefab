@@ -555,7 +555,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkill01: 0
-  ability: {fileID: 11400000, guid: f1ce1e1a7823d3f44b264b3256968d55, type: 2}
+  ability: {fileID: 11400000, guid: 5a978b1f581c0234d86759abff1dde2a, type: 2}
 --- !u!114 &8648748878713665433
 MonoBehaviour:
   m_ObjectHideFlags: 0

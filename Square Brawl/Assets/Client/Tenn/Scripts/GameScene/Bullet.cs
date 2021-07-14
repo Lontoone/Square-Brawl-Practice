@@ -98,6 +98,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 if (_pv.IsMine)
                 {
                     ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+                    DisableObj();
                 }
             }
         }
@@ -112,7 +113,6 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
             {
                 transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-10, 11));
             }
-            Debug.Log("OK");
             _isReset = true;
         }
     }
