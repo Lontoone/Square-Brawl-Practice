@@ -145,7 +145,14 @@ public class TileMapEditorControl : MonoBehaviour
     {
         for (int i = 0; i < TileMapManager.instance.mapSize.x * TileMapManager.instance.mapSize.y; i++)
         {
-            cellStateMap.Add(i, CellState.NONE);
+            if (cellStateMap.ContainsKey(i))
+            {
+                //cellStateMap[i] = CellState.NONE;
+            }
+            else
+            {
+                cellStateMap.Add(i, CellState.NONE);
+            }
         }
     }
 

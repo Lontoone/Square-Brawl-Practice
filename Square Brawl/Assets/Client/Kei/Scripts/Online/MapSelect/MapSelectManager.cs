@@ -52,7 +52,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
 
     public void LoadMapList()
     {
-        //ClearContainer();
+        ClearContainer();
         if (!Directory.Exists(SaveTile.SAVE_FOLDER.CombinePersistentPath())) { return; }
 
         filePaths = Directory.GetFiles(SaveTile.SAVE_FOLDER.CombinePersistentPath());
@@ -77,7 +77,11 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
 
         }
 
-        //btnContainer.SetActive(true);
+        if (currentSelectedData == null)
+        {
+            currentSelectedData = mapDatas[0];
+        }
+
     }
 
     //Called by PhotonEvent: When
@@ -87,7 +91,10 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
         if (eventCode == CustomPropertyCode.UPDATE_MAP_EVENTCODE)
         {
             Debug.Log("[OnMapDataChanged] ");
+
             MapData _data = (MapData)MyPhotonExtension.ByteArrayToObject((byte[])obj.CustomData);
+            currentSelectedData = _data;
+
             selectText.text = _data.fileName;
             setupManager.SetUpLevel(_data);
         }
@@ -109,14 +116,16 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
         mapDatas.Clear();
     }
 
+    //When Grid Scene Loaded:
     private void OnCellGridSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //test
+        // Hard Code
         if (scene.name == "GridSample")
         {
             if (mapDatas.Count > 0)
             {
-                setupManager.SetUpLevel(mapDatas[0]);
+                //setupManager.SetUpLevel(mapDatas[0]);
+                setupManager.SetUpLevel(currentSelectedData);
             }
         }
     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class LoadSceneAsyncUI : MonoBehaviour
 {
@@ -16,4 +17,11 @@ public class LoadSceneAsyncUI : MonoBehaviour
         screenImage.gameObject.SetActive(true);
     }
 
+
+    private void OnDisable()
+    {
+        //close scene when disable:
+        SceneManager.UnloadSceneAsync(sceneName);
+
+    }
 }
