@@ -94,6 +94,17 @@ public class AttackTriggerable : MonoBehaviour
         StartCoroutine(IsFreezeChangeFalse());
     }
 
+    public void GrenadeFire()
+    {
+        GameObject _grenadeObj = ObjectsPool.Instance.SpawnFromPool("Grenade", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        Grenade _grenade = _grenadeObj.GetComponent<Grenade>();
+        _grenade.BulletSpeed = WeaponSpeed;
+        _grenade.BulletDamage = WeaponDamage;
+        _grenade.BulletBeElasticity = BeElasticity;
+        _grenade.ExploseEffectName = ExploseEffectName;
+        _playerController.PlayerRecoil(WeaponRecoil);
+    }
+
     IEnumerator IsBoolChangeFalse()
     {
         yield return new WaitForSeconds(0.5f);

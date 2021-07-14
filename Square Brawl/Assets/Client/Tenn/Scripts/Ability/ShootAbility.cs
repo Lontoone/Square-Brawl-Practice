@@ -9,6 +9,7 @@ public class ShootAbility : Ability
     public bool IsDontContinuous;
     public bool IsDontShootStraight;
     public bool IsScatterShot;
+    public bool IsGrenade;
     public override void Initalize(GameObject _obj)
     {
         _attack = _obj.GetComponent<AttackTriggerable>();
@@ -25,13 +26,17 @@ public class ShootAbility : Ability
 
     public override void Activate()
     {
-        if (!IsScatterShot)
+        if (!IsScatterShot&&!IsGrenade)
         {
             _attack.Fire();
         }
         else if (IsScatterShot)
         {
             _attack.ScatterFire();
+        }
+        else if (IsGrenade)
+        {
+            _attack.GrenadeFire();
         }
     }
 }

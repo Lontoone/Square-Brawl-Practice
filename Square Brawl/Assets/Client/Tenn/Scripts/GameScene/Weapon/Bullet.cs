@@ -15,19 +15,19 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     private Vector3 _originPos;//Bullet Origin Position
 
     public bool IsDontShootStraight;//Is Dont Shoot Straighr line?
-    private bool _isReset;
+    protected bool _isReset;
 
     public string ExploseEffectName;
 
-    private Rigidbody2D _rb;
+    protected Rigidbody2D _rb;
 
     [HeaderAttribute("Sync Setting")]
-    private PhotonView _pv;
+    protected PhotonView _pv;
 
-    public Vector2 _networkPosition;
-    public Vector2 _beginPos;
-    public Quaternion _networkRotation;
-    void Start()
+    protected Vector2 _networkPosition;
+    protected Vector2 _beginPos;
+    protected Quaternion _networkRotation;
+    protected virtual void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
@@ -51,14 +51,14 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    void Update()
+    protected virtual void Update()
     {
         ResetValue();//Reset Bullet Value
 
         BulletCollider();//Bullet Collider Raycast
     }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (_pv.IsMine)
         {
@@ -70,7 +70,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    void BulletCollider()
+    private void BulletCollider()
     {
         _originPos = transform.position + new Vector3(transform.localScale.x / 2, 0, 0);
 
@@ -104,14 +104,14 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    void ResetValue()
+    protected virtual void ResetValue()
     {
         if (!_isReset&& _pv.IsMine)
         {
             _pv.RPC("Rpc_SetValue", RpcTarget.All, BulletSpeed, BulletDamage, BulletScaleValue, BulletBeElasticity, IsDontShootStraight);
             if (IsDontShootStraight)
             {
-                transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-10, 11));
+                transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-15, 16));
             }
             _isReset = true;
         }

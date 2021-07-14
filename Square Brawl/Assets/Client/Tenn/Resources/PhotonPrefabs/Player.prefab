@@ -463,7 +463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkill01: 1
-  ability: {fileID: 11400000, guid: ebccf3015db41384796873215c4b7bc8, type: 2}
+  ability: {fileID: 11400000, guid: 041159c542d5669438f8600ef869f9c7, type: 2}
 --- !u!114 &8648748878293601389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,7 +555,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkill01: 0
-  ability: {fileID: 11400000, guid: 5a978b1f581c0234d86759abff1dde2a, type: 2}
+  ability: {fileID: 11400000, guid: ebccf3015db41384796873215c4b7bc8, type: 2}
 --- !u!114 &8648748878713665433
 MonoBehaviour:
   m_ObjectHideFlags: 0

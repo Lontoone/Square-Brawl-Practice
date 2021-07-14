@@ -60,6 +60,9 @@ MonoBehaviour:
   - tag: BigExplose
     prefab: {fileID: 8407165551414661246, guid: 92c0a246d324bfe4ca3f97be304b3b22, type: 3}
     size: 5
+  - tag: Grenade
+    prefab: {fileID: 8622804087106380002, guid: 1a47aa21a64342c40ad0ef6b2eb14195, type: 3}
+    size: 3
   _pv: {fileID: 0}
 --- !u!114 &7958008732146023615
 MonoBehaviour:
