@@ -2975,7 +2975,7 @@ GameObject:
   m_Component:
   - component: {fileID: 513085345}
   m_Layer: 5
-  m_Name: Setting option
+  m_Name: List Setting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3605,6 +3605,8 @@ MonoBehaviour:
     m_Easetype: 0
     m_Duration: 0.03
     m_Outdistance: 5
+  m_MouseSelectedState: 0
+  m_KeySelectedState: 0
 --- !u!1001 &624657942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5284,7 +5286,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 954958584211986008}
         m_TargetAssemblyTypeName: SettingPrefabManager, Assembly-CSharp
-        m_MethodName: IncreaseIndex
+        m_MethodName: RightOnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6680,17 +6682,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Header: {fileID: 1904114720}
   m_Dot: {fileID: 162985229}
-  m_LeftButton: {fileID: 319441123}
-  m_RightButton: {fileID: 192958014}
-  m_DefaultIndex: 1
-  m_SettingSelectionList:
-  - {fileID: 784470293}
-  - {fileID: 1415895610}
-  - {fileID: 1604140837}
-  - {fileID: 556788856}
-  - {fileID: 1837873753}
-  m_easetype: 30
-  m_duration: 0.1
+  m_SettingType: 0
+  listSelection:
+    m_LeftButton: {fileID: 0}
+    m_RightButton: {fileID: 0}
+    m_SelectionList: []
+    m_DefaultIndex: 0
+    m_easetype: 0
+    m_duration: 0
+  m_slider: {fileID: 0}
 --- !u!1 &1147346786
 GameObject:
   m_ObjectHideFlags: 0
@@ -7844,6 +7844,8 @@ MonoBehaviour:
     m_Easetype: 0
     m_Duration: 0.03
     m_Outdistance: 5
+  m_MouseSelectedState: 0
+  m_KeySelectedState: 0
 --- !u!1001 &1226527597
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11760,7 +11762,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 954958584211986008}
         m_TargetAssemblyTypeName: SettingPrefabManager, Assembly-CSharp
-        m_MethodName: DecreaseIndex
+        m_MethodName: LeftOnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13279,17 +13281,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Header: {fileID: 1304573967}
   m_Dot: {fileID: 4947311276592364795}
-  m_LeftButton: {fileID: 1891451135}
-  m_RightButton: {fileID: 953597232}
-  m_DefaultIndex: 1
-  m_SettingSelectionList:
-  - {fileID: 1982934589}
-  - {fileID: 1641005166}
-  - {fileID: 1653822455}
-  - {fileID: 1808750395}
-  - {fileID: 237115163}
-  m_easetype: 30
-  m_duration: 0.1
+  m_SettingType: 1
+  listSelection:
+    m_LeftButton: {fileID: 1891451135}
+    m_RightButton: {fileID: 953597232}
+    m_SelectionList:
+    - {fileID: 1982934589}
+    - {fileID: 1641005166}
+    - {fileID: 1653822455}
+    - {fileID: 1808750395}
+    - {fileID: 237115163}
+    m_DefaultIndex: 0
+    m_easetype: 31
+    m_duration: 0.1
+  m_slider: {fileID: 0}
 --- !u!114 &1209240236865299502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13843,6 +13848,8 @@ MonoBehaviour:
     m_Easetype: 0
     m_Duration: 0.03
     m_Outdistance: 5
+  m_MouseSelectedState: 0
+  m_KeySelectedState: 0
 --- !u!114 &7087975126425273130
 MonoBehaviour:
   m_ObjectHideFlags: 0

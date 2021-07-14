@@ -23,7 +23,6 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField] private float to_x;
     [SerializeField] private float to_y;
     private Vector3 pos;
-    //
     
     private Sequence _moveSequence_stirng;
     private Sequence _moveSequence_char;
