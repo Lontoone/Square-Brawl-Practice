@@ -132,7 +132,7 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
     }
     public void ColorIn(GameObject gameObject)
     {
-        gameObject.GetComponent<Image>().DOColor(Scenemanager.green, 0.3f).SetEase(Ease.OutCirc);
+        gameObject.GetComponent<Image>().DOColor(SceneHandler.green, 0.3f).SetEase(Ease.OutCirc);
     }
 
     public void ColorOut(GameObject gameObject)

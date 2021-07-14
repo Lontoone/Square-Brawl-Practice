@@ -10,14 +10,16 @@ using DG.Tweening;
 using TMPro;
 namespace Easetype { }
 
-public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
+public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 {
     private Gamepad gamepad = Gamepad.current;
     private Keyboard keyboard = Keyboard.current;
     [SerializeField] private GameObject m_Menu;
     [SerializeField] private GameObject m_Option;
-    [SerializeField] private GameObject m_Mapeditor;
+    [SerializeField] private GameObject m_MapEditor;
     [SerializeField] private GameObject m_Control;
+    [SerializeField] private GameObject m_OnlineMenu;
+    /*
     [SerializeField] private GameObject m_Lobby;
     [SerializeField] private GameObject m_CreateRoom;
     [SerializeField] private GameObject m_RoomList;
@@ -26,6 +28,7 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
     [SerializeField] private GameObject m_Gamemode;
     [SerializeField] private GameObject m_MapSelection;
     [SerializeField] private GameObject m_WeaponSelection;
+    */
     [SerializeField] private GameObject m_ScoreInfo;
     private Easetype.Current_easetype scene_current_easetype;
     [SerializeField] Easetype.Current_easetype.Easetype easetype;
@@ -106,11 +109,15 @@ public class Scenemanager : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     public void EnterLobby()
     {
+        m_OnlineMenu.SetActive(true);
+        m_Menu.SetActive(false);
         m_Menu.transform.DOScale(new Vector3(10, 10, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
     public void ExitLobby()
     {
+        m_OnlineMenu.SetActive(false);
+        m_Menu.SetActive(true);
         m_Menu.transform.DOScale(new Vector3(1, 1, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
