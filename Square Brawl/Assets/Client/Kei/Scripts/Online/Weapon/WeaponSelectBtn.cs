@@ -12,15 +12,33 @@ public class WeaponSelectBtn : MonoBehaviour
     {
         button = GetComponent<Button>();
         button.onClick.AddListener(delegate { SetWeapon(weaponType); });
-    }  
+    }
     public void SetWeapon(WeaponType _targetWeapon)
     {
         //check firsr weapon 1 is set?
         //  true =>set weapon 2
         //  false => set weapon1
-        WeaponType weapon1 = (WeaponType)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON1CODE];
-        WeaponType weapon2 = (WeaponType)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON2CODE];
-        if (weapon1 != WeaponType.None && weapon2 == WeaponType.None)
+        object _tryData;
+        WeaponType weapon1 = PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(CustomPropertyCode.WEAPON1CODE, out _tryData) ? (WeaponType)_tryData : WeaponType.None;
+        WeaponType weapon2 = PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(CustomPropertyCode.WEAPON2CODE, out _tryData) ? (WeaponType)_tryData : WeaponType.None;
+
+        if (weapon1 == _targetWeapon)
+        {
+            //unset weapon 1
+            PhotonNetwork.LocalPlayer.SetCustomProperties(
+                               MyPhotonExtension.WrapToHash(
+                                   new object[] { CustomPropertyCode.WEAPON1CODE, WeaponType.None }
+                               ));
+        }
+        else if (weapon2 == _targetWeapon)
+        {
+            //unset weapon 2
+            PhotonNetwork.LocalPlayer.SetCustomProperties(
+                               MyPhotonExtension.WrapToHash(
+                                   new object[] { CustomPropertyCode.WEAPON2CODE, WeaponType.None }
+                               ));
+        }
+        else if (weapon1 != WeaponType.None && weapon2 == WeaponType.None)
         {
             //weapon2 = _targetWeapon;
             PhotonNetwork.LocalPlayer.SetCustomProperties(

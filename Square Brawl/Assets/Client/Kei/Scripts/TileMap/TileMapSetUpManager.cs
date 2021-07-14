@@ -28,6 +28,7 @@ public class TileMapSetUpManager : MonoBehaviour
     {
         if (TileMapManager.instance.gridCells.Count == 0)
         {
+            Debug.Log("Gernerate Grid");
             TileMapManager.instance.GenerateGrid();
         }
 
@@ -54,6 +55,7 @@ public class TileMapSetUpManager : MonoBehaviour
                 activeTileCells.Add(_cell);
                 //_dataCount++;
                 _dataCount = Mathf.Clamp(_dataCount + 1, 0, _mapData.cellDatas.Count - 1);
+                _cell.gameObject.SetActive(true);
             }
             else
             {

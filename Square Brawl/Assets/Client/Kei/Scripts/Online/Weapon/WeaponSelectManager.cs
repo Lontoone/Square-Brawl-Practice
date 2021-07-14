@@ -50,7 +50,7 @@ public class WeaponSelectManager : MonoBehaviourPunCallbacks
             _item.SetWeapon1((WeaponType)_data);
 
         }
-        else if (changedProps.TryGetValue(CustomPropertyCode.WEAPON1CODE, out _data))
+        else if (changedProps.TryGetValue(CustomPropertyCode.WEAPON2CODE, out _data))
         {
             WeaponSelectPlayerItem _item = FindObjectsOfType<WeaponSelectPlayerItem>().ToList().Find(x => x.player == targetPlayer);
             if (_item == null)
@@ -58,7 +58,7 @@ public class WeaponSelectManager : MonoBehaviourPunCallbacks
                 Debug.Log("Cant find the item");
                 return;
             }
-            _item.SetWeapon1((WeaponType)_data);
+            _item.SetWeapon2((WeaponType)_data);
 
         }
     }

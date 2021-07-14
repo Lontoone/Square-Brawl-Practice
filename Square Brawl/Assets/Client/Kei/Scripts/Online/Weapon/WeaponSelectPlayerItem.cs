@@ -7,7 +7,10 @@ public class WeaponSelectPlayerItem : ColorSelectPlayerItemControl
     public Text weapon1Text, weapon2Text;
     [HideInInspector]
     public WeaponType weapon1, weapon2;
-
+    public void Start()
+    {
+        SetColor(CustomPropertyCode.COLORS[ (int)player.CustomProperties[CustomPropertyCode.TEAM_CODE]]);
+    }
     public void SetWeapon1(WeaponType _targetWeapon) {
         weapon1 = _targetWeapon;
         weapon1Text.text = _targetWeapon.ToString();

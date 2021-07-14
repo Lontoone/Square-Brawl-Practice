@@ -23,11 +23,6 @@ public class MapSelectButton : MonoBehaviour
         button.onClick.AddListener(delegate { SendData(data); });
     }
 
-    public void OnDestroy()
-    {
-        Debug.Log("Byew");
-    }
-
     private void SendData(MapData _data)
     {
         //object[] _datasToSent = new object[1] { (object)_data };

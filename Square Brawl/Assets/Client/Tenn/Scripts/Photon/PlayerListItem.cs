@@ -16,7 +16,7 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
     [SerializeField] Button giveMasterBtn;
 
     bool isReady = false;
-    Player player;
+    Player player;    
     public void SetUp(Player _player)
     {
         player = _player;
@@ -29,6 +29,7 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         unreadyBtn.onClick.AddListener(delegate { SetReadyBtn(false); });
         giveMasterBtn.onClick.AddListener(delegate { TransferMaster(); });
 
+        //If this player is not mine => I can't operate his button.
         if (!player.IsLocal)
         {
             readyBtn.gameObject.SetActive(false);
@@ -62,7 +63,7 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         //int _playerIndex=
         //LocalDataManager.localPlayers[];
 
-        player.SetCustomProperties(MyPhotonExtension.WrapToHash(new object[] { CustomPropertyCode.READY, isReady }));
+        player.SetCustomProperties(MyPhotonExtension.WrapToHash(new object[] { CustomPropertyCode.READY, _isReady }));
 
     }
     private void SetReady(bool _isReady)
