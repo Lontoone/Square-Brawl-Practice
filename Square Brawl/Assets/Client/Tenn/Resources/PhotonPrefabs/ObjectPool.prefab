@@ -54,6 +54,12 @@ MonoBehaviour:
   - tag: FreezeShoot
     prefab: {fileID: 5657758444619143484, guid: 3ca3ca1951297594facb8ca79a165741, type: 3}
     size: 2
+  - tag: SmallExplose
+    prefab: {fileID: 417232320694450545, guid: aab7e614ed2ac87468e4bcc236d591cd, type: 3}
+    size: 10
+  - tag: BigExplose
+    prefab: {fileID: 8407165551414661246, guid: 92c0a246d324bfe4ca3f97be304b3b22, type: 3}
+    size: 5
   _pv: {fileID: 0}
 --- !u!114 &7958008732146023615
 MonoBehaviour:

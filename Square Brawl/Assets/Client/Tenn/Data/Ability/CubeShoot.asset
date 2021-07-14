@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: CubeShoot
   Sound: {fileID: 0}
+  LaunchEffectName: 
+  ExploseEffectName: SmallExplose
   CoolDownTime: 0.05
   Damage: 20
   Speed: 10
@@ -24,3 +26,4 @@ MonoBehaviour:
   BulletScaleValue: 0.2
   IsDontContinuous: 0
   IsDontShootStraight: 1
+  IsScatterShot: 0

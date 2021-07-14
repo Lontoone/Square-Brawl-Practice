@@ -135,11 +135,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
-        //PhotonNetwork.LoadLevel(1);
-        ConfirmPlayers();
-        MenuManager.instance.OpenMenu("characterselection");
+        PhotonNetwork.LoadLevel(1);
+        //ConfirmPlayers();
+        //MenuManager.instance.OpenMenu("characterselection");
         //Sync Room
-        SyncMenu("characterselection");
+        //SyncMenu("characterselection");
         /*
         PhotonNetwork.CurrentRoom.SetCustomProperties(MyPhotonExtension.WrapToHash(
                                                                         new object[] {

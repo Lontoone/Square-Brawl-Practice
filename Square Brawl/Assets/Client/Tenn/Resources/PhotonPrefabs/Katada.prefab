@@ -69,10 +69,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7097ec41208e4a4caea7faf28f1d14f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 0
-  Damage: 0
-  _beElasticityDir: 0
-  BeAttackElasticity: 0
+  KatadaSpeed: 0
+  KatadaDamage: 0
+  KatadaBeElasticity: 0
+  BeElasticityDir: 0
   IsKatadaReverse: 0
   _pv: {fileID: -6354790548580462332}
 --- !u!61 &7699014908509974731
@@ -172,7 +172,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 11
+  m_SortingOrder: 9
   m_Sprite: {fileID: 21300000, guid: e974a4f257444824d954bd1b6732d950, type: 3}
   m_Color: {r: 1, g: 0.9635534, b: 0, a: 1}
   m_FlipX: 0

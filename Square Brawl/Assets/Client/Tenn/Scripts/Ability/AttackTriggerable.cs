@@ -13,33 +13,55 @@ public class AttackTriggerable : MonoBehaviour
     [HideInInspector] public float WeaponScaleValue;
     [HideInInspector] public bool IsDontContinuous;
     [HideInInspector] public bool IsDontShootStraight;
+    [HideInInspector] public string LaunchEffectName;
+    [HideInInspector] public string ExploseEffectName;
 
     public bool IsSpeicalBool;
 
     private GameObject _bulletSpawnPos;
     private GameObject _bulletMidSpawnPos;
     private PlayerController _playerController;
-    private ObjectsPool _objectsPool;
-    private Bullet _bullet;
-    private Katada _katada;
+    public GameObject[] gameObjects;
+    //private ObjectsPool _objectsPool;
+    //private Bullet _bullet;
+    //private Katada _katada;
 
     private void Start()
     {
         _bulletSpawnPos = GameObject.FindGameObjectWithTag("BulletSpawnPos");
         _bulletMidSpawnPos = GameObject.FindGameObjectWithTag("MidPos");
         _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        _objectsPool = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<ObjectsPool>();
+       // _objectsPool = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<ObjectsPool>();
     }
 
     public void Fire()
     {
-        GameObject _bulletObj = _objectsPool.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation,null);
-        _bullet = _bulletObj.GetComponent<Bullet>();
+       // GameObject _bulletObj = _objectsPool.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation,null);
+        GameObject _bulletObj = ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        Bullet _bullet = _bulletObj.GetComponent<Bullet>();
+        _bullet.ExploseEffectName = ExploseEffectName;
         _bullet.BulletSpeed = WeaponSpeed;
         _bullet.BulletDamage = WeaponDamage;
         _bullet.IsDontShootStraight = IsDontShootStraight;
         _bullet.BulletScaleValue = WeaponScaleValue;
         _bullet.BulletBeElasticity = BeElasticity;
+        _playerController.PlayerRecoil(WeaponRecoil);
+    }
+
+    public void ScatterFire()
+    {
+        for (int i = 0; i <= 4; i++)
+        {
+            GameObject[] _bulletObj = new GameObject[5];
+            _bulletObj[i]= ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+            Bullet _bullet = _bulletObj[i].GetComponent<Bullet>();
+            _bullet.ExploseEffectName = ExploseEffectName;
+            _bullet.BulletSpeed = WeaponSpeed;
+            _bullet.BulletDamage = WeaponDamage;
+            _bullet.IsDontShootStraight = IsDontShootStraight;
+            _bullet.BulletScaleValue = WeaponScaleValue;
+            _bullet.BulletBeElasticity = BeElasticity;
+        }
         _playerController.PlayerRecoil(WeaponRecoil);
     }
 
@@ -55,8 +77,9 @@ public class AttackTriggerable : MonoBehaviour
     public void Katada()
     {
         IsSpeicalBool = !IsSpeicalBool;
-        GameObject _katadaObj = _objectsPool.SpawnFromPool("Katada", _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
-        _katada = _katadaObj.GetComponent<Katada>();
+        //GameObject _katadaObj = _objectsPool.SpawnFromPool("Katada", _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        GameObject _katadaObj = ObjectsPool.Instance.SpawnFromPool("Katada", _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        Katada _katada = _katadaObj.GetComponent<Katada>();
         _katada.IsKatadaReverse = IsSpeicalBool;
         _katada.KatadaDamage = WeaponDamage;
         _katada.KatadaBeElasticity = BeElasticity;
@@ -67,7 +90,7 @@ public class AttackTriggerable : MonoBehaviour
     {
         _playerController.IsShootFreeze = true;
         _playerController.PlayerRecoil(WeaponRecoil);
-        _objectsPool.SpawnFromPool("FreezeShoot", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        ObjectsPool.Instance.SpawnFromPool("FreezeShoot", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         StartCoroutine(IsFreezeChangeFalse());
     }
 

@@ -6,6 +6,8 @@ public abstract class Ability : ScriptableObject
 {
     public string Name = "New Ability";
     public AudioClip Sound;
+    public string LaunchEffectName;
+    public string ExploseEffectName;
     public float CoolDownTime;
     public int Damage;
     public float Speed;

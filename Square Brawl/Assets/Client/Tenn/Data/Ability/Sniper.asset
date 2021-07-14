@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Sniper
   Sound: {fileID: 0}
+  LaunchEffectName: 
+  ExploseEffectName: SmallExplose
   CoolDownTime: 2
   Damage: 50
   Speed: 25
@@ -24,3 +26,4 @@ MonoBehaviour:
   BulletScaleValue: 0.15
   IsDontContinuous: 0
   IsDontShootStraight: 0
+  IsScatterShot: 0

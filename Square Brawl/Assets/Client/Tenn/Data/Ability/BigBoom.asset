@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: BigBoom
   Sound: {fileID: 0}
+  LaunchEffectName: 
+  ExploseEffectName: BigExplose
   CoolDownTime: 2
   Damage: 10
   Speed: 7
@@ -24,3 +26,4 @@ MonoBehaviour:
   BulletScaleValue: 0.2
   IsDontContinuous: 0
   IsDontShootStraight: 0
+  IsScatterShot: 0

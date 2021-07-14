@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 9
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: e974a4f257444824d954bd1b6732d950, type: 3}
   m_Color: {r: 1, g: 0.5411765, b: 0, a: 1}
   m_FlipX: 0
@@ -124,15 +124,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f704a38b0d29e424593ceef0d4cefcb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShootSpeed: 20
-  ShootDamage: 0
-  BeShootElasticity: 0
+  BulletSpeed: 0
+  BulletDamage: 0
+  BulletBeElasticity: 0
   BulletScaleValue: 0
-  _OriginSpeed: 0
-  _pos: {x: 0, y: 0, z: 0}
   IsDontShootStraight: 0
-  ExploseEffectObj: {fileID: 1753829585539416712, guid: 973c7741567174141a5a3a8b93d80f93, type: 3}
-  _pv: {fileID: 0}
+  ExploseEffectName: 
   _networkPosition: {x: 0, y: 0}
   _beginPos: {x: 0, y: 0}
   _networkRotation: {x: 0, y: 0, z: 0, w: 0}

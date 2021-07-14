@@ -84,10 +84,10 @@ public class PlayerController : MonoBehaviour,IPunObservable
     {
         _camera = Camera.main;
         _canSpin = true;
-
+        FrontSightMidPos = transform.GetChild(0).GetComponent<Transform>();
         if (Pv.IsMine)
         {
-            FrontSightMidPos = transform.GetChild(0).GetComponent<Transform>();
+            //FrontSightMidPos = transform.GetChild(0).GetComponent<Transform>();
             FrontSightRb = transform.GetChild(1).GetComponent<Rigidbody2D>();
             FrontSightPos = FrontSightMidPos.transform.GetChild(0);
 

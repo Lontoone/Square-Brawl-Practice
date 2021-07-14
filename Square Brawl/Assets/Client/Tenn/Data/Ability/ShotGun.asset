@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c3fd8551facdb34bb9f744451517de0, type: 3}
-  m_Name: Aevolver
+  m_Name: ShotGun
   m_EditorClassIdentifier: 
-  Name: Aevolver
+  Name: ShotGun
   Sound: {fileID: 0}
   LaunchEffectName: 
   ExploseEffectName: SmallExplose
-  CoolDownTime: 0.3
-  Damage: 10
-  Speed: 20
-  Recoil: 300
-  BeElasticity: 800
+  CoolDownTime: 2
+  Damage: 20
+  Speed: 10
+  Recoil: 700
+  BeElasticity: 150
   isCdCanAdd: 0
-  isHaveTwoCd: 1
-  BulletScaleValue: 0.15
+  isHaveTwoCd: 0
+  BulletScaleValue: 0.2
   IsDontContinuous: 0
-  IsDontShootStraight: 0
-  IsScatterShot: 0
+  IsDontShootStraight: 1
+  IsScatterShot: 1

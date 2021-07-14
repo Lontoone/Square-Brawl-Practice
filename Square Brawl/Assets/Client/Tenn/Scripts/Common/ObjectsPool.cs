@@ -21,9 +21,12 @@ public class ObjectsPool : MonoBehaviour
     public PhotonView _pv;
     void Awake()
     {
-        Instance = this;
-
         _pv=GetComponent<PhotonView>();
+
+        if (_pv.IsMine)
+        {
+            Instance = this;
+        }
 
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
 
