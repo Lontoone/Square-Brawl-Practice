@@ -8,6 +8,7 @@ public class TileCell : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandl
 {
     public int grid_index;
     public SpriteRenderer spriteRenderer;
+    public SpriteRenderer hindSpriteRenderer;
     //[HideInInspector]
     public TileCell conboundCenter;
     public SelectRangeData conboundRange;
