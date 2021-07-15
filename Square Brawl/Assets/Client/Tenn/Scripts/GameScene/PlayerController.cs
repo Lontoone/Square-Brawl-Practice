@@ -62,12 +62,18 @@ public class PlayerController : MonoBehaviour,IPunObservable
     public PhotonView Pv;
     private PlayerInputManager _inputAction;
     private PlayerManager _playerManager;
+
+    public static PlayerController instance;
     private void Awake()
     {
         _inputAction = new PlayerInputManager();
         Pv = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody2D>();
         _playerManager = PhotonView.Find((int)Pv.InstantiationData[0]).GetComponent<PlayerManager>();
+        if (Pv.IsMine)
+        {
+            instance = this;
+        }
     }
 
     private void OnEnable()

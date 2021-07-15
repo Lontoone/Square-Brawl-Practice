@@ -70,7 +70,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    private void BulletCollider()
+    public void BulletCollider()
     {
         _originPos = transform.position + new Vector3(transform.localScale.x / 2, 0, 0);
 

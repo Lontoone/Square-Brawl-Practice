@@ -13,6 +13,7 @@ public class ShootAbility : Ability
     public override void Initalize(GameObject _obj)
     {
         _attack = _obj.GetComponent<AttackTriggerable>();
+        _attack.Name = Name;
         _attack.WeaponDamage = Damage;
         _attack.WeaponSpeed = Speed;
         _attack.WeaponRecoil = Recoil;

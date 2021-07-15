@@ -6,6 +6,7 @@ using System.IO;
 
 public class AttackTriggerable : MonoBehaviour
 {
+    [HideInInspector] public string Name;
     [HideInInspector] public int WeaponDamage;
     [HideInInspector] public float WeaponSpeed;
     [HideInInspector] public float WeaponRecoil;
@@ -96,7 +97,7 @@ public class AttackTriggerable : MonoBehaviour
 
     public void GrenadeFire()
     {
-        GameObject _grenadeObj = ObjectsPool.Instance.SpawnFromPool("Grenade", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        GameObject _grenadeObj = ObjectsPool.Instance.SpawnFromPool(Name, _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Grenade _grenade = _grenadeObj.GetComponent<Grenade>();
         _grenade.BulletSpeed = WeaponSpeed;
         _grenade.BulletDamage = WeaponDamage;

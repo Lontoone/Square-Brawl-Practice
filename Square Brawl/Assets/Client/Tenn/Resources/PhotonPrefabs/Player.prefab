@@ -476,6 +476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8993f599de176419f86f6e673c7cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   WeaponDamage: 0
   WeaponSpeed: 0
   WeaponRecoil: 0
@@ -555,7 +556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkill01: 0
-  ability: {fileID: 11400000, guid: ebccf3015db41384796873215c4b7bc8, type: 2}
+  ability: {fileID: 11400000, guid: 2c1c2b673b4fcf24380ee64b7e298b8c, type: 2}
 --- !u!114 &8648748878713665433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,6 +569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8993f599de176419f86f6e673c7cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   WeaponDamage: 0
   WeaponSpeed: 0
   WeaponRecoil: 0
