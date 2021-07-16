@@ -3,31 +3,69 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Grenade : Bullet, IPoolObject
+public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
 {
-    protected bool isShoot;
+    [HeaderAttribute("Bullet Setting")]
+    public float BulletSpeed;//Bullet Speed
+    public float BulletDamage;//Bullet Damage
+    public float BulletBeElasticity;//Bullet Be Elasticity
+    public float BulletScaleValue;//Bullet Scale Value
+
+    public bool isShoot;
+    protected bool _isReset;
     public float FieldExplose;
     public float ExploseForce;
 
+    public string ExploseEffectName;
+
     public LayerMask LayerToExplose;
-    protected override void Start()
+
+    protected Rigidbody2D _rb;
+    protected GameObject _childObj;
+
+    [HeaderAttribute("Sync Setting")]
+    protected PhotonView _pv;
+
+    protected Vector2 _networkPosition;
+    protected Vector2 _beginPos;
+
+    protected Vector3 _childObjnetworkPosition;
+    protected Vector3 _childObjnetworkScale;
+    protected Quaternion _networkDir;
+    protected virtual void Start()
     {
-        base.Start();
+        _rb = GetComponent<Rigidbody2D>();
+        _pv = GetComponent<PhotonView>();
+        if (_pv.IsMine)
+        {
+            _pv.RPC("Rpc_DisableObj", RpcTarget.All);
+        }
     }
 
-    protected override void Update()
+    public void OnObjectSpawn()
+    {
+        if (_pv.IsMine)
+        {
+            _pv.RPC("Rpc_EnableObj", RpcTarget.All);
+            _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
+        }
+    }
+
+    protected virtual void Update()
     {
         ResetValue();//Reset Bullet Value
-    }
-
-    protected override void FixedUpdate()
-    {
         if (!isShoot)
         {
-            _rb.AddForce(BulletSpeed * transform.right);
-            transform.eulerAngles = Vector3.zero;
             StartCoroutine(Boom());
             isShoot = true;
+        }
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        if (!_pv.IsMine)
+        {
+            _rb.position = Vector2.Lerp(_rb.position, _networkPosition, 5 * Time.fixedDeltaTime);
         }
     }
 
@@ -35,7 +73,10 @@ public class Grenade : Bullet, IPoolObject
     {
         yield return new WaitForSeconds(1f);
         Explose();
-        ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+        if (_pv.IsMine)
+        {
+            ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+        }
         yield return new WaitForSeconds(0.1f);
         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
@@ -46,18 +87,90 @@ public class Grenade : Bullet, IPoolObject
         foreach (Collider2D obj in objects)
         {
             PlayerController _playerController = obj.GetComponent<PlayerController>();
+            Vector2 dir = obj.transform.position - transform.position;
+            if (_pv.IsMine == _playerController.Pv.IsMine&&_pv.IsMine)
+            {
+                _playerController.BeBounce(BulletBeElasticity, dir.x, dir.y);
+            }
+
             if (_pv.IsMine != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
             {
-                Vector2 dir = obj.transform.position - transform.position;
-                _playerController.TakeDamage(BulletDamage, BulletBeElasticity, dir.x, dir.y);
+                _playerController.TakeDamage(BulletDamage, 0, 0, 0);
+                _playerController.BeBounce(BulletBeElasticity, dir.x, dir.y);
             }
         }
-        isShoot = false;
     }
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, FieldExplose);
+    }
+
+    protected virtual void ResetValue()
+    {
+        if (!_isReset && _pv.IsMine)
+        {
+            _pv.RPC("Rpc_SetValue", RpcTarget.All, BulletSpeed, BulletDamage, BulletScaleValue, BulletBeElasticity);
+            _rb.AddForce(BulletSpeed * transform.right);
+            transform.eulerAngles = Vector3.zero;
+            _isReset = true;
+        }
+    }
+
+    [PunRPC]
+    public void Rpc_SetValue(float _speed, float _damage, float _scaleValue, float _elasticity)
+    {
+        BulletSpeed = _speed;
+        BulletDamage = _damage;
+        BulletScaleValue = _scaleValue;
+        BulletBeElasticity = _elasticity;
+    }
+
+    [PunRPC]
+    public void Rpc_DisableObj()
+    {
+        gameObject.SetActive(false);
+        _isReset = isShoot = false;
+    }
+
+    [PunRPC]
+    public void Rpc_EnableObj()
+    {
+        gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    public void Rpc_ResetPos(Vector3 pos, Quaternion dir)
+    {
+        transform.position = pos;
+        transform.rotation = dir;
+        _networkPosition = pos;
+    }
+
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(_rb.position);
+            stream.SendNext(_rb.velocity);
+            stream.SendNext(transform.rotation);
+            if (_childObj != null)
+            {
+                stream.SendNext(_childObj.transform.localPosition);
+                stream.SendNext(_childObj.transform.localScale);
+            }
+        }
+        else
+        {
+            _networkPosition = (Vector2)stream.ReceiveNext();
+            _rb.velocity = (Vector2)stream.ReceiveNext();
+            _networkDir = (Quaternion)stream.ReceiveNext();
+            _childObjnetworkPosition = (Vector3)stream.ReceiveNext();
+            _childObjnetworkScale = (Vector3)stream.ReceiveNext();
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.00001f);
+            _networkPosition += (_rb.velocity * lag);
+        }
     }
 }

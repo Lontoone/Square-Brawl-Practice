@@ -15,10 +15,10 @@ MonoBehaviour:
   Name: Pillar
   Sound: {fileID: 0}
   LaunchEffectName: 
-  ExploseEffectName: 
+  ExploseEffectName: SmallExplose
   CoolDownTime: 2
-  Damage: 50
-  Speed: 500
+  Damage: 10
+  Speed: 600
   Recoil: 150
   BeElasticity: 800
   isCdCanAdd: 0

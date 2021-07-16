@@ -1,70 +1,83 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class Pillar : Grenade, IPoolObject
 {
-    private bool _isGrow;
+    public bool _isGrow;
+    public bool _isBoom;
 
-    private float _growY;
-
-    public float FootOffset;
+    public float _growY;
     public float GroundDistance;
-    public float PlayerWidth;
 
+    public Vector2 _colliderDir;
     public LayerMask GroundLayer;
-    /* private float _growY
-     {
-         get { return test; }
-         set
-         {
-             if (value >= 10)
-                 test = 10;
-             else
-                 test = value;
-         }
-     }*/
+
     protected override void Start()
     {
+        _growY = 1f;
+        _childObj = transform.GetChild(0).gameObject;
+        Physics2D.IgnoreCollision(GetComponentInChildren<BoxCollider2D>(), GetComponent<BoxCollider2D>());
         base.Start();
     }
 
     protected override void Update()
     {
-        base.Update();
-        if (_isGrow)
+        ResetValue();
+        ColliderEvent();
+        if (!_pv.IsMine)
         {
-            // _growY += 20*Time.deltaTime;
-            _growY = Mathf.Lerp(transform.localScale.y, 13, 10 * Time.deltaTime);
-            transform.localScale = new Vector3(transform.localScale.x, _growY, transform.localScale.z);
-            StartCoroutine(Shorten());
-        }
-        else
-        {
-            _growY = Mathf.Lerp(transform.localScale.y, 1,  10* Time.deltaTime);
-            transform.localScale = new Vector3(transform.localScale.x, _growY, transform.localScale.z);
-        }
-
-        //GroundCheckEvent();
-
-    }
-
-    protected override void FixedUpdate()
-    {
-        if (!isShoot)
-        {
-            _rb.AddForce(BulletSpeed * transform.right);
-            transform.eulerAngles = Vector3.zero;
-            isShoot = true;
+            _childObj.transform.localPosition = Vector3.Lerp(_childObj.transform.localPosition, _childObjnetworkPosition, 15 * Time.deltaTime);
+            _childObj.transform.localScale = Vector3.Lerp(_childObj.transform.localScale, _childObjnetworkScale, 15 * Time.deltaTime);
+            transform.rotation = _networkDir;
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    protected new void FixedUpdate()
     {
-        if (other.gameObject.CompareTag("Ground"))
+        base.FixedUpdate();
+    }
+
+    void ColliderEvent()
+    {
+        if (_isBoom&&_pv.IsMine)
         {
-            _rb.bodyType = RigidbodyType2D.Static;
-            _isGrow = true;
+            if (_isGrow)
+            {
+                _growY = Mathf.Lerp(_growY, 15f, 10 * Time.deltaTime);
+                _childObj.transform.localPosition = new Vector3(_childObj.transform.localPosition.x, (_growY / 2) - 0.5f, _childObj.transform.localPosition.z);
+                _childObj.transform.localScale = new Vector3(_childObj.transform.localScale.x, _growY, _childObj.transform.localScale.z);
+                StartCoroutine(Shorten());
+            }
+            else
+            {
+                _growY = Mathf.Lerp(_growY, 0f, 8 * Time.deltaTime);
+                _childObj.transform.localPosition = new Vector3(_childObj.transform.localPosition.x, (_growY / 2) - 0.5f, _childObj.transform.localPosition.z);
+                _childObj.transform.localScale = new Vector3(_childObj.transform.localScale.x, _growY, _childObj.transform.localScale.z);
+                if (_growY <= 0.1f)
+                {
+                    _pv.RPC("Rpc_DisableObj", RpcTarget.All);
+                    _childObj.transform.localPosition = new Vector3(_childObj.transform.localPosition.x, _childObj.transform.localPosition.y + 0.5f, _childObj.transform.localPosition.z);
+                    _childObj.transform.localScale = new Vector3(_childObj.transform.localScale.x, 1, _childObj.transform.localScale.z);
+                    _isBoom = isShoot = _isGrow = false;
+                    _rb.bodyType = RigidbodyType2D.Dynamic;
+                }
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground")&&!_isGrow)
+        {
+            if (_pv.IsMine)
+            {
+                _rb.bodyType = RigidbodyType2D.Static;
+                GroundCheckEvent();
+            }
+            Explose();
+            _isGrow =_isBoom = true;
         }
     }
 
@@ -77,33 +90,29 @@ public class Pillar : Grenade, IPoolObject
     //Ground Check
     void GroundCheckEvent()
     {
-        RaycastHit2D leftCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.left, GroundDistance);
-        RaycastHit2D rightCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.right, GroundDistance);
-        RaycastHit2D downCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.down, GroundDistance);
-        RaycastHit2D upCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.up, GroundDistance);
+        RaycastHit2D leftCheck = Raycast(Vector2.zero, Vector2.left, GroundDistance);
+        RaycastHit2D rightCheck = Raycast(Vector2.zero, Vector2.right, GroundDistance);
+        RaycastHit2D downCheck = Raycast(Vector2.zero, Vector2.down, GroundDistance);
+        RaycastHit2D upCheck = Raycast(Vector2.zero, Vector2.up, GroundDistance);
         if (leftCheck)
         {
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 270);
-            _rb.bodyType = RigidbodyType2D.Static;
-            _isGrow = true;
+            _colliderDir = new Vector2(1, 0);
         }
         else if (rightCheck)
         {
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 90);
-            _rb.bodyType = RigidbodyType2D.Static;
-            _isGrow = true;
+            _colliderDir = new Vector2(-1, 0);
         }
         else if (downCheck)
         {
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0);
-            _rb.bodyType = RigidbodyType2D.Static;
-            _isGrow = true;
+            _colliderDir = new Vector2(0, 1);
         }
         else if (upCheck)
         {
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 180);
-            _rb.bodyType = RigidbodyType2D.Static;
-            _isGrow = true;
+            _colliderDir = new Vector2(0, -1);
         }
     }
 
@@ -115,5 +124,17 @@ public class Pillar : Grenade, IPoolObject
         Color color = hit ? Color.red : Color.green;
         Debug.DrawRay(pos + offset, rayDirection * lengh, color);
         return hit;
+    }
+
+    [PunRPC]
+    void Rpc_RbStatic()
+    {
+        _rb.bodyType = RigidbodyType2D.Static;
+    }
+
+    [PunRPC]
+    void Rpc_RbDynamic()
+    {
+        _rb.bodyType = RigidbodyType2D.Dynamic;
     }
 }

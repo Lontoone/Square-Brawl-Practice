@@ -146,7 +146,7 @@ MonoBehaviour:
   PlayerWidth: 0
   GroundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 4352
   FrontSightMidPos: {fileID: 0}
   FrontSightPos: {fileID: 0}
   FrontSightRb: {fileID: 0}

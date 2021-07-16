@@ -172,10 +172,10 @@ MonoBehaviour:
   BulletDamage: 0
   BulletBeElasticity: 0
   BulletScaleValue: 0
-  IsDontShootStraight: 0
-  ExploseEffectName: 
+  isShoot: 0
   FieldExplose: 2
   ExploseForce: 700
+  ExploseEffectName: 
   LayerToExplose:
     serializedVersion: 2
     m_Bits: 2048
