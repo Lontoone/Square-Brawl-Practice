@@ -11,7 +11,6 @@ public class PlayerManager : MonoBehaviour
 
     private GameObject _obj;
 
-    // Start is called before the first frame update
     void Awake()
     {
         _pv = GetComponent<PhotonView>();
@@ -25,11 +24,10 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void CreatController()
     {
-        _obj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), new Vector3(Random.Range(-5,6),0,0), Quaternion.identity, 0, new object[] { _pv.ViewID });
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "ObjectPool"), Vector3.zero, Quaternion.identity);
+        _obj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), new Vector3(Random.Range(-5,6),0,0), Quaternion.identity, 0, new object[] { _pv.ViewID });
         
     }
 

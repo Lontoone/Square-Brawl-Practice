@@ -172,7 +172,7 @@ MonoBehaviour:
   BulletDamage: 0
   BulletBeElasticity: 0
   BulletScaleValue: 0
-  FieldExplose: 2
+  FieldExplose: 3
   ExploseEffectName: 
   LayerToExplose:
     serializedVersion: 2

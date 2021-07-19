@@ -10,20 +10,20 @@ public class AbilityHolder : MonoBehaviour
     private float _cooldownTime;
     private float _activeTime;
     private float isCdAddCount;
+    public int _abilityNum;
 
     public bool isWeapon01;
     protected bool _isFire01;
     protected bool _isFire02;
 
     public Ability[] ability;
-    public int _abilityNum;
 
     private PlayerController _playerController;
     private PlayerInputManager _inputAction;
     private PhotonView _pv;
     public Player player;
 
-    /*public enum WeaponType
+    public enum WeaponType2
     {
         None,
         Aevolver,
@@ -31,10 +31,12 @@ public class AbilityHolder : MonoBehaviour
         Charge,
         CubeShoot,
         Katada,
-        Sniper
+        Sniper,
+        Grenade,
+        Pillar,
     }
 
-    public WeaponType weapon1, weapon2;*/
+    public WeaponType2 weapon1, weapon2;
 
     private enum AbilityState
     {
@@ -65,26 +67,18 @@ public class AbilityHolder : MonoBehaviour
     {
         if (_pv.IsMine)
         {
-            for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-            {
-                {
-                    //foreach player data:
-                    player = PhotonNetwork.PlayerList[i];
-                }
-            }
-
             if (isWeapon01)
             {
-                _abilityNum = (int)player.CustomProperties[CustomPropertyCode.WEAPON1CODE];
-                //_abilityNum = (int)weapon1;
+                //_abilityNum = (int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON1CODE];
+                _abilityNum = (int)weapon1;
                 _inputAction.Player.Fire1.performed += _ => PlayerFire1Down();
                 _inputAction.Player.Fire1.canceled += _ => PlayerFire1Up();
                 SetWeapon();
             }
             else
             {
-                _abilityNum = (int)player.CustomProperties[CustomPropertyCode.WEAPON2CODE];
-                //_abilityNum = (int)weapon2;
+                //_abilityNum = (int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON2CODE];
+                _abilityNum = (int)weapon2;
                 _inputAction.Player.Fire2.performed += _ => PlayerFire2Down();
                 _inputAction.Player.Fire2.canceled += _ => PlayerFire2Up();
                 SetWeapon();

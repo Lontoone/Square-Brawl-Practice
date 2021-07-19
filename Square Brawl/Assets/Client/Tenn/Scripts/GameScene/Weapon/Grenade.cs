@@ -86,49 +86,21 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
-    public void Explose()
+    private void Explose()
     {
         Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, FieldExplose, LayerToExplose);
         foreach (Collider2D obj in objects)
         {
             PlayerController _playerController = obj.GetComponent<PlayerController>();
-            Vector2 dir = obj.transform.position - transform.position;
-            float angle_360(Vector3 from_, Vector3 to_)
-            {
-                //兩點的x、y值
-                float x = from_.x - to_.x;
-                float y = from_.y - to_.y;
-
-                //斜邊長度
-                float hypotenuse = Mathf.Sqrt(Mathf.Pow(x, 2f) + Mathf.Pow(y, 2f));
-
-                //求出弧度
-                float cos = x / hypotenuse;
-                float radian = Mathf.Acos(cos);
-
-                //用弧度算出角度    
-                float angle = 180 / (Mathf.PI / radian);
-
-                if (y < 0)
-                {
-                    angle = -angle;
-                }
-                else if ((y == 0) && (x < 0))
-                {
-                    angle = 180;
-                }
-                return angle;
-            }
-
             if (_pv.IsMine == _playerController.Pv.IsMine&&_pv.IsMine)
             {
-                _playerController.BeBounce(BulletBeElasticity, dir.x, dir.y);
+                _playerController.BeExplode(BulletBeElasticity, transform.position, FieldExplose);
             }
 
             if (_pv.IsMine != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
             {
                 _playerController.TakeDamage(BulletDamage, 0, 0, 0);
-                _playerController.BeBounce(BulletBeElasticity, dir.x, dir.y);
+                _playerController.BeExplode(BulletBeElasticity, transform.position, FieldExplose);
             }
         }
     }
@@ -200,8 +172,8 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
             _networkDir = (Quaternion)stream.ReceiveNext();
             _childObjnetworkPosition = (Vector3)stream.ReceiveNext();
             _childObjnetworkScale = (Vector3)stream.ReceiveNext();
-            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.00001f);
-            _networkPosition += (_rb.velocity * lag);
+            //float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
+            //_networkPosition += (_rb.velocity * lag);
         }
     }
 }

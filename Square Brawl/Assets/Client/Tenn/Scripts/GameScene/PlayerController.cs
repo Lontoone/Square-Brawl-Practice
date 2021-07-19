@@ -399,9 +399,14 @@ public class PlayerController : MonoBehaviour,IPunObservable
         }
     }
 
-    public void BeBounce(float _elasticty,float _dirX, float _dirY)
+    public void BeBounce(float _elasticty,float _dirX,float _dirY)
     {
         _rb.AddForce(_elasticty * new Vector2(_dirX, _dirY));
+    }
+
+    public void BeExplode(float _elasticty, Vector3 _pos, float _field)
+    {
+        _rb.AddExplosionForce(_elasticty, _pos, _field);
     }
 
     public void TakeDamage(float _damage,float _elasticty,float _bullletDirX,float _bullletDirY)

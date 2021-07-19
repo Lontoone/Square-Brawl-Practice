@@ -449,6 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e82092aac93c214b9f9d51f20c78096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _abilityNum: 0
   isWeapon01: 1
   ability:
   - {fileID: 0}
@@ -460,7 +461,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 94733b4e862fbf84da6091fb67dfc035, type: 2}
   - {fileID: 11400000, guid: 041159c542d5669438f8600ef869f9c7, type: 2}
   - {fileID: 11400000, guid: 2c1c2b673b4fcf24380ee64b7e298b8c, type: 2}
-  _abilityNum: 0
+  weapon1: 7
+  weapon2: 0
 --- !u!114 &8648748878293601389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,6 +554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e82092aac93c214b9f9d51f20c78096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _abilityNum: 0
   isWeapon01: 0
   ability:
   - {fileID: 0}
@@ -563,7 +566,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 94733b4e862fbf84da6091fb67dfc035, type: 2}
   - {fileID: 11400000, guid: 041159c542d5669438f8600ef869f9c7, type: 2}
   - {fileID: 11400000, guid: 2c1c2b673b4fcf24380ee64b7e298b8c, type: 2}
-  _abilityNum: 0
+  weapon1: 0
+  weapon2: 8
 --- !u!114 &8648748878713665433
 MonoBehaviour:
   m_ObjectHideFlags: 0

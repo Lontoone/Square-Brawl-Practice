@@ -126,10 +126,9 @@ MonoBehaviour:
   LayerToExplose:
     serializedVersion: 2
     m_Bits: 2048
-  _isGrow: 0
-  _isBoom: 0
   _growY: 0
   GroundDistance: 0.15
+  _isGrow: 0
   _colliderDir: {x: 0, y: 0}
   GroundLayer:
     serializedVersion: 2
