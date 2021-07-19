@@ -10,11 +10,10 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     public float BulletDamage;//Bullet Damage
     public float BulletBeElasticity;//Bullet Be Elasticity
     public float BulletScaleValue;//Bullet Scale Value
+    public float FieldExplose;//Explose Field
 
-    public bool isShoot;
+    protected bool isShoot;
     protected bool _isReset;
-    public float FieldExplose;
-    public float ExploseForce;
 
     public string ExploseEffectName;
 
@@ -54,11 +53,8 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     protected virtual void Update()
     {
         ResetValue();//Reset Bullet Value
-        if (!isShoot)
-        {
-            StartCoroutine(Boom());
-            isShoot = true;
-        }
+
+        ExploseEvent();//Explose Event
     }
 
     protected virtual void FixedUpdate()
@@ -66,6 +62,15 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         if (!_pv.IsMine)
         {
             _rb.position = Vector2.Lerp(_rb.position, _networkPosition, 5 * Time.fixedDeltaTime);
+        }
+    }
+
+    void ExploseEvent()
+    {
+        if (!isShoot)
+        {
+            StartCoroutine(Boom());
+            isShoot = true;
         }
     }
 
@@ -88,6 +93,33 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         {
             PlayerController _playerController = obj.GetComponent<PlayerController>();
             Vector2 dir = obj.transform.position - transform.position;
+            float angle_360(Vector3 from_, Vector3 to_)
+            {
+                //兩點的x、y值
+                float x = from_.x - to_.x;
+                float y = from_.y - to_.y;
+
+                //斜邊長度
+                float hypotenuse = Mathf.Sqrt(Mathf.Pow(x, 2f) + Mathf.Pow(y, 2f));
+
+                //求出弧度
+                float cos = x / hypotenuse;
+                float radian = Mathf.Acos(cos);
+
+                //用弧度算出角度    
+                float angle = 180 / (Mathf.PI / radian);
+
+                if (y < 0)
+                {
+                    angle = -angle;
+                }
+                else if ((y == 0) && (x < 0))
+                {
+                    angle = 180;
+                }
+                return angle;
+            }
+
             if (_pv.IsMine == _playerController.Pv.IsMine&&_pv.IsMine)
             {
                 _playerController.BeBounce(BulletBeElasticity, dir.x, dir.y);
@@ -107,7 +139,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         Gizmos.DrawWireSphere(transform.position, FieldExplose);
     }
 
-    protected virtual void ResetValue()
+    protected void ResetValue()
     {
         if (!_isReset && _pv.IsMine)
         {
@@ -117,7 +149,6 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
             _isReset = true;
         }
     }
-
     [PunRPC]
     public void Rpc_SetValue(float _speed, float _damage, float _scaleValue, float _elasticity)
     {

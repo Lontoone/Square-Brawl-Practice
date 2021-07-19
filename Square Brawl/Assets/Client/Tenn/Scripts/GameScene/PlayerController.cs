@@ -401,7 +401,6 @@ public class PlayerController : MonoBehaviour,IPunObservable
 
     public void BeBounce(float _elasticty,float _dirX, float _dirY)
     {
-        Debug.Log(_elasticty);
         _rb.AddForce(_elasticty * new Vector2(_dirX, _dirY));
     }
 

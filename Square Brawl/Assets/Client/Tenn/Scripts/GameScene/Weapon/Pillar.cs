@@ -25,7 +25,9 @@ public class Pillar : Grenade, IPoolObject
     protected override void Update()
     {
         ResetValue();
+
         ColliderEvent();
+
         if (!_pv.IsMine)
         {
             _childObj.transform.localPosition = Vector3.Lerp(_childObj.transform.localPosition, _childObjnetworkPosition, 15 * Time.deltaTime);
