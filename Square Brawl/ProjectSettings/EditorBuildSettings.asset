@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Client/Kei/scene 1.unity
+    guid: f1f24b9a67762e54a9f5d4d55d1fa354
+  - enabled: 1
     path: Assets/Client/Kei/scene 1_old.unity
     guid: a66a8bc3caa8e6b4e8307a6905612ea9
   - enabled: 1
