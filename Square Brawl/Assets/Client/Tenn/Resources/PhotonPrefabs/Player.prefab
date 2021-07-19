@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 2110465305499821295}
   - component: {fileID: 3724183295208971859}
   - component: {fileID: 8283430219793616977}
-  - component: {fileID: 107689950042319731}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -197,18 +196,6 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
---- !u!114 &107689950042319731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110465305499821290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca9719e89b1ff1a4580d0b01bc34ace9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5898218075960249730
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,8 +449,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e82092aac93c214b9f9d51f20c78096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSkill01: 1
-  ability: {fileID: 11400000, guid: 041159c542d5669438f8600ef869f9c7, type: 2}
+  isWeapon01: 1
+  ability:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 5a978b1f581c0234d86759abff1dde2a, type: 2}
+  - {fileID: 11400000, guid: bdb3e33ac269f114d85bf77bd9ed9ff1, type: 2}
+  - {fileID: 11400000, guid: 1b2c1511d1522c2458fc3e780989b664, type: 2}
+  - {fileID: 11400000, guid: aafe5b5f16e9f0a4a9d55ac2e8977bab, type: 2}
+  - {fileID: 11400000, guid: f1ce1e1a7823d3f44b264b3256968d55, type: 2}
+  - {fileID: 11400000, guid: 94733b4e862fbf84da6091fb67dfc035, type: 2}
+  - {fileID: 11400000, guid: 041159c542d5669438f8600ef869f9c7, type: 2}
+  - {fileID: 11400000, guid: 2c1c2b673b4fcf24380ee64b7e298b8c, type: 2}
+  _abilityNum: 0
 --- !u!114 &8648748878293601389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,8 +552,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e82092aac93c214b9f9d51f20c78096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSkill01: 0
-  ability: {fileID: 11400000, guid: 2c1c2b673b4fcf24380ee64b7e298b8c, type: 2}
+  isWeapon01: 0
+  ability:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 5a978b1f581c0234d86759abff1dde2a, type: 2}
+  - {fileID: 11400000, guid: bdb3e33ac269f114d85bf77bd9ed9ff1, type: 2}
+  - {fileID: 11400000, guid: 1b2c1511d1522c2458fc3e780989b664, type: 2}
+  - {fileID: 11400000, guid: aafe5b5f16e9f0a4a9d55ac2e8977bab, type: 2}
+  - {fileID: 11400000, guid: f1ce1e1a7823d3f44b264b3256968d55, type: 2}
+  - {fileID: 11400000, guid: 94733b4e862fbf84da6091fb67dfc035, type: 2}
+  - {fileID: 11400000, guid: 041159c542d5669438f8600ef869f9c7, type: 2}
+  - {fileID: 11400000, guid: 2c1c2b673b4fcf24380ee64b7e298b8c, type: 2}
+  _abilityNum: 0
 --- !u!114 &8648748878713665433
 MonoBehaviour:
   m_ObjectHideFlags: 0

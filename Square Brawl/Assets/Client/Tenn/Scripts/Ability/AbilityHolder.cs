@@ -3,21 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
+
 public class AbilityHolder : MonoBehaviour
 {
     private float _cooldownTime;
     private float _activeTime;
     private float isCdAddCount;
 
-    public bool isSkill01;
+    public bool isWeapon01;
     protected bool _isFire01;
     protected bool _isFire02;
 
-    public Ability ability;
+    public Ability[] ability;
+    public int _abilityNum;
 
     private PlayerController _playerController;
     private PlayerInputManager _inputAction;
     private PhotonView _pv;
+    public Player player;
+
+    /*public enum WeaponType
+    {
+        None,
+        Aevolver,
+        BigBoom,
+        Charge,
+        CubeShoot,
+        Katada,
+        Sniper
+    }
+
+    public WeaponType weapon1, weapon2;*/
 
     private enum AbilityState
     {
@@ -48,22 +65,39 @@ public class AbilityHolder : MonoBehaviour
     {
         if (_pv.IsMine)
         {
-            ability.Initalize(gameObject);
-
-            _activeTime = ability.CoolDownTime;
-
-            if (isSkill01)
+            for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             {
+                {
+                    //foreach player data:
+                    player = PhotonNetwork.PlayerList[i];
+                }
+            }
+
+            if (isWeapon01)
+            {
+                _abilityNum = (int)player.CustomProperties[CustomPropertyCode.WEAPON1CODE];
+                //_abilityNum = (int)weapon1;
                 _inputAction.Player.Fire1.performed += _ => PlayerFire1Down();
                 _inputAction.Player.Fire1.canceled += _ => PlayerFire1Up();
+                SetWeapon();
             }
             else
             {
+                _abilityNum = (int)player.CustomProperties[CustomPropertyCode.WEAPON2CODE];
+                //_abilityNum = (int)weapon2;
                 _inputAction.Player.Fire2.performed += _ => PlayerFire2Down();
                 _inputAction.Player.Fire2.canceled += _ => PlayerFire2Up();
+                SetWeapon();
             }
         }
     }
+
+    public void SetWeapon()
+    {
+        ability[_abilityNum].Initalize(gameObject);
+        _activeTime = ability[_abilityNum].CoolDownTime;
+    }
+
 
     private void PlayerFire1Down()
     {
@@ -98,22 +132,22 @@ public class AbilityHolder : MonoBehaviour
             case AbilityState.Ready:
                 if (_isFire01||_isFire02)
                 {
-                    ability.Activate();
+                    ability[_abilityNum].Activate();
 
                     SpecialEvent();
                     
-                    if(!ability.isCdCanAdd&&!ability.isHaveTwoCd)
+                    if(!ability[_abilityNum].isCdCanAdd&&!ability[_abilityNum].isHaveTwoCd)
                     {
-                        _cooldownTime = ability.CoolDownTime;
+                        _cooldownTime = ability[_abilityNum].CoolDownTime;
                     }
                     
                     _state = AbilityState.CoolDown;
                 }
                 else
                 {
-                    if (ability.isCdCanAdd)
+                    if (ability[_abilityNum].isCdCanAdd)
                     {
-                        if (_activeTime > ability.CoolDownTime)
+                        if (_activeTime > ability[_abilityNum].CoolDownTime)
                         {
                             _activeTime -= Time.deltaTime/5;
                         }
@@ -135,7 +169,7 @@ public class AbilityHolder : MonoBehaviour
 
         void SpecialEvent()
         {
-            if (ability.isCdCanAdd)//CubeShot and Katada
+            if (ability[_abilityNum].isCdCanAdd)//CubeShot and Katada
             {
                 isCdAddCount += 1;
                 if (isCdAddCount % 3 == 0)
@@ -147,7 +181,7 @@ public class AbilityHolder : MonoBehaviour
                     _cooldownTime = _activeTime;
                 }
             }
-            else if (ability.isHaveTwoCd)//Aevolver
+            else if (ability[_abilityNum].isHaveTwoCd)//Aevolver
             {
                 isCdAddCount += 1;
 
@@ -166,7 +200,7 @@ public class AbilityHolder : MonoBehaviour
                 }
                 else
                 {
-                    _cooldownTime = ability.CoolDownTime;
+                    _cooldownTime = ability[_abilityNum].CoolDownTime;
                 }
             }
         }

@@ -954,7 +954,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 0}
+  m_BackGroundColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -3672,6 +3672,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1340246699, guid: a01c9709045242b4897de262a3081536, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BeginGame
+      objectReference: {fileID: 0}
     - target: {fileID: 1238212046049126526, guid: a01c9709045242b4897de262a3081536, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3759,6 +3763,10 @@ PrefabInstance:
     - target: {fileID: 1238212046049126527, guid: a01c9709045242b4897de262a3081536, type: 3}
       propertyPath: m_Name
       value: Online Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8438928629479855574, guid: a01c9709045242b4897de262a3081536, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a01c9709045242b4897de262a3081536, type: 3}

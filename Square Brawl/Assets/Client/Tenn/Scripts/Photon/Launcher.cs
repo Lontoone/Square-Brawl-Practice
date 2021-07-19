@@ -133,13 +133,18 @@ public class Launcher : MonoBehaviourPunCallbacks
         LocalDataManager.RemovePlayer((int)otherPlayer.CustomProperties[CustomPropertyCode.PLAYERINDEX]);
     }
 
-    public void StartGame()
+    public void BeginGame()
     {
         PhotonNetwork.LoadLevel(1);
-        //ConfirmPlayers();
-       // MenuManager.instance.OpenMenu("characterselection");
+    }
+
+    public void StartGame()
+    {
+        //PhotonNetwork.LoadLevel(1);
+        ConfirmPlayers();
+        MenuManager.instance.OpenMenu("characterselection");
         //Sync Room
-       // SyncMenu("characterselection");
+        SyncMenu("characterselection");
         /*
         PhotonNetwork.CurrentRoom.SetCustomProperties(MyPhotonExtension.WrapToHash(
                                                                         new object[] {
