@@ -32,7 +32,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     [SerializeField] private GameObject m_ScoreInfo;
     private Easetype.Current_easetype scene_current_easetype;
     [SerializeField] Easetype.Current_easetype.Easetype easetype;
-    [SerializeField] float duration = 1f;
+    [SerializeField] public static float duration = 1f;
     [SerializeField] private float to_x;
     [SerializeField] private float to_y;
     private Vector3 pos;
@@ -91,20 +91,56 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             */
         }
     }
-    public void EnterOption()
+
+    public void EnterPage(GameObject gameObject)
     {
+        switch (gameObject.name)
+        {
+            case "option":
+                EnterOption();
+                break;
+
+            case "map editor":
+                EnterMapEditor();
+                break;
+            default:
+                Debug.LogWarning(gameObject.name + " :switch page error");
+                break;
+        }
+    }
+    public void ExitPage(GameObject gameObject)
+    {
+        switch (gameObject.name)
+        {
+            case "option":
+                StartCoroutine(ExitOption());
+                break;
+
+            case "map editor":
+                StartCoroutine(ExitMapEditor());
+                break;
+            default:
+                Debug.LogWarning(gameObject.name + " :switch page error");
+                break;
+        }
+    }
+    private void EnterOption()
+    {
+        m_Menu.GetComponentInChildren<MenuButtonHandler>().DelayDisableButton();
         m_Option.SetActive(true);
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + to_x, m_Menu.transform.localPosition.y + to_y,0),duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_Option.transform.DOLocalMove(new Vector3(0, m_Option.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
-    public void ExitOption()
+    private IEnumerator ExitOption()
     {
-        m_Option.SetActive(false);
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_Option.transform.DOLocalMove(new Vector3(Screen.width, m_Option.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        yield return new WaitForSeconds(0.5f);
+        m_Menu.GetComponentInChildren<MenuButtonHandler>().EnableButton();
+        m_Option.SetActive(false);
     }
 
     public void EnterLobby()
@@ -121,7 +157,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Menu.transform.DOScale(new Vector3(1, 1, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
-    public void EnterMapEditor()
+    private void EnterMapEditor()
     {
         m_MapEditor.SetActive(true);
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
@@ -129,12 +165,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_MapEditor.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 0, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
-    public void ExitMapEditor()
-    {
-        m_MapEditor.SetActive(false);
+    private IEnumerator ExitMapEditor()
+    {   
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, m_Menu.transform.localPosition.y + Screen.height, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_MapEditor.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, Screen.height, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        yield return new WaitForSeconds(0.5f);
+        m_MapEditor.SetActive(false);
     }
 
     public void DiesableOnClickEffect()

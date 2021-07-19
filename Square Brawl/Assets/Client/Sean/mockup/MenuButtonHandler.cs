@@ -16,23 +16,6 @@ public class MenuButtonHandler : MonoBehaviour
     [HideInInspector]
     public static int m_CurrentIndex;
 
-    [Space (10)]
-    [SerializeField] private float m_Moveduration = 0.5f;
-
-
-
-
-
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private int CurrentSelectedButton(ButtonAction m_Button) 
     {
@@ -53,6 +36,20 @@ public class MenuButtonHandler : MonoBehaviour
         m_ButtonRight.SetActive(true);
         m_PlayButton.SetActive(true);
     }
+
+    public void DisableButton()
+    {
+        m_ButtonUp.GetComponent<Button>().interactable = false;
+        m_ButtonDown.GetComponent<Button>().interactable = false;
+        m_ButtonLeft.GetComponent<Button>().interactable = false;
+        m_ButtonRight.GetComponent<Button>().interactable = false;
+        m_PlayButton.GetComponent<Button>().interactable = false;
+        m_ButtonUp.SetActive(false);
+        m_ButtonDown.SetActive(false);
+        m_ButtonLeft.SetActive(false);
+        m_ButtonRight.SetActive(false);
+        m_PlayButton.SetActive(false);
+    }
     public void DelayDisableButton() 
     {
         StartCoroutine(DelayDisable());
@@ -64,7 +61,7 @@ public class MenuButtonHandler : MonoBehaviour
         m_ButtonLeft.GetComponent<Button>().interactable = false;
         m_ButtonRight.GetComponent<Button>().interactable = false;
         m_PlayButton.GetComponent<Button>().interactable = false;
-        yield return new WaitForSeconds(m_Moveduration);
+        yield return new WaitForSeconds(SceneHandler.duration);
         m_ButtonUp.SetActive(false);
         m_ButtonDown.SetActive(false);
         m_ButtonLeft.SetActive(false);
