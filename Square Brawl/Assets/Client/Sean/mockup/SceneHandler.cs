@@ -121,6 +121,22 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Menu.transform.DOScale(new Vector3(1, 1, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
+    public void EnterMapEditor()
+    {
+        m_MapEditor.SetActive(true);
+        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
+        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, m_Menu.transform.localPosition.y - Screen.height, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_MapEditor.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 0, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+    }
+
+    public void ExitMapEditor()
+    {
+        m_MapEditor.SetActive(false);
+        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
+        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, m_Menu.transform.localPosition.y + Screen.height, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_MapEditor.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, Screen.height, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+    }
+
     public void DiesableOnClickEffect()
     {
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
