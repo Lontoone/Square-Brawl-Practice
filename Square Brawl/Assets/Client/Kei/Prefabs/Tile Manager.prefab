@@ -44,10 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e1c8385edd658b45ada64de12d9ff35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellPrefab: {fileID: 853472372}
+  cellPrefab: {fileID: 913758580300549186, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
   firstCell: {fileID: 853472373}
-  mapSize: {x: 50, y: 30}
+  mapSize: {x: 37, y: 21}
   gridCells: []
+  gridSize: {x: 105, y: 105}
   _useGizemos: 1
 --- !u!1001 &913758580071036982
 PrefabInstance:
@@ -104,6 +105,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CellPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 913758580300549186, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 913758580300549187, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -114,11 +119,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
---- !u!1 &853472372 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 913758580300549186, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
-  m_PrefabInstance: {fileID: 913758580071036982}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &853472374 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 913758580300549184, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}

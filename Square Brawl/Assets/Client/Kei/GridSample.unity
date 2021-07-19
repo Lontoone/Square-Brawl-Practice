@@ -427,18 +427,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7774247242724452060}
     m_Modifications:
-    - target: {fileID: 853472372, guid: 67b98329298d1ac43bf9ec588208cfec, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1393911111569538120, guid: 67b98329298d1ac43bf9ec588208cfec, type: 3}
-      propertyPath: cellPrefab
-      value: 
-      objectReference: {fileID: 913758580300549186, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
-    - target: {fileID: 1393911111569538120, guid: 67b98329298d1ac43bf9ec588208cfec, type: 3}
-      propertyPath: _useGizemos
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1393911111569538121, guid: 67b98329298d1ac43bf9ec588208cfec, type: 3}
       propertyPath: m_RootOrder
       value: 0

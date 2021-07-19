@@ -16,6 +16,8 @@ public class TileMapManager : MonoBehaviour
     public List<TileCell> gridCells = new List<TileCell>();
     public Dictionary<int, CellState> cellStateMap = new Dictionary<int, CellState>();
 
+    //Vector2 gridSize = new Vector2(1.05f, 1.05f);
+
 
     public TileCell center_cell { get { return (gridCells[(gridCells.Count - 1) / 2]); } }
 
@@ -39,9 +41,11 @@ public class TileMapManager : MonoBehaviour
     }
     public void GenerateGrid()
     {
-        float _sizePandingFactor = 0.95f;
+        float _sizePandingFactor = 1f;
         float halfWidth = firstCell.bounds.size.x / 2 * _sizePandingFactor;
         float halfHeight = firstCell.bounds.size.y / 2 * _sizePandingFactor;
+        //float halfWidth = gridSize.x / 2 * _sizePandingFactor;
+        //float halfHeight = gridSize.y / 2 * _sizePandingFactor;
 
         int _counter = 0;
         for (int i = 0; i < mapSize.x; i++)
