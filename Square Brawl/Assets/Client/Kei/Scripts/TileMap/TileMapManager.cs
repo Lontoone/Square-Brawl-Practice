@@ -41,6 +41,7 @@ public class TileMapManager : MonoBehaviour
     }
     public void GenerateGrid()
     {
+        Debug.Log("Generate Grid");
         float _sizePandingFactor = 1f;
         float halfWidth = firstCell.bounds.size.x / 2 * _sizePandingFactor;
         float halfHeight = firstCell.bounds.size.y / 2 * _sizePandingFactor;

@@ -152,6 +152,9 @@ public class Launcher : MonoBehaviourPunCallbacks
                                                                             "characterselection"
                                                                         }));*/
     }
+    public void StartLevel() {
+        PhotonNetwork.LoadLevel("CustomeLevel");
+    }
     //Not really using
     private void ConfirmPlayers()
     {

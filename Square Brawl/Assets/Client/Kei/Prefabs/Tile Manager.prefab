@@ -46,9 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellPrefab: {fileID: 913758580300549186, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
   firstCell: {fileID: 853472373}
-  mapSize: {x: 37, y: 21}
+  mapSize: {x: 50, y: 30}
   gridCells: []
-  gridSize: {x: 105, y: 105}
   _useGizemos: 1
 --- !u!1001 &913758580071036982
 PrefabInstance:
