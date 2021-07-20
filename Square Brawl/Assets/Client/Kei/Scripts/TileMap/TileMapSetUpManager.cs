@@ -11,6 +11,7 @@ public class TileMapSetUpManager : MonoBehaviour
 
     private List<TileCell> activeTileCells = new List<TileCell>();
 
+    public SpriteRenderer foreground, midground, background;
     private void Start()
     {
         /*
@@ -39,6 +40,7 @@ public class TileMapSetUpManager : MonoBehaviour
         //MapData _mapData = SaveAndLoad.Load<MapData>(levelFileName.CombinePersistentPath());
         SetUpLevelTiles(_mapData);
         SetUpCellOrientation();
+        SetupBackground();
     }
 
     private void SetUpLevelTiles(MapData _mapData)
@@ -77,4 +79,15 @@ public class TileMapSetUpManager : MonoBehaviour
 
     }
 
+    private void SetupBackground()
+    {
+        if (foreground != null)
+            foreground.sprite = TileStyleManager.instance.imageCollection.GetSprite(301);
+
+        if (midground != null)
+            midground.sprite = TileStyleManager.instance.imageCollection.GetSprite(302);
+
+        if (background != null)
+            background.sprite = TileStyleManager.instance.imageCollection.GetSprite(303);
+    }
 }

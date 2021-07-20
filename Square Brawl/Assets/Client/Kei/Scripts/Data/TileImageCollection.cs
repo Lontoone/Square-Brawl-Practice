@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "TillMap/ImageCollection")]
+[System.Serializable]
 public class TileImageCollection : ScriptableObject
 {
     //public string setName;
@@ -168,8 +169,12 @@ public class TileImageCollection : ScriptableObject
 
         { new TileImage("Hind Empty",255) },
 
-        { new TileImage("Hind Saw",300) }
+        { new TileImage("Hind Saw",300) },
 
+
+         { new TileImage("Foreground",301) },
+         { new TileImage("Midground",302) },
+         { new TileImage("Background",303) }
     };
 
 

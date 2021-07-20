@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
+using ExitGames.Client.Photon;
+using Photon.Realtime;
 
 public class TillStyleLoader : MonoBehaviour
 {
@@ -11,6 +14,15 @@ public class TillStyleLoader : MonoBehaviour
     public void Start()
     {
         LoadStyleData();
+    }
+
+    private void OnEnable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived += OnMapStyleChanged;
+    }
+    private void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived += OnMapStyleChanged;
     }
 
     public void LoadStyleData()
@@ -32,6 +44,24 @@ public class TillStyleLoader : MonoBehaviour
     private void ChangeStyle(TileImageCollection _data)
     {
         TileStyleManager.instance.ApplyNewStyle(_data);
+
+        //send Data
+        var _byteData = MyPhotonExtension.ObjectToByteArray(_data.name);
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        PhotonNetwork.RaiseEvent(CustomPropertyCode.UPDATE_STYLE_EVENTCODE, _byteData, raiseEventOptions, SendOptions.SendReliable);
+
+    }
+
+
+    private void OnMapStyleChanged(EventData obj)
+    {
+        byte eventCode = obj.Code;
+        if (eventCode == CustomPropertyCode.UPDATE_STYLE_EVENTCODE)
+        {
+            string styleName= (string)MyPhotonExtension.ByteArrayToObject((byte[])obj.CustomData);
+            TileImageCollection tileImageCollection = Resources.Load<TileImageCollection>(styleDataPaht+styleName);
+            TileStyleManager.instance.ApplyNewStyle(tileImageCollection);
+        }
     }
 
 }

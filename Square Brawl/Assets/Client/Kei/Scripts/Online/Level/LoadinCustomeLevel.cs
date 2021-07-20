@@ -10,6 +10,7 @@ public class LoadinCustomeLevel : MonoBehaviour
         if (MapSelectManager.currentSelectedData != null)
         {
             editorControl.SetUpLevel(MapSelectManager.currentSelectedData);
+            TileStyleManager.instance.ApplyNewStyle(TileStyleManager.selectedCollection);
         }
     }
 }

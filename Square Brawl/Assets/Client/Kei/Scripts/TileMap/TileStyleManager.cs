@@ -5,6 +5,7 @@ using UnityEngine;
 public class TileStyleManager : MonoBehaviour
 {
     public static TileStyleManager instance;
+    public static TileImageCollection selectedCollection;
     public TileImageCollection imageCollection;
     public SelectRangeData checkRange;
     private void Awake()
@@ -110,6 +111,7 @@ public class TileStyleManager : MonoBehaviour
     public void ApplyNewStyle(TileImageCollection _data)
     {
         imageCollection = _data;
+        selectedCollection = _data;
         for (int i = 0; i < TileMapManager.instance.gridCells.Count; i++)
         {
             SetCell(i);
