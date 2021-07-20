@@ -12,6 +12,7 @@ TagManager:
   - Test
   - Katada
   - FreezeShoot
+  - Shield
   layers:
   - Default
   - TransparentFX

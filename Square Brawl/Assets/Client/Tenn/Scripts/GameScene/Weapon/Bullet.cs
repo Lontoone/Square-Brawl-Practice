@@ -85,7 +85,8 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 {
                     float DirX = Mathf.Cos(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
                     float DirY = Mathf.Sin(gameObject.transform.eulerAngles.z * Mathf.PI / 180);
-                    _playerController.TakeDamage(BulletDamage, BulletBeElasticity, DirX, DirY);
+                    _playerController.TakeDamage(BulletDamage);
+                    _playerController.BeBounce(BulletBeElasticity, DirX, DirY);
                     DisableObj();
                 }
                 if (_pv.IsMine)

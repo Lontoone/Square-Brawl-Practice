@@ -34,6 +34,7 @@ public class AbilityHolder : MonoBehaviour
         Sniper,
         Grenade,
         Pillar,
+        Shield,
     }
 
     public WeaponType2 weapon1, weapon2;

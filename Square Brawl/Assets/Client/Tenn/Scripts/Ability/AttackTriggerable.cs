@@ -87,6 +87,23 @@ public class AttackTriggerable : MonoBehaviour
         _katada.KatadaSpeed = WeaponSpeed;
     }
 
+    public void Shield()
+    {
+        //GameObject _shieldObj = ObjectsPool.Instance.SpawnFromPool("Shield", _bulletMidSpawnPos.transform.position, Quaternion.identity, transform.parent);
+
+        _playerController.transform.GetChild(4).gameObject.SetActive(true);
+        Shield _shield = _playerController.transform.GetChild(4).gameObject.GetComponent<Shield>();
+        _shield.ShieldSpeed = WeaponSpeed;
+        _shield.ShieldDamage = WeaponDamage;
+        _shield.ShieldBeElasticity = BeElasticity;
+
+        IPoolObject pooledObj = _shield.GetComponent<IPoolObject>();
+        if (pooledObj != null)
+        {
+            pooledObj.OnObjectSpawn();
+        }
+    }
+
     public void Freeze()
     {
         _playerController.IsShootFreeze = true;

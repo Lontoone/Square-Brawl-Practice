@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
     public float GroundDistance;
     public float PlayerWidth;
 
-    private bool _isGround;//Player Is Ground?
+    public bool IsGround;//Player Is Ground?
     private bool _isWall;//Player Is Wall?
     private bool _isJump;//Player Is Jump?
     private bool _isCheckSpin;//Is Check Spin?
@@ -143,16 +143,16 @@ public class PlayerController : MonoBehaviour,IPunObservable
         //Player Move
         _rb.AddForce(MoveSpeed * new Vector2(_inputPos.x, 0)) ;
 
-        if (_inputPos.y > 0&&!_isWall&&!_isGround)//Player Fly
+        if (_inputPos.y > 0&&!_isWall&&!IsGround)//Player Fly
         {
             _rb.AddForce(FlyForce * new Vector2(0,_inputPos.y));
         }
-        else if(_inputPos.y < 0&&!_isGround)//Player Down
+        else if(_inputPos.y < 0&&!IsGround)//Player Down
         {
             _rb.AddForce(DownForce * new Vector2(0, _inputPos.y));
         }
 
-        if ((_isGround || _isWall)&&_isJump)//Player Jump
+        if ((IsGround || _isWall)&&_isJump)//Player Jump
         {
             _rb.AddForce(JumpForce * Vector3.up);
             StartCoroutine(IsJumpRecover());
@@ -211,7 +211,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
                 Physics2D.maxRotationSpeed = 6;
             }
 
-            if (_isGround && !_isCheckSpin)
+            if (IsGround && !_isCheckSpin)
             {
                 _rb.AddTorque(SpinInGroundForce * _inputPos.x);
                 //Debug.Log("IsGround");
@@ -221,13 +221,13 @@ public class PlayerController : MonoBehaviour,IPunObservable
                 _rb.AddTorque(SpinInGroundForce * _inputPos.x);
                 //Debug.Log("IsWall");
             }
-            else if (_isGround && _isCheckSpin)
+            else if (IsGround && _isCheckSpin)
             {
                 _rb.AddTorque(SpinForce * _inputPos.x);
                 _isCheckSpin = false;
                 //Debug.Log("IsGroundJump");
             }
-            else if (!_isWall&&!_isGround)
+            else if (!_isWall&&!IsGround)
             {
                 _rb.AddTorque(SpinForce * _inputPos.x);
                 //Debug.Log("IsNotGroundWall");
@@ -348,17 +348,17 @@ public class PlayerController : MonoBehaviour,IPunObservable
         RaycastHit2D upCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.up, GroundDistance);
         if (downCheck&&(!leftCheck && !rightCheck))
         {
-            _isGround = _canSpin = true;
+            IsGround = _canSpin = true;
             _isWall = false;
         }
         else if(leftCheck || rightCheck || upCheck)
         {
             _isWall = _canSpin = true;
-            _isGround = false;
+            IsGround = false;
         }
         else
         {
-            _isGround = false;
+            IsGround = false;
             _isWall = false;
         }
     }
@@ -380,7 +380,8 @@ public class PlayerController : MonoBehaviour,IPunObservable
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
             if (!other.gameObject.GetComponent<PhotonView>().IsMine && other.gameObject.GetComponent<PlayerController>().IsCharge)
             {
-                TakeDamage(_playerController.Damage, _playerController.BeElasticity, _playerController.DirX, _playerController.DirY);
+                TakeDamage(_playerController.Damage);
+                BeBounce(_playerController.BeElasticity, _playerController.DirX, _playerController.DirY);
             }
         }
     }
@@ -394,7 +395,18 @@ public class PlayerController : MonoBehaviour,IPunObservable
                 _katada._pv.RPC("DisableObj", RpcTarget.All);
                 float x = Mathf.Cos(_katada.BeElasticityDir * Mathf.PI / 180);
                 float y = Mathf.Sin(_katada.BeElasticityDir * Mathf.PI / 180);
-                TakeDamage(_katada.KatadaDamage, _katada.KatadaBeElasticity,x,y);
+                TakeDamage(_katada.KatadaDamage);
+                BeBounce(_katada.KatadaBeElasticity, x, y);
+            }
+        }
+        else if (other.gameObject.CompareTag("Shield") && Pv.IsMine)
+        {
+            Shield _shield = other.gameObject.GetComponent<Shield>();
+            if (!_shield._pv.IsMine)
+            {
+                Vector2 dir = transform.position - _shield.gameObject.transform.position;
+                TakeDamage(_shield.ShieldDamage);
+                BeBounce(_shield.ShieldBeElasticity, dir.x, dir.y);
             }
         }
     }
@@ -409,9 +421,9 @@ public class PlayerController : MonoBehaviour,IPunObservable
         _rb.AddExplosionForce(_elasticty, _pos, _field);
     }
 
-    public void TakeDamage(float _damage,float _elasticty,float _bullletDirX,float _bullletDirY)
+    public void TakeDamage(float _damage)//,float _elasticty,float _bullletDirX,float _bullletDirY)
     {
-        _rb.AddForce(_elasticty * new Vector2(_bullletDirX, _bullletDirY));
+        //_rb.AddForce(_elasticty * new Vector2(_bullletDirX, _bullletDirY));
         Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage);
     }
 

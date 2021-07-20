@@ -9,22 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c3fd8551facdb34bb9f744451517de0, type: 3}
-  m_Name: Pillar
+  m_Script: {fileID: 11500000, guid: 4328166d5e6e89344acde543d24613de, type: 3}
+  m_Name: Shield
   m_EditorClassIdentifier: 
-  Name: Pillar
+  Name: New Ability
   Sound: {fileID: 0}
   LaunchEffectName: 
-  ExploseEffectName: SmallExplose
-  CoolDownTime: 2
-  Damage: 1
-  Speed: 600
-  Recoil: 150
+  ExploseEffectName: 
+  CoolDownTime: 3
+  Damage: 10
+  Speed: 20
+  Recoil: 0
   BeElasticity: 700
   isCdCanAdd: 0
   isHaveTwoCd: 0
-  BulletScaleValue: 0
-  IsDontContinuous: 0
-  IsDontShootStraight: 0
-  IsScatterShot: 0
-  IsGrenade: 1

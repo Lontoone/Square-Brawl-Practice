@@ -62,6 +62,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         if (!_pv.IsMine)
         {
             _rb.position = Vector2.Lerp(_rb.position, _networkPosition, 5 * Time.fixedDeltaTime);
+            transform.rotation = _networkDir;
         }
     }
 
@@ -99,17 +100,17 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
 
             if (_pv.IsMine != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
             {
-                _playerController.TakeDamage(BulletDamage, 0, 0, 0);
+                _playerController.TakeDamage(BulletDamage);
                 _playerController.BeExplode(BulletBeElasticity, transform.position, FieldExplose);
             }
         }
     }
 
-    void OnDrawGizmosSelected()
+    /*void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, FieldExplose);
-    }
+    }*/
 
     protected void ResetValue()
     {
