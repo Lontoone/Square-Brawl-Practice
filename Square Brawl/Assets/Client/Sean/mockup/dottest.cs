@@ -9,9 +9,9 @@ public class dottest : MonoBehaviour
     [HideInInspector]
     public ToDotSlider.DotSliderAction DotSliderAction;
     // Start is called before the first frame update
-    /*void Start()
+    void Start()
     {
         DotSliderAction = m_Object.AddComponent<ToDotSlider.DotSliderAction>();
         DotSliderAction.SetUp(slider);
-    }*/
+    }
 }
