@@ -20,7 +20,7 @@ public class TileImageCollection : ScriptableObject
 
             //log to dictionary
             for (int j = 0; j < tileImages[i].indexs.Count; j++)
-            {            
+            {
                 dataMap.Add(tileImages[i].indexs[j], _sp);
             }
         }
@@ -102,8 +102,11 @@ public class TileImageCollection : ScriptableObject
 
         { new TileImage("Empty",255) },
 
-        { new TileImage("Saw",300) }
+        { new TileImage("Saw",300) },
 
+         { new TileImage("Foreground",301) },
+         { new TileImage("Midground",302) },
+         { new TileImage("Background",303) }
     };
     private static List<TileImage> tileImagesHind = new List<TileImage>()
     {
@@ -171,10 +174,6 @@ public class TileImageCollection : ScriptableObject
 
         { new TileImage("Hind Saw",300) },
 
-
-         { new TileImage("Foreground",301) },
-         { new TileImage("Midground",302) },
-         { new TileImage("Background",303) }
     };
 
 

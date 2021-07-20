@@ -320,9 +320,9 @@ MonoBehaviour:
   detecateRange:
     data: {fileID: 4900000, guid: 9445171c46489fd45b11ed7b8aa50bf8, type: 3}
     range: []
-  foreground: {fileID: 432335939}
+  foreground: {fileID: 1950552023}
   midground: {fileID: 1839596864}
-  background: {fileID: 1950552023}
+  background: {fileID: 432335939}
 --- !u!4 &1394364877
 Transform:
   m_ObjectHideFlags: 0

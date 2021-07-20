@@ -82,12 +82,12 @@ public class TileMapSetUpManager : MonoBehaviour
     private void SetupBackground()
     {
         if (foreground != null)
-            foreground.sprite = TileStyleManager.instance.imageCollection.GetSprite(301);
+            foreground.sprite = TileStyleManager.selectedCollection.GetSprite(301);
 
         if (midground != null)
-            midground.sprite = TileStyleManager.instance.imageCollection.GetSprite(302);
+            midground.sprite = TileStyleManager.selectedCollection.GetSprite(302);
 
         if (background != null)
-            background.sprite = TileStyleManager.instance.imageCollection.GetSprite(303);
+            background.sprite = TileStyleManager.selectedCollection.GetSprite(303);
     }
 }
