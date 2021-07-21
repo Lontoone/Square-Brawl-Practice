@@ -22,6 +22,10 @@ public class TileImageCollection : ScriptableObject
             //log to dictionary
             for (int j = 0; j < tileImages[i].indexs.Count; j++)
             {
+                if (dataMap.ContainsKey(tileImages[i].indexs[j]))
+                {
+                    continue;
+                }
                 dataMap.Add(tileImages[i].indexs[j], _sp);
             }
         }
@@ -35,19 +39,27 @@ public class TileImageCollection : ScriptableObject
             //log to dictionary
             for (int j = 0; j < tileImagesHind[i].indexs.Count; j++)
             {
+                if (dataMapHind.ContainsKey(tileImagesHind[i].indexs[j]))
+                {
+                    continue;
+                }
                 dataMapHind.Add(tileImagesHind[i].indexs[j], _sp);
             }
         }
 
         //load front
-        for (int i = 0; i < dataMapFront.Count; i++)
+        for (int i = 0; i < tileImagesFront.Count; i++)
         {
-            Sprite _sp = Resources.Load<Sprite>("Tile/" + name + "/" + dataMapFront[i].name);
+            Sprite _sp = Resources.Load<Sprite>("Tile/" + name + "/" + tileImagesFront[i].name);
             tileImagesFront[i].sprite = _sp;
 
             //log to dictionary
             for (int j = 0; j < tileImagesFront[i].indexs.Count; j++)
             {
+                if (dataMapFront.ContainsKey(tileImagesFront[i].indexs[j]))
+                {
+                    continue;
+                }
                 dataMapFront.Add(tileImagesFront[i].indexs[j], _sp);
             }
         }
@@ -296,7 +308,7 @@ public class TileImageCollection : ScriptableObject
         }
     }
 
-    public Sprite GetFtontSprite(int _index)
+    public Sprite GetFrontSprite(int _index)
     {
         if (dataMapFront.Count < 1)
         {

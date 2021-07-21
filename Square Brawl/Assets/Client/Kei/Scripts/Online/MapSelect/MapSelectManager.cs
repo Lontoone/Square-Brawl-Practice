@@ -24,7 +24,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
     public LoadSceneAsyncUI loadSceneUI;
     public TileMapSetUpManager setupManager;
 
-    private const string BUILTIN_MAPS_FOLDER = "Maps/";
+    public const string BUILTIN_MAPS_FOLDER = "Maps/";
     private static string[] filePaths;
     public override void OnEnable()
     {
