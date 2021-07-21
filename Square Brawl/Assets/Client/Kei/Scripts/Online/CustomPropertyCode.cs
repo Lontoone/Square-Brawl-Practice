@@ -16,6 +16,8 @@ public class CustomPropertyCode
     public const string WEAPON1CODE = "WEAPON1";
     public const string WEAPON2CODE = "WEAPON2";
 
+    public const string LIFT_COUNT = "LIFT_COUNT";
+
     /* ROOM PROPERTY */
     public const string ROOM_MENU = "ROOMMENU";
     public const byte UPDATE_MAP_EVENTCODE = 1;

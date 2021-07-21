@@ -106,6 +106,7 @@ public class TileStyleManager : MonoBehaviour
         //Debug.Log(_cell.grid_index + " " + imageCollection.name);
         _cell.spriteRenderer.sprite = imageCollection.GetSprite(_conditionCode);
         _cell.hindSpriteRenderer.sprite = imageCollection.GetHindSprite(_conditionCode);
+        _cell.frontSpriteRenderer.sprite = imageCollection.GetFtontSprite(_conditionCode);
     }
 
     public void ApplyNewStyle(TileImageCollection _data)
