@@ -66,9 +66,6 @@ MonoBehaviour:
   - tag: Grenade
     prefab: {fileID: 8622804087106380002, guid: 1a47aa21a64342c40ad0ef6b2eb14195, type: 3}
     size: 3
-  - tag: Shield
-    prefab: {fileID: 5070911527294432225, guid: 06fa6c8fe08705f4ca86f2523b2ba17c, type: 3}
-    size: 2
   _pv: {fileID: 0}
 --- !u!114 &7958008732146023615
 MonoBehaviour:

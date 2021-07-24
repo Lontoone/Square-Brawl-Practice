@@ -137,10 +137,8 @@ MonoBehaviour:
   DirX: 0
   DirY: 0
   FrontSightAngle: 0
-  IsShootFreeze: 0
-  IsFreezeChange: 0
   IsBeFreeze: 0
-  IsCharge: 0
+  IsShield: 0
   FootOffset: 0
   GroundDistance: 0.45
   PlayerWidth: 0
@@ -554,10 +552,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15446d4cba01a234f84db096048ac997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShieldSpeed: 0
-  ShieldDamage: 0
-  ShieldBeElasticity: 0
-  _pv: {fileID: 6626132783251376883}
 --- !u!95 &9029899653141478614
 Animator:
   serializedVersion: 3
@@ -653,7 +647,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 041159c542d5669438f8600ef869f9c7, type: 2}
   - {fileID: 11400000, guid: 2c1c2b673b4fcf24380ee64b7e298b8c, type: 2}
   - {fileID: 11400000, guid: 9568cda1bb1bac1479cd7540f40b30dc, type: 2}
-  weapon1: 8
+  - {fileID: 11400000, guid: 77772a7a5e396a44cbd0d336c74cb376, type: 2}
+  weapon1: 9
   weapon2: 0
 --- !u!114 &8648748878293601389
 MonoBehaviour:
@@ -677,7 +672,6 @@ MonoBehaviour:
   IsDontShootStraight: 0
   LaunchEffectName: 
   ExploseEffectName: 
-  IsSpeicalBool: 0
   gameObjects: []
 --- !u!114 &5771716123695693227
 MonoBehaviour:
@@ -759,8 +753,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 041159c542d5669438f8600ef869f9c7, type: 2}
   - {fileID: 11400000, guid: 2c1c2b673b4fcf24380ee64b7e298b8c, type: 2}
   - {fileID: 11400000, guid: 9568cda1bb1bac1479cd7540f40b30dc, type: 2}
+  - {fileID: 11400000, guid: 77772a7a5e396a44cbd0d336c74cb376, type: 2}
   weapon1: 0
-  weapon2: 1
+  weapon2: 8
 --- !u!114 &8648748878713665433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -783,7 +778,6 @@ MonoBehaviour:
   IsDontShootStraight: 0
   LaunchEffectName: 
   ExploseEffectName: 
-  IsSpeicalBool: 0
   gameObjects: []
 --- !u!114 &762097059166178785
 MonoBehaviour:

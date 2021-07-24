@@ -20,10 +20,11 @@ MonoBehaviour:
   Damage: 10
   Speed: 7
   Recoil: 150
-  BeElasticity: 1500
+  BeElasticity: 1300
   isCdCanAdd: 0
   isHaveTwoCd: 0
   BulletScaleValue: 0.2
   IsDontContinuous: 0
   IsDontShootStraight: 0
   IsScatterShot: 0
+  IsGrenade: 0

@@ -124,12 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f704a38b0d29e424593ceef0d4cefcb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletSpeed: 0
-  BulletDamage: 0
-  BulletBeElasticity: 0
-  BulletScaleValue: 0
-  IsDontShootStraight: 0
-  ExploseEffectName: 
 --- !u!50 &8462599747966626384
 Rigidbody2D:
   serializedVersion: 4
@@ -168,7 +162,7 @@ MonoBehaviour:
   prefixField: -1
   observableSearch: 0
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   ObservedComponents:
   - {fileID: 4325683395466346470}
   viewIdField: 0

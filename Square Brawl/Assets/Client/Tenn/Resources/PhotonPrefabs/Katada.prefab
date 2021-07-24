@@ -69,11 +69,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7097ec41208e4a4caea7faf28f1d14f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KatadaSpeed: 0
-  KatadaDamage: 0
-  KatadaBeElasticity: 0
-  BeElasticityDir: 0
-  IsKatadaReverse: 0
   _pv: {fileID: -6354790548580462332}
 --- !u!61 &7699014908509974731
 BoxCollider2D:

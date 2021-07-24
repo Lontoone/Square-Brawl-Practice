@@ -168,11 +168,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2829a51c650dcd4787d35dac20d1dec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletSpeed: 0
-  BulletDamage: 0
-  BulletBeElasticity: 0
-  BulletScaleValue: 0
+  GrenadeSpeed: 0
+  GrenadeDamage: 0
+  GrenadeBeElasticity: 0
+  GrenadeScaleValue: 0
   FieldExplose: 3
+  isMaster: 0
   ExploseEffectName: 
   LayerToExplose:
     serializedVersion: 2

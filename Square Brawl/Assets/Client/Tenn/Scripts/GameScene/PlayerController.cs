@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,16 +21,18 @@ public class PlayerController : MonoBehaviour,IPunObservable
     public float DirX, DirY;//
     public float FrontSightAngle;
     private Vector3 _freezeLeftRay;
-    private Vector3 _originPos;
-    private Quaternion _originDir;
     private Vector2 _inputPos;//Keyboard Input Pos
 
-    public bool IsShootFreeze;//Is Shoot Freeze?
-    public bool IsFreezeChange;//Is Freeze Change?
     public bool IsBeFreeze;//Is Be Freeze?
-    public bool IsCharge;//Is Change?
-    private bool _isChargeChange;//Is Charge Change?
+    private bool _isCharge;//Is Change?
+    public bool IsShield;
+
     private bool _canSpin;//Player Can Spin?
+
+    public Action<float,float,float> ChargeFunc;
+    public Action<float> RecoilFunc;
+    public Action<float,int> FreezeFunc;
+    public Action<float,float,float,float> DamageFunc;
 
     [HeaderAttribute("GroundCheck Setting")]
     public float FootOffset;
@@ -54,6 +57,8 @@ public class PlayerController : MonoBehaviour,IPunObservable
     [HeaderAttribute("Sync Setting")]
     private float _newDirZ;
 
+    private bool _newIsShield;
+
     private Vector2 _newPos;
 
     //private Quaternion _newDir;
@@ -70,6 +75,12 @@ public class PlayerController : MonoBehaviour,IPunObservable
         Pv = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody2D>();
         _playerManager = PhotonView.Find((int)Pv.InstantiationData[0]).GetComponent<PlayerManager>();
+
+        ChargeFunc = ChargeEvent;
+        RecoilFunc = PlayerRecoil;
+        FreezeFunc = FreezeEvent;
+        DamageFunc = DamageEvent;
+
         if (Pv.IsMine)
         {
             instance = this;
@@ -93,7 +104,6 @@ public class PlayerController : MonoBehaviour,IPunObservable
         FrontSightMidPos = transform.GetChild(0).GetComponent<Transform>();
         if (Pv.IsMine)
         {
-            //FrontSightMidPos = transform.GetChild(0).GetComponent<Transform>();
             FrontSightRb = transform.GetChild(1).GetComponent<Rigidbody2D>();
             FrontSightPos = FrontSightMidPos.transform.GetChild(0);
 
@@ -109,18 +119,13 @@ public class PlayerController : MonoBehaviour,IPunObservable
     {
         if (!Pv.IsMine)
         {
-            //_rb.position = Vector2.Lerp(_rb.position, _newPos, 10 * Time.deltaTime);
-            //transform.rotation = Quaternion.Lerp(transform.rotation, _newDir, 15 * Time.deltaTime);
             FrontSightMidPos.transform.rotation = Quaternion.Lerp(FrontSightMidPos.transform.rotation, _newShootPointDir, 15 * Time.deltaTime);
+            IsShield = _newIsShield;
         }
         else
         {
-            ChargeEvent();//Ability Charge Event
-
             GroundCheckEvent();//Is Grounding?
         }
-
-        FreezeEvent();//Ability Freeze Event
     }
     void FixedUpdate()
     {
@@ -279,39 +284,28 @@ public class PlayerController : MonoBehaviour,IPunObservable
         _rb.AddForce(-Recoil * new Vector2(DirX, DirY));
     }
 
-    void ChargeEvent()
+    private void ChargeEvent(float _speed, float _elasticity, float _damage)
     {
-        if (_isChargeChange != IsCharge)
-        {
-            DirX = Mathf.Cos(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
-            DirY = Mathf.Sin(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
-            Pv.RPC("Rpc_ChargeValue", RpcTarget.All, IsCharge, BeElasticity, Damage, DirX, DirY);
-            _isChargeChange = IsCharge;
-        }
+        PlayerRecoil(_speed);
+        BeElasticity = _elasticity;
+        Damage = _damage;
+        _isCharge = true;
+        DirX = Mathf.Cos(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
+        DirY = Mathf.Sin(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
+        Pv.RPC("Rpc_ChargeValue", RpcTarget.All, _isCharge, BeElasticity, Damage, DirX, DirY);
+        StartCoroutine(IsChargeChangeFalse());
     }
 
-    void FreezeEvent()
+    IEnumerator IsChargeChangeFalse()
     {
-        if (IsShootFreeze)
-        {
-            PlayerFreezeRaycast(3, 5);
-        }
-
-        if (IsBeFreeze)
-        {
-            Pv.RPC("Rpc_ChangeBeFreeze", RpcTarget.All,_originPos,_originDir);
-            StartCoroutine(StopBeFreeze());
-        }
+        yield return new WaitForSeconds(0.5f);
+        _isCharge = false;
     }
 
-    void PlayerFreezeRaycast(float _viewDistance, int viewCount)
+    private void FreezeEvent(float _viewDistance, int viewCount)
     {
-        if (!IsFreezeChange)
-        {
-            _freezeLeftRay = Quaternion.Euler(0, 0, FrontSightPos.eulerAngles.z - 17.5f) * Vector2.right * _viewDistance;
-            _originPos = FrontSightPos.transform.position;
-            IsFreezeChange = true;
-        }
+        _freezeLeftRay = Quaternion.Euler(0, 0, FrontSightPos.eulerAngles.z - 17.5f) * Vector2.right * _viewDistance;
+        Vector3 _originPos = FrontSightPos.transform.position;
 
         for (int i = 0; i <= viewCount; i++)
         {
@@ -324,19 +318,29 @@ public class PlayerController : MonoBehaviour,IPunObservable
                 PlayerController _playerController = FreezeHit.collider.gameObject.GetComponent<PlayerController>();
                 if (!_playerController.Pv.IsMine)
                 {
-                    _playerController.IsBeFreeze = true;
-                    _playerController._originPos = _playerController.transform.position;
-                    _playerController._originDir = _playerController.transform.rotation;
+                    _playerController.BeFreezeEvent(_playerController.transform.position, _playerController.transform.rotation);
                 }
             }
-            Debug.DrawLine(_originPos, _originPos + _freezeRay, color);
+            //Debug.DrawLine(_originPos, _originPos + _freezeRay, color);
         }
+    }
+
+    private void BeFreezeEvent(Vector3 _originPos,Quaternion _originDir)
+    {
+        Pv.RPC("Rpc_ChangeBeFreeze", RpcTarget.All, _originPos, _originDir);
+        StartCoroutine(StopBeFreeze());
     }
 
     IEnumerator StopBeFreeze()
     {
         yield return new WaitForSeconds(2f);
         Pv.RPC("Rpc_StopBeFreeze",RpcTarget.All);
+    }
+
+    private void DamageEvent(float _damage,float _beElasticity,float _dirX,float _dirY)
+    {
+        TakeDamage(_damage);
+        BeBounce(_beElasticity, _dirX, _dirY);
     }
 
     //Ground Check
@@ -378,7 +382,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
         if (other.gameObject.CompareTag("Player")&&Pv.IsMine)
         {
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
-            if (!other.gameObject.GetComponent<PhotonView>().IsMine && other.gameObject.GetComponent<PlayerController>().IsCharge)
+            if (!other.gameObject.GetComponent<PhotonView>().IsMine && other.gameObject.GetComponent<PlayerController>()._isCharge)
             {
                 TakeDamage(_playerController.Damage);
                 BeBounce(_playerController.BeElasticity, _playerController.DirX, _playerController.DirY);
@@ -390,24 +394,12 @@ public class PlayerController : MonoBehaviour,IPunObservable
         if (other.gameObject.CompareTag("Katada")&&Pv.IsMine)
         {
             Katada _katada = other.gameObject.GetComponent<Katada>();
-            if (!_katada._pv.IsMine)
-            {
-                _katada._pv.RPC("DisableObj", RpcTarget.All);
-                float x = Mathf.Cos(_katada.BeElasticityDir * Mathf.PI / 180);
-                float y = Mathf.Sin(_katada.BeElasticityDir * Mathf.PI / 180);
-                TakeDamage(_katada.KatadaDamage);
-                BeBounce(_katada.KatadaBeElasticity, x, y);
-            }
+            _katada.ColliderFunc(this);
         }
         else if (other.gameObject.CompareTag("Shield") && Pv.IsMine)
         {
             Shield _shield = other.gameObject.GetComponent<Shield>();
-            if (!_shield._pv.IsMine)
-            {
-                Vector2 dir = transform.position - _shield.gameObject.transform.position;
-                TakeDamage(_shield.ShieldDamage);
-                BeBounce(_shield.ShieldBeElasticity, dir.x, dir.y);
-            }
+            _shield.ColliderFunc(this);
         }
     }
 
@@ -423,7 +415,6 @@ public class PlayerController : MonoBehaviour,IPunObservable
 
     public void TakeDamage(float _damage)//,float _elasticty,float _bullletDirX,float _bullletDirY)
     {
-        //_rb.AddForce(_elasticty * new Vector2(_bullletDirX, _bullletDirY));
         Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage);
     }
 
@@ -445,7 +436,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
     [PunRPC]
     void Rpc_ChargeValue(bool _isCharge,float _elasticity,float _damage,float _dirX,float _dirY)
     {
-        IsCharge = _isCharge;
+        this._isCharge = _isCharge;
         BeElasticity = _elasticity;
         Damage = _damage;
         DirX = _dirX;
@@ -456,11 +447,9 @@ public class PlayerController : MonoBehaviour,IPunObservable
     void Rpc_ChangeBeFreeze(Vector3 _pos,Quaternion _dir)
     {
         IsBeFreeze = true;
-        _originPos = _pos;
-        _originDir = _dir;
+        transform.position = _pos;
+        transform.rotation = _dir;
         _rb.bodyType = RigidbodyType2D.Static;
-        transform.position = _originPos;
-        transform.rotation = _originDir;
     }
 
     [PunRPC]
@@ -480,6 +469,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
             stream.SendNext(FrontSightMidPos.transform.rotation);
             stream.SendNext(_rb.velocity);
             stream.SendNext(_rb.angularVelocity);
+            stream.SendNext(IsShield);
         }
         else
         {
@@ -489,6 +479,8 @@ public class PlayerController : MonoBehaviour,IPunObservable
             _newShootPointDir = (Quaternion)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();
             _rb.angularVelocity = (float)stream.ReceiveNext();
+            _newIsShield=(bool)stream.ReceiveNext();
+
 
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing()*0.001f);
             _newPos += (_rb.velocity * lag);

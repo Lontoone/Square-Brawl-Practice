@@ -1,18 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
 public class Katada : MonoBehaviour,IPoolObject,IPunObservable
 {
-    public float KatadaSpeed;//Katada Speed
-    public float KatadaDamage;//Katada Damage
-    public float KatadaBeElasticity;//Katada BeElasticity
-    public float BeElasticityDir;//Be Elasticity Direction
-    private float _originSpeed;//Origin Speed
+    private float KatadaSpeed;//Katada Speed
+    private float KatadaDamage;//Katada Damage
+    private float KatadaBeElasticity;//Katada BeElasticity
+    private float BeElasticityDir;//Be Elasticity Direction
     private float _dir;//Katada Mid Direction
 
-    public bool IsKatadaReverse;//Is Katada Reverse?
+    private bool _isKatadaReverse;//Is Katada Reverse?
+
+    public Action<float,float,float,bool> KatadaFunc;
+    public Action<PlayerController> ColliderFunc;
 
     private Quaternion _newSyncDir;
 
@@ -23,23 +26,11 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         if (_pv.IsMine)
         {
             _pv.RPC("Rpc_EnableObj", RpcTarget.All,transform.eulerAngles.z);
-
-            if (IsKatadaReverse)
-            {
-                _dir = transform.eulerAngles.z + 45;
-                transform.eulerAngles = new Vector3(0, 0, _dir);
-            }
-            else
-            {
-                _dir = transform.eulerAngles.z - 45;
-                transform.eulerAngles = new Vector3(0, 0, _dir);
-            }
-
             _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
-
-            StartCoroutine(DestroyObj());
         }
     }
+
+
     void Start()
     {
         _pv = GetComponent<PhotonView>();
@@ -47,20 +38,49 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         {
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
+        KatadaFunc = KatadaEvent;
+        ColliderFunc = KatadaCollider;
     }
 
-    // Update is called once per frame
+    private void KatadaEvent(float _speed,float _damage,float _blasticity,bool _isReverse)
+    {
+        KatadaSpeed = _speed;
+        KatadaDamage = _damage;
+        KatadaBeElasticity = _blasticity;
+        _isKatadaReverse= _isReverse;
+
+        if (_isKatadaReverse)
+        {
+            _dir = transform.eulerAngles.z + 45;
+            transform.eulerAngles = new Vector3(0, 0, _dir);
+        }
+        else
+        {
+            _dir = transform.eulerAngles.z - 45;
+            transform.eulerAngles = new Vector3(0, 0, _dir);
+        }
+
+        _pv.RPC("Rpc_SetValue", RpcTarget.Others, KatadaDamage, KatadaBeElasticity);
+
+        StartCoroutine(DestroyObj());
+    }
+
+    public void KatadaCollider(PlayerController _playerController)
+    {
+        if (!_pv.IsMine)
+        {
+            _pv.RPC("Rpc_DisableObj", RpcTarget.All);
+            float x = Mathf.Cos(BeElasticityDir * Mathf.PI / 180);
+            float y = Mathf.Sin(BeElasticityDir * Mathf.PI / 180);
+            _playerController.DamageFunc(KatadaDamage, KatadaBeElasticity, x, y);
+        }
+    }
+
     void Update()
     {
         if (_pv.IsMine)
         {
-            if (_originSpeed != KatadaSpeed && _pv.IsMine)
-            {
-                _pv.RPC("Rpc_SetValue", RpcTarget.Others, KatadaDamage, KatadaBeElasticity);
-                _originSpeed = KatadaSpeed;
-            }
-
-            if (IsKatadaReverse)
+            if (!_isKatadaReverse)
             {
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, _dir + 90), Time.deltaTime * KatadaSpeed);
             }
@@ -79,6 +99,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     IEnumerator DestroyObj()
     {
         yield return new WaitForSeconds(0.4f);
+        gameObject.SetActive(false);
         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
