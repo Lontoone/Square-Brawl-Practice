@@ -1996,8 +1996,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 200}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 50, y: 200}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &240496224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2011,7 +2011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedIndex: 0
-  m_SettingPrefab: {fileID: 240496222}
+  m_SettingGroupPrefab: {fileID: 240496222}
   m_SettingList:
   - {fileID: 1984734350}
   - {fileID: 373374528}
@@ -2020,6 +2020,8 @@ MonoBehaviour:
   m_Easetype: 30
   ToX: 750
   m_duration: 0.1
+  onSelect: 0
+  onPress: 0
 --- !u!1 &240893032
 GameObject:
   m_ObjectHideFlags: 0
@@ -2648,8 +2650,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 200}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 50, y: 200}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &334167706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2663,13 +2665,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedIndex: 0
-  m_SettingPrefab: {fileID: 334167704}
+  m_SettingGroupPrefab: {fileID: 334167704}
   m_SettingList:
   - {fileID: 486233968}
   type: 0
   m_Easetype: 21
   ToX: 750
   m_duration: 0.5
+  onSelect: 0
+  onPress: 0
 --- !u!1 &345758934
 GameObject:
   m_ObjectHideFlags: 0
@@ -2780,8 +2784,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 200}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 50, y: 200}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!1001 &355312709
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3088,8 +3092,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 382096280}
-  - component: {fileID: 382096281}
   - component: {fileID: 382096282}
+  - component: {fileID: 382096281}
   m_Layer: 5
   m_Name: Option Group
   m_TagString: Untagged
@@ -3131,7 +3135,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 382096279}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -3160,7 +3164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ea111f7ab39ca4c9ea5b9f0bcdc61d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_OptionGroup:
+  m_OptionGroup: {fileID: 382096279}
+  m_SettingGroup:
   - {fileID: 240496222}
   - {fileID: 334167704}
 --- !u!1 &416730251
@@ -5654,8 +5659,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 200}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 50, y: 200}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!1 &659377275
 GameObject:
   m_ObjectHideFlags: 0
@@ -8925,8 +8930,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 200}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 50, y: 200}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1125852168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8940,12 +8945,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedIndex: 0
-  m_SettingPrefab: {fileID: 0}
+  m_SettingGroupPrefab: {fileID: 1125852166}
   m_SettingList: []
   type: 0
   m_Easetype: 0
   ToX: 0
   m_duration: 0
+  onSelect: 0
+  onPress: 0
 --- !u!1 &1148325688
 GameObject:
   m_ObjectHideFlags: 0
@@ -14162,8 +14169,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 200}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 50, y: 200}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!1 &1632065969
 GameObject:
   m_ObjectHideFlags: 0

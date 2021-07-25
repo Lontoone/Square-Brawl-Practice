@@ -13,34 +13,43 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
 {
     [HideInInspector]
     public int SelectedIndex;
-    [SerializeField] private GameObject m_SettingPrefab;
+    [SerializeField] private GameObject m_SettingGroupPrefab;
     [SerializeField] private GameObject[] m_SettingList;
     private Easetype.Current_easetype m_CurrentEasetype;
 
     [HideInInspector]
-    public enum AnimationType {Flash, Fade}
+    public enum AnimationType {LeftFlash, DownFlash, Fade}
     [Space(15)]
     [SerializeField] private AnimationType type;
     [SerializeField] private Easetype.Current_easetype.Easetype m_Easetype;
     [SerializeField] private float ToX;
     [SerializeField] private float m_duration;
+
     private Sequence m_Sequence;
     private Vector3[] pos;
-    private bool onSelect;
+    private Vector2 vec;
+
+    public bool onSelect = false;
+    public bool onPress;
 
     void Start()
     {
         m_CurrentEasetype = new Easetype.Current_easetype();
+        vec = m_SettingGroupPrefab.GetComponent<RectTransform>().sizeDelta;
 
         switch (type)
         {
-            case AnimationType.Flash:
+            case AnimationType.LeftFlash:
                 pos = new Vector3[m_SettingList.Length];
                 for (int i = 0; i < m_SettingList.Length; i++)
                 {
                     pos[i] = new Vector3(-m_SettingList[i].GetComponent<RectTransform>().sizeDelta.x, m_SettingList[i].transform.localPosition.y);
                     m_SettingList[i].transform.localPosition = pos[i];
                 }
+                break;
+
+            case AnimationType.DownFlash:
+
                 break;
 
             case AnimationType.Fade:
@@ -51,13 +60,13 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
 
     public void SettingIn()
     {
-        if (onSelect == false)
+        if (onPress == false)
         {
             m_Sequence.Kill();
             m_Sequence = DOTween.Sequence();
             switch (type)
             {
-                case AnimationType.Flash:
+                case AnimationType.LeftFlash:
                     for (int i = 0; i < m_SettingList.Length; i++)
                     {
                         pos[i] = new Vector3(-m_SettingList[i].GetComponent<RectTransform>().sizeDelta.x, m_SettingList[i].transform.localPosition.y);
@@ -72,6 +81,9 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
                     }
                     break;
 
+                case AnimationType.DownFlash:
+                    break;
+
                 case AnimationType.Fade:
                     /*onSelect = true;
                     m_Sequence.Kill();
@@ -84,19 +96,19 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
                     }*/
                     break;
             }
-            onSelect = true;
+            onPress = true;
         }
     }
 
     public void SettingOut()
     {
-        if (onSelect == true)
+        if (onPress == true)
         {
             m_Sequence.Kill();
             m_Sequence = DOTween.Sequence();
             switch (type)
             {
-                case AnimationType.Flash:
+                case AnimationType.LeftFlash:
                     for (int i = 0; i < m_SettingList.Length; i++)
                     {
                         m_Sequence.Append(m_SettingList[i].transform
@@ -109,28 +121,42 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
                 case AnimationType.Fade:
                     break;
             }
-            onSelect = false;
+            onPress = false;
         }
+    }
+
+    public void Selected()
+    {
+        m_SettingGroupPrefab.GetComponent<RectTransform>()
+                                .DOSizeDelta(new Vector2(OptionManager.m_Spacing, vec.y), m_duration)
+                                .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype));
+    }
+
+    public void DeSelected()
+    {
+        m_SettingGroupPrefab.GetComponent<RectTransform>()
+                               .DOSizeDelta(vec, m_duration)
+                               .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype));
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-
+        onSelect = true;
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-
+        onSelect = false;
     }
 
     public virtual void OnSelect(BaseEventData eventData)
     {
+        onSelect = true;
 
-        
     }
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
-
+        onSelect = false;
     }
 }
 
