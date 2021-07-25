@@ -31,7 +31,6 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
     void Start()
     {
         m_CurrentEasetype = new Easetype.Current_easetype();
-        m_Sequence = DOTween.Sequence();
 
         switch (type)
         {
@@ -52,52 +51,52 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
 
     public void SettingIn()
     {
-        switch (type)
+        if (onSelect == false)
         {
-            case AnimationType.Flash:
+            m_Sequence.Kill();
+            m_Sequence = DOTween.Sequence();
+            switch (type)
+            {
+                case AnimationType.Flash:
+                    for (int i = 0; i < m_SettingList.Length; i++)
+                    {
+                        pos[i] = new Vector3(-m_SettingList[i].GetComponent<RectTransform>().sizeDelta.x, m_SettingList[i].transform.localPosition.y);
+                        m_SettingList[i].transform.localPosition = pos[i];
+                    }
 
-                onSelect = true;
-                m_Sequence.Kill();
+                    for (int i = 0; i < m_SettingList.Length; i++)
+                    {
+                        m_Sequence.Append(m_SettingList[i].transform
+                                        .DOLocalMoveX(pos[i].x + ToX, m_duration)
+                                        .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
+                    }
+                    break;
 
-                for (int i = 0; i < m_SettingList.Length; i++)
-                {
-                    pos[i] = new Vector3(-m_SettingList[i].GetComponent<RectTransform>().sizeDelta.x, m_SettingList[i].transform.localPosition.y);
-                    m_SettingList[i].transform.localPosition = pos[i];
-                }
+                case AnimationType.Fade:
+                    /*onSelect = true;
+                    m_Sequence.Kill();
 
-                for (int i = 0; i < m_SettingList.Length; i++)
-                {
-                    m_Sequence.Append(m_SettingList[i].transform
-                                    .DOLocalMoveX(pos[i].x + ToX, m_duration)
-                                    .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
-                }
-                break;
-
-            case AnimationType.Fade:
-
-                /*onSelect = true;
-                m_Sequence.Kill();
-
-                for (int i = 0; i < m_SettingList.Length; i++)
-                {
-                    m_Sequence.Append(m_SettingList[i]
-                                    .DOFade()
-                                    .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
-                }*/
-
-                break;
+                    for (int i = 0; i < m_SettingList.Length; i++)
+                    {
+                        m_Sequence.Append(m_SettingList[i]
+                                        .DOFade()
+                                        .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
+                    }*/
+                    break;
+            }
+            onSelect = true;
         }
     }
 
     public void SettingOut()
     {
-        switch (type)
+        if (onSelect == true)
         {
-            case AnimationType.Flash:
-                if (onSelect == true)
-                {
-                    m_Sequence.Kill();
-
+            m_Sequence.Kill();
+            m_Sequence = DOTween.Sequence();
+            switch (type)
+            {
+                case AnimationType.Flash:
                     for (int i = 0; i < m_SettingList.Length; i++)
                     {
                         m_Sequence.Append(m_SettingList[i].transform
@@ -105,13 +104,12 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
                                         .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
 
                     }
-                    onSelect = false;
-                }
-                break;
+                    break;
 
-            case AnimationType.Fade:
-
-                break;
+                case AnimationType.Fade:
+                    break;
+            }
+            onSelect = false;
         }
     }
 
