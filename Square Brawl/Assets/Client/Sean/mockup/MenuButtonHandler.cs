@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class MenuButtonHandler : MonoBehaviour
 {
     [SerializeField] private GameObject m_ButtonHandler;
-    [SerializeField] private GameObject m_FirstSelectedButton;
+    [SerializeField] public GameObject m_FirstSelectedButton;
     [SerializeField] private GameObject m_PlayButton;
     [SerializeField] private GameObject m_ButtonUp;
     [SerializeField] private GameObject m_ButtonDown;
@@ -23,18 +23,19 @@ public class MenuButtonHandler : MonoBehaviour
         return m_Button.m_ButtonIndex;
     }
 
-    public void EnableButton()
+    public IEnumerator EnableButton(float duration)
     {
-        m_ButtonUp.GetComponent<Button>().interactable = true;
-        m_ButtonDown.GetComponent<Button>().interactable = true;
-        m_ButtonLeft.GetComponent<Button>().interactable = true;
-        m_ButtonRight.GetComponent<Button>().interactable = true;
-        m_PlayButton.GetComponent<Button>().interactable = true;
         m_ButtonUp.SetActive(true);
         m_ButtonDown.SetActive(true);
         m_ButtonLeft.SetActive(true);
         m_ButtonRight.SetActive(true);
         m_PlayButton.SetActive(true);
+        yield return new WaitForSeconds(duration);
+        m_ButtonUp.GetComponent<Button>().interactable = true;
+        m_ButtonDown.GetComponent<Button>().interactable = true;
+        m_ButtonLeft.GetComponent<Button>().interactable = true;
+        m_ButtonRight.GetComponent<Button>().interactable = true;
+        m_PlayButton.GetComponent<Button>().interactable = true;
     }
 
     public void DisableButton()
@@ -44,28 +45,5 @@ public class MenuButtonHandler : MonoBehaviour
         m_ButtonLeft.GetComponent<Button>().interactable = false;
         m_ButtonRight.GetComponent<Button>().interactable = false;
         m_PlayButton.GetComponent<Button>().interactable = false;
-        m_ButtonUp.SetActive(false);
-        m_ButtonDown.SetActive(false);
-        m_ButtonLeft.SetActive(false);
-        m_ButtonRight.SetActive(false);
-        m_PlayButton.SetActive(false);
-    }
-    public void DelayDisableButton() 
-    {
-        StartCoroutine(DelayDisable());
-    }
-    private IEnumerator DelayDisable()
-    {
-        m_ButtonUp.GetComponent<Button>().interactable = false;
-        m_ButtonDown.GetComponent<Button>().interactable = false;
-        m_ButtonLeft.GetComponent<Button>().interactable = false;
-        m_ButtonRight.GetComponent<Button>().interactable = false;
-        m_PlayButton.GetComponent<Button>().interactable = false;
-        yield return new WaitForSeconds(SceneHandler.duration);
-        m_ButtonUp.SetActive(false);
-        m_ButtonDown.SetActive(false);
-        m_ButtonLeft.SetActive(false);
-        m_ButtonRight.SetActive(false);
-        m_PlayButton.SetActive(false);
     }
 }

@@ -42,9 +42,10 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public ToSplitChar.SplitCharAction SplitCharAction;
     [Space(15)]
     public ToSplitChar.SplitCharAction.SplitChar m_Char;
-    
-    public bool m_MouseSelectedState = false;
-    public bool m_KeySelectedState = false;
+
+
+    [HideInInspector] public bool m_MouseSelectedState = false;
+    [HideInInspector] public bool m_KeySelectedState = false;
     TextMeshProUGUI[] textArray;
 
     private bool Selectedtrigger;

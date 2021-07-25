@@ -9,6 +9,7 @@ using BasicTools.ButtonInspector;
 using DG.Tweening;
 using TMPro;
 namespace Easetype { }
+namespace ToDotSlider { }
 
 public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
@@ -24,18 +25,23 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
         [SerializeField] public GameObject m_LeftButton;
         [SerializeField] public GameObject m_RightButton;
         [SerializeField] public TextMeshProUGUI[] m_SelectionList;
-        [SerializeField] public int m_DefaultIndex;
+        [SerializeField] public int m_DefaultElement;
         [SerializeField] public Easetype.Current_easetype.Easetype m_easetype;
         [SerializeField] public float m_duration;
     }
-
-    public ListSelection listSelection;
+    [Space(20)]
+    [SerializeField] private GameObject m_ListParent;
+    public ListSelection m_ListSelection;
 
     private Sequence m_SettingSequence;
     private Easetype.Current_easetype m_current_easetype;
     private int m_CurrentIndex = 0;
 
-    [SerializeField] private Slider m_slider;
+    [Space(15)]
+    [SerializeField] private GameObject m_SliderParent;
+    public ToDotSlider.DotSliderAction.DotSlider m_SliderSetting;
+    [HideInInspector]
+    public ToDotSlider.DotSliderAction DotSliderAction;
 
     public void Start()
     {
@@ -44,39 +50,53 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
         switch (m_SettingType)
         {
             case SettingType.ListSelection:
-                SetUpListSelection(listSelection);
+                SetUpListSelection(m_ListSelection);
                 break;
 
             case SettingType.SliderSelection:
-                listSelection.m_LeftButton.SetActive(false);
-                listSelection.m_RightButton.SetActive(false);
-                listSelection.m_SelectionList[listSelection.m_DefaultIndex].enabled = false;
+                m_ListParent.SetActive(false);
+                m_ListSelection.m_LeftButton.SetActive(false);
+                m_ListSelection.m_RightButton.SetActive(false);
+                m_ListSelection.m_SelectionList[m_ListSelection.m_DefaultElement].enabled = false;
+
+
+                DotSliderAction = new ToDotSlider.DotSliderAction();
+                m_SliderSetting = DotSliderAction.SetUp(m_SliderSetting);
                 break;
 
             default:
                 break;
         }
-        //Debug.Log(m_SettingOptionList[0].text + "\t" + m_SettingOptionList[0] + "\t" + m_SettingOptionList[0].rectTransform.sizeDelta);
     }
-    public void ChangeCurrentSettingOption()
+
+    private void Update()
     {
-        Debug.Log("ChangeCurrentSettingOption");
-        
+        if (m_SettingType == SettingType.SliderSelection && m_SliderSetting.onSelect == true)
+        {
+            m_CurrentIndex = DotSliderAction.OnLoad(m_SliderSetting);
+            ReturnSettingValue();
+        }
+    }
+
+    public int ReturnSettingValue()
+    {
+        //Debug.Log(m_CurrentIndex);
+        return m_CurrentIndex;
     }
 
     public void SetUpListSelection(ListSelection ListSelection)
     {
-        m_CurrentIndex = ListSelection.m_DefaultIndex;
+        m_CurrentIndex = ListSelection.m_DefaultElement;
         for (int i = 0; i < ListSelection.m_SelectionList.Length; i++)
         {
-            if (i < ListSelection.m_DefaultIndex)
+            if (i < ListSelection.m_DefaultElement)
             {
                 ListSelection.m_SelectionList[i].transform.localPosition = new Vector3(-ListSelection.m_SelectionList[i].rectTransform.sizeDelta.x, 0, 0);
             }
-            else if (i == ListSelection.m_DefaultIndex)
+            else if (i == ListSelection.m_DefaultElement)
             {
             }
-            else if (i > ListSelection.m_DefaultIndex)
+            else if (i > ListSelection.m_DefaultElement)
             {
                 ListSelection.m_SelectionList[i].transform.localPosition = new Vector3(ListSelection.m_SelectionList[i].rectTransform.sizeDelta.x, 0, 0);
             }
@@ -84,12 +104,12 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
     }
     public void LeftOnClick()
     {
-        DecreaseIndex(listSelection);
+        DecreaseIndex(m_ListSelection);
     }
 
     public void RightOnClick()
     {
-        IncreaseIndex(listSelection);
+        IncreaseIndex(m_ListSelection);
     }
 
     public void IncreaseIndex(ListSelection ListSelection)
@@ -108,8 +128,7 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
                                 .DOLocalMoveX(0, ListSelection.m_duration))
                                 .SetEase(m_current_easetype.GetEasetype(ListSelection.m_easetype));
         }
-        ChangeCurrentSettingOption();
-
+        ReturnSettingValue();
     }
 
     public void DecreaseIndex(ListSelection ListSelection)
@@ -127,9 +146,10 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
                                 .DOLocalMoveX(0, ListSelection.m_duration))
                                 .SetEase(m_current_easetype.GetEasetype(ListSelection.m_easetype));
         }
-        ChangeCurrentSettingOption();
+        ReturnSettingValue();
 
     }
+
     public void ColorIn(GameObject gameObject)
     {
         gameObject.GetComponent<Image>().DOColor(SceneHandler.green, 0.3f).SetEase(Ease.OutCirc);
@@ -140,28 +160,32 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
         gameObject.GetComponent<Image>().DOColor(new Color32(230, 230, 230, 0), 0.3f).SetEase(Ease.OutCirc);
     }
 
-    public void OnClickAnimation(GameObject gameObject)
+    public void OnClickAnimation(GameObject gameObject) //todo
     {
         Debug.Log("OnclickAnimation");
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
+        m_SliderSetting.onSelect = true;
         ColorIn(m_Dot);
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
+        m_SliderSetting.onSelect = false;
         ColorOut(m_Dot);
     }
 
     public virtual void OnSelect(BaseEventData eventData)
     {
+        m_SliderSetting.onSelect = true;
         ColorIn(m_Dot);
     }
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
+        m_SliderSetting.onSelect = false;
         ColorOut(m_Dot);
     }
 }
