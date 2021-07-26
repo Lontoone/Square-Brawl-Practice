@@ -345,7 +345,7 @@ public class TileMapEditorControl : MonoBehaviour
         buildType = _state;
     }
 
-    /*
+    
     private void OnSceneLoad(Scene arg0, LoadSceneMode arg1)
     {
 
@@ -354,7 +354,7 @@ public class TileMapEditorControl : MonoBehaviour
             FindObjectOfType<TileMapManager>().GenerateGrid();
             InitDict();
         }
-    }*/
+    }
 }
 
 
