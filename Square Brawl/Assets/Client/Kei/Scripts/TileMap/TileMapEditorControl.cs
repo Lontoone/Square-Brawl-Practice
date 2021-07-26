@@ -19,7 +19,6 @@ public class TileMapEditorControl : MonoBehaviour
 
     [SerializeField]
     List<TileCell> previewTileCells = new List<TileCell>();
-    //public Dictionary<int, CellState> cellStateMap = new Dictionary<int, CellState>();
     private Dictionary<int, CellState> cellStateMap
     {
         get { return TileMapManager.instance.cellStateMap; }
@@ -58,6 +57,11 @@ public class TileMapEditorControl : MonoBehaviour
         //TileStyleManager.instance.ApplyNewStyle();*/
     }
 
+    private void OnDisable()
+    {
+
+        previewTileCells.Clear();
+    }
 
     public void OnDestroy()
     {
@@ -67,6 +71,7 @@ public class TileMapEditorControl : MonoBehaviour
 
         LoadMapUIControl.OnLevelFileLoaded -= Load;
         SceneManager.sceneLoaded -= OnSceneLoad;
+
 
     }
     public void Update()
