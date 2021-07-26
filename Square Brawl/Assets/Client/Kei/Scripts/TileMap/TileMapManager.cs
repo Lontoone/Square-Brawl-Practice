@@ -41,6 +41,8 @@ public class TileMapManager : MonoBehaviour
     }
     public void GenerateGrid()
     {
+        StartCoroutine(GenerateGridCoro());
+        /*
         Debug.Log("Generate Grid");
         float _sizePandingFactor = 1f;
         float halfWidth = firstCell.bounds.size.x / 2 * _sizePandingFactor;
@@ -63,6 +65,35 @@ public class TileMapManager : MonoBehaviour
                 gridCells.Add(_cell);
                 _counter++;
             }
+        }*/
+    }
+
+    private IEnumerator GenerateGridCoro()
+    {
+        WaitForEndOfFrame _wait = new WaitForEndOfFrame();
+
+        float _sizePandingFactor = 1f;
+        float halfWidth = firstCell.bounds.size.x / 2 * _sizePandingFactor;
+        float halfHeight = firstCell.bounds.size.y / 2 * _sizePandingFactor;
+        //float halfWidth = gridSize.x / 2 * _sizePandingFactor;
+        //float halfHeight = gridSize.y / 2 * _sizePandingFactor;
+
+        int _counter = 0;
+        for (int i = 0; i < mapSize.x; i++)
+        {
+            for (int j = 0; j < mapSize.y; j++)
+            {
+                Vector2 offset = new Vector2(i * 2 * halfWidth, j * 2 * halfHeight) + (Vector2)firstCell.transform.position;
+                GameObject cell = Instantiate(cellPrefab, offset, Quaternion.identity, transform);
+                cell.name = "( " + i + " , " + j + " ) ";
+
+                TileCell _cell = cell.GetComponent<TileCell>();
+                _cell.grid_index = _counter;
+
+                gridCells.Add(_cell);
+                _counter++;
+            }
+            yield return _wait;
         }
     }
 
