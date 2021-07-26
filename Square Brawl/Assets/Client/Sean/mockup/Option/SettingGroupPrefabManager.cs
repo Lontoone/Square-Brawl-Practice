@@ -141,6 +141,7 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("pointerin");
         onSelect = true;
     }
     public void OnPointerExit(PointerEventData eventData)

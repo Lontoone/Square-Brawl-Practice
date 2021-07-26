@@ -68,7 +68,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     private void Settrigger()
     {
-        Selectedtrigger = (OptionManager.m_CurrentIndex != m_ButtonIndex);
+        Selectedtrigger = (OptionManager.m_PressIndex != m_ButtonIndex);
     }
     public void HighlightedIcon() //todo
     {
