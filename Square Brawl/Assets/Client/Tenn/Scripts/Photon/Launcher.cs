@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-
+using TMPro;
 public class Launcher : MonoBehaviourPunCallbacks
 {
 
     public static Launcher instance;
+    [SerializeField] TMP_InputField nameInput;
     [SerializeField] UnityEngine.UI.InputField roomNameInputField;
     [SerializeField] UnityEngine.UI.Text errorText;
     [SerializeField] UnityEngine.UI.Text roomNameText;
@@ -37,7 +38,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        MenuManager.instance.OpenMenu("title");
+        //MenuManager.instance.OpenMenu("title");
+        MenuManager.instance.OpenMenu("name");
         Debug.Log("Join lobby");
 
         //?temp
@@ -152,7 +154,16 @@ public class Launcher : MonoBehaviourPunCallbacks
                                                                             "characterselection"
                                                                         }));*/
     }
-    public void StartLevel() {
+    public void ConfirmPlayerName()
+    {
+        if (nameInput.text != "")
+        {
+            PhotonNetwork.LocalPlayer.NickName = nameInput.text;
+            MenuManager.instance.OpenMenu("title");
+        }
+    }
+    public void StartLevel()
+    {
         PhotonNetwork.LoadLevel("CustomeLevel");
     }
     //Not really using
