@@ -20,7 +20,7 @@ public class LoadMapUIControl : MonoBehaviour
         editorControl = FindObjectOfType<TileMapEditorControl>();
         saveTile = FindObjectOfType<SaveTile>();
 
-        btnContainer.SetActive(false);
+        //btnContainer.SetActive(false);
         LoadMapList();
     }
 
@@ -38,7 +38,7 @@ public class LoadMapUIControl : MonoBehaviour
             {
                 OnLevelFileLoaded?.Invoke(_path);
                 currentSelectedFile = _path;
-                //Load(_path);
+                //TileStyleManager.instance.ApplyNewStyle(TileStyleManager.selectedCollection);
             });
             _btn.GetComponentInChildren<Text>().text = Path.GetFileName(_path);
         }

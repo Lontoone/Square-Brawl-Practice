@@ -297,6 +297,7 @@ public class TileMapEditorControl : MonoBehaviour
             cellStateMap[_data.cellDatas[i].index] = _data.cellDatas[i].state;
             SetCellStateColor(_data.cellDatas[i].index, _data.cellDatas[i].state);
         }
+
     }
     private void ReSetMap()
     {
@@ -310,11 +311,15 @@ public class TileMapEditorControl : MonoBehaviour
     private void SetCellStateColor(int _index, CellState _state)
     {
         TileCell _cell = TileMapManager.instance.gridCells[_index];
+        
+        TileStyleManager.instance.SetCell(_index);
+        TileStyleManager.instance.SetNearbyCell(_index);
         _cell.SetColor(cellStateColor[_state]);
     }
 
     private void Load(string _path)
     {
+        Debug.Log("load Map "+ _path);
         //reset picture
         MapData mapData = SaveAndLoad.Load<MapData>(_path);
 
