@@ -86,4 +86,10 @@ public class AttackTriggerable : MonoBehaviour
         _grenade.GrenadeFunc(ExploseEffectName, WeaponSpeed, WeaponDamage, BeElasticity);
         PlayerController.instance.RecoilFunc(WeaponRecoil);
     }
+
+    public void Bounce()
+    {
+        Reflections _bounce = PlayerController.instance.transform.GetChild(5).gameObject.GetComponent<Reflections>();
+        _bounce.BounceFunc(WeaponDamage, BeElasticity, ExploseEffectName, _bulletSpawnPos.transform.right);
+    }
 }

@@ -36,6 +36,7 @@ public class AbilityHolder : MonoBehaviour
         Pillar,
         Shield,
         Freeze,
+        Bounce,
     }
 
     public WeaponType2 weapon1, weapon2;
