@@ -13,10 +13,15 @@ public class OptionManager : MonoBehaviour
     public static int m_PressIndex = 99;
     [HideInInspector]
     public static bool m_ResetTrigger = false;
-    [SerializeField] private float spacing;
-    public static float m_Spacing;
+    [SerializeField] private GameObject m_FirstPos;
+    [SerializeField] private GameObject m_LastPos;
+    [SerializeField] private float barLength;
+    public static float m_BarLength;
+    private float m_Spacing;
     [HideInInspector]
     public Easetype.Current_easetype m_CurrentEasetype;
+
+    [Space(15)]
     [SerializeField] private Easetype.Current_easetype.Easetype m_Easetype;
     [SerializeField] private float m_Duration;
 
@@ -30,52 +35,62 @@ public class OptionManager : MonoBehaviour
     {
         m_CurrentEasetype = new Easetype.Current_easetype();
 
-        m_Spacing = spacing;
+        m_BarLength = barLength;
+        m_Spacing = ((m_LastPos.transform.localPosition.x - m_FirstPos.transform.localPosition.x) - m_BarLength) / (m_SettingGroup.Length - 1);
+
         m_SettingGroupPos = new Vector3[m_SettingGroup.Length];
+        var spacing = (m_LastPos.transform.localPosition.x - m_FirstPos.transform.localPosition.x) / (m_SettingGroup.Length);
         for (int i = 0; i < m_SettingGroup.Length; i++)
         {
-            m_SettingGroupPos[i] = m_SettingGroup[i].transform.localPosition;
-            Debug.Log(i + "\t" + m_SettingGroupPos[i]);
+            m_SettingGroupPos[i] = new Vector3(m_FirstPos.transform.localPosition.x + spacing * i, m_SettingGroup[i].transform.localPosition.y);
+            m_SettingGroup[i].transform.localPosition = m_SettingGroupPos[i];
         }
     }
     private void Update()
     {
+        var trigger = 0;
         for (int i = 0; i < m_SettingGroup.Length; i++)
         {
             if (m_SettingGroup[i].GetComponent<SettingGroupPrefabManager>().onSelect == true)
             {
                 onSelectIndex = i;
+                trigger ++;
             }
         }
-
-        for (int i = 0; i < m_SettingGroup.Length; i++)
+        //Debug.Log(trigger);
+        if (trigger == 0)
         {
-            if (onSelectIndex != 99)
+            onSelectIndex = 99;
+            for (int i = 0; i < m_SettingGroup.Length; i++)
             {
-                if (i <= onSelectIndex)
-                {
-                    m_SettingGroup[i].transform.DOLocalMove(m_SettingGroupPos[i], m_Duration).SetEase(m_CurrentEasetype.GetEasetype(m_Easetype));
-                }
-                else if (i > onSelectIndex)
-                {
-                    m_SettingGroup[i].transform.DOLocalMove(new Vector3(m_SettingGroupPos[i].x + m_Spacing,m_SettingGroupPos[i].y), m_Duration).SetEase(m_CurrentEasetype.GetEasetype(m_Easetype));
-                }
+                m_SettingGroup[i].transform.localPosition = m_SettingGroupPos[i];
             }
-            
-
-            /*if (m_SettingGroup[i].GetComponent<SettingGroupPrefabManager>().onSelect == true)
-            {
-                Debug.Log("in");
-                m_SettingGroup[i].GetComponent<SettingGroupPrefabManager>().Selected();
-            }
-            else
-            {
-                m_SettingGroup[i].GetComponent<SettingGroupPrefabManager>().DeSelected();
-            }*/
         }
 
+        if (onSelectIndex != 99)
+        {
+            for (int i = 1; i < m_SettingGroup.Length; i++)
+            {
+                if (i - 1 == onSelectIndex)
+                {
+                    m_SettingGroup[i].transform.localPosition = m_SettingGroup[i - 1].transform.localPosition + new Vector3(m_BarLength, 0);
+                }
+                else
+                {
+                    m_SettingGroup[i].transform.localPosition = m_SettingGroup[i - 1].transform.localPosition + new Vector3(m_Spacing, 0);
+                }
+            }
+        }
     }
 
+
+    private void Deselect()
+    {
+        for (int i = 0; i < m_SettingGroup.Length; i++)
+        {
+            m_SettingGroup[i].transform.localPosition = m_SettingGroupPos[i];
+        }
+    }
     public void SetSelectedIndex(int Index)
     {
         m_PressIndex = Index;
@@ -92,6 +107,7 @@ public class OptionManager : MonoBehaviour
     {
         m_PressIndex = 99;
         onSelectIndex = 99;
+        ResetDeselected();
     }
 
     public void ResetDeselected()//todo

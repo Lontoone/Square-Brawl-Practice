@@ -128,7 +128,7 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
     public void Selected()
     {
         m_SettingGroupPrefab.GetComponent<RectTransform>()
-                                .DOSizeDelta(new Vector2(OptionManager.m_Spacing, vec.y), m_duration)
+                                .DOSizeDelta(new Vector2(OptionManager.m_BarLength, vec.y), m_duration)
                                 .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype));
     }
 

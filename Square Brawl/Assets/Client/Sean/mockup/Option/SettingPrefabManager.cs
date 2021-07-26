@@ -40,8 +40,6 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
     [Space(15)]
     [SerializeField] private GameObject m_SliderParent;
     public ToDotSlider.DotSliderAction.DotSlider m_SliderSetting;
-    [HideInInspector]
-    public ToDotSlider.DotSliderAction DotSliderAction;
 
     public void Start()
     {
@@ -60,8 +58,8 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
                 m_ListSelection.m_SelectionList[m_ListSelection.m_DefaultElement].enabled = false;
 
 
-                DotSliderAction = new ToDotSlider.DotSliderAction();
-                m_SliderSetting = DotSliderAction.SetUp(m_SliderSetting);
+                m_SliderParent.AddComponent<ToDotSlider.DotSliderAction>();
+                m_SliderSetting = m_SliderParent.GetComponent<ToDotSlider.DotSliderAction>().SetUp(m_SliderSetting);
                 break;
 
             default:
@@ -73,7 +71,7 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
     {
         if (m_SettingType == SettingType.SliderSelection && m_SliderSetting.onSelect == true)
         {
-            m_CurrentIndex = DotSliderAction.OnLoad(m_SliderSetting);
+            m_CurrentIndex = m_SliderParent.GetComponent<ToDotSlider.DotSliderAction>().OnLoad(m_SliderSetting);
             ReturnSettingValue();
         }
     }
