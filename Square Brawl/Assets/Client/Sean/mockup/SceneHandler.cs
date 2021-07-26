@@ -51,7 +51,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     private void Awake()
     {
         m_Option.SetActive(false);
-        StartCoroutine(LoadMapEditor());
+        //StartCoroutine(LoadMapEditor());
         scene_current_easetype = new Easetype.Current_easetype();
         green = m_Green;
         orange = m_Orange;
