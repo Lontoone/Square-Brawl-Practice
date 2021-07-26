@@ -35,6 +35,8 @@ public class OptionManager : MonoBehaviour
     {
         m_CurrentEasetype = new Easetype.Current_easetype();
 
+
+        ///Set Layout
         m_BarLength = barLength;
         m_Spacing = ((m_LastPos.transform.localPosition.x - m_FirstPos.transform.localPosition.x) - m_BarLength) / (m_SettingGroup.Length - 1);
 
@@ -45,6 +47,7 @@ public class OptionManager : MonoBehaviour
             m_SettingGroupPos[i] = new Vector3(m_FirstPos.transform.localPosition.x + spacing * i, m_SettingGroup[i].transform.localPosition.y);
             m_SettingGroup[i].transform.localPosition = m_SettingGroupPos[i];
         }
+        ///
     }
     private void Update()
     {
@@ -58,7 +61,7 @@ public class OptionManager : MonoBehaviour
             }
         }
         //Debug.Log(trigger);
-        if (trigger == 0)
+        if (trigger == 0 && m_PressIndex == 99)
         {
             onSelectIndex = 99;
             for (int i = 0; i < m_SettingGroup.Length; i++)

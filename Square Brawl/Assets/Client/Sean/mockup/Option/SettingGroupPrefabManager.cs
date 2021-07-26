@@ -14,7 +14,8 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
     [HideInInspector]
     public int SelectedIndex;
     [SerializeField] private GameObject m_SettingGroupPrefab;
-    [SerializeField] private GameObject[] m_SettingList;
+    [SerializeField] private GameObject m_SettingList;
+    [SerializeField] private GameObject[] m_SettingPrefab;
     private Easetype.Current_easetype m_CurrentEasetype;
 
     [HideInInspector]
@@ -40,11 +41,11 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
         switch (type)
         {
             case AnimationType.LeftFlash:
-                pos = new Vector3[m_SettingList.Length];
-                for (int i = 0; i < m_SettingList.Length; i++)
+                pos = new Vector3[m_SettingPrefab.Length];
+                for (int i = 0; i < m_SettingPrefab.Length; i++)
                 {
-                    pos[i] = new Vector3(-m_SettingList[i].GetComponent<RectTransform>().sizeDelta.x, m_SettingList[i].transform.localPosition.y);
-                    m_SettingList[i].transform.localPosition = pos[i];
+                    pos[i] = new Vector3(-m_SettingPrefab[i].GetComponent<RectTransform>().sizeDelta.x, m_SettingPrefab[i].transform.localPosition.y);
+                    m_SettingPrefab[i].transform.localPosition = pos[i];
                 }
                 break;
 
@@ -56,26 +57,29 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
 
                 break;
         }
+
+        m_SettingList.SetActive(false);
     }
 
     public void SettingIn()
     {
         if (onPress == false)
         {
+            m_SettingList.SetActive(true);
             m_Sequence.Kill();
             m_Sequence = DOTween.Sequence();
             switch (type)
             {
                 case AnimationType.LeftFlash:
-                    for (int i = 0; i < m_SettingList.Length; i++)
+                    for (int i = 0; i < m_SettingPrefab.Length; i++)
                     {
-                        pos[i] = new Vector3(-m_SettingList[i].GetComponent<RectTransform>().sizeDelta.x, m_SettingList[i].transform.localPosition.y);
-                        m_SettingList[i].transform.localPosition = pos[i];
+                        pos[i] = new Vector3(-m_SettingPrefab[i].GetComponent<RectTransform>().sizeDelta.x, m_SettingPrefab[i].transform.localPosition.y);
+                        m_SettingPrefab[i].transform.localPosition = pos[i];
                     }
 
-                    for (int i = 0; i < m_SettingList.Length; i++)
+                    for (int i = 0; i < m_SettingPrefab.Length; i++)
                     {
-                        m_Sequence.Append(m_SettingList[i].transform
+                        m_Sequence.Append(m_SettingPrefab[i].transform
                                         .DOLocalMoveX(pos[i].x + ToX, m_duration)
                                         .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
                     }
@@ -104,14 +108,15 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
     {
         if (onPress == true)
         {
+            m_SettingList.SetActive(false);
             m_Sequence.Kill();
             m_Sequence = DOTween.Sequence();
             switch (type)
             {
                 case AnimationType.LeftFlash:
-                    for (int i = 0; i < m_SettingList.Length; i++)
+                    for (int i = 0; i < m_SettingPrefab.Length; i++)
                     {
-                        m_Sequence.Append(m_SettingList[i].transform
+                        m_Sequence.Append(m_SettingPrefab[i].transform
                                         .DOLocalMoveX(pos[i].x + ToX * 2, m_duration)
                                         .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
 
