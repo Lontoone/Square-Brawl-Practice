@@ -35,8 +35,8 @@ public class TileMapSetUpManager : MonoBehaviour
         {
             Debug.Log("Gernerate Grid");
             TileMapManager.instance.GenerateGrid();
+            yield return new WaitForSeconds(1);
         }
-        yield return new WaitForSeconds(1);
         SetUpLevelTiles(_mapData);
         SetUpCellOrientation();
         SetupBackground();

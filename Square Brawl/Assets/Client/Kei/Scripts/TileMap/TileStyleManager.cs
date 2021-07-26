@@ -23,7 +23,8 @@ public class TileStyleManager : MonoBehaviour
     {
         checkRange.ReadData();
 
-        if (selectedCollection == null) {
+        if (selectedCollection == null)
+        {
             selectedCollection = imageCollection;
         }
 
@@ -44,8 +45,7 @@ public class TileStyleManager : MonoBehaviour
         {
             //Set none to white
             TileCell _cell = TileMapManager.instance.gridCells[_index];
-            SetTillImage(_cell, 255);
-            _cell.spriteRenderer.sortingOrder = 1;
+            SetTillImage(_cell, 255,0,0,0);
 
             //clear saw
             Destroy(_cell.GetComponent<Saw>());
@@ -59,7 +59,7 @@ public class TileStyleManager : MonoBehaviour
             {
                 _cell.gameObject.AddComponent<Saw>();
             }
-            _cell.spriteRenderer.sortingOrder = 2;
+            //_cell.spriteRenderer.sortingOrder = 2;
         }
         else
         {
@@ -67,7 +67,7 @@ public class TileStyleManager : MonoBehaviour
 
             TileCell _cell = TileMapManager.instance.gridCells[_index];
             SetTillImage(_cell, _tileCondition);
-            _cell.spriteRenderer.sortingOrder = 1;
+            //_cell.spriteRenderer.sortingOrder = 1;
 
             //clear saw
             Destroy(_cell.GetComponent<Saw>());
@@ -117,12 +117,17 @@ public class TileStyleManager : MonoBehaviour
         return TileMapManager.instance.cellStateMap[_center.grid_index] == TileMapManager.instance.cellStateMap[_target.grid_index];
     }
 
-    private void SetTillImage(TileCell _cell, int _conditionCode)
+    private void SetTillImage(TileCell _cell, int _conditionCode, int _frontOrder = 4, int _midOrder = 3, int _hindOrder = 2)
     {
         //Debug.Log(_cell.grid_index + " " + imageCollection.name);
         _cell.spriteRenderer.sprite = imageCollection.GetSprite(_conditionCode);
         _cell.hindSpriteRenderer.sprite = imageCollection.GetHindSprite(_conditionCode);
         _cell.frontSpriteRenderer.sprite = imageCollection.GetFrontSprite(_conditionCode);
+
+        _cell.spriteRenderer.sortingOrder = _midOrder;
+        _cell.hindSpriteRenderer.sortingOrder = _hindOrder;
+        _cell.frontSpriteRenderer.sortingOrder = _frontOrder;
+
     }
 
     public void ApplyNewStyle(TileImageCollection _data)
