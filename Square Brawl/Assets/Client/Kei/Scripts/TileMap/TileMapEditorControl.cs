@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
 public class TileMapEditorControl : MonoBehaviour
@@ -34,6 +35,8 @@ public class TileMapEditorControl : MonoBehaviour
 
     public IEnumerator Start()
     {
+        SceneManager.sceneLoaded += OnSceneLoad;
+
         TileCell.OnCellMouseEnter += SetPreviewRange;
         TileCell.OnCellMouseExit += ClearPreviewCell;
         //TileCell.OnCellMouseExit += SetPreviousId;
@@ -44,6 +47,7 @@ public class TileMapEditorControl : MonoBehaviour
 
         //Wait for tile map to gernerate:
         WaitForEndOfFrame _wait = new WaitForEndOfFrame();
+        Debug.Log(TileMapManager.instance == null);
         while (TileMapManager.instance == null)
         {
             yield return _wait;
@@ -52,6 +56,8 @@ public class TileMapEditorControl : MonoBehaviour
         TileMapManager.instance.GenerateGrid();
         //TileStyleManager.instance.ApplyNewStyle();
     }
+
+
     public void OnDestroy()
     {
         TileCell.OnCellMouseEnter -= SetPreviewRange;
@@ -59,6 +65,7 @@ public class TileMapEditorControl : MonoBehaviour
         //TileCell.OnCellMouseExit -= SetPreviousId;
 
         LoadMapUIControl.OnLevelFileLoaded -= Load;
+        SceneManager.sceneLoaded -= OnSceneLoad;
 
     }
     public void Update()
@@ -337,6 +344,17 @@ public class TileMapEditorControl : MonoBehaviour
     {
         buildType = _state;
     }
+
+    /*
+    private void OnSceneLoad(Scene arg0, LoadSceneMode arg1)
+    {
+
+        if (arg0.name == "GridSample")
+        {
+            FindObjectOfType<TileMapManager>().GenerateGrid();
+            InitDict();
+        }
+    }*/
 }
 
 

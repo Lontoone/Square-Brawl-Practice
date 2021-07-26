@@ -27,6 +27,7 @@ public class TileCell : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandl
     }
     public void PointerEnter()
     {
+        //Debug.Log(grid_index);
         OnCellMouseEnter?.Invoke(grid_index);
     }
     public void PointerExit()
