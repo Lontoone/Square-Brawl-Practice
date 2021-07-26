@@ -39,6 +39,7 @@ public class TileMapManager : MonoBehaviour
     {
         //GenerateGrid(); 
     }
+    [ContextMenu("GenerateGrid")]
     public void GenerateGrid()
     {
         StartCoroutine(GenerateGridCoro());

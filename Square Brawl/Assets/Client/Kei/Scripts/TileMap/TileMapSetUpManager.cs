@@ -27,17 +27,16 @@ public class TileMapSetUpManager : MonoBehaviour
     }
     public void SetUpLevel(MapData _mapData)
     {
+        StartCoroutine(SetUpLevelCoro(_mapData));
+    }
+    public IEnumerator SetUpLevelCoro(MapData _mapData)
+    {
         if (TileMapManager.instance.gridCells.Count == 0)
         {
             Debug.Log("Gernerate Grid");
             TileMapManager.instance.GenerateGrid();
         }
-
-        //TEMP
-        //levelFileName = LoadMapUIControl.currentSelectedFile;
-
-        //temp
-        //MapData _mapData = SaveAndLoad.Load<MapData>(levelFileName.CombinePersistentPath());
+        yield return new WaitForSeconds(1);
         SetUpLevelTiles(_mapData);
         SetUpCellOrientation();
         SetupBackground();
