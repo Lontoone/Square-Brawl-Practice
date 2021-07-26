@@ -33,7 +33,7 @@ public class TileMapEditorControl : MonoBehaviour
         { CellState.EMPTY, Color.cyan },
     };
 
-    public IEnumerator Start()
+    public void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoad;
 
@@ -46,6 +46,7 @@ public class TileMapEditorControl : MonoBehaviour
         rangeData.ReadData();
 
         //Wait for tile map to gernerate:
+        /*
         WaitForEndOfFrame _wait = new WaitForEndOfFrame();
         Debug.Log(TileMapManager.instance == null);
         while (TileMapManager.instance == null)
@@ -54,7 +55,7 @@ public class TileMapEditorControl : MonoBehaviour
         }
         InitDict();
         TileMapManager.instance.GenerateGrid();
-        //TileStyleManager.instance.ApplyNewStyle();
+        //TileStyleManager.instance.ApplyNewStyle();*/
     }
 
 
