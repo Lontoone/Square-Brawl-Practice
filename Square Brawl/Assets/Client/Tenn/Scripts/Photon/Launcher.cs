@@ -26,7 +26,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         //connect to server
         PhotonNetwork.ConnectUsingSettings();
-
+        MenuManager.instance.OpenMenu("loading");
     }
 
     public override void OnConnectedToMaster()
@@ -43,7 +43,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         Debug.Log("Join lobby");
 
         //?temp
-        PhotonNetwork.NickName = "Player" + Random.Range(0, 1000).ToString("0000");
+        //PhotonNetwork.NickName = "Player" + Random.Range(0, 1000).ToString("0000");
     }
 
 
