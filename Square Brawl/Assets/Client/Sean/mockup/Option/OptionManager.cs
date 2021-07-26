@@ -10,7 +10,8 @@ public class OptionManager : MonoBehaviour
     public static int m_CurrentIndex = 99;
     [HideInInspector]
     public static bool m_ResetTrigger = false;
-    [SerializeField] public static float m_Spacing;
+    [SerializeField] private float spacing;
+    public static float m_Spacing;
 
     [Space(15)]
     public GameObject[] m_SettingGroup;
@@ -19,6 +20,7 @@ public class OptionManager : MonoBehaviour
 
     private void Start()
     {
+        m_Spacing = spacing;
         m_SettingGroupPos = new Vector3[m_SettingGroup.Length];
         for (int i = 0; i < m_SettingGroup.Length; i++)
         {
@@ -29,7 +31,7 @@ public class OptionManager : MonoBehaviour
     {
         for (int i = 0; i < m_SettingGroup.Length; i++)
         {
-            if (i == m_CurrentIndex)
+            if (m_SettingGroup[i].GetComponent<SettingGroupPrefabManager>().onSelect == true)
             {
                 Debug.Log("in");
                 m_SettingGroup[i].GetComponent<SettingGroupPrefabManager>().Selected();
