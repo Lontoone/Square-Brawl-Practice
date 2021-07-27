@@ -14,6 +14,8 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
     public Transform buttonItemContainer;
     public ColorSetButton buttonItemPrefab;
 
+    private List<ColorSetButton> colorBtns = new List<ColorSetButton>();
+
     private void Start()
     {
         CreatePlayerItem();
@@ -27,21 +29,26 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
             ColorSetButton _button = Instantiate(buttonItemPrefab, parent: buttonItemContainer);
             _button.colorImage.color = CustomPropertyCode.COLORS[i];
             _button.colorIndex = i;
+
+            colorBtns.Add(_button);
         }
+        //預設隊伍
+        colorBtns[0].SetColor();
     }
 
     private void CreatePlayerItem()
     {
         for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         {
-            {
-                //foreach player data:
-                ColorSelectPlayerItemControl _item = Instantiate(playerItemPrefab, parent: playerItemContainer);
-                Player _player = PhotonNetwork.PlayerList[i];
-                Debug.Log(_player == null);
-                _item.SetPlayer(_player);
-            }
+            ColorSelectPlayerItemControl _item = Instantiate(playerItemPrefab, parent: playerItemContainer);
+            Player _player = PhotonNetwork.PlayerList[i];
+            Debug.Log(_player == null);
+            _item.SetPlayer(_player);
+
         }
+
+
+
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)

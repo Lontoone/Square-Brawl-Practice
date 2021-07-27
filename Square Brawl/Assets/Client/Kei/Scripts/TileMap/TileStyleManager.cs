@@ -108,7 +108,7 @@ public class TileStyleManager : MonoBehaviour
     }
     private bool CheckCellIsSameState(TileCell _center, TileCell _target)
     {
-        if (_target == null || _center == null)
+        if (_target == null || _center == null || TileMapManager.instance.cellStateMap.Count == 0)
         {
             return false;
         }

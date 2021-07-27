@@ -1,6 +1,7 @@
 ﻿using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 public class ResultPlayerListItem : MonoBehaviour
@@ -22,10 +23,12 @@ public class ResultPlayerListItem : MonoBehaviour
         playerNameText.text = player.NickName;
 
         maxWinCount = lifeContainer.transform.childCount;
-        for (int i = 0; i < maxWinCount; i++)
+        lifes = lifeContainer.GetComponentsInChildren<Image>().ToList();
+        /*
+        for (int i = 0; i < maxWinCount-1; i++)
         {
             lifes.Add(lifeContainer.transform.GetChild(i).GetComponent<Image>());
-        }
+        }*/
         winCount = 0;
     }
 
