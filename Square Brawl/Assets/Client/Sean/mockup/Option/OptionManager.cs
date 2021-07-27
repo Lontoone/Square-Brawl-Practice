@@ -115,7 +115,9 @@ public class OptionManager : MonoBehaviour
 
     public void ResetDeselected()//todo
     {
+        
         for (int i = 0; i < m_SettingGroup.Length; i++)
+
         {
             if (i == m_PressIndex)
             {
