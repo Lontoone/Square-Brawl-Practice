@@ -48,6 +48,9 @@ MonoBehaviour:
   firstCell: {fileID: 853472373}
   mapSize: {x: 50, y: 30}
   gridCells: []
+  foreground: {fileID: 0}
+  midground: {fileID: 0}
+  background: {fileID: 0}
   _useGizemos: 1
 --- !u!1001 &913758580071036982
 PrefabInstance:
@@ -109,8 +112,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 913758580300549187, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
+      propertyPath: m_Size.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 913758580300549187, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
+      propertyPath: m_Size.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 913758580300549187, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
       propertyPath: m_SortingOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 913758580300549198, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 913758580300549198, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 1269545476163291900, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
       propertyPath: m_SortingOrder

@@ -8,6 +8,10 @@ public class TileStyleManager : MonoBehaviour
     public static TileImageCollection selectedCollection;
     public TileImageCollection imageCollection;
     public SelectRangeData checkRange;
+
+    private SpriteRenderer foreground { get { return TileMapManager.instance.foreground; } }
+    private SpriteRenderer midground { get { return TileMapManager.instance.midground; } }
+    private SpriteRenderer background { get { return TileMapManager.instance.background; } }
     private void Awake()
     {
         if (instance == null)
@@ -136,7 +140,10 @@ public class TileStyleManager : MonoBehaviour
         {
             SetCell(i);
         }
+        //Background
+        SetupBackground();
 
+        //Materail
         Sprite _mask = _data.GetSprite(900);
         if (_mask != null)
         {
@@ -148,6 +155,19 @@ public class TileStyleManager : MonoBehaviour
         {
             TileMapManager.instance.gridCells[0].spriteRenderer.sharedMaterial.SetTexture("_BelowTex", _below.texture);
         }
+
+    }
+
+    private void SetupBackground()
+    {
+        if (foreground != null)
+            foreground.sprite = TileStyleManager.selectedCollection.GetSprite(301);
+
+        if (midground != null)
+            midground.sprite = TileStyleManager.selectedCollection.GetSprite(302);
+
+        if (background != null)
+            background.sprite = TileStyleManager.selectedCollection.GetSprite(303);
     }
 
 }

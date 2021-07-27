@@ -18,6 +18,7 @@ public class TileMapManager : MonoBehaviour
 
     //Vector2 gridSize = new Vector2(1.05f, 1.05f);
 
+    public SpriteRenderer foreground, midground, background;
 
     public TileCell center_cell { get { return (gridCells[(gridCells.Count - 1) / 2]); } }
 

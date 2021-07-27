@@ -31,15 +31,15 @@ public class TileMapSetUpManager : MonoBehaviour
     }
     public IEnumerator SetUpLevelCoro(MapData _mapData)
     {
-        if (TileMapManager.instance.gridCells.Count == 0)
+        if (TileMapManager.instance.gridCells.Count < TileMapManager.instance.cellCount)
         {
             Debug.Log("Gernerate Grid");
             TileMapManager.instance.GenerateGrid();
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1.5f);
         }
         SetUpLevelTiles(_mapData);
         SetUpCellOrientation();
-        SetupBackground();
+        //SetupBackground();
     }
 
     private void SetUpLevelTiles(MapData _mapData)
@@ -77,7 +77,7 @@ public class TileMapSetUpManager : MonoBehaviour
         }
 
     }
-
+    /*
     private void SetupBackground()
     {
         if (foreground != null)
@@ -88,5 +88,5 @@ public class TileMapSetUpManager : MonoBehaviour
 
         if (background != null)
             background.sprite = TileStyleManager.selectedCollection.GetSprite(303);
-    }
+    }*/
 }
