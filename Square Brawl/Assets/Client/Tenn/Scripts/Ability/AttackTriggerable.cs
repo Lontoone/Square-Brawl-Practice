@@ -89,7 +89,7 @@ public class AttackTriggerable : MonoBehaviour
 
     public void Bounce()
     {
-        Reflections _bounce = PlayerController.instance.transform.GetChild(5).gameObject.GetComponent<Reflections>();
+        Bounce _bounce = PlayerController.instance.transform.GetChild(5).gameObject.GetComponent<Bounce>();
         _bounce.BounceFunc(WeaponDamage, BeElasticity, ExploseEffectName, _bulletSpawnPos.transform.right);
     }
 }

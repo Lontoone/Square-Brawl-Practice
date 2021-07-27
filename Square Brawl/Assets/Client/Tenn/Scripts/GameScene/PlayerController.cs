@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
     public bool IsBeFreeze;//Is Be Freeze?
     private bool _isCharge;//Is Change?
     public bool IsShield;
+    public bool IsBounce;
 
     private bool _canSpin;//Player Can Spin?
 
@@ -58,6 +59,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
     private float _newDirZ;
 
     private bool _newIsShield;
+    private bool _newIsBounce;
 
     private Vector2 _newPos;
 
@@ -121,6 +123,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
         {
             FrontSightMidPos.transform.rotation = Quaternion.Lerp(FrontSightMidPos.transform.rotation, _newShootPointDir, 15 * Time.deltaTime);
             IsShield = _newIsShield;
+            IsBounce = _newIsBounce;
         }
         else
         {
@@ -160,7 +163,8 @@ public class PlayerController : MonoBehaviour,IPunObservable
         if ((IsGround || _isWall)&&_isJump)//Player Jump
         {
             _rb.AddForce(JumpForce * Vector3.up);
-            StartCoroutine(IsJumpRecover());
+            // StartCoroutine(IsJumpRecover());
+            StartCoroutine("IsJumpRecover");
         }
     }
 
@@ -249,7 +253,8 @@ public class PlayerController : MonoBehaviour,IPunObservable
     private void PlayerJumpUp()
     {
         _isJump = _isCheckSpin = false;
-        StopAllCoroutines();
+        //StopAllCoroutines();
+        StopCoroutine("IsJumpRecover");
     }
 
     void MouseSpin(Vector2 _mousePos)
@@ -341,6 +346,18 @@ public class PlayerController : MonoBehaviour,IPunObservable
     {
         TakeDamage(_damage);
         BeBounce(_beElasticity, _dirX, _dirY);
+    }
+
+    public void IsBounceEvent()
+    {
+        StartCoroutine(IsBounceFalse());
+    }
+
+    IEnumerator IsBounceFalse()
+    {
+        IsBounce = true;
+        yield return new WaitForSeconds(0.5f);
+        IsBounce = false;
     }
 
     //Ground Check
@@ -470,6 +487,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
             stream.SendNext(_rb.velocity);
             stream.SendNext(_rb.angularVelocity);
             stream.SendNext(IsShield);
+            stream.SendNext(IsBounce);
         }
         else
         {
@@ -480,7 +498,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
             _rb.velocity = (Vector2)stream.ReceiveNext();
             _rb.angularVelocity = (float)stream.ReceiveNext();
             _newIsShield=(bool)stream.ReceiveNext();
-
+            _newIsBounce = (bool)stream.ReceiveNext();
 
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing()*0.001f);
             _newPos += (_rb.velocity * lag);
