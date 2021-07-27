@@ -6,8 +6,9 @@ Shader "Unlit/WorldTexture"
 	{
 		_MainTex("Texture", 2D) = "white" {}
 		_NoiseTex("Noisy Texture",2D) = "white" {}
+		_BelowTex("below Texture",2D) = "white" {}
 	}
-		SubShader
+	SubShader
 	{
 		Tags { "RenderType" = "Transparent"   "RenderQueue" = "Transparent" "RenderType" = "TransparentCutout"}
 
@@ -38,8 +39,10 @@ Shader "Unlit/WorldTexture"
 
 			sampler2D _MainTex;
 			sampler2D _NoiseTex;
+			sampler2D _BelowTex;
 			float4 _MainTex_ST;
 			float4 _NoiseTex_ST;
+			float4 _BelowTex_ST;
 
 			v2f vert(appdata v)
 			{
@@ -54,8 +57,19 @@ Shader "Unlit/WorldTexture"
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
 				fixed4 noisy = tex2D(_NoiseTex , i.worldPos * _NoiseTex_ST.xy + _NoiseTex_ST.zw);
+				fixed4 below = tex2D(_BelowTex , i.worldPos * _BelowTex_ST.xy + _BelowTex_ST.zw);
 
-				fixed4 res = col;
+				fixed4 res;
+				//if(length(col.rgb)==0){
+				if(col.a==0){
+					res = below;					
+				}
+				else{
+					res = col;	
+				}
+
+				//fixed4 res = col;
+				//res = col;
 				res.a = length(noisy.rgb);
 
 				return res;
