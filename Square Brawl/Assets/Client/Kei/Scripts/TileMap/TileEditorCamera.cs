@@ -10,7 +10,7 @@ public class TileEditorCamera : MonoBehaviour
     //int _currentCellIndex = 0;
     public void Update()
     {
-        RaycastHit2D hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Mouse.current.position.ReadValue()), Vector2.zero);
+        RaycastHit2D hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Mouse.current.position.ReadValue()), Vector2.one);
         //Vector3 mousePosWorld = camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         if (hit.collider != null)
         {

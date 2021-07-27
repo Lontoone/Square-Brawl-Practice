@@ -140,13 +140,13 @@ public class TileStyleManager : MonoBehaviour
         Sprite _mask = _data.GetSprite(900);
         if (_mask != null)
         {
-            TileMapManager.instance.gridCells[0].spriteRenderer.material.SetTexture("_NoiseTex", _mask.texture);
+            TileMapManager.instance.gridCells[0].spriteRenderer.sharedMaterial.SetTexture("_NoiseTex", _mask.texture);
         }
 
         Sprite _below = _data.GetSprite(901);
         if (_below != null)
         {
-            TileMapManager.instance.gridCells[0].spriteRenderer.material.SetTexture("_BelowTex", _below.texture);
+            TileMapManager.instance.gridCells[0].spriteRenderer.sharedMaterial.SetTexture("_BelowTex", _below.texture);
         }
     }
 

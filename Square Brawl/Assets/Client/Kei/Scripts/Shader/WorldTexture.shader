@@ -10,9 +10,10 @@ Shader "Unlit/WorldTexture"
 	}
 	SubShader
 	{
-		Tags { "RenderType" = "Transparent"   "RenderQueue" = "Transparent" "RenderType" = "TransparentCutout"}
+		Tags { "RenderType" = "Transparent"   "RenderQueue" = "Transparent" }
 
 		Blend SrcAlpha OneMinusSrcAlpha
+		//Blend off
 		LOD 100
 
 		Pass
@@ -60,8 +61,8 @@ Shader "Unlit/WorldTexture"
 				fixed4 below = tex2D(_BelowTex , i.worldPos * _BelowTex_ST.xy + _BelowTex_ST.zw);
 
 				fixed4 res;
-				//if(length(col.rgb)==0){
 				if(col.a==0){
+				//if(col.a){
 					res = below;					
 				}
 				else{
