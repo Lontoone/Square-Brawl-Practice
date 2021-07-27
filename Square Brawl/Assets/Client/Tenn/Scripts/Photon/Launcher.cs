@@ -54,11 +54,13 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         //避免玩家在等待server時亂點其他按鈕s
         MenuManager.instance.OpenMenu("loading");
+        Debug.Log("Createed room");
     }
 
 
     public override void OnJoinedRoom() //called when create or join a room
     {
+        Debug.Log("Joinned room");
         MenuManager.instance.OpenMenu("room");
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
 
@@ -86,6 +88,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
+        Debug.Log("failed room");
         errorText.text = "Room create Failed " + message;
         MenuManager.instance.OpenMenu("error");
     }

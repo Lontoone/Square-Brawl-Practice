@@ -199,7 +199,9 @@ public class TileImageCollection : ScriptableObject
 
          { new TileImage("Foreground",301) },
          { new TileImage("Midground",302) },
-         { new TileImage("Background",303) }
+         { new TileImage("Background",303) },
+
+        { new TileImage("Mat",900) }
     };
     private static List<TileImage> tileImagesHind = new List<TileImage>()
     {

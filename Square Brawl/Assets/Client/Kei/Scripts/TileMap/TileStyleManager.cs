@@ -45,7 +45,7 @@ public class TileStyleManager : MonoBehaviour
         {
             //Set none to white
             TileCell _cell = TileMapManager.instance.gridCells[_index];
-            SetTillImage(_cell, 255,0,0,0);
+            SetTillImage(_cell, 255, 0, 0, 0);
 
             //clear saw
             Destroy(_cell.GetComponent<Saw>());
@@ -59,7 +59,6 @@ public class TileStyleManager : MonoBehaviour
             {
                 _cell.gameObject.AddComponent<Saw>();
             }
-            //_cell.spriteRenderer.sortingOrder = 2;
         }
         else
         {
@@ -67,7 +66,6 @@ public class TileStyleManager : MonoBehaviour
 
             TileCell _cell = TileMapManager.instance.gridCells[_index];
             SetTillImage(_cell, _tileCondition);
-            //_cell.spriteRenderer.sortingOrder = 1;
 
             //clear saw
             Destroy(_cell.GetComponent<Saw>());
@@ -138,6 +136,7 @@ public class TileStyleManager : MonoBehaviour
         {
             SetCell(i);
         }
+        TileMapManager.instance.gridCells[0].spriteRenderer.sharedMaterial.SetTexture("_NoiseTex", _data.GetSprite(900).texture);
     }
 
 }
