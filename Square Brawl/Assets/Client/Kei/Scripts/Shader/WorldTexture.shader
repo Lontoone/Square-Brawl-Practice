@@ -61,8 +61,8 @@ Shader "Unlit/WorldTexture"
 				fixed4 below = tex2D(_BelowTex , i.worldPos * _BelowTex_ST.xy + _BelowTex_ST.zw);
 
 				fixed4 res;
-				if(col.a==0){
-				//if(col.a){
+				//if(col.a==0){
+				if(length(col.rgb)==0){
 					res = below;					
 				}
 				else{
