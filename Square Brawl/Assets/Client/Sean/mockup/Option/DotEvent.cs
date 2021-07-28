@@ -22,8 +22,9 @@ public class DotEvent : MonoBehaviour, IPointerClickHandler
 
     public void CurtentSelected()
     {
-        ToDotSlider.DotSliderAction.m_IsChangebyClick = true;
-        ToDotSlider.DotSliderAction.m_SelectedIndex = m_Index;
+        GetComponentInParent<SettingPrefabManager>().m_SliderSetting.onSelect = true;
+        GetComponentInParent<SettingPrefabManager>().m_SliderSetting.m_IsChangebyClick = true;
+        GetComponentInParent<SettingPrefabManager>().m_SliderSetting.m_SelectedIndex = m_Index;
     }
 
     public void OnPointerClick(PointerEventData eventData)

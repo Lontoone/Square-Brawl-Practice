@@ -48,11 +48,10 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             m_Index--;
         }
         //Debug.Log(m_Index);
-        ToDotSlider.DotSliderAction.m_IsChangebyDrag = true;
-        ToDotSlider.DotSliderAction.m_SelectedIndex = m_Index;
+        GetComponentInParent<SettingPrefabManager>().m_SliderSetting.m_SelectedIndex = m_Index;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+        public void OnPointerEnter(PointerEventData eventData)
     {
         m_Dotsequence.Kill();
         m_Dotsequence.Append(m_SelectedDot.transform
@@ -79,6 +78,8 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        GetComponentInParent<SettingPrefabManager>().m_SliderSetting.onSelect = true;
+        GetComponentInParent<SettingPrefabManager>().m_SliderSetting.m_IsChangebyDrag = true;
         m_SelectedDot.transform.localScale = new Vector3(1.3f, 1.3f);
         m_SelectedDot.GetComponent<CanvasGroup>().blocksRaycasts = false;
         m_Dotsequence.Kill();
@@ -117,6 +118,8 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         m_Dotsequence.Kill();
         m_Dotsequence.Append(m_SelectedDot.GetComponent<Image>().transform
                         .DOScale(new Vector3(1f, 1f), 0));
+        GetComponentInParent<SettingPrefabManager>().m_SliderSetting.m_IsChangebyDrag = false;
+        GetComponentInParent<SettingPrefabManager>().m_SliderSetting.onSelect = false;
         m_OnDrag = false;
     }
 }

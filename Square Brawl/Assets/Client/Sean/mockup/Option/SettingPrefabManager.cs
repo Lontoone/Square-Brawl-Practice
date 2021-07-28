@@ -166,13 +166,13 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        m_SliderSetting.onSelect = true;
+        
         ColorIn(m_Dot);
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        m_SliderSetting.onSelect = false;
+        
         ColorOut(m_Dot);
     }
 
