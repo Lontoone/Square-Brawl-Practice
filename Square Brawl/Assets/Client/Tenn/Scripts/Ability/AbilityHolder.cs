@@ -72,16 +72,16 @@ public class AbilityHolder : MonoBehaviour
         {
             if (isWeapon01)
             {
-                //_abilityNum = (int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON1CODE];
-                _abilityNum = (int)weapon1;
+                _abilityNum = (int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON1CODE];
+                //_abilityNum = (int)weapon1;
                 _inputAction.Player.Fire1.performed += _ => PlayerFire1Down();
                 _inputAction.Player.Fire1.canceled += _ => PlayerFire1Up();
                 SetWeapon();
             }
             else
             {
-                //_abilityNum = (int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON2CODE];
-                _abilityNum = (int)weapon2;
+                _abilityNum = (int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON2CODE];
+                //_abilityNum = (int)weapon2;
                 _inputAction.Player.Fire2.performed += _ => PlayerFire2Down();
                 _inputAction.Player.Fire2.canceled += _ => PlayerFire2Up();
                 SetWeapon();

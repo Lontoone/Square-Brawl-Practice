@@ -147,10 +147,9 @@ MonoBehaviour:
   IsGround: 0
   GroundLayer:
     serializedVersion: 2
-    m_Bits: 4352
+    m_Bits: 6912
   FrontSightMidPos: {fileID: 0}
   FrontSightPos: {fileID: 0}
-  FrontSightRb: {fileID: 0}
   Pv: {fileID: 0}
 --- !u!114 &3724183295208971859
 MonoBehaviour:
@@ -479,7 +478,8 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions: []
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -551,6 +551,7 @@ MonoBehaviour:
   BounceBeElasticity: 0
   FieldExplose: 1
   BounceExploseEffectName: 
+  _laserRenderer: {fileID: 0}
   LayerToExplose:
     serializedVersion: 2
     m_Bits: 2048
@@ -597,7 +598,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5320457202908584123
 Transform:
   m_ObjectHideFlags: 0
@@ -812,16 +813,17 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 11400000, guid: 5a978b1f581c0234d86759abff1dde2a, type: 2}
   - {fileID: 11400000, guid: bdb3e33ac269f114d85bf77bd9ed9ff1, type: 2}
-  - {fileID: 11400000, guid: 1b2c1511d1522c2458fc3e780989b664, type: 2}
-  - {fileID: 11400000, guid: aafe5b5f16e9f0a4a9d55ac2e8977bab, type: 2}
-  - {fileID: 11400000, guid: f1ce1e1a7823d3f44b264b3256968d55, type: 2}
   - {fileID: 11400000, guid: 94733b4e862fbf84da6091fb67dfc035, type: 2}
+  - {fileID: 11400000, guid: aafe5b5f16e9f0a4a9d55ac2e8977bab, type: 2}
+  - {fileID: 11400000, guid: ebccf3015db41384796873215c4b7bc8, type: 2}
   - {fileID: 11400000, guid: 041159c542d5669438f8600ef869f9c7, type: 2}
   - {fileID: 11400000, guid: 2c1c2b673b4fcf24380ee64b7e298b8c, type: 2}
+  - {fileID: 11400000, guid: f1ce1e1a7823d3f44b264b3256968d55, type: 2}
+  - {fileID: 11400000, guid: 1b2c1511d1522c2458fc3e780989b664, type: 2}
   - {fileID: 11400000, guid: 9568cda1bb1bac1479cd7540f40b30dc, type: 2}
   - {fileID: 11400000, guid: 77772a7a5e396a44cbd0d336c74cb376, type: 2}
   - {fileID: 11400000, guid: afae9702bb329e743bc7872c7b94ccd6, type: 2}
-  weapon1: 11
+  weapon1: 0
   weapon2: 0
 --- !u!114 &8648748878293601389
 MonoBehaviour:
@@ -919,17 +921,18 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 11400000, guid: 5a978b1f581c0234d86759abff1dde2a, type: 2}
   - {fileID: 11400000, guid: bdb3e33ac269f114d85bf77bd9ed9ff1, type: 2}
-  - {fileID: 11400000, guid: 1b2c1511d1522c2458fc3e780989b664, type: 2}
-  - {fileID: 11400000, guid: aafe5b5f16e9f0a4a9d55ac2e8977bab, type: 2}
-  - {fileID: 11400000, guid: f1ce1e1a7823d3f44b264b3256968d55, type: 2}
   - {fileID: 11400000, guid: 94733b4e862fbf84da6091fb67dfc035, type: 2}
+  - {fileID: 11400000, guid: aafe5b5f16e9f0a4a9d55ac2e8977bab, type: 2}
+  - {fileID: 11400000, guid: ebccf3015db41384796873215c4b7bc8, type: 2}
   - {fileID: 11400000, guid: 041159c542d5669438f8600ef869f9c7, type: 2}
   - {fileID: 11400000, guid: 2c1c2b673b4fcf24380ee64b7e298b8c, type: 2}
+  - {fileID: 11400000, guid: f1ce1e1a7823d3f44b264b3256968d55, type: 2}
+  - {fileID: 11400000, guid: 1b2c1511d1522c2458fc3e780989b664, type: 2}
   - {fileID: 11400000, guid: 9568cda1bb1bac1479cd7540f40b30dc, type: 2}
   - {fileID: 11400000, guid: 77772a7a5e396a44cbd0d336c74cb376, type: 2}
   - {fileID: 11400000, guid: afae9702bb329e743bc7872c7b94ccd6, type: 2}
   weapon1: 0
-  weapon2: 8
+  weapon2: 0
 --- !u!114 &8648748878713665433
 MonoBehaviour:
   m_ObjectHideFlags: 0

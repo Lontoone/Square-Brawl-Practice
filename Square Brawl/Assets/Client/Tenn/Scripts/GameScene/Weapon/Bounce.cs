@@ -22,7 +22,7 @@ public class Bounce : MonoBehaviour
     private bool _isBounce;
     private bool _isChangeColor;
 
-    private LineRenderer _laserRenderer; //the line renderer
+    public LineRenderer _laserRenderer; //the line renderer
 
     public LayerMask LayerToExplose;
 
@@ -35,15 +35,31 @@ public class Bounce : MonoBehaviour
     private Vector2 _originDir;
 
     private PhotonView _pv;
-    private void Start()
+    private void Awake()
     {
         _pv = GetComponent<PhotonView>();
         _laserRenderer = GetComponent<LineRenderer>();
         BounceFunc = BounceEvent;
+        PlayerController.instance.OnChangeColor += SetColor;
         if (_pv.IsMine)
         {
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
+    }
+
+    private void SetColor()
+    {
+        Color _color = CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
+        _laserRenderer.startColor = _laserRenderer.endColor = _color;
+
+        _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
+    }
+
+    [PunRPC]
+    void ChangeColor(Vector3 color)
+    {
+        Color _color = new Color(color.x, color.y, color.z);
+        _laserRenderer.startColor = _laserRenderer.endColor = _color;
     }
 
     private void BounceEvent (int _damage,float _beElasticity,string _effectName,Vector2 _dir)
@@ -67,12 +83,11 @@ public class Bounce : MonoBehaviour
     {
         _isBounce = true;
         int vertexCounter = 1; 
-        HitGroundPos.Add(_pos);
         /*_laserRenderer.startColor = new Color(_laserRenderer.startColor.r, _laserRenderer.startColor.g, _laserRenderer.startColor.b, 0);
         _laserRenderer.endColor = new Color(_laserRenderer.endColor.r, _laserRenderer.endColor.g, _laserRenderer.endColor.b, 0);
         _laserRenderer.startWidth = 0.05f;
-        _laserRenderer.endWidth = 0.05f;*/
-        _laserRenderer.positionCount = 1;
+        _laserRenderer.endWidth = 0.05f;
+        _laserRenderer.positionCount = 1;*/
         _laserRenderer.SetPosition(0, _originPos);
 
         for (int i = 0; i < _laserLimit; i++)

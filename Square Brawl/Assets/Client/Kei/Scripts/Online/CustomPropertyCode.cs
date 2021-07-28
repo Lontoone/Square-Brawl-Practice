@@ -36,8 +36,14 @@ public enum WeaponType {
     None,
     Aevolver,
     BigBoom,
-    Charge,
+    Sniper,
     CubeShoot,
+    ShotGun,
+    Grenade,
+    Pillar,
     Katada,
-    Sniper
+    Charge,
+    Shield,
+    Freeze,
+    Bounce
 }

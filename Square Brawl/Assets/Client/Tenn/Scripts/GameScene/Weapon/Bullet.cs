@@ -35,6 +35,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
         ShootFunc += BulletShootEvent;
+        PlayerController.instance.OnChangeColor += SetColor;
         if (_pv.IsMine)
         {
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
@@ -46,13 +47,28 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
+    private void SetColor()
+    {
+        Color _color = transform.GetComponent<SpriteRenderer>().color =
+            CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
+
+        _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
+    }
+
+    [PunRPC]
+    void ChangeColor(Vector3 color)
+    {
+        Color _color = new Color(color.x, color.y, color.z);
+        transform.GetComponent<SpriteRenderer>().color = _color;
+    }
+
     public void OnObjectSpawn()
     {
         if (_pv.IsMine)
         {
             _isMaster = true;
             _pv.RPC("Rpc_EnableObj", RpcTarget.All);
-            _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
+            //_pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
         }
     }
 
@@ -64,7 +80,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         BulletScaleValue = _scaleValue;
         BulletBeElasticity = _elasticity;
         _isDontShootStraight = _isStraight;
-
+        _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
         _pv.RPC("Rpc_SetValue", RpcTarget.All, BulletSpeed, BulletDamage, BulletScaleValue, BulletBeElasticity, _isDontShootStraight);
 
         if (_isDontShootStraight)
@@ -78,7 +94,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     {
         //ResetValue();//Reset Bullet Value
 
-        BulletCollider();//Bullet Collider Raycast
+        //BulletCollider();//Bullet Collider Raycast
     }
 
     protected virtual void FixedUpdate()
@@ -93,10 +109,9 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    public void BulletCollider()
+    /*void BulletCollider()
     {
         _originPos = transform.position + new Vector3(transform.localScale.x / 2, 0, 0);
-
         RaycastHit2D[] hits = Physics2D.RaycastAll(_originPos, (transform.position - _originPos).normalized, (transform.position - _originPos).magnitude);
 
         for (int i = 0; i < hits.Length; i++)
@@ -141,6 +156,53 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                     ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
                     DisableObj();
                 }
+            }
+        }
+
+        Debug.DrawLine(transform.position, _originPos, Color.red);
+    }*/
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
+            if (!_playerController.IsShield)
+            {
+                if (_isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
+                {
+                    float DirX = Mathf.Cos(transform.eulerAngles.z * Mathf.PI / 180);
+                    float DirY = Mathf.Sin(transform.eulerAngles.z * Mathf.PI / 180);
+                    _playerController.TakeDamage(BulletDamage);
+                    _playerController.BeBounce(BulletBeElasticity, DirX, DirY);
+                    if (_pv.IsMine)
+                    {
+                        ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+                    }
+                    DisableObj();
+                }
+                else if ((_pv.IsMine != _playerController.Pv.IsMine && !_playerController.Pv.IsMine))
+                {
+                    ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+                    DisableObj();
+                }
+            }
+            else
+            {
+                if (_isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine && !_isBounce)
+                {
+                    transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z + 180);
+                    _pv.RPC("Rpc_ChangeAngles", RpcTarget.Others, transform.eulerAngles);
+                    _isBounce = _isMaster = true;
+                }
+            }
+        }
+        else if (other.gameObject.CompareTag("Ground"))
+        {
+            if (_pv.IsMine)
+            {
+                ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+                DisableObj();
             }
         }
     }

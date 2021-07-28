@@ -34,12 +34,33 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     void Start()
     {
         _pv = GetComponent<PhotonView>();
+        KatadaFunc = KatadaEvent;
+        ColliderFunc = KatadaCollider;
+        PlayerController.instance.OnChangeColor += SetColor;
+
         if (_pv.IsMine)
         {
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
-        KatadaFunc = KatadaEvent;
-        ColliderFunc = KatadaCollider;
+    }
+
+    private void SetColor()
+    {
+        TrailRenderer _trail = transform.GetChild(0).GetComponent<TrailRenderer>();
+        Color _color = transform.GetChild(0).GetComponent<SpriteRenderer>().color =
+            _trail.startColor = _trail.endColor = 
+            CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
+
+        _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
+    }
+
+    [PunRPC]
+    void ChangeColor(Vector3 color)
+    {
+        Color _color = new Color(color.x, color.y, color.z);
+        TrailRenderer _trail = transform.GetChild(0).GetComponent<TrailRenderer>();
+        transform.GetChild(0).GetComponent<SpriteRenderer>().color =
+            _trail.startColor = _trail.endColor = _color;
     }
 
     private void KatadaEvent(float _speed,float _damage,float _blasticity,bool _isReverse)

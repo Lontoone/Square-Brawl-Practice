@@ -20,7 +20,30 @@ public class Pillar : Grenade, IPoolObject
     {
         _growY = 1f;
         _childObj = transform.GetChild(0).gameObject;
-        base.Start();
+
+        _rb = GetComponent<Rigidbody2D>();
+        _pv = GetComponent<PhotonView>();
+        GrenadeFunc = GrenadeEvent;
+        PlayerController.instance.OnChangeColor += SetColor;
+        if (_pv.IsMine)
+        {
+            _pv.RPC("Rpc_DisableObj", RpcTarget.All);
+        }
+    }
+
+    private void SetColor()
+    {
+        Color _color = transform.GetChild(0).GetComponent<SpriteRenderer>().color =
+            CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
+
+        _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
+    }
+
+    [PunRPC]
+    void ChangeColor(Vector3 color)
+    {
+        Color _color = new Color(color.x, color.y, color.z);
+        transform.GetChild(0).GetComponent<SpriteRenderer>().color = _color;
     }
 
     public void OnObjectSpawn()

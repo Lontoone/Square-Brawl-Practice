@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 using System.IO;
-public class PlayerController : MonoBehaviour,IPunObservable
+public class PlayerController : MonoBehaviourPun,IPunObservable
 {
     [HeaderAttribute("Player Setting")]
     public float MoveSpeed;//Player Move Speed
@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
     public Action<float> RecoilFunc;
     public Action<float,int> FreezeFunc;
     public Action<float,float,float,float> DamageFunc;
+    public event Action OnChangeColor;
 
     [HeaderAttribute("GroundCheck Setting")]
     public float FootOffset;
@@ -51,11 +52,12 @@ public class PlayerController : MonoBehaviour,IPunObservable
     public Transform FrontSightMidPos;//FrontSightMid Position
     public Transform FrontSightPos;//FrontSight Position
     private Rigidbody2D _rb;//Player Rigidbody
-    public Rigidbody2D FrontSightRb;//FrontSight Rigidbody
+   // public Rigidbody2D FrontSightRb;//FrontSight Rigidbody
 
     private Camera _camera;
 
     [HeaderAttribute("Sync Setting")]
+    private const byte PLAYER_DISABLE_EVENT=0;
     private float _newDirZ;
 
     private bool _newIsShield;
@@ -82,6 +84,7 @@ public class PlayerController : MonoBehaviour,IPunObservable
         RecoilFunc = PlayerRecoil;
         FreezeFunc = FreezeEvent;
         DamageFunc = DamageEvent;
+        OnChangeColor += SetColor;
 
         if (Pv.IsMine)
         {
@@ -106,7 +109,6 @@ public class PlayerController : MonoBehaviour,IPunObservable
         FrontSightMidPos = transform.GetChild(0).GetComponent<Transform>();
         if (Pv.IsMine)
         {
-            FrontSightRb = transform.GetChild(1).GetComponent<Rigidbody2D>();
             FrontSightPos = FrontSightMidPos.transform.GetChild(0);
 
             _inputAction.Player.Jump.performed += _ => PlayerJumpDown();
@@ -114,7 +116,26 @@ public class PlayerController : MonoBehaviour,IPunObservable
             _inputAction.Player.Movement.performed += ctx => LimitInputValue(ctx.ReadValue<Vector2>());
             _inputAction.Player.MouseRotation.performed += ctx => MouseSpin(ctx.ReadValue<Vector2>());
             _inputAction.Player.GamePadRotation.performed += ctx => GamePadSpin(ctx.ReadValue<Vector2>());
+
+            OnChangeColor?.Invoke();
         }
+    }
+
+    private void SetColor()
+    {
+        Color _color = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color =
+            transform.GetChild(1).GetComponent<SpriteRenderer>().color =
+            CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
+
+        Pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
+    }
+
+    [PunRPC]
+    void ChangeColor(Vector3 color)
+    {
+        Color _color = new Color(color.x, color.y, color.z);
+        transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color =
+        transform.GetChild(1).GetComponent<SpriteRenderer>().color = _color;
     }
 
     void Update()
@@ -447,7 +468,10 @@ public class PlayerController : MonoBehaviour,IPunObservable
 
     void Die()
     {
-        _playerManager.Die();
+        gameObject.SetActive(false);
+        /*bool a = false;
+        object[] dates = new object[] { a };
+        PhotonNetwork.RaiseEvent(PLAYER_DISABLE_EVENT,dates,.)*/
     }
 
     [PunRPC]
