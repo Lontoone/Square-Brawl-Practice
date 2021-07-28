@@ -89,15 +89,17 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
                     break;
 
                 case AnimationType.Fade:
-                    /*onSelect = true;
-                    m_Sequence.Kill();
-
-                    for (int i = 0; i < m_SettingList.Length; i++)
+                    for (int i = 0; i < m_SettingPrefab.Length; i++)
                     {
-                        m_Sequence.Append(m_SettingList[i]
-                                        .DOFade()
-                                        .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
-                    }*/
+                        m_SettingPrefab[i].GetComponent<RectTransform>().localScale = new Vector3(0,0);
+                    }
+
+                    for (int i = 0; i < m_SettingPrefab.Length; i++)
+                    {
+                        m_Sequence.Append(m_SettingPrefab[i].transform
+                                        .DOScale(new Vector3(1,1), 0.3f)
+                                        .SetEase(Ease.OutCirc));
+                    }
                     break;
             }
             onPress = true;

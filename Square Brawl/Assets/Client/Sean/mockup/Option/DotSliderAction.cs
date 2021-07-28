@@ -176,6 +176,8 @@ namespace ToDotSlider
             return m_SelectedIndex;
         }
 
+
+        //Select by Keyboard or Gamepad
         private void MoveSelected(DotSlider dotSlider)
         {
             if (Gamepad.current != null)

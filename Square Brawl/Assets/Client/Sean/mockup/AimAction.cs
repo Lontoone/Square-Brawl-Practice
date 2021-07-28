@@ -10,7 +10,8 @@ public class AimAction : MonoBehaviour
     private PlayerInputManager _inputAction;
     [SerializeField] private GameObject m_AimPos;
     [SerializeField] public GameObject m_AimObject;
-    [SerializeField] private float distance;
+    [SerializeField] private float m_Distance;
+    private float distance;
 
     private Vector2 m_ObjectPos;
     private Vector2 m_MouseWorldPos;
@@ -18,16 +19,22 @@ public class AimAction : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
-    void Update()
+    private void FixedUpdate()
     {
+        if (m_Distance != distance)
+        {
+            distance = SceneHandler.WorldToCamera(m_Distance, 2);
+        }
         m_ObjectPos = m_AimPos.transform.position;
         AimToMouse();
     }
-    
-    
+
+
+
+
     private void AimToMouse() 
     {
         m_MouseWorldPos = Mouse.current.position.ReadValue();

@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    [HideInInspector]
+    public int m_Indexx;
     public GameObject m_SelectedDot;
     public float m_Min;
     public float m_Max;
@@ -68,7 +70,10 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             m_Dotsequence.Kill();
             m_Dotsequence.Append(m_SelectedDot.transform
                             .DOScale(new Vector3(1f, 1f), m_Duration)
-                            .SetEase(Ease.OutBounce));
+                            .SetEase(Ease.OutBounce))
+                         .Join(m_SelectedDot.GetComponent<Image>()
+                            .DOColor(m_DefaultColor, m_Duration)
+                            .SetEase(Ease.InOutCirc));
         }
     }
 

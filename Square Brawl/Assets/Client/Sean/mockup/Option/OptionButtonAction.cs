@@ -17,6 +17,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     [SerializeField] private Image m_Background;
     [SerializeField] private Image m_Icon;
     [SerializeField] private TextMeshProUGUI m_button_text;
+    [SerializeField] private Color32 m_DefaultColor;
     
     [System.Serializable]
     public struct AimAction
@@ -42,6 +43,8 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     
 
     private Sequence m_IconMove;
+    private Sequence m_Press;
+    public bool onPress = false;
 
     [HideInInspector] public bool m_MouseSelectedState = false;
     [HideInInspector] public bool m_KeySelectedState = false;
@@ -51,11 +54,12 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     void Start()
     {
+        m_Icon.color = SceneHandler.green;
         m_CurrentEasetype = new Easetype.Current_easetype();
         screen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)) * 2;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         //m_Aim.m_ObjectPos = m_Aim.m_AimPos.transform.position;
         AimToMouse();
@@ -68,11 +72,30 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         //Debug.Log(m_Aim.m_MouseWorldPos +"\t"+ screen);
 
         Vector2 scale = new Vector2(m_Aim.m_MouseWorldPos.x / screen.x, m_Aim.m_MouseWorldPos.y / screen.y);
+        var move = new Vector3(m_Aim.m_Area.x * scale.x, m_Aim.m_Area.y * scale.y);
+
+        if (scale.x > 1)
+        {
+            move.x = m_Aim.m_Area.x;
+        } 
+        else if (scale.x < -1)
+        {
+            move.x = -m_Aim.m_Area.x;
+        }
+
+        if (scale.y > 1)
+        {
+            move.y = m_Aim.m_Area.y;
+        }
+        else if (scale.y < -1)
+        {
+            move.y = -m_Aim.m_Area.y;
+        }
 
         m_IconMove.Kill();
         m_IconMove = DOTween.Sequence();
-        m_IconMove.Append(m_Aim.m_AimObject.transform.DOLocalMove(new Vector3(m_Aim.m_Area.x * scale.x, m_Aim.m_Area.y * scale.y), m_Aim.m_Duration).SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)));
-        Debug.Log(new Vector3(m_Aim.m_Area.x * scale.x, m_Aim.m_Area.y * scale.y));
+        m_IconMove.Append(m_Aim.m_AimObject.transform.DOLocalMove(move, m_Aim.m_Duration).SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)));
+        //Debug.Log(new Vector3(m_Aim.m_Area.x * scale.x, m_Aim.m_Area.y * scale.y));
 
     }
 
@@ -82,9 +105,9 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     }
     public void HighlightedBackground() //todo
     {
-        if (m_Background != null)
+        if (m_Background != null && onPress ==false)
         {
-            m_Background.DOColor(SceneHandler.green, 0.5f);
+            m_Background.DOColor(new Color32(SceneHandler.green.r, SceneHandler.green.g, SceneHandler.green.b,50), 0.2f);
         }
     }
 
@@ -92,11 +115,23 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         if (m_Background != null)
         {
-            m_Background.DOColor(new Color32(230, 230, 230, 255), 0.5f);
+            m_Background.DOColor(m_DefaultColor, 0.5f);
         }
     }
 
-
+    public void OnPress()
+    {
+        onPress = true;
+        m_Press.Kill();
+        m_Press = DOTween.Sequence();
+        m_Press.Append(m_Aim.m_AimPos.transform
+                    .DOLocalMove(new Vector3(0, 450), 0.5f)
+                    .SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)))
+               .Join(m_Background.rectTransform
+                    .DOSizeDelta(new Vector2(700, 1000), 0.5f)
+                    .SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)))
+               .Join(m_Background.DOColor(m_DefaultColor, 0.5f));
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {

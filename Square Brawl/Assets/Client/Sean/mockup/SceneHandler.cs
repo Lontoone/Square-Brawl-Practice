@@ -49,10 +49,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     public static Color32 blue;
 
 
+    public enum axis {x = 0, y = 1, cons = 2}
+
     private void Awake()
     {
         m_Option.SetActive(false);
         m_OptionTest.SetActive(false);
+        SetUpMapEditor();
         //StartCoroutine(LoadMapEditor());
         scene_current_easetype = new Easetype.Current_easetype();
         green = m_Green;
@@ -63,7 +66,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     void Start()
     {
-        
         //pos = m_Menu.transform.localPosition;
     }
 
@@ -198,11 +200,17 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Menu.transform.DOScale(new Vector3(1, 1, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
+    private void SetUpMapEditor()
+    {
+        m_MapEditor.transform.localPosition = new Vector3(0, WorldToCamera(1080,1)*2);
+    }
+
     private void EnterMapEditor()
     {
+        Debug.Log(Screen.width +"\t"+Screen.height);
         m_MapEditor.SetActive(true);
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, -Screen.height, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, -1080, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_MapEditor.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 0, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
@@ -210,7 +218,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {   
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(m_Menu.GetComponentInChildren<MenuButtonHandler>().m_FirstSelectedButton);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 0, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        m_MapEditor.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, Screen.height, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_MapEditor.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 1080, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         yield return new WaitForSeconds(0.5f);
         m_MapEditor.SetActive(false);
     }
@@ -240,6 +248,28 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         StartCoroutine(m_Menu.GetComponentInChildren<MenuButtonHandler>().EnableButton(0.5f));
         yield return new WaitForSeconds(0.5f);
         m_Control.SetActive(false);
+    }
+
+    public static float WorldToCamera(float num, int axis)
+    {
+        switch (axis)
+        {
+            case 0:
+                num *= ((float)Screen.width / 1920);
+                Debug.Log(num);
+                break;
+
+            case 1:
+                num *= ((float)Screen.height / 1080);
+                Debug.Log(num);
+                break;
+
+            case 2:
+                num *= (((float)Screen.width / 1920) + ((float)Screen.height / 1080)) / 2;
+                //Debug.Log(num);
+                break;
+        }
+        return num;
     }
 
     public void Quit()

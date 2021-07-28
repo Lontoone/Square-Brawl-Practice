@@ -13,6 +13,7 @@ namespace ToDotSlider { }
 
 public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
+    [SerializeField] public int m_Index;
     [SerializeField] private Button m_Header;
     [SerializeField] private GameObject m_Dot;
     
