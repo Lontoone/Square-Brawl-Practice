@@ -126,10 +126,20 @@ public class OptionManager : MonoBehaviour
             else
             {
                 m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>().SettingOut();
-                m_SettingGroup[i].GetComponentInChildren<ButtonAction>().SplitCharAction.IdleChar(m_SettingGroup[i].GetComponentInChildren<ButtonAction>().m_Char);
-                m_SettingGroup[i].GetComponentInChildren<ButtonAction>().IdleIcon();
-                m_SettingGroup[i].GetComponentInChildren<ButtonAction>().m_MouseSelectedState = false;
-                m_SettingGroup[i].GetComponentInChildren<ButtonAction>().m_KeySelectedState = false;
+                if (m_SettingGroup[i].GetComponentInChildren<ButtonAction>() != null)
+                {
+                    m_SettingGroup[i].GetComponentInChildren<ButtonAction>().SplitCharAction.IdleChar(m_SettingGroup[i].GetComponentInChildren<ButtonAction>().m_Char);
+                    m_SettingGroup[i].GetComponentInChildren<ButtonAction>().IdleIcon();
+                    m_SettingGroup[i].GetComponentInChildren<ButtonAction>().m_MouseSelectedState = false;
+                    m_SettingGroup[i].GetComponentInChildren<ButtonAction>().m_KeySelectedState = false;
+                }
+                else if (m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>() != null)
+                {
+                    m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>();
+                    m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().IdleBackground();
+                    m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().m_MouseSelectedState = false;
+                    m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().m_KeySelectedState = false;
+                }
             }
         }
     }

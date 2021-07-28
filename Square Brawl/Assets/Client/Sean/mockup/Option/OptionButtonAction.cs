@@ -14,35 +14,34 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
 {
     [SerializeField] public int m_ButtonIndex;
     [SerializeField] private GameObject m_button;
+    [SerializeField] private Image m_Background;
     [SerializeField] private Image m_Icon;
     [SerializeField] private TextMeshProUGUI m_button_text;
-    private int m_TextLength;
+    
+    [System.Serializable]
+    public struct AimAction
+    {
+        [SerializeField] public GameObject m_AimPos;
+        [SerializeField] public GameObject m_AimObject;
+        [SerializeField] public Vector2 m_Area;
+        [Space(10)]
+        [SerializeField] public Easetype.Current_easetype.Easetype m_Easetype;
+        [SerializeField] public float m_Duration;
+        [HideInInspector]
+        public Vector2 m_ObjectPos;
+        [HideInInspector]
+        public  Vector2 m_MouseWorldPos;
+    }
     [Space(10)]
-    [SerializeField] private GameObject m_AimObject;
-    [Space(10)]
-    [SerializeField] private float to_x;
-    [SerializeField] private float to_y;
+    [SerializeField] private AimAction m_Aim;
+    private Vector2 screen;
     private Vector3 pos;
 
-    private Sequence _moveSequence_stirng;
-    private Sequence _moveSequence_char;
+    private Easetype.Current_easetype m_CurrentEasetype;
+    
+    
 
-    private Easetype.Current_easetype menu_current_easetype;
-
-    private enum Dotweentype { m_string = 0, m_char = 1 }
-    [Space(10)]
-    [SerializeField] private Dotweentype dotweentype;
-    [Space(10)]
-    [HeaderAttribute("String")]
-    [SerializeField] Easetype.Current_easetype.Easetype string_easetype;
-    [SerializeField] float string_duration = 1f;
-    [SerializeField] private float stirng_outdistance = 5;
-
-    [HideInInspector]
-    public ToSplitChar.SplitCharAction SplitCharAction;
-    [Space(15)]
-    public ToSplitChar.SplitCharAction.SplitChar m_Char;
-
+    private Sequence m_IconMove;
 
     [HideInInspector] public bool m_MouseSelectedState = false;
     [HideInInspector] public bool m_KeySelectedState = false;
@@ -52,61 +51,51 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     void Start()
     {
-        pos = m_button_text.transform.localPosition;
-        menu_current_easetype = new Easetype.Current_easetype();
-        m_TextLength = m_button_text.text.Length;
-
-        SplitCharAction = m_button.AddComponent<ToSplitChar.SplitCharAction>();
-        m_Char = SplitCharAction.SetUp(m_Char);
-
+        m_CurrentEasetype = new Easetype.Current_easetype();
+        screen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)) * 2;
     }
 
     private void Update()
     {
+        //m_Aim.m_ObjectPos = m_Aim.m_AimPos.transform.position;
+        AimToMouse();
         Settrigger();
+    }
+
+    private void AimToMouse()
+    {
+        m_Aim.m_MouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        //Debug.Log(m_Aim.m_MouseWorldPos +"\t"+ screen);
+
+        Vector2 scale = new Vector2(m_Aim.m_MouseWorldPos.x / screen.x, m_Aim.m_MouseWorldPos.y / screen.y);
+
+        m_IconMove.Kill();
+        m_IconMove = DOTween.Sequence();
+        m_IconMove.Append(m_Aim.m_AimObject.transform.DOLocalMove(new Vector3(m_Aim.m_Area.x * scale.x, m_Aim.m_Area.y * scale.y), m_Aim.m_Duration).SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)));
+        Debug.Log(new Vector3(m_Aim.m_Area.x * scale.x, m_Aim.m_Area.y * scale.y));
+
     }
 
     private void Settrigger()
     {
         Selectedtrigger = (OptionManager.m_PressIndex != m_ButtonIndex);
     }
-    public void HighlightedIcon() //todo
+    public void HighlightedBackground() //todo
     {
-        if (m_Icon != null)
+        if (m_Background != null)
         {
-            m_Icon.DOColor(SceneHandler.green, 0.5f);
+            m_Background.DOColor(SceneHandler.green, 0.5f);
         }
     }
 
-    public void IdleIcon() //todo
+    public void IdleBackground() //todo
     {
-        if (m_Icon != null)
+        if (m_Background != null)
         {
-            m_Icon.DOColor(new Color32(230, 230, 230, 255), 0.5f);
+            m_Background.DOColor(new Color32(230, 230, 230, 255), 0.5f);
         }
     }
-    public void HighlightedString()
-    {
-        //Debug.Log("HighlightedString");
-        _moveSequence_stirng.Kill();
-        _moveSequence_stirng = DOTween.Sequence();
-        m_button_text.transform.localPosition = pos;
-        _moveSequence_stirng.Append(m_button_text.transform
-                              .DOLocalMove(new Vector3(pos.x + to_x, pos.y + to_y), string_duration)
-                              .SetEase(menu_current_easetype.GetEasetype(string_easetype)));
-    }
 
-    public void IdleString()
-    {
-        //Debug.Log("IdleString");
-        _moveSequence_stirng.Kill();
-        _moveSequence_stirng = DOTween.Sequence();
-        m_button_text.transform.localPosition = new Vector3(pos.x + to_x, pos.y + to_y, pos.z);
-
-        _moveSequence_stirng.Append(m_button_text.transform
-                              .DOLocalMove(new Vector3(pos.x + to_x * stirng_outdistance, pos.y + to_y * stirng_outdistance), string_duration * stirng_outdistance)
-                              .SetEase(menu_current_easetype.GetEasetype(string_easetype)));
-    }
 
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -114,40 +103,16 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         m_MouseSelectedState = true;
         if (m_KeySelectedState != true && m_MouseSelectedState == true)
         {
-            switch (dotweentype)
-            {
-                case Dotweentype.m_string:
-                    HighlightedString();
-                    break;
 
-                case Dotweentype.m_char:
-                    SplitCharAction.HighlightedChar(m_Char);
-                    break;
-
-                default:
-                    break;
-            }
         }
-        HighlightedIcon();
+        HighlightedBackground();
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         if (Selectedtrigger)
         {
-            switch (dotweentype)
-            {
-                case Dotweentype.m_string:
-                    IdleString();
-                    break;
 
-                case Dotweentype.m_char:
-                    SplitCharAction.IdleChar(m_Char);
-                    break;
-
-                default:
-                    break;
-            }
-            IdleIcon();
+            IdleBackground();
             m_MouseSelectedState = false;
             m_KeySelectedState = false;
         }
@@ -158,41 +123,17 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         m_KeySelectedState = true;
         if (m_MouseSelectedState != true && m_KeySelectedState == true)
         {
-            switch (dotweentype)
-            {
-                case Dotweentype.m_string:
-                    HighlightedString();
-                    break;
 
-                case Dotweentype.m_char:
-                    SplitCharAction.HighlightedChar(m_Char);
-                    break;
-
-                default:
-                    break;
-            }
         }
-        HighlightedIcon();
+        HighlightedBackground();
     }
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
         if (Selectedtrigger)
         {
-            switch (dotweentype)
-            {
-                case Dotweentype.m_string:
-                    IdleString();
-                    break;
 
-                case Dotweentype.m_char:
-                    SplitCharAction.IdleChar(m_Char);
-                    break;
-
-                default:
-                    break;
-            }
-            IdleIcon();
+            IdleBackground();
             m_MouseSelectedState = false;
             m_KeySelectedState = false;
         }
