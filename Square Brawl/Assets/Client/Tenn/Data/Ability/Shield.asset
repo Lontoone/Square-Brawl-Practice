@@ -21,5 +21,7 @@ MonoBehaviour:
   Speed: 20
   Recoil: 0
   BeElasticity: 700
+  BeShotShakeValue: {x: 0.6, y: 0.3, z: 1}
+  ShotShakeValue: {x: 0.4, y: 0.2, z: 1}
   isCdCanAdd: 0
   isHaveTwoCd: 0

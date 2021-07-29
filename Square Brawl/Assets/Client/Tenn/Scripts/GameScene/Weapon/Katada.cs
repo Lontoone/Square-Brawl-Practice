@@ -12,9 +12,11 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     private float BeElasticityDir;//Be Elasticity Direction
     private float _dir;//Katada Mid Direction
 
+    private Vector3 _beShotShakeValue;
+
     private bool _isKatadaReverse;//Is Katada Reverse?
 
-    public Action<float,float,float,bool> KatadaFunc;
+    public Action<float,float,float,bool,Vector3> KatadaFunc;
     public Action<PlayerController> ColliderFunc;
 
     private Quaternion _newSyncDir;
@@ -36,10 +38,10 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         _pv = GetComponent<PhotonView>();
         KatadaFunc = KatadaEvent;
         ColliderFunc = KatadaCollider;
-        PlayerController.instance.OnChangeColor += SetColor;
 
         if (_pv.IsMine)
         {
+            PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
     }
@@ -63,13 +65,13 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
             _trail.startColor = _trail.endColor = _color;
     }
 
-    private void KatadaEvent(float _speed,float _damage,float _blasticity,bool _isReverse)
+    private void KatadaEvent(float _speed,float _damage,float _blasticity,bool _isReverse,Vector3 _beShotShake)
     {
         KatadaSpeed = _speed;
         KatadaDamage = _damage;
         KatadaBeElasticity = _blasticity;
         _isKatadaReverse= _isReverse;
-
+        _beShotShakeValue = _beShotShake;
         if (_isKatadaReverse)
         {
             _dir = transform.eulerAngles.z + 45;
@@ -81,7 +83,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
             transform.eulerAngles = new Vector3(0, 0, _dir);
         }
 
-        _pv.RPC("Rpc_SetValue", RpcTarget.Others, KatadaDamage, KatadaBeElasticity);
+        _pv.RPC("Rpc_SetValue", RpcTarget.Others, KatadaDamage, KatadaBeElasticity, _beShotShakeValue);
 
         StartCoroutine(DestroyObj());
     }
@@ -93,7 +95,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
             float x = Mathf.Cos(BeElasticityDir * Mathf.PI / 180);
             float y = Mathf.Sin(BeElasticityDir * Mathf.PI / 180);
-            _playerController.DamageFunc(KatadaDamage, KatadaBeElasticity, x, y);
+            _playerController.DamageFunc(KatadaDamage, KatadaBeElasticity, x, y, _beShotShakeValue);
         }
     }
 
@@ -146,10 +148,11 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     }
 
     [PunRPC]
-    public void Rpc_SetValue(float _damage, float _elasticity)
+    public void Rpc_SetValue(float _damage, float _elasticity,Vector3 _beShootShake)
     {
         KatadaDamage = _damage;
         KatadaBeElasticity = _elasticity;
+        _beShotShakeValue = _beShootShake;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

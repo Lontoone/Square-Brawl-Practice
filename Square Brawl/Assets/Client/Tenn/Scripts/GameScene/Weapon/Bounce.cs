@@ -10,7 +10,10 @@ public class Bounce : MonoBehaviour
     public int BounceDamage;
     public float BounceBeElasticity;
     public float FieldExplose;//Explose Field
+
     public string BounceExploseEffectName;
+
+    public Vector3 _beShotShakeValue;
 
     [HeaderAttribute("Laser Setting")]
     private int _laserDistance = 100; //max raycasting distance
@@ -26,7 +29,7 @@ public class Bounce : MonoBehaviour
 
     public LayerMask LayerToExplose;
 
-    public Action<int, float, string,Vector2> BounceFunc;
+    public Action<int, float, string,Vector2,Vector3> BounceFunc;
 
     private List<Vector2> HitGroundPos= new List<Vector2>();
 
@@ -40,9 +43,9 @@ public class Bounce : MonoBehaviour
         _pv = GetComponent<PhotonView>();
         _laserRenderer = GetComponent<LineRenderer>();
         BounceFunc = BounceEvent;
-        PlayerController.instance.OnChangeColor += SetColor;
         if (_pv.IsMine)
         {
+            PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
     }
@@ -50,7 +53,7 @@ public class Bounce : MonoBehaviour
     private void SetColor()
     {
         Color _color = CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
-        _laserRenderer.startColor = _laserRenderer.endColor = _color;
+        _laserRenderer.startColor = _laserRenderer.endColor = new Color(_color.r,_color.g,_color.b,0);
 
         _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
     }
@@ -59,10 +62,10 @@ public class Bounce : MonoBehaviour
     void ChangeColor(Vector3 color)
     {
         Color _color = new Color(color.x, color.y, color.z);
-        _laserRenderer.startColor = _laserRenderer.endColor = _color;
+        _laserRenderer.startColor = _laserRenderer.endColor = new Color(_color.r, _color.g, _color.b, 0);
     }
 
-    private void BounceEvent (int _damage,float _beElasticity,string _effectName,Vector2 _dir)
+    private void BounceEvent (int _damage,float _beElasticity,string _effectName,Vector2 _dir,Vector3 _beShotShake)
     {
         _pv.RPC("Rpc_EnableObj", RpcTarget.All);
         BounceDamage = _damage;
@@ -70,8 +73,9 @@ public class Bounce : MonoBehaviour
         BounceExploseEffectName = _effectName;
         _originPos = transform.position;
         _originDir = _dir;
+        _beShotShakeValue = _beShotShake;
         ShootBounce(transform.position, _dir);
-        _pv.RPC("Rpc_ShootBounce", RpcTarget.Others, _originPos, _dir, BounceDamage, BounceBeElasticity);
+        _pv.RPC("Rpc_ShootBounce", RpcTarget.Others, _originPos, _dir, BounceDamage, BounceBeElasticity, _beShotShakeValue);
     }
 
     void Update()
@@ -83,11 +87,6 @@ public class Bounce : MonoBehaviour
     {
         _isBounce = true;
         int vertexCounter = 1; 
-        /*_laserRenderer.startColor = new Color(_laserRenderer.startColor.r, _laserRenderer.startColor.g, _laserRenderer.startColor.b, 0);
-        _laserRenderer.endColor = new Color(_laserRenderer.endColor.r, _laserRenderer.endColor.g, _laserRenderer.endColor.b, 0);
-        _laserRenderer.startWidth = 0.05f;
-        _laserRenderer.endWidth = 0.05f;
-        _laserRenderer.positionCount = 1;*/
         _laserRenderer.SetPosition(0, _originPos);
 
         for (int i = 0; i < _laserLimit; i++)
@@ -153,7 +152,7 @@ public class Bounce : MonoBehaviour
                                 PlayerController _playerController = hits[i].collider.GetComponent<PlayerController>();
                                 if (_pv.IsMine != _playerController.Pv.IsMine && _playerController.Pv.IsMine&&!_playerController.IsBounce)
                                 {
-                                    _playerController.DamageFunc(BounceDamage, BounceBeElasticity, _originDir.x, _originDir.y);
+                                    _playerController.DamageFunc(BounceDamage, BounceBeElasticity, _originDir.x, _originDir.y, _beShotShakeValue);
                                     _playerController.IsBounceEvent();
                                 }
                             }
@@ -204,7 +203,7 @@ public class Bounce : MonoBehaviour
 
             if (_pv.IsMine != _playerController.Pv.IsMine && _playerController.Pv.IsMine&& !_playerController.IsBounce)
             {
-                _playerController.DamageFunc(BounceDamage, BounceBeElasticity, _originDir.x, _originDir.y);
+                _playerController.DamageFunc(BounceDamage, BounceBeElasticity, _originDir.x, _originDir.y,_beShotShakeValue);
                 _playerController.IsBounceEvent();
             }
         }
@@ -224,12 +223,13 @@ public class Bounce : MonoBehaviour
 
 
     [PunRPC]
-    void Rpc_ShootBounce(Vector2 _pos, Vector2 _dir, int _damage, float _beElasticity)
+    void Rpc_ShootBounce(Vector2 _pos, Vector2 _dir, int _damage, float _beElasticity,Vector3 _beShotShake)
     {
         _originPos = _pos;
         _originDir = _dir;
         BounceDamage = _damage;
         BounceBeElasticity = _beElasticity;
+        _beShotShakeValue = _beShotShake;
         ShootBounce(_pos, _dir);
     }
     [PunRPC]

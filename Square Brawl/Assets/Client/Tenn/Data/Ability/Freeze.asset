@@ -14,10 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Freeze
   Sound: {fileID: 0}
+  LaunchEffectName: 
+  ExploseEffectName: 
   CoolDownTime: 3
   Damage: 0
   Speed: 0
   Recoil: 100
   BeElasticity: 0
+  BeShotShakeValue: {x: 0.6, y: 0.3, z: 1}
+  ShotShakeValue: {x: 0.4, y: 0.2, z: 1}
   isCdCanAdd: 0
   isHaveTwoCd: 0

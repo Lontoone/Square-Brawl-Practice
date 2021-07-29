@@ -14,7 +14,10 @@ public class PlayerManager : MonoBehaviour
     void Awake()
     {
         _pv = GetComponent<PhotonView>();
-        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "ObjectPool"), Vector3.zero, Quaternion.identity);
+        if (_pv.IsMine)
+        {
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "ObjectPool"), Vector3.zero, Quaternion.identity);
+        }
     }
 
     void Start()

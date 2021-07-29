@@ -843,6 +843,7 @@ GameObject:
   - component: {fileID: 1380452174}
   - component: {fileID: 1380452173}
   - component: {fileID: 1380452172}
+  - component: {fileID: 1380452175}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -915,6 +916,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1380452175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380452171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a0042bd97b7d434985c5ae8ca610286, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CamTransform: {fileID: 0}
+  ShakeTime: 1
+  ShakePower: 0
+  DecreaseNumber: 1
 --- !u!1 &1500193785
 GameObject:
   m_ObjectHideFlags: 0
@@ -947,8 +964,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BounceDamage: 0
   BounceBeElasticity: 0
+  FieldExplose: 0
   BounceExploseEffectName: 
   _laserRenderer: {fileID: 0}
+  LayerToExplose:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!120 &1500193787
 LineRenderer:
   m_ObjectHideFlags: 0

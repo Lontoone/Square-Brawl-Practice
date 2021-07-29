@@ -21,9 +21,12 @@ MonoBehaviour:
   Speed: 20
   Recoil: 300
   BeElasticity: 800
+  BeShotShakeValue: {x: 0.4, y: 0.2, z: 1}
+  ShotShakeValue: {x: 0, y: 0, z: 0}
   isCdCanAdd: 0
   isHaveTwoCd: 1
   BulletScaleValue: 0.15
   IsDontContinuous: 0
   IsDontShootStraight: 0
   IsScatterShot: 0
+  IsGrenade: 0

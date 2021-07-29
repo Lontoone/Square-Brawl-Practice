@@ -9,8 +9,9 @@ public class Shield : MonoBehaviour
     private float ShieldSpeed;//Shield Speed
     private float ShieldDamage;//Shield Damage
     private float ShieldBeElasticity;//Shield BeElasticity
+    private Vector3 _beShotShakeValue;
 
-    public Action<float,float,float> ShieldFunc;
+    public Action<float,float,float,Vector3> ShieldFunc;
     public Action<PlayerController> ColliderFunc;
 
     private PhotonView _pv;
@@ -20,9 +21,9 @@ public class Shield : MonoBehaviour
         _pv = GetComponent<PhotonView>();
         ShieldFunc = ShieldEvent;
         ColliderFunc = ShieldCollider;
-        PlayerController.instance.OnChangeColor += SetColor;
         if (_pv.IsMine)
         {
+            PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
     }
@@ -47,13 +48,14 @@ public class Shield : MonoBehaviour
         _pv.RPC("Rpc_EnableObj", RpcTarget.Others, ShieldSpeed, ShieldDamage, ShieldBeElasticity);
     }*/
 
-    private void ShieldEvent(float _speed,float _damage,float _beElasticity)
+    private void ShieldEvent(float _speed,float _damage,float _beElasticity,Vector3 _beShotShake)
     {
         ShieldSpeed = _speed;
         ShieldDamage = _damage;
         ShieldBeElasticity = _beElasticity;
+        _beShotShakeValue = _beShotShake;
         StartCoroutine(DestroyObj());
-        _pv.RPC("Rpc_EnableObj", RpcTarget.Others, ShieldSpeed, ShieldDamage, ShieldBeElasticity);
+        _pv.RPC("Rpc_EnableObj", RpcTarget.Others, ShieldSpeed, ShieldDamage, ShieldBeElasticity, _beShotShakeValue);
     }
 
     private void ShieldCollider(PlayerController _playerController)
@@ -61,7 +63,7 @@ public class Shield : MonoBehaviour
         if (!_pv.IsMine)
         {
             Vector2 dir = _playerController.transform.position - gameObject.transform.position;
-            _playerController.DamageFunc(ShieldDamage, ShieldBeElasticity, dir.x, dir.y);
+            _playerController.DamageFunc(ShieldDamage, ShieldBeElasticity, dir.x, dir.y, _beShotShakeValue);
         }
     }
 
@@ -83,12 +85,13 @@ public class Shield : MonoBehaviour
     }
 
      [PunRPC]
-     public void Rpc_EnableObj(float _speed,float _damage,float _elasticity)
+     public void Rpc_EnableObj(float _speed,float _damage,float _elasticity,Vector3 _beShotShake)
      {
          gameObject.SetActive(true);
         ShieldSpeed = _speed;
         ShieldDamage = _damage;
         ShieldBeElasticity = _elasticity;
+        _beShotShakeValue = _beShotShake;
      }
 
 }

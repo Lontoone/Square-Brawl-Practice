@@ -551,6 +551,7 @@ MonoBehaviour:
   BounceBeElasticity: 0
   FieldExplose: 1
   BounceExploseEffectName: 
+  _beShotShakeValue: {x: 0, y: 0, z: 0}
   _laserRenderer: {fileID: 0}
   LayerToExplose:
     serializedVersion: 2
@@ -847,6 +848,8 @@ MonoBehaviour:
   IsDontShootStraight: 0
   LaunchEffectName: 
   ExploseEffectName: 
+  BeShotShakeValue: {x: 0, y: 0, z: 0}
+  ShotShakeValue: {x: 0, y: 0, z: 0}
   gameObjects: []
 --- !u!114 &5771716123695693227
 MonoBehaviour:
@@ -955,6 +958,8 @@ MonoBehaviour:
   IsDontShootStraight: 0
   LaunchEffectName: 
   ExploseEffectName: 
+  BeShotShakeValue: {x: 0, y: 0, z: 0}
+  ShotShakeValue: {x: 0, y: 0, z: 0}
   gameObjects: []
 --- !u!114 &762097059166178785
 MonoBehaviour:

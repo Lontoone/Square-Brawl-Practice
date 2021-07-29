@@ -17,6 +17,8 @@ public class AttackTriggerable : MonoBehaviour
     [HideInInspector] public bool IsDontShootStraight;
     [HideInInspector] public string LaunchEffectName;
     [HideInInspector] public string ExploseEffectName;
+    [HideInInspector] public Vector3 BeShotShakeValue;
+    [HideInInspector] public Vector3 ShotShakeValue;
 
     private bool _isKatadaReverse;
 
@@ -35,7 +37,8 @@ public class AttackTriggerable : MonoBehaviour
     {
         GameObject _bulletObj = ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Bullet _bullet = _bulletObj.GetComponent<Bullet>();
-        _bullet.ShootFunc(ExploseEffectName,WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight);
+        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
+        _bullet.ShootFunc(ExploseEffectName,WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShotShakeValue);
         PlayerController.instance.RecoilFunc(WeaponRecoil);
     }
 
@@ -46,14 +49,16 @@ public class AttackTriggerable : MonoBehaviour
             GameObject[] _bulletObj = new GameObject[5];
             _bulletObj[i]= ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
             Bullet _bullet = _bulletObj[i].GetComponent<Bullet>();
-            _bullet.ShootFunc(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight);
+            _bullet.ShootFunc(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShotShakeValue);
         }
+        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
         PlayerController.instance.RecoilFunc(WeaponRecoil);
     }
 
     public void Charge()
     {
-        PlayerController.instance.ChargeFunc(-WeaponSpeed, BeElasticity, WeaponDamage);
+        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
+        PlayerController.instance.ChargeFunc(-WeaponSpeed, BeElasticity, WeaponDamage, BeShotShakeValue);
     }
 
     public void Katada()
@@ -61,7 +66,7 @@ public class AttackTriggerable : MonoBehaviour
         _isKatadaReverse = !_isKatadaReverse;
         GameObject _katadaObj = ObjectsPool.Instance.SpawnFromPool("Katada", _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Katada _katada = _katadaObj.GetComponent<Katada>();
-        _katada.KatadaFunc(WeaponSpeed, WeaponDamage, BeElasticity, _isKatadaReverse);
+        _katada.KatadaFunc(WeaponSpeed, WeaponDamage, BeElasticity, _isKatadaReverse, BeShotShakeValue);
     }
 
     public void Shield()
@@ -69,13 +74,15 @@ public class AttackTriggerable : MonoBehaviour
         PlayerController.instance.IsShield = true;
         Shield _shield = PlayerController.instance.transform.GetChild(4).gameObject.GetComponent<Shield>();
         _shield.gameObject.SetActive(true);
-        _shield.ShieldFunc(WeaponSpeed, WeaponDamage, BeElasticity);
+        _shield.ShieldFunc(WeaponSpeed, WeaponDamage, BeElasticity, BeShotShakeValue);
+        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
     }
 
     public void Freeze()
     {
+        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
         PlayerController.instance.RecoilFunc(WeaponRecoil);
-        PlayerController.instance.FreezeFunc(3, 5);
+        PlayerController.instance.FreezeFunc(3, 5,BeShotShakeValue);
         ObjectsPool.Instance.SpawnFromPool("FreezeShoot", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
     }
 
@@ -83,13 +90,15 @@ public class AttackTriggerable : MonoBehaviour
     {
         GameObject _grenadeObj = ObjectsPool.Instance.SpawnFromPool(Name, _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Grenade _grenade = _grenadeObj.GetComponent<Grenade>();
-        _grenade.GrenadeFunc(ExploseEffectName, WeaponSpeed, WeaponDamage, BeElasticity);
+        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
+        _grenade.GrenadeFunc(ExploseEffectName, WeaponSpeed, WeaponDamage, BeElasticity,BeShotShakeValue);
         PlayerController.instance.RecoilFunc(WeaponRecoil);
     }
 
     public void Bounce()
     {
+        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
         Bounce _bounce = PlayerController.instance.transform.GetChild(5).gameObject.GetComponent<Bounce>();
-        _bounce.BounceFunc(WeaponDamage, BeElasticity, ExploseEffectName, _bulletSpawnPos.transform.right);
+        _bounce.BounceFunc(WeaponDamage, BeElasticity, ExploseEffectName, _bulletSpawnPos.transform.right, BeShotShakeValue);
     }
 }

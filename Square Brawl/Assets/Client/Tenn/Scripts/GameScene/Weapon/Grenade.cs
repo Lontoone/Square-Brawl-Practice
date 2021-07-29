@@ -15,6 +15,8 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
 
     public bool isMaster;
 
+    protected Vector3 _beShotShakeValue;
+
     public string ExploseEffectName;
 
     public LayerMask LayerToExplose;
@@ -22,7 +24,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     protected Rigidbody2D _rb;
     protected GameObject _childObj;
 
-    public Action<string,float,float,float> GrenadeFunc;
+    public Action<string,float,float,float,Vector3> GrenadeFunc;
 
     [HeaderAttribute("Sync Setting")]
     protected PhotonView _pv;
@@ -38,9 +40,9 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
         GrenadeFunc = GrenadeEvent;
-        PlayerController.instance.OnChangeColor += SetColor;
         if (_pv.IsMine)
         {
+            PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
     }
@@ -70,13 +72,14 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         }
     }
 
-    protected void GrenadeEvent(string _effectName,float _speed,float _damage,float _beElasticity)
+    protected void GrenadeEvent(string _effectName,float _speed,float _damage,float _beElasticity,Vector3 _beShotShake)
     {
         ExploseEffectName = _effectName;
         GrenadeSpeed = _speed;
         GrenadeDamage = _damage;
         GrenadeBeElasticity = _beElasticity;
-        _pv.RPC("Rpc_SetValue", RpcTarget.All, GrenadeSpeed, GrenadeDamage, GrenadeScaleValue, GrenadeBeElasticity);
+        _beShotShakeValue = _beShotShake;
+        _pv.RPC("Rpc_SetValue", RpcTarget.All, GrenadeSpeed, GrenadeDamage, GrenadeScaleValue, GrenadeBeElasticity, _beShotShakeValue);
         _rb.AddForce(GrenadeSpeed * transform.right);
        // transform.eulerAngles = Vector3.zero;
         isMaster = true;
@@ -116,7 +119,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
 
             if (isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
             {
-                _playerController.TakeDamage(GrenadeDamage);
+                _playerController.TakeDamage(GrenadeDamage, _beShotShakeValue.x, _beShotShakeValue.y, _beShotShakeValue.z);
                 _playerController.BeExplode(GrenadeBeElasticity, transform.position, FieldExplose);
             }
         }
@@ -137,12 +140,13 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     }
 
     [PunRPC]
-    public void Rpc_SetValue(float _speed, float _damage, float _scaleValue, float _elasticity)
+    public void Rpc_SetValue(float _speed, float _damage, float _scaleValue, float _elasticity,Vector3 _beShotShake)
     {
         GrenadeSpeed = _speed;
         GrenadeDamage = _damage;
         GrenadeScaleValue = _scaleValue;
         GrenadeBeElasticity = _elasticity;
+        _beShotShakeValue = _beShotShake;
     }
 
     [PunRPC]

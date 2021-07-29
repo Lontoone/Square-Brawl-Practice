@@ -14,6 +14,9 @@ public abstract class Ability : ScriptableObject
     public float Recoil;
     public float BeElasticity;
 
+    public Vector3 BeShotShakeValue;
+    public Vector3 ShotShakeValue;
+
     public bool isCdCanAdd;
     public bool isHaveTwoCd;
 

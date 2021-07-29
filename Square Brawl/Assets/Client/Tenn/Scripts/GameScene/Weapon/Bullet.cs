@@ -12,6 +12,8 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     private float BulletBeElasticity;//Bullet Be Elasticity
     private float BulletScaleValue;//Bullet Scale Value
 
+    private Vector3 _beShotShakeValue;
+
     private Vector3 _originPos;//Bullet Origin Position
 
     private bool _isDontShootStraight;//Is Dont Shoot Straighr line?
@@ -22,7 +24,8 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
 
     protected Rigidbody2D _rb;
 
-    public Action<string,float,float,float,float,bool> ShootFunc;
+    public Action<string,float,float,float,float,bool,Vector3> ShootFunc;
+    public Action<Vector3, Vector3, Vector3> ShootShakeFunc;
 
     [HeaderAttribute("Sync Setting")]
     protected PhotonView _pv;
@@ -35,9 +38,9 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
         ShootFunc += BulletShootEvent;
-        PlayerController.instance.OnChangeColor += SetColor;
         if (_pv.IsMine)
         {
+            PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
             /*_pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight, transform.position);
             if (IsDontShootStraight)
@@ -72,7 +75,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    private void BulletShootEvent(string _name,float _speed,float _damage,float _scaleValue,float _elasticity,bool _isStraight)
+    private void BulletShootEvent(string _name,float _speed,float _damage,float _scaleValue,float _elasticity,bool _isStraight, Vector3 _beShotShake)
     {
         ExploseEffectName = _name;
         BulletSpeed = _speed;
@@ -80,15 +83,15 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         BulletScaleValue = _scaleValue;
         BulletBeElasticity = _elasticity;
         _isDontShootStraight = _isStraight;
+        _beShotShakeValue = _beShotShake;
         _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
-        _pv.RPC("Rpc_SetValue", RpcTarget.All, BulletSpeed, BulletDamage, BulletScaleValue, BulletBeElasticity, _isDontShootStraight);
+        _pv.RPC("Rpc_SetValue", RpcTarget.All, BulletSpeed, BulletDamage, BulletScaleValue, BulletBeElasticity, _isDontShootStraight, _beShotShakeValue);
 
         if (_isDontShootStraight)
         {
             transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + UnityEngine.Random.Range(-15, 16));
         }
     }
-
 
     protected virtual void Update()
     {
@@ -173,7 +176,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 {
                     float DirX = Mathf.Cos(transform.eulerAngles.z * Mathf.PI / 180);
                     float DirY = Mathf.Sin(transform.eulerAngles.z * Mathf.PI / 180);
-                    _playerController.TakeDamage(BulletDamage);
+                    _playerController.TakeDamage(BulletDamage, _beShotShakeValue.x, _beShotShakeValue.y, _beShotShakeValue.z);
                     _playerController.BeBounce(BulletBeElasticity, DirX, DirY);
                     if (_pv.IsMine)
                     {
@@ -208,13 +211,14 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     }
 
     [PunRPC]
-    public void Rpc_SetValue(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot)
+    public void Rpc_SetValue(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot,Vector3 _beShotShake)
     {
         BulletSpeed = _speed;
         BulletDamage = _damage;
         BulletScaleValue = _scaleValue;
         BulletBeElasticity = _elasticity;
         _isDontShootStraight = IsDontShoot;
+        _beShotShakeValue = _beShotShake;
     }
 
     void DisableObj()

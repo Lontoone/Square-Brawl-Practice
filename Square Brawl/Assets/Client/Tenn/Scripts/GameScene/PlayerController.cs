@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     public float BeElasticity;//Player BeElasticity
     public float DirX, DirY;//
     public float FrontSightAngle;
+
+    private Vector3 _beShootShakeValue;
     private Vector3 _freezeLeftRay;
     private Vector2 _inputPos;//Keyboard Input Pos
 
@@ -30,10 +32,10 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     private bool _canSpin;//Player Can Spin?
 
-    public Action<float,float,float> ChargeFunc;
+    public Action<float,float,float,Vector3> ChargeFunc;
     public Action<float> RecoilFunc;
-    public Action<float,int> FreezeFunc;
-    public Action<float,float,float,float> DamageFunc;
+    public Action<float,int,Vector3> FreezeFunc;
+    public Action<float,float,float,float,Vector3> DamageFunc;
     public event Action OnChangeColor;
 
     [HeaderAttribute("GroundCheck Setting")]
@@ -310,15 +312,16 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         _rb.AddForce(-Recoil * new Vector2(DirX, DirY));
     }
 
-    private void ChargeEvent(float _speed, float _elasticity, float _damage)
+    private void ChargeEvent(float _speed, float _elasticity, float _damage,Vector3 _beShotShake)
     {
         PlayerRecoil(_speed);
         BeElasticity = _elasticity;
         Damage = _damage;
+        _beShootShakeValue = _beShotShake;
         _isCharge = true;
         DirX = Mathf.Cos(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
         DirY = Mathf.Sin(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
-        Pv.RPC("Rpc_ChargeValue", RpcTarget.All, _isCharge, BeElasticity, Damage, DirX, DirY);
+        Pv.RPC("Rpc_ChargeValue", RpcTarget.All, _isCharge, BeElasticity, Damage, DirX, DirY, _beShootShakeValue);
         StartCoroutine(IsChargeChangeFalse());
     }
 
@@ -328,8 +331,9 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         _isCharge = false;
     }
 
-    private void FreezeEvent(float _viewDistance, int viewCount)
+    private void FreezeEvent(float _viewDistance, int viewCount,Vector3 _beShootShake)
     {
+        _beShootShakeValue = _beShootShake;
         _freezeLeftRay = Quaternion.Euler(0, 0, FrontSightPos.eulerAngles.z - 17.5f) * Vector2.right * _viewDistance;
         Vector3 _originPos = FrontSightPos.transform.position;
 
@@ -344,15 +348,16 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
                 PlayerController _playerController = FreezeHit.collider.gameObject.GetComponent<PlayerController>();
                 if (!_playerController.Pv.IsMine)
                 {
-                    _playerController.BeFreezeEvent(_playerController.transform.position, _playerController.transform.rotation);
+                    _playerController.BeFreezeEvent(_playerController.transform.position, _playerController.transform.rotation, _beShootShakeValue);
                 }
             }
             //Debug.DrawLine(_originPos, _originPos + _freezeRay, color);
         }
     }
 
-    private void BeFreezeEvent(Vector3 _originPos,Quaternion _originDir)
+    private void BeFreezeEvent(Vector3 _originPos,Quaternion _originDir,Vector3 _beShotAhake)
     {
+        CameraShake.instance.SetShakeValue(_beShotAhake.x, _beShotAhake.y, _beShotAhake.z);
         Pv.RPC("Rpc_ChangeBeFreeze", RpcTarget.All, _originPos, _originDir);
         StartCoroutine(StopBeFreeze());
     }
@@ -363,9 +368,9 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         Pv.RPC("Rpc_StopBeFreeze",RpcTarget.All);
     }
 
-    private void DamageEvent(float _damage,float _beElasticity,float _dirX,float _dirY)
+    private void DamageEvent(float _damage,float _beElasticity,float _dirX,float _dirY,Vector3 _beShotShake)
     {
-        TakeDamage(_damage);
+        TakeDamage(_damage, _beShotShake.x, _beShotShake.y, _beShotShake.z);
         BeBounce(_beElasticity, _dirX, _dirY);
     }
 
@@ -422,7 +427,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
             if (!other.gameObject.GetComponent<PhotonView>().IsMine && other.gameObject.GetComponent<PlayerController>()._isCharge)
             {
-                TakeDamage(_playerController.Damage);
+                TakeDamage(_playerController.Damage, _playerController._beShootShakeValue.x, _playerController._beShootShakeValue.y, _playerController._beShootShakeValue.z);
                 BeBounce(_playerController.BeElasticity, _playerController.DirX, _playerController.DirY);
             }
         }
@@ -451,8 +456,9 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         _rb.AddExplosionForce(_elasticty, _pos, _field);
     }
 
-    public void TakeDamage(float _damage)//,float _elasticty,float _bullletDirX,float _bullletDirY)
+    public void TakeDamage(float _damage,float _shakeTime,float _shakePower,float _decrease)//,float _elasticty,float _bullletDirX,float _bullletDirY)
     {
+        CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
         Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage);
     }
 
@@ -475,13 +481,14 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     }
 
     [PunRPC]
-    void Rpc_ChargeValue(bool _isCharge,float _elasticity,float _damage,float _dirX,float _dirY)
+    void Rpc_ChargeValue(bool _isCharge,float _elasticity,float _damage,float _dirX,float _dirY,Vector3 _beShootShake)
     {
         this._isCharge = _isCharge;
         BeElasticity = _elasticity;
         Damage = _damage;
         DirX = _dirX;
         DirY = _dirY;
+        _beShootShakeValue = _beShootShake;
     }
 
     [PunRPC]

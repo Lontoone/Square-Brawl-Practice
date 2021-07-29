@@ -10,6 +10,7 @@ public class ShootAbility : Ability
     public bool IsDontShootStraight;
     public bool IsScatterShot;
     public bool IsGrenade;
+
     public override void Initalize(GameObject _obj)
     {
         _attack = _obj.GetComponent<AttackTriggerable>();
@@ -23,6 +24,8 @@ public class ShootAbility : Ability
         _attack.WeaponScaleValue = BulletScaleValue;
         _attack.IsDontContinuous = IsDontContinuous;
         _attack.IsDontShootStraight = IsDontShootStraight;
+        _attack.ShotShakeValue = ShotShakeValue;
+        _attack.BeShotShakeValue = BeShotShakeValue;
     }
 
     public override void Activate()

@@ -11,6 +11,8 @@ public class KatadaAbiliy : Ability
         _attack.WeaponDamage = Damage;
         _attack.WeaponSpeed = Speed;
         _attack.BeElasticity = BeElasticity;
+        _attack.ShotShakeValue = ShotShakeValue;
+        _attack.BeShotShakeValue = BeShotShakeValue;
     }
 
     public override void Activate()

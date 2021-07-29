@@ -24,9 +24,9 @@ public class Pillar : Grenade, IPoolObject
         _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
         GrenadeFunc = GrenadeEvent;
-        PlayerController.instance.OnChangeColor += SetColor;
         if (_pv.IsMine)
         {
+            PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
     }
@@ -157,7 +157,7 @@ public class Pillar : Grenade, IPoolObject
             if (isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
             {
                 GroundCheckEvent();
-                _playerController.TakeDamage(GrenadeDamage);
+                _playerController.TakeDamage(GrenadeDamage, _beShotShakeValue.x, _beShotShakeValue.y, _beShotShakeValue.z);
                 _playerController.BeBounce(GrenadeBeElasticity, _colliderDir.x, _colliderDir.y);
             }
         }
