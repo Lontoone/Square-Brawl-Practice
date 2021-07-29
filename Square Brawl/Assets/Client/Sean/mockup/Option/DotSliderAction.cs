@@ -82,7 +82,6 @@ namespace ToDotSlider
                 comps[1].color = dotSlider.m_Color;
             }
 
-
             //Generate SelectedDot Image
             dotSlider.m_SelectedDot = new GameObject("Selected Dot");
             dotSlider.m_SelectedDot.AddComponent<Image>();
@@ -133,7 +132,7 @@ namespace ToDotSlider
         {
             if (dotSlider.onSelect == true)
             {
-                dotSlider.m_SelectedDot.GetComponent<DragHandler>().UpdateSetUp(dotSlider.m_DotSlider[0], dotSlider.m_DotSlider[dotSlider.m_Series - 1]);
+                //dotSlider.m_SelectedDot.GetComponent<DragHandler>().UpdateSetUp(dotSlider.m_DotSlider[0], dotSlider.m_DotSlider[dotSlider.m_Series - 1]);
                 MoveSelected(dotSlider);
 
                 if (dotSlider.m_IsChangebyClick == true)

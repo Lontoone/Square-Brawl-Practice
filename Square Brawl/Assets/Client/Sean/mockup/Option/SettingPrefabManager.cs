@@ -62,7 +62,6 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
                 m_SliderParent.AddComponent<ToDotSlider.DotSliderAction>();
                 m_SliderSetting = m_SliderParent.GetComponent<ToDotSlider.DotSliderAction>().SetUp(m_SliderSetting);
                 break;
-
             default:
                 break;
         }

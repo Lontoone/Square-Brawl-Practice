@@ -57,7 +57,13 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
 
                 break;
         }
+        StartCoroutine(DisableSettingList());
+        //m_SettingList.SetActive(false);
+    }
 
+    private IEnumerator DisableSettingList()
+    {
+        yield return new WaitForEndOfFrame();
         m_SettingList.SetActive(false);
     }
 
@@ -97,7 +103,7 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
                     for (int i = 0; i < m_SettingPrefab.Length; i++)
                     {
                         m_Sequence.Append(m_SettingPrefab[i].transform
-                                        .DOScale(new Vector3(1,1), 0.3f)
+                                        .DOScale(new Vector3(1,1), 0.2f)
                                         .SetEase(Ease.OutCirc));
                     }
                     break;
@@ -125,6 +131,9 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
                     }
                     break;
 
+                case AnimationType.DownFlash:
+                    break;
+
                 case AnimationType.Fade:
                     break;
             }
@@ -148,7 +157,6 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("pointerin");
         onSelect = true;
     }
     public void OnPointerExit(PointerEventData eventData)

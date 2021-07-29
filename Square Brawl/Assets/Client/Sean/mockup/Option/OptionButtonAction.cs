@@ -36,11 +36,9 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     [Space(10)]
     [SerializeField] private AimAction m_Aim;
     private Vector2 screen;
-    private Vector3 pos;
+    private Vector3 trans;
 
     private Easetype.Current_easetype m_CurrentEasetype;
-    
-    
 
     private Sequence m_IconMove;
     private Sequence m_Press;
@@ -52,6 +50,11 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private bool Selectedtrigger;
 
+    private void Awake()
+    {
+        trans = new Vector3(m_Background.GetComponent<RectTransform>().sizeDelta.x, m_Background.GetComponent<RectTransform>().sizeDelta.y);
+    }
+
     void Start()
     {
         m_Icon.color = SceneHandler.green;
@@ -61,7 +64,6 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void FixedUpdate()
     {
-        //m_Aim.m_ObjectPos = m_Aim.m_AimPos.transform.position;
         AimToMouse();
         Settrigger();
     }
@@ -133,6 +135,18 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
                .Join(m_Background.DOColor(m_DefaultColor, 0.5f));
     }
 
+    public void UnPress()
+    {
+        onPress = false;
+        m_Press.Kill();
+        m_Press = DOTween.Sequence();
+        m_Press.Append(m_Aim.m_AimPos.transform
+                    .DOLocalMove(new Vector3(0, 0, 0), 0.5f))
+               .Join(m_Background.rectTransform
+                    .DOSizeDelta(trans, 0.3f))
+               .Join(m_Background.DOColor(m_DefaultColor, 0));
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         m_MouseSelectedState = true;
@@ -146,7 +160,6 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         if (Selectedtrigger)
         {
-
             IdleBackground();
             m_MouseSelectedState = false;
             m_KeySelectedState = false;
@@ -167,7 +180,6 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         if (Selectedtrigger)
         {
-
             IdleBackground();
             m_MouseSelectedState = false;
             m_KeySelectedState = false;

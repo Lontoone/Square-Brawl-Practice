@@ -53,10 +53,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private void Awake()
     {
-        m_Option.SetActive(false);
-        m_OptionTest.SetActive(false);
-        SetUpMapEditor();
-        //StartCoroutine(LoadMapEditor());
         scene_current_easetype = new Easetype.Current_easetype();
         green = m_Green;
         orange = m_Orange;
@@ -66,6 +62,11 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     void Start()
     {
+        m_Option.SetActive(false);
+        //m_OptionTest.SetActive(false);
+        SetUpMapEditor();
+        //StartCoroutine(LoadMapEditor());
+
         //pos = m_Menu.transform.localPosition;
     }
 
@@ -256,12 +257,12 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         {
             case 0:
                 num *= ((float)Screen.width / 1920);
-                Debug.Log(num);
+                //Debug.Log(num);
                 break;
 
             case 1:
                 num *= ((float)Screen.height / 1080);
-                Debug.Log(num);
+                //Debug.Log(num);
                 break;
 
             case 2:
