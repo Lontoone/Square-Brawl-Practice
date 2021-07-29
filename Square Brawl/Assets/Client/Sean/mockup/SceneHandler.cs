@@ -116,7 +116,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 break;
 
             case "option test":
-                EnterOptionTest();
+                StartCoroutine(EnterOptionTest());
                 break;
 
             default:
@@ -164,26 +164,30 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_OptionTest.transform.DOLocalMove(new Vector3(Screen.width, m_Option.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         StartCoroutine(m_Menu.GetComponentInChildren<MenuButtonHandler>().EnableButton(0.5f));
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(duration / 3);
         m_Option.SetActive(false);
     }
 
-    private void EnterOptionTest()
+    private IEnumerator EnterOptionTest()
     {
         m_Menu.GetComponentInChildren<MenuButtonHandler>().DisableButton();
         m_OptionTest.SetActive(true);
+        yield return null;
+        //StartCoroutine(m_OptionTest.GetComponentInChildren<OptionManager>().ResetPosition());
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + to_x, m_Menu.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x -1920, m_Menu.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_OptionTest.transform.DOLocalMove(new Vector3(0, m_OptionTest.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        StartCoroutine(m_OptionTest.GetComponentInChildren<OptionManager>().EnterAnimation());
     }
 
     private IEnumerator ExitOptionTest()
     {
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(m_Menu.GetComponentInChildren<MenuButtonHandler>().m_FirstSelectedButton);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        m_OptionTest.transform.DOLocalMove(new Vector3(Screen.width, m_OptionTest.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_OptionTest.transform.DOLocalMove(new Vector3(1920, m_OptionTest.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         StartCoroutine(m_Menu.GetComponentInChildren<MenuButtonHandler>().EnableButton(0.5f));
-        yield return new WaitForSeconds(0.5f);
+        m_OptionTest.GetComponentInChildren<OptionManager>().ExitAnimation();
+        yield return new WaitForSeconds(duration/3);
         m_OptionTest.SetActive(false);
     }
 
@@ -220,7 +224,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(m_Menu.GetComponentInChildren<MenuButtonHandler>().m_FirstSelectedButton);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 0, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_MapEditor.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 1080, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(duration / 3);
         m_MapEditor.SetActive(false);
     }
 
@@ -247,7 +251,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Menu.transform.DOLocalMove(new Vector3(0, m_Menu.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_Control.transform.DOLocalMove(new Vector3(-Screen.width, m_Control.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         StartCoroutine(m_Menu.GetComponentInChildren<MenuButtonHandler>().EnableButton(0.5f));
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(duration / 3);
         m_Control.SetActive(false);
     }
 

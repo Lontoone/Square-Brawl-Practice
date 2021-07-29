@@ -28,6 +28,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         [Space(10)]
         [SerializeField] public Easetype.Current_easetype.Easetype m_Easetype;
         [SerializeField] public float m_Duration;
+
         [HideInInspector]
         public Vector2 m_ObjectPos;
         [HideInInspector]
@@ -42,6 +43,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private Sequence m_IconMove;
     private Sequence m_Press;
+    private Sequence m_BackgroundColor;
     public bool onPress = false;
 
     [HideInInspector] public bool m_MouseSelectedState = false;
@@ -57,6 +59,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     void Start()
     {
+        m_Background.color = m_DefaultColor;
         m_Icon.color = SceneHandler.green;
         m_CurrentEasetype = new Easetype.Current_easetype();
         screen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)) * 2;
@@ -105,11 +108,13 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         Selectedtrigger = (OptionManager.m_PressIndex != m_ButtonIndex);
     }
-    public void HighlightedBackground() //todo
+    public void HighlightedBackground()
     {
         if (m_Background != null && onPress ==false)
         {
-            m_Background.DOColor(new Color32(SceneHandler.green.r, SceneHandler.green.g, SceneHandler.green.b,50), 0.2f);
+            m_BackgroundColor.Kill();
+            m_BackgroundColor = DOTween.Sequence();
+            m_BackgroundColor.Append(m_Background.DOColor(new Color32(SceneHandler.green.r, SceneHandler.green.g, SceneHandler.green.b,50), 0.2f));
         }
     }
 
@@ -117,7 +122,9 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         if (m_Background != null)
         {
-            m_Background.DOColor(m_DefaultColor, 0.5f);
+            m_BackgroundColor.Kill();
+            m_BackgroundColor = DOTween.Sequence();
+            m_BackgroundColor.Append(m_Background.DOColor(m_DefaultColor, 0.5f));
         }
     }
 
@@ -130,7 +137,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
                     .DOLocalMove(new Vector3(0, 450), 0.5f)
                     .SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)))
                .Join(m_Background.rectTransform
-                    .DOSizeDelta(new Vector2(700, 1000), 0.5f)
+                    .DOSizeDelta(new Vector2(680, 1000), 0.5f)
                     .SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)))
                .Join(m_Background.DOColor(m_DefaultColor, 0.5f));
     }
