@@ -42,7 +42,8 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         GrenadeFunc = GrenadeEvent;
         if (_pv.IsMine)
         {
-            PlayerController.instance.OnChangeColor += SetColor;
+            SetColor();
+            //PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
     }

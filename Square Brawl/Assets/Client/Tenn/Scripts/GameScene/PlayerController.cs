@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 using System.IO;
@@ -26,7 +27,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     private Vector2 _inputPos;//Keyboard Input Pos
 
     public bool IsBeFreeze;//Is Be Freeze?
-    private bool _isCharge;//Is Change?
+    public bool _isCharge;//Is Change?
     public bool IsShield;
     public bool IsBounce;
 
@@ -73,6 +74,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     public PhotonView Pv;
     private PlayerInputManager _inputAction;
     private PlayerManager _playerManager;
+    private PlayerUIController _uiControl;
 
     public static PlayerController instance;
     private void Awake()
@@ -86,7 +88,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         RecoilFunc = PlayerRecoil;
         FreezeFunc = FreezeEvent;
         DamageFunc = DamageEvent;
-        OnChangeColor += SetColor;
+        //OnChangeColor += SetColor;
 
         if (Pv.IsMine)
         {
@@ -109,6 +111,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         _camera = Camera.main;
         _canSpin = true;
         FrontSightMidPos = transform.GetChild(0).GetComponent<Transform>();
+        _uiControl = transform.GetChild(6).GetComponent<PlayerUIController>();
         if (Pv.IsMine)
         {
             FrontSightPos = FrontSightMidPos.transform.GetChild(0);
@@ -118,16 +121,18 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
             _inputAction.Player.Movement.performed += ctx => LimitInputValue(ctx.ReadValue<Vector2>());
             _inputAction.Player.MouseRotation.performed += ctx => MouseSpin(ctx.ReadValue<Vector2>());
             _inputAction.Player.GamePadRotation.performed += ctx => GamePadSpin(ctx.ReadValue<Vector2>());
-
-            OnChangeColor?.Invoke();
+            SetColor();
+            //OnChangeColor?.Invoke();
         }
     }
 
     private void SetColor()
     {
         Color _color = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color =
-            transform.GetChild(1).GetComponent<SpriteRenderer>().color =
             CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
+
+        transform.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(_color.r, _color.g, _color.b, 0.5f);
+        _uiControl.PlayerHpImg.color = _color;
 
         Pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
     }
@@ -136,8 +141,9 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     void ChangeColor(Vector3 color)
     {
         Color _color = new Color(color.x, color.y, color.z);
-        transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color =
-        transform.GetChild(1).GetComponent<SpriteRenderer>().color = _color;
+        transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color = _color;
+        transform.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(_color.r, _color.g, _color.b, 0.5f);
+        _uiControl.PlayerHpImg.color = _color;
     }
 
     void Update()
@@ -148,10 +154,10 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
             IsShield = _newIsShield;
             IsBounce = _newIsBounce;
         }
-        else
-        {
+       // else
+      //  {
             GroundCheckEvent();//Is Grounding?
-        }
+      //  }
     }
     void FixedUpdate()
     {
@@ -322,7 +328,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         DirX = Mathf.Cos(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
         DirY = Mathf.Sin(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
         Pv.RPC("Rpc_ChargeValue", RpcTarget.All, _isCharge, BeElasticity, Damage, DirX, DirY, _beShootShakeValue);
-        StartCoroutine(IsChargeChangeFalse());
+       // StartCoroutine(IsChargeChangeFalse());
     }
 
     IEnumerator IsChargeChangeFalse()
@@ -334,6 +340,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     private void FreezeEvent(float _viewDistance, int viewCount,Vector3 _beShootShake)
     {
         _beShootShakeValue = _beShootShake;
+        
         _freezeLeftRay = Quaternion.Euler(0, 0, FrontSightPos.eulerAngles.z - 17.5f) * Vector2.right * _viewDistance;
         Vector3 _originPos = FrontSightPos.transform.position;
 
@@ -357,8 +364,8 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     private void BeFreezeEvent(Vector3 _originPos,Quaternion _originDir,Vector3 _beShotAhake)
     {
-        CameraShake.instance.SetShakeValue(_beShotAhake.x, _beShotAhake.y, _beShotAhake.z);
-        Pv.RPC("Rpc_ChangeBeFreeze", RpcTarget.All, _originPos, _originDir);
+        Pv.RPC("Rpc_ChangeBeFreeze", RpcTarget.All, _originPos, _originDir, _beShotAhake);
+        //CameraShake.instance.SetShakeValue(_beShotAhake.x, _beShotAhake.y, _beShotAhake.z);
         StartCoroutine(StopBeFreeze());
     }
 
@@ -395,16 +402,19 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         RaycastHit2D upCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.up, GroundDistance);
         if (downCheck&&(!leftCheck && !rightCheck))
         {
+            //Physics2D.IgnoreLayerCollision(11, 12, false);
             IsGround = _canSpin = true;
             _isWall = false;
         }
         else if(leftCheck || rightCheck || upCheck)
         {
+            //Physics2D.IgnoreLayerCollision(11, 12, false);
             _isWall = _canSpin = true;
             IsGround = false;
         }
         else
         {
+            //Physics2D.IgnoreLayerCollision(11, 12, true);
             IsGround = false;
             _isWall = false;
         }
@@ -466,6 +476,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     void Rpc_TakeDamage(float _damage)
     {
         PlayerHp -= _damage;
+        _uiControl.ReduceHp(PlayerHp);
         if (PlayerHp <= 0)
         {
             Die();
@@ -489,14 +500,20 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         DirX = _dirX;
         DirY = _dirY;
         _beShootShakeValue = _beShootShake;
+        StartCoroutine(IsChargeChangeFalse());
     }
 
     [PunRPC]
-    void Rpc_ChangeBeFreeze(Vector3 _pos,Quaternion _dir)
+    void Rpc_ChangeBeFreeze(Vector3 _pos,Quaternion _dir,Vector3 _beShotAhake)
     {
         IsBeFreeze = true;
         transform.position = _pos;
         transform.rotation = _dir;
+        _beShootShakeValue = _beShotAhake;
+        if (Pv.IsMine)
+        {
+            CameraShake.instance.SetShakeValue(_beShotAhake.x, _beShotAhake.y, _beShotAhake.z);
+        }
         _rb.bodyType = RigidbodyType2D.Static;
     }
 

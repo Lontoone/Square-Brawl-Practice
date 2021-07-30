@@ -40,7 +40,8 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         ShootFunc += BulletShootEvent;
         if (_pv.IsMine)
         {
-            PlayerController.instance.OnChangeColor += SetColor;
+            SetColor();
+            //PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
             /*_pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight, transform.position);
             if (IsDontShootStraight)

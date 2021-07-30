@@ -18,10 +18,11 @@ public class Effect : MonoBehaviour,IPoolObject
     {
         _pv = GetComponent<PhotonView>();
         _effect = GetComponentInChildren<ParticleSystem>();
-        PlayerController.instance.OnChangeColor += SetColor;
 
         if (_pv.IsMine)
         {
+            SetColor();
+           // PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("DisableObj", RpcTarget.All);
         }
     }
