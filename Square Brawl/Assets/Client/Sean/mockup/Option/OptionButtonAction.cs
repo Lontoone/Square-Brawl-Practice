@@ -51,15 +51,23 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     TextMeshProUGUI[] textArray;
 
     private bool Selectedtrigger;
+    private bool gamepadUpdate = false;
+    private string mode;//0 = keyboard & gamepad, 1 = mouse
 
     private void Awake()
     {
-        trans = new Vector3(m_Background.GetComponent<RectTransform>().sizeDelta.x, m_Background.GetComponent<RectTransform>().sizeDelta.y);
+        if (m_Background != null)
+        {
+            trans = new Vector3(m_Background.GetComponent<RectTransform>().sizeDelta.x, m_Background.GetComponent<RectTransform>().sizeDelta.y);
+        }
     }
 
     void Start()
     {
-        m_Background.color = m_DefaultColor;
+        if (m_Background != null)
+        {
+            m_Background.color = m_DefaultColor;
+        }
         m_Icon.color = SceneHandler.green;
         m_CurrentEasetype = new Easetype.Current_easetype();
         screen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)) * 2;
@@ -73,7 +81,32 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void AimToMouse()
     {
-        m_Aim.m_MouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        if (Gamepad.current != null)
+        {
+            if (Gamepad.current.wasUpdatedThisFrame)
+            {
+                gamepadUpdate = true;
+            }
+        }
+
+        if (Mouse.current.wasUpdatedThisFrame)
+        {
+            mode = "Mouse";
+            gamepadUpdate = false;
+        }
+        if (Keyboard.current.wasUpdatedThisFrame || gamepadUpdate)
+        {
+            mode = "Keyboard";
+        }
+
+        if (mode == "Keyboard")
+        {
+            m_Aim.m_MouseWorldPos = new Vector2(0, 0);
+        }
+        else
+        { 
+            m_Aim.m_MouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        }
         //Debug.Log(m_Aim.m_MouseWorldPos +"\t"+ screen);
 
         Vector2 scale = new Vector2(m_Aim.m_MouseWorldPos.x / screen.x, m_Aim.m_MouseWorldPos.y / screen.y);
@@ -106,7 +139,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private void Settrigger()
     {
-        Selectedtrigger = (OptionManager.m_PressIndex != m_ButtonIndex);
+        Selectedtrigger = (OptionManager.onPressIndex != m_ButtonIndex);
     }
     public void HighlightedBackground()
     {
@@ -115,6 +148,10 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
             m_BackgroundColor.Kill();
             m_BackgroundColor = DOTween.Sequence();
             m_BackgroundColor.Append(m_Background.DOColor(new Color32(SceneHandler.green.r, SceneHandler.green.g, SceneHandler.green.b,50), 0.2f));
+        }
+        if (m_button_text != null && onPress == false)
+        {
+            m_button_text.DOColor(new Color32(120, 120, 120, 250), 0.2f);
         }
     }
 
@@ -125,6 +162,10 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
             m_BackgroundColor.Kill();
             m_BackgroundColor = DOTween.Sequence();
             m_BackgroundColor.Append(m_Background.DOColor(m_DefaultColor, 0.5f));
+        }
+        if (m_button_text != null)
+        {
+            m_button_text.DOColor(new Color32(237, 237, 237, 250), 0.2f);
         }
     }
 
@@ -140,6 +181,10 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
                     .DOSizeDelta(new Vector2(680, 1000), 0.5f)
                     .SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)))
                .Join(m_Background.DOColor(m_DefaultColor, 0.5f));
+        if (m_button_text != null)
+        {
+            m_button_text.DOColor(new Color32(237, 237, 237, 0), 0.2f);
+        }
     }
 
     public void UnPress()
@@ -152,6 +197,9 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
                .Join(m_Background.rectTransform
                     .DOSizeDelta(trans, 0.3f))
                .Join(m_Background.DOColor(m_DefaultColor, 0));
+        {
+            m_button_text.DOColor(new Color32(237, 237, 237, 250), 0.2f);
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -159,7 +207,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         m_MouseSelectedState = true;
         if (m_KeySelectedState != true && m_MouseSelectedState == true)
         {
-
+            //m_button_text.gameObject.SetActive(true);
         }
         HighlightedBackground();
     }
@@ -170,6 +218,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
             IdleBackground();
             m_MouseSelectedState = false;
             m_KeySelectedState = false;
+            //m_button_text.gameObject.SetActive(false);
         }
     }
 

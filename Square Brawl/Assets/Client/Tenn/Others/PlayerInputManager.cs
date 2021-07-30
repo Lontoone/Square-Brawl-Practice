@@ -330,7 +330,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""id"": ""a722fc6c-933e-48fc-89ab-4a5e45881ff2"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""back click"",
@@ -338,7 +338,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""id"": ""99d3498f-2551-4400-9261-ab1dd3706f6c"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -465,17 +465,6 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""89b6f0d0-bc77-4907-9020-e2882cb5c900"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard & Mouse"",
-                    ""action"": ""confirm click"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""e80d6aac-20a8-4a34-95dd-61debdc7a208"",
                     ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
@@ -498,11 +487,11 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""8279352e-c798-478c-aa39-beb107104d2e"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""id"": ""d9851009-37c4-47d0-b7f5-d4d89361ece3"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""back click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -513,7 +502,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""GamePad"",
                     ""action"": ""back click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

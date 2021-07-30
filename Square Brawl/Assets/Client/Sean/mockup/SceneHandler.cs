@@ -180,7 +180,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         StartCoroutine(m_OptionTest.GetComponentInChildren<OptionManager>().EnterAnimation());
     }
 
-    private IEnumerator ExitOptionTest()
+    public IEnumerator ExitOptionTest()
     {
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(m_Menu.GetComponentInChildren<MenuButtonHandler>().m_FirstSelectedButton);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
