@@ -145,7 +145,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Menu.GetComponentInChildren<MenuButtonHandler>().DisableButton();
         m_OptionTest.SetActive(true);
         yield return null;
-        //StartCoroutine(m_OptionTest.GetComponentInChildren<OptionManager>().ResetPosition());
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x -1920, m_Menu.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_OptionTest.transform.DOLocalMove(new Vector3(0, m_OptionTest.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));

@@ -194,13 +194,11 @@ public class OptionManager : MonoBehaviour
         Debug.Log("OnDisable");
         onPressIndex = 99;
         onSelectIndex = 99;
-
-        //todo: ondesable bug
-        ResetDeselected();
     }
 
     public IEnumerator EnterAnimation()
     {
+        yield return null;
         m_OptionAnimation.Kill();
         m_OptionAnimation = DOTween.Sequence();
 
@@ -208,16 +206,23 @@ public class OptionManager : MonoBehaviour
         for (int i = 0; i < m_SettingGroup.Length; i++)
         {
             m_SettingGroup[i].transform.localPosition = new Vector3(-500,0);
+
+            var obj = m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>();
+            obj.UnPress();
+            obj.m_MouseSelectedState = false;
+            obj.m_KeySelectedState = false;
+
+            m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>().SettingOut();
         }
-        yield return null;
+        yield return new WaitForSeconds(0.3f);
 
         m_OptionAnimation.Append(m_BackButton.transform.DOLocalMove(m_BackButtonPos, m_Duration * 2)
                             .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
 
         for (int i = m_SettingGroup.Length - 1; i >= 0; i--)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             m_OptionAnimation.Append(m_SettingGroup[i].transform
                                 .DOLocalMoveX(m_SettingGroupPos[i].x, m_Duration)
                                 .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
@@ -226,6 +231,14 @@ public class OptionManager : MonoBehaviour
 
     public void ExitAnimation()
     {
+        for (int i = 0; i < m_SettingGroup.Length; i++)
+        {
+            if (m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>() != null)
+            {
+                m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>().m_SettingList.SetActive(false);
+            }
+        }
+
         m_OptionAnimation.Kill();
         m_OptionAnimation = DOTween.Sequence();
 
@@ -249,6 +262,7 @@ public class OptionManager : MonoBehaviour
 
     public IEnumerator ResetPosition()
     {
+        
         yield return null;
 
         ///Set Layout
@@ -258,13 +272,12 @@ public class OptionManager : MonoBehaviour
             m_SettingGroup[i].transform.DOLocalMove(m_SettingGroupPos[i], 0.5f);
             if (m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>() != null)
             {
-                m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().UnPress();
-                m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().m_MouseSelectedState = false;
-                m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().m_KeySelectedState = false;
+                var obj = m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>();
+                obj.UnPress();
+                obj.m_MouseSelectedState = false;
+                obj.m_KeySelectedState = false;
             }
-            Debug.Log(m_SettingGroupPos[i]);
         }
-        ///
     }
 
 
@@ -287,16 +300,18 @@ public class OptionManager : MonoBehaviour
 
                 if (m_SettingGroup[i].GetComponentInChildren<ButtonAction>() != null)
                 {
-                    m_SettingGroup[i].GetComponentInChildren<ButtonAction>().SplitCharAction.IdleChar(m_SettingGroup[i].GetComponentInChildren<ButtonAction>().m_Char);
-                    m_SettingGroup[i].GetComponentInChildren<ButtonAction>().IdleIcon();
-                    m_SettingGroup[i].GetComponentInChildren<ButtonAction>().m_MouseSelectedState = false;
-                    m_SettingGroup[i].GetComponentInChildren<ButtonAction>().m_KeySelectedState = false;
+                    var obj = m_SettingGroup[i].GetComponentInChildren<ButtonAction>();
+                    obj.SplitCharAction.IdleChar(m_SettingGroup[i].GetComponentInChildren<ButtonAction>().m_Char);
+                    obj.IdleIcon();
+                    obj.m_MouseSelectedState = false;
+                    obj.m_KeySelectedState = false;
                 }
                 else if (m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>() != null)
                 {
-                    m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().UnPress();
-                    m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().m_MouseSelectedState = false;
-                    m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().m_KeySelectedState = false;
+                    var obj = m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>();
+                    obj.UnPress();
+                    obj.m_MouseSelectedState = false;
+                    obj.m_KeySelectedState = false;
                 }
             }
         }
@@ -318,7 +333,7 @@ public class OptionManager : MonoBehaviour
 
     private void KeyMove()
     {
-        Debug.Log(onSelectIndex +"\t"+ onPressIndex);
+        //Debug.Log(onSelectIndex +"\t"+ onPressIndex);
         bool onSelectThisFrame =false;
         Firstpress();
         if (firstPress)

@@ -14,7 +14,7 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
     [HideInInspector]
     public int SelectedIndex;
     [SerializeField] private GameObject m_SettingGroupPrefab;
-    [SerializeField] private GameObject m_SettingList;
+    [SerializeField] public GameObject m_SettingList;
     [SerializeField] private GameObject[] m_SettingPrefab;
     private Easetype.Current_easetype m_CurrentEasetype;
 
@@ -116,7 +116,6 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
     {
         if (onPress == true)
         {
-            m_SettingList.SetActive(false);
             m_Sequence.Kill();
             m_Sequence = DOTween.Sequence();
             switch (type)
@@ -138,6 +137,7 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
                     break;
             }
             onPress = false;
+            m_SettingList.SetActive(false);
         }
     }
 
