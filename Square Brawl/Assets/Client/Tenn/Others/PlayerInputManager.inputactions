@@ -474,6 +474,17 @@
                 },
                 {
                     "name": "",
+                    "id": "72e3e023-3ee4-4076-ae74-0479b695f886",
+                    "path": "<Keyboard>/numpadEnter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "confirm click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d9851009-37c4-47d0-b7f5-d4d89361ece3",
                     "path": "<Keyboard>/escape",
                     "interactions": "",

@@ -55,6 +55,10 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         pos = m_button_text.transform.localPosition;
         menu_current_easetype = new Easetype.Current_easetype();
         m_TextLength = m_button_text.text.Length;
+        if (m_Icon != null)
+        {
+            m_Icon.DOColor(new Color32(230, 230, 230, 255), 0.5f);
+        }
 
         SplitCharAction = m_button.AddComponent<ToSplitChar.SplitCharAction>();
         m_Char = SplitCharAction.SetUp(m_Char);

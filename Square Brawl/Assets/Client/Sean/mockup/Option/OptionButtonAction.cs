@@ -10,7 +10,7 @@ using TMPro;
 namespace Easetype { }
 namespace ToSplitChar { }
 
-public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler ,IPointerClickHandler
 {
     [SerializeField] public int m_ButtonIndex;
     [SerializeField] private GameObject m_button;
@@ -25,6 +25,8 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         [SerializeField] public GameObject m_AimPos;
         [SerializeField] public GameObject m_AimObject;
         [SerializeField] public Vector2 m_Area;
+        [SerializeField] public float m_MoveDistance;
+        [SerializeField] public float m_DetectDistance;
         [Space(10)]
         [SerializeField] public Easetype.Current_easetype.Easetype m_Easetype;
         [SerializeField] public float m_Duration;
@@ -68,7 +70,10 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         {
             m_Background.color = m_DefaultColor;
         }
-        m_Icon.color = SceneHandler.green;
+        if (m_Background != null)
+        {
+            m_Icon.color = SceneHandler.green;
+        }
         m_CurrentEasetype = new Easetype.Current_easetype();
         screen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)) * 2;
     }
@@ -104,11 +109,30 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
             m_Aim.m_MouseWorldPos = new Vector2(0, 0);
         }
         else
-        { 
-            m_Aim.m_MouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        }
-        //Debug.Log(m_Aim.m_MouseWorldPos +"\t"+ screen);
+        {
+            //Type 1
+            m_Aim.m_MouseWorldPos = Mouse.current.position.ReadValue();
 
+            //Type 2
+            //m_Aim.m_MouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        }
+
+        //Move Icon
+        //Type 1
+        var localVec = m_Aim.m_MouseWorldPos - new Vector2(m_Aim.m_AimPos.transform.position.x, m_Aim.m_AimPos.transform.position.y);
+        var length = Vector3.Magnitude(localVec);
+        Vector3 move;
+        if (length <= m_Aim.m_DetectDistance)
+        {
+            move = (m_Aim.m_MoveDistance / m_Aim.m_DetectDistance) * localVec;
+        }
+        else
+        {
+            move = Vector3.zero;
+        }
+
+        //Type 2
+        /* 
         Vector2 scale = new Vector2(m_Aim.m_MouseWorldPos.x / screen.x, m_Aim.m_MouseWorldPos.y / screen.y);
         var move = new Vector3(m_Aim.m_Area.x * scale.x, m_Aim.m_Area.y * scale.y);
 
@@ -129,11 +153,12 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         {
             move.y = -m_Aim.m_Area.y;
         }
-
+        */
         m_IconMove.Kill();
         m_IconMove = DOTween.Sequence();
         m_IconMove.Append(m_Aim.m_AimObject.transform.DOLocalMove(move, m_Aim.m_Duration).SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)));
         //Debug.Log(new Vector3(m_Aim.m_Area.x * scale.x, m_Aim.m_Area.y * scale.y));
+        
 
     }
 
@@ -240,5 +265,10 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
             m_MouseSelectedState = false;
             m_KeySelectedState = false;
         }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("button click");
     }
 }

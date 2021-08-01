@@ -70,34 +70,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         //pos = m_Menu.transform.localPosition;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (keyboard != null)
-        {
-            if (keyboard.enterKey.wasPressedThisFrame)
-            {
-                Debug.Log("keyboard enter");
-            }
-            /*else if (keyboard.escapeKey.wasPressedThisFrame)
-            {
-                ExitLobby();
-            }*/
-        }
-        if (gamepad != null)
-        {
-            if (gamepad.buttonSouth.wasPressedThisFrame)
-            {
-                Debug.Log("gamepad enter");
-            }
-            /*
-            else if (gamepad.buttonEast.wasPressedThisFrame)
-            {
-                ExitLobby();
-            }
-            */
-        }
-    }
 
     public void EnterPage(GameObject gameObject)
     {
