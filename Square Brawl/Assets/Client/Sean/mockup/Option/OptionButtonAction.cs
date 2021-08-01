@@ -10,7 +10,7 @@ using TMPro;
 namespace Easetype { }
 namespace ToSplitChar { }
 
-public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler ,IPointerClickHandler
+public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     [SerializeField] public int m_ButtonIndex;
     [SerializeField] private GameObject m_button;
@@ -56,6 +56,8 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     private bool gamepadUpdate = false;
     private string mode;//0 = keyboard & gamepad, 1 = mouse
 
+    private int lastSelectIndex = 0;
+
     private void Awake()
     {
         if (m_Background != null)
@@ -82,6 +84,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         AimToMouse();
         Settrigger();
+        SetIdle();
     }
 
     private void AimToMouse()
@@ -110,15 +113,10 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         }
         else
         {
-            //Type 1
             m_Aim.m_MouseWorldPos = Mouse.current.position.ReadValue();
-
-            //Type 2
-            //m_Aim.m_MouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         }
 
         //Move Icon
-        //Type 1
         var localVec = m_Aim.m_MouseWorldPos - new Vector2(m_Aim.m_AimPos.transform.position.x, m_Aim.m_AimPos.transform.position.y);
         var length = Vector3.Magnitude(localVec);
         Vector3 move;
@@ -130,42 +128,11 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         {
             move = Vector3.zero;
         }
-
-        //Type 2
-        /* 
-        Vector2 scale = new Vector2(m_Aim.m_MouseWorldPos.x / screen.x, m_Aim.m_MouseWorldPos.y / screen.y);
-        var move = new Vector3(m_Aim.m_Area.x * scale.x, m_Aim.m_Area.y * scale.y);
-
-        if (scale.x > 1)
-        {
-            move.x = m_Aim.m_Area.x;
-        } 
-        else if (scale.x < -1)
-        {
-            move.x = -m_Aim.m_Area.x;
-        }
-
-        if (scale.y > 1)
-        {
-            move.y = m_Aim.m_Area.y;
-        }
-        else if (scale.y < -1)
-        {
-            move.y = -m_Aim.m_Area.y;
-        }
-        */
         m_IconMove.Kill();
         m_IconMove = DOTween.Sequence();
         m_IconMove.Append(m_Aim.m_AimObject.transform.DOLocalMove(move, m_Aim.m_Duration).SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)));
-        //Debug.Log(new Vector3(m_Aim.m_Area.x * scale.x, m_Aim.m_Area.y * scale.y));
-        
-
     }
 
-    private void Settrigger()
-    {
-        Selectedtrigger = (OptionManager.onPressIndex != m_ButtonIndex);
-    }
     public void HighlightedBackground()
     {
         if (m_Background != null && onPress ==false)
@@ -180,7 +147,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         }
     }
 
-    public void IdleBackground() //todo
+    public void IdleBackground()
     {
         if (m_Background != null)
         {
@@ -191,6 +158,20 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (m_button_text != null)
         {
             m_button_text.DOColor(new Color32(237, 237, 237, 250), 0.2f);
+        }
+    }
+
+    private void SetIdle()
+    {
+        var currentSelectIndex = OptionManager.onSelectIndex;
+        if (currentSelectIndex != lastSelectIndex)
+        {
+            lastSelectIndex = currentSelectIndex;
+
+            if (currentSelectIndex != m_ButtonIndex)
+            {
+                IdleBackground();
+            }
         }
     }
 
@@ -227,19 +208,26 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         }
     }
 
+    private void Settrigger()
+    {
+        //If  Current Button Index != Press Index 
+        Selectedtrigger = (m_ButtonIndex != OptionManager.onPressIndex );
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         m_MouseSelectedState = true;
         if (m_KeySelectedState != true && m_MouseSelectedState == true)
         {
-            //m_button_text.gameObject.SetActive(true);
         }
+        OptionManager.onSelectIndex = m_ButtonIndex;
         HighlightedBackground();
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         if (Selectedtrigger)
         {
+            OptionManager.onSelectIndex = 99;
             IdleBackground();
             m_MouseSelectedState = false;
             m_KeySelectedState = false;
@@ -265,10 +253,5 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
             m_MouseSelectedState = false;
             m_KeySelectedState = false;
         }
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Debug.Log("button click");
     }
 }

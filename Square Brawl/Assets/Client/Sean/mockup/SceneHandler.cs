@@ -76,7 +76,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         switch (gameObject.name)
         {
             case "option":
-                EnterOption();
+                StartCoroutine(EnterOption());
                 break;
 
             case "map editor":
@@ -85,10 +85,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
             case "control":
                 EnterController();
-                break;
-
-            case "option test":
-                StartCoroutine(EnterOptionTest());
                 break;
 
             default:
@@ -112,55 +108,33 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 StartCoroutine(ExitController());
                 break;
 
-            case "option test":
-                StartCoroutine(ExitOptionTest());
-                break;
-
             default:
                 Debug.LogWarning(gameObject.name + " :switch page error");
                 break;
         }
     }
-    private void EnterOption()
+    private IEnumerator EnterOption()
     {
         m_Menu.GetComponentInChildren<MenuButtonHandler>().DisableButton();
         m_Option.SetActive(true);
+        yield return null;
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + to_x, m_Menu.transform.localPosition.y + to_y,0),duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x - 1920, m_Menu.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_Option.transform.DOLocalMove(new Vector3(0, m_Option.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        StartCoroutine(m_Option.GetComponentInChildren<OptionManager>().EnterAnimation());
     }
 
-    private IEnumerator ExitOption()
+    public IEnumerator ExitOption()
     {
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(m_Menu.GetComponentInChildren<MenuButtonHandler>().m_FirstSelectedButton);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        m_OptionTest.transform.DOLocalMove(new Vector3(Screen.width, m_Option.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        StartCoroutine(m_Menu.GetComponentInChildren<MenuButtonHandler>().EnableButton(0.5f));
+        m_Option.transform.DOLocalMove(new Vector3(1920, m_Option.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        StartCoroutine(m_Menu.GetComponentInChildren<MenuButtonHandler>().EnableButton(0.8f));
+        m_Option.GetComponentInChildren<OptionManager>().ExitAnimation();
         yield return new WaitForSeconds(duration / 3);
         m_Option.SetActive(false);
     }
 
-    private IEnumerator EnterOptionTest()
-    {
-        m_Menu.GetComponentInChildren<MenuButtonHandler>().DisableButton();
-        m_OptionTest.SetActive(true);
-        yield return null;
-        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x -1920, m_Menu.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        m_OptionTest.transform.DOLocalMove(new Vector3(0, m_OptionTest.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        StartCoroutine(m_OptionTest.GetComponentInChildren<OptionManager>().EnterAnimation());
-    }
-
-    public IEnumerator ExitOptionTest()
-    {
-        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(m_Menu.GetComponentInChildren<MenuButtonHandler>().m_FirstSelectedButton);
-        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        m_OptionTest.transform.DOLocalMove(new Vector3(1920, m_OptionTest.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        StartCoroutine(m_Menu.GetComponentInChildren<MenuButtonHandler>().EnableButton(0.5f));
-        m_OptionTest.GetComponentInChildren<OptionManager>().ExitAnimation();
-        yield return new WaitForSeconds(duration/3);
-        m_OptionTest.SetActive(false);
-    }
 
     public void EnterLobby()
     {

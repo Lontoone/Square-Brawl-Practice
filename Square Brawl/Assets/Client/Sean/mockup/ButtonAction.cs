@@ -29,7 +29,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     private Easetype.Current_easetype menu_current_easetype;
     
-    private enum Dotweentype{ m_string = 0 , m_char = 1}
+    private enum Dotweentype{ m_string = 0 , m_char = 1 , None = 2}
     [Space(10)]
     [SerializeField] private Dotweentype dotweentype;
     [Space(10)]
@@ -48,7 +48,6 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [HideInInspector] public bool m_KeySelectedState = false;
     TextMeshProUGUI[] textArray;
 
-    private bool Selectedtrigger;
 
     void Start()
     {
@@ -65,15 +64,6 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     }
 
-    private void Update()
-    {
-        Settrigger();
-    }
-
-    private void Settrigger()
-    {
-        Selectedtrigger = (OptionManager.onPressIndex != m_ButtonIndex);
-    }
     public void HighlightedIcon() //todo
     {
         if (m_Icon != null)
@@ -128,6 +118,9 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                     SplitCharAction.HighlightedChar(m_Char);
                     break;
 
+                case Dotweentype.None:
+                    break;
+
                 default:
                     break;
             }
@@ -136,8 +129,6 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (Selectedtrigger)
-        {
             switch (dotweentype)
             {
                 case Dotweentype.m_string:
@@ -148,13 +139,15 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                     SplitCharAction.IdleChar(m_Char);
                     break;
 
+                case Dotweentype.None:
+                    break;
+
                 default:
                     break;
             }
             IdleIcon();
             m_MouseSelectedState = false;
             m_KeySelectedState = false;
-        }
     }
 
     public virtual void OnSelect(BaseEventData eventData)
@@ -172,6 +165,9 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                     SplitCharAction.HighlightedChar(m_Char);
                     break;
 
+                case Dotweentype.None:
+                    break;
+
                 default:
                     break;
             }
@@ -181,8 +177,6 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
-        if (Selectedtrigger)
-        {
             switch (dotweentype)
             {
                 case Dotweentype.m_string:
@@ -193,12 +187,14 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                     SplitCharAction.IdleChar(m_Char);
                     break;
 
+                case Dotweentype.None:
+                    break;
+
                 default:
                     break;
             }
             IdleIcon();
             m_MouseSelectedState = false;
             m_KeySelectedState = false;
-        }
     }
 }

@@ -13,6 +13,7 @@ public class OptionManager : MonoBehaviour
     [SerializeField] private GameObject m_OptionGroup;
     [HideInInspector]
     public static int onPressIndex = 99;
+    public static int onSelectIndex = 99;
     private bool onPress;
 
     [HideInInspector]
@@ -21,6 +22,7 @@ public class OptionManager : MonoBehaviour
     [SerializeField] private GameObject m_LastPos;
     [SerializeField] private GameObject m_BackButton;
     private Vector2 m_BackButtonPos;
+    private bool backOnSelect = false;
     
     [Space(15)]
     [SerializeField] private float barLength;    
@@ -43,7 +45,6 @@ public class OptionManager : MonoBehaviour
     [Space(15)]
     [SerializeField] public GameObject[] m_SettingGroup;
     private Vector3[] m_SettingGroupPos;
-    private int onSelectIndex = 99;
 
     private PlayerInputManager m_Input;
     private Vector2 moveValue;
@@ -92,12 +93,7 @@ public class OptionManager : MonoBehaviour
     private void Update()
     {
         KeyMove();
-        if (onSelectIndex != 99 && Mouse.current.wasUpdatedThisFrame)
-        {
-            ResetDeselected();
-            m_BackButton.GetComponent<ButtonAction>().SplitCharAction.IdleChar(m_BackButton.GetComponent<ButtonAction>().m_Char);
-        }
-
+        BackButtonAnimation();
         switch (m_LayoutType)
         { 
             case LayoutType.OnSelect:
@@ -194,6 +190,7 @@ public class OptionManager : MonoBehaviour
         Debug.Log("OnDisable");
         onPressIndex = 99;
         onSelectIndex = 99;
+        backOnSelect = false;
     }
 
     public IEnumerator EnterAnimation()
@@ -250,14 +247,31 @@ public class OptionManager : MonoBehaviour
         }
     }
 
-    // Used in button on click 
+    private void BackButtonAnimation()
+    {
+        if (onSelectIndex != m_SettingGroup.Length && backOnSelect ==true)
+        {
+            backOnSelect = false;
+            var obj = m_BackButton.GetComponent<ButtonAction>();
+            obj.SplitCharAction.IdleChar(obj.m_Char);
+        }
+        else if (onSelectIndex == m_SettingGroup.Length && backOnSelect == false)
+        {
+            backOnSelect = true;
+            var obj = m_BackButton.GetComponent<ButtonAction>();
+            obj.SplitCharAction.HighlightedChar(obj.m_Char);
+        }
+    }
+
+
+
+    // Used in button onclick 
     public void SetPressedIndex(int Index)
     {
         onPressIndex = Index;
         onSelectIndex = Index;
         onPress = true;
         ResetDeselected();
-        Debug.Log(onPressIndex);
     }
 
     public IEnumerator ResetPosition()
@@ -274,7 +288,7 @@ public class OptionManager : MonoBehaviour
             {
                 var obj = m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>();
                 obj.UnPress();
-                obj.m_MouseSelectedState = false;
+                //obj.m_MouseSelectedState = false;
                 obj.m_KeySelectedState = false;
             }
         }
@@ -301,7 +315,7 @@ public class OptionManager : MonoBehaviour
                 if (m_SettingGroup[i].GetComponentInChildren<ButtonAction>() != null)
                 {
                     var obj = m_SettingGroup[i].GetComponentInChildren<ButtonAction>();
-                    obj.SplitCharAction.IdleChar(m_SettingGroup[i].GetComponentInChildren<ButtonAction>().m_Char);
+                    obj.SplitCharAction.IdleChar(obj.m_Char);
                     obj.IdleIcon();
                     obj.m_MouseSelectedState = false;
                     obj.m_KeySelectedState = false;
@@ -333,7 +347,6 @@ public class OptionManager : MonoBehaviour
 
     private void KeyMove()
     {
-        //Debug.Log(onSelectIndex +"\t"+ onPressIndex);
         bool onSelectThisFrame =false;
         Firstpress();
         if (firstPress)
@@ -387,7 +400,6 @@ public class OptionManager : MonoBehaviour
                 }
                 onSelectIndex = onPressIndex;
             }
-            Debug.Log(onSelectIndex +"\t"+ onPressIndex);
         }
 
         //Move onSelected
@@ -445,8 +457,6 @@ public class OptionManager : MonoBehaviour
 
     private void KeyPressed()
     {
-        Debug.Log("Press Enter");
-
         if (onPressIndex != 99)
         {
 
@@ -466,7 +476,7 @@ public class OptionManager : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(m_BackButton);
                 m_BackButton.GetComponent<ButtonAction>().SplitCharAction.HighlightedChar(m_BackButton.GetComponent<ButtonAction>().m_Char);
                 ResetDeselected();
-                StartCoroutine(GetComponentInParent<SceneHandler>().ExitOptionTest());
+                StartCoroutine(GetComponentInParent<SceneHandler>().ExitOption());
             }
             onPress = true;
         }
@@ -478,7 +488,7 @@ public class OptionManager : MonoBehaviour
         {
             m_BackButton.GetComponent<ButtonAction>().SplitCharAction.HighlightedChar(m_BackButton.GetComponent<ButtonAction>().m_Char);
             ResetDeselected();
-            StartCoroutine(GetComponentInParent<SceneHandler>().ExitOptionTest());
+            StartCoroutine(GetComponentInParent<SceneHandler>().ExitOption());
         }
         else
         {
