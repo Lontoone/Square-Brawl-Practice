@@ -181,6 +181,11 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
+    public void Quit() {
+        PhotonNetwork.LeaveLobby();
+        //TODO: close menu
+    }
+
 
     public void ModeSelect()
     {
