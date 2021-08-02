@@ -35,27 +35,39 @@ public class MenuManager : MonoBehaviour
     public void BackToPreviousMenu()
     {
         Debug.Log(previousMenu.Count);
+
         if (previousMenu.Count > 1)
         {
             //Clear the current:
-            if (previousMenu.Pop().Equals("room"))
+            string _currentMenu = previousMenu.Peek();
+
+            if (_currentMenu.Equals("title"))
             {
                 previousMenu.Clear();
                 return;
-            };
-
-            //get the previous:
-            string _menuName = previousMenu.Pop();
-            Debug.Log("Back " + _menuName);
-
-            //[Hard code] the locked menu 
-            if (!_menuName.Equals("room"))
+            }
+            else if (_currentMenu.Equals("room"))
             {
-                OpenMenu(_menuName);
+                return;
             }
             else
             {
-                previousMenu.Clear();
+                previousMenu.Pop();
+            }
+
+            string _backMenu = previousMenu.Pop();
+
+            //get the previous:
+            Debug.Log("Back " + _backMenu);
+
+            //[Hard code] the locked menu 
+            if (!_backMenu.Equals("title"))
+            {
+                OpenMenu(_backMenu);
+            }
+            else
+            {
+                //previousMenu.Clear();
             }
         }
     }
@@ -68,7 +80,10 @@ public class MenuManager : MonoBehaviour
             if (menus[i].menuName.Equals(menuName))
             {
                 menus[i].Open();
-                previousMenu.Push(menuName);
+                if (!menuName.Equals("loading"))
+                {
+                    previousMenu.Push(menuName);
+                }
             }
             else if (menus[i].open)
             {
