@@ -63,6 +63,7 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         m_Arror.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         m_Shadow.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
+        AimAction.inButton = true;
         AimAction.AimFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
     }
 
@@ -70,6 +71,7 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         m_Arror.DOColor(new Color32(255, 255, 255, 0), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         m_Shadow.DOColor(new Color32(255, 255, 255, 0), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
+        AimAction.inButton = false;
         AimAction.AimUnFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
     }
 
@@ -77,6 +79,7 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         m_Arror.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         m_Shadow.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
+        AimAction.inButton = true;
         AimAction.AimFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
     }
 
@@ -84,6 +87,7 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         m_Arror.DOColor(new Color32(255, 255, 255, 0), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         m_Shadow.DOColor(new Color32(255, 255, 255, 0), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
+        AimAction.inButton = false;
         AimAction.AimUnFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
     }
 }
