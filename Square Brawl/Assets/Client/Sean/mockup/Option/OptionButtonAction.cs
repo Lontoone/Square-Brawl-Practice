@@ -157,7 +157,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         }
         if (m_button_text != null)
         {
-            m_button_text.DOColor(new Color32(237, 237, 237, 250), 0.2f);
+            m_button_text.DOColor(new Color32(205, 205, 205, 250), 0.2f);
         }
     }
 
@@ -189,7 +189,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
                .Join(m_Background.DOColor(m_DefaultColor, 0.5f));
         if (m_button_text != null)
         {
-            m_button_text.DOColor(new Color32(237, 237, 237, 0), 0.2f);
+            m_button_text.DOColor(new Color32(205, 205, 205, 0), 0.2f);
         }
     }
 
@@ -204,7 +204,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
                     .DOSizeDelta(trans, 0.3f))
                .Join(m_Background.DOColor(m_DefaultColor, 0));
         {
-            m_button_text.DOColor(new Color32(237, 237, 237, 250), 0.2f);
+            m_button_text.DOColor(new Color32(205, 205, 205, 250), 0.2f);
         }
     }
 

@@ -14,12 +14,13 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
     public int m_ButtonIndex;
     [Header ("Play Button")]
-    [SerializeField] private GameObject play_button;
+    [SerializeField] private GameObject m_PlayButton;
     private Button button_button;
-    private RectTransform button_rect;
+    [SerializeField] private Image m_Shadow;
+    [SerializeField] private Image m_Arror;
     private Easetype.Current_easetype m_PlayButtonCurrentEasetype;
     [SerializeField] Easetype.Current_easetype.Easetype easetype;
-    [SerializeField] float m_duration =1f;
+    [SerializeField] private float m_duration =1f;
     
     [Space(10)]
     [Header("Aim Object")]
@@ -32,7 +33,9 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void Start()
     {
-        button_button = play_button.GetComponent<Button>();
+        button_button = m_PlayButton.GetComponent<Button>();
+        m_Arror.color = new Color32(0, 0, 0, 0);
+        m_Shadow.color = new Color32(0, 0, 0, 0);
         m_PlayButtonCurrentEasetype = new Easetype.Current_easetype();
         m_AimCurrentEasetype = new Easetype.Current_easetype();
     }
@@ -41,37 +44,46 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         menuButtonAnimation.Kill();
         menuButtonAnimation = DOTween.Sequence();
-        menuButtonAnimation.Append(play_button.transform
-                              .DOScale(new Vector3(10,10,0), m_duration)
+        menuButtonAnimation.Append(m_PlayButton.transform
+                              .DOScale(new Vector3(0,0,0), m_duration)
                               .SetEase(m_PlayButtonCurrentEasetype.GetEasetype(easetype)));
     }
+
 
     public void ExitLobbyAnimation() 
     {
         menuButtonAnimation.Kill();
         menuButtonAnimation = DOTween.Sequence();
-        menuButtonAnimation.Append(play_button.transform
+        menuButtonAnimation.Append(m_PlayButton.transform
                               .DOScale(new Vector3(1, 1, 0), m_duration)
                               .SetEase(m_PlayButtonCurrentEasetype.GetEasetype(easetype)));
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
+        m_Arror.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
+        m_Shadow.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         AimAction.AimFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
+        m_Arror.DOColor(new Color32(255, 255, 255, 0), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
+        m_Shadow.DOColor(new Color32(255, 255, 255, 0), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         AimAction.AimUnFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
     }
 
     public virtual void OnSelect(BaseEventData eventData)
     {
+        m_Arror.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
+        m_Shadow.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         AimAction.AimFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
     }
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
+        m_Arror.DOColor(new Color32(255, 255, 255, 0), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
+        m_Shadow.DOColor(new Color32(255, 255, 255, 0), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         AimAction.AimUnFade(m_AimObject, m_aimduration, m_AimCurrentEasetype, m_AimEasetype);
     }
 }

@@ -56,7 +56,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         m_TextLength = m_button_text.text.Length;
         if (m_Icon != null)
         {
-            m_Icon.DOColor(new Color32(230, 230, 230, 255), 0.5f);
+            m_Icon.DOColor(new Color32(205, 205, 205, 255), 0.5f);
         }
 
         SplitCharAction = m_button.AddComponent<ToSplitChar.SplitCharAction>();
@@ -76,7 +76,7 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         if (m_Icon != null) 
         {
-            m_Icon.DOColor(new Color32(230, 230, 230, 255), 0.5f);
+            m_Icon.DOColor(new Color32(205, 205, 205, 255), 0.5f);
         }
     }
     public void HighlightedString()

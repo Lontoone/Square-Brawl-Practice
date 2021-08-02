@@ -146,7 +146,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     public IEnumerator EnterLobby()
     {
-        //m_Menu.GetComponent<PlayButton>().EnterLobbyAnimation();
         yield return new WaitForSeconds(0.5f);
         m_Menu.SetActive(false);
         m_OnlineMenu.SetActive(true);
@@ -154,7 +153,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     public IEnumerator ExitLobby()
     {
-        //m_Menu.GetComponent<PlayButton>().ExitLobbyAnimation();
         m_Menu.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         m_OnlineMenu.SetActive(false);
