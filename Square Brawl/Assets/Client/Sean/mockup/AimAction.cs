@@ -12,6 +12,8 @@ public class AimAction : MonoBehaviour
     [SerializeField] public GameObject m_AimObject;
     [SerializeField] private float m_Distance;
     private float distance;
+    private Vector2 lastRes;
+    private bool update = false;
 
     private Vector2 m_ObjectPos;
     private Vector2 m_MouseWorldPos;
@@ -24,8 +26,15 @@ public class AimAction : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (m_Distance != distance)
+        if(Screen.width != lastRes.x || Screen.height != lastRes.y)
         {
+            update = true;
+            lastRes.x = Screen.width;
+            lastRes.y = Screen.height;
+        }
+        if (update)
+        {
+            update = false;
             distance = SceneHandler.WorldToCamera(m_Distance, 2);
         }
         m_ObjectPos = m_AimPos.transform.position;

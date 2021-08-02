@@ -157,7 +157,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private void EnterMapEditor()
     {
-        Debug.Log(Screen.width +"\t"+Screen.height);
         m_MapEditor.SetActive(true);
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, -1080, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
@@ -233,7 +232,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         Application.Quit();
     }
 
-    public void DiesableOnClickEffect()
+    public void DisableOnClickEffect()
     {
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
     }
