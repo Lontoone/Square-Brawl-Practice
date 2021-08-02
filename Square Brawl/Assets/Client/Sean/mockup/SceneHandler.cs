@@ -87,6 +87,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 EnterController();
                 break;
 
+            case "Online Menu":
+                StartCoroutine(EnterLobby());
+                break;
+
             default:
                 Debug.LogWarning(gameObject.name + " :switch page error");
                 break;
@@ -106,6 +110,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
             case "control":
                 StartCoroutine(ExitController());
+                break;
+
+            case "Online Menu":
+                StartCoroutine(ExitLobby());
                 break;
 
             default:
@@ -136,18 +144,20 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     }
 
 
-    public void EnterLobby()
+    public IEnumerator EnterLobby()
     {
-        m_OnlineMenu.SetActive(true);
+        //m_Menu.GetComponent<PlayButton>().EnterLobbyAnimation();
+        yield return new WaitForSeconds(0.5f);
         m_Menu.SetActive(false);
-        m_Menu.transform.DOScale(new Vector3(10, 10, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_OnlineMenu.SetActive(true);
     }
 
-    public void ExitLobby()
+    public IEnumerator ExitLobby()
     {
-        m_OnlineMenu.SetActive(false);
+        //m_Menu.GetComponent<PlayButton>().ExitLobbyAnimation();
         m_Menu.SetActive(true);
-        m_Menu.transform.DOScale(new Vector3(1, 1, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        yield return new WaitForSeconds(0.5f);
+        m_OnlineMenu.SetActive(false);
     }
 
     private void SetUpMapEditor()
