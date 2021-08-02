@@ -337,7 +337,7 @@ MonoBehaviour:
   IsGround: 0
   GroundLayer:
     serializedVersion: 2
-    m_Bits: 6912
+    m_Bits: 4864
   FrontSightMidPos: {fileID: 0}
   FrontSightPos: {fileID: 0}
   Pv: {fileID: 0}
@@ -607,6 +607,7 @@ GameObject:
   - component: {fileID: 3155009401398235742}
   - component: {fileID: 244972615762417960}
   - component: {fileID: 6019071068810036091}
+  - component: {fileID: 1559487780962902444}
   m_Layer: 11
   m_Name: Bounce
   m_TagString: Untagged
@@ -742,6 +743,7 @@ MonoBehaviour:
   FieldExplose: 1
   BounceExploseEffectName: 
   _beShotShakeValue: {x: 0, y: 0, z: 0}
+  _edgeCollider: {fileID: 0}
   _laserRenderer: {fileID: 0}
   LayerToExplose:
     serializedVersion: 2
@@ -768,6 +770,30 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!68 &1559487780962902444
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6926051644494545323}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!1 &6962088104440799388
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,7 +1066,6 @@ MonoBehaviour:
   ExploseEffectName: 
   BeShotShakeValue: {x: 0, y: 0, z: 0}
   ShotShakeValue: {x: 0, y: 0, z: 0}
-  gameObjects: []
 --- !u!114 &5771716123695693227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1150,7 +1175,6 @@ MonoBehaviour:
   ExploseEffectName: 
   BeShotShakeValue: {x: 0, y: 0, z: 0}
   ShotShakeValue: {x: 0, y: 0, z: 0}
-  gameObjects: []
 --- !u!114 &762097059166178785
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,23 +9,16 @@ public class Shield : MonoBehaviour
     private float ShieldSpeed;//Shield Speed
     private float ShieldDamage;//Shield Damage
     private float ShieldBeElasticity;//Shield BeElasticity
-    private Vector3 _beShotShakeValue;
-
-    public Action<float,float,float,Vector3> ShieldFunc;
-    public Action<PlayerController> ColliderFunc;
+    private Vector3 _cameraShakeValue;
 
     private PhotonView _pv;
 
     void Awake()
     {
         _pv = GetComponent<PhotonView>();
-        ShieldFunc = ShieldEvent;
-        ColliderFunc = ShieldCollider;
         if (_pv.IsMine)
         {
             SetColor();
-            //PlayerController.instance.OnChangeColor += SetColor;
-            _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
     }
 
@@ -35,6 +28,37 @@ public class Shield : MonoBehaviour
             CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
 
         _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
+        _pv.RPC("Rpc_DisableObj", RpcTarget.All);
+    }
+
+    public void ShieldEvent(float _speed,float _damage,float _beElasticity,Vector3 _cameraShakeValue)
+    {
+        ShieldSpeed = _speed;
+        ShieldDamage = _damage;
+        ShieldBeElasticity = _beElasticity;
+        this._cameraShakeValue = _cameraShakeValue;
+        StartCoroutine(DestroyObj());
+        _pv.RPC("Rpc_EnableObj", RpcTarget.Others, ShieldSpeed, ShieldDamage, ShieldBeElasticity, this._cameraShakeValue);
+    }
+
+    public void ShieldCollider(PlayerController _playerController)
+    {
+        if (!_pv.IsMine)
+        {
+            Vector2 dir = _playerController.transform.position - gameObject.transform.position;
+            _playerController.DamageEvent(ShieldDamage, ShieldBeElasticity, dir.x, dir.y, _cameraShakeValue);
+        }
+    }
+
+    void Update()
+    {
+        transform.eulerAngles = Vector3.zero;
+    }
+
+    IEnumerator DestroyObj()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
     [PunRPC]
@@ -44,40 +68,6 @@ public class Shield : MonoBehaviour
         transform.GetComponent<SpriteRenderer>().color = _color;
     }
 
-    /*public void OnObjectSpawn()
-    {
-        _pv.RPC("Rpc_EnableObj", RpcTarget.Others, ShieldSpeed, ShieldDamage, ShieldBeElasticity);
-    }*/
-
-    private void ShieldEvent(float _speed,float _damage,float _beElasticity,Vector3 _beShotShake)
-    {
-        ShieldSpeed = _speed;
-        ShieldDamage = _damage;
-        ShieldBeElasticity = _beElasticity;
-        _beShotShakeValue = _beShotShake;
-        StartCoroutine(DestroyObj());
-        _pv.RPC("Rpc_EnableObj", RpcTarget.Others, ShieldSpeed, ShieldDamage, ShieldBeElasticity, _beShotShakeValue);
-    }
-
-    private void ShieldCollider(PlayerController _playerController)
-    {
-        if (!_pv.IsMine)
-        {
-            Vector2 dir = _playerController.transform.position - gameObject.transform.position;
-            _playerController.DamageFunc(ShieldDamage, ShieldBeElasticity, dir.x, dir.y, _beShotShakeValue);
-        }
-    }
-
-    void Update()
-    {
-        transform.eulerAngles = new Vector3(0, 0, 0);
-    }
-
-    IEnumerator DestroyObj()
-    {
-        yield return new WaitForSeconds(0.5f);
-        _pv.RPC("Rpc_DisableObj", RpcTarget.All);
-    }
     [PunRPC]
     public void Rpc_DisableObj()
     {
@@ -92,7 +82,7 @@ public class Shield : MonoBehaviour
         ShieldSpeed = _speed;
         ShieldDamage = _damage;
         ShieldBeElasticity = _elasticity;
-        _beShotShakeValue = _beShotShake;
+        _cameraShakeValue = _beShotShake;
      }
 
 }

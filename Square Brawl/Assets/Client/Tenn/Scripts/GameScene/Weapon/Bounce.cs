@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Bounce : MonoBehaviour
+public class Bounce : MonoBehaviour,IPoolObject
 {
     [HeaderAttribute("Bounce Setting")]
     public int BounceDamage;
@@ -25,13 +25,14 @@ public class Bounce : MonoBehaviour
     private bool _isBounce;
     private bool _isChangeColor;
 
+    public EdgeCollider2D _edgeCollider;
+
     public LineRenderer _laserRenderer; //the line renderer
 
     public LayerMask LayerToExplose;
 
-    public Action<int, float, string,Vector2,Vector3> BounceFunc;
-
     private List<Vector2> HitGroundPos= new List<Vector2>();
+    private List<Vector2> HitGroundLocalPos = new List<Vector2>();
 
     [HeaderAttribute("Syuc Setting")]
     private Vector2 _prevPos;
@@ -42,12 +43,20 @@ public class Bounce : MonoBehaviour
     {
         _pv = GetComponent<PhotonView>();
         _laserRenderer = GetComponent<LineRenderer>();
-        BounceFunc = BounceEvent;
+        _edgeCollider = GetComponent<EdgeCollider2D>();
         if (_pv.IsMine)
         {
             SetColor();
-           // PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
+        }
+    }
+
+    public void OnObjectSpawn()
+    {
+        if (_pv.IsMine)
+        {
+            _pv.RPC("Rpc_EnableObj", RpcTarget.All);
+            _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
         }
     }
 
@@ -66,13 +75,13 @@ public class Bounce : MonoBehaviour
         _laserRenderer.startColor = _laserRenderer.endColor = new Color(_color.r, _color.g, _color.b, 0);
     }
 
-    private void BounceEvent (int _damage,float _beElasticity,string _effectName,Vector2 _dir,Vector3 _beShotShake)
+    public void BounceEvent (int _damage,float _beElasticity,string _effectName,Vector2 _dir,Vector3 _beShotShake)
     {
-        _pv.RPC("Rpc_EnableObj", RpcTarget.All);
+       // _pv.RPC("Rpc_EnableObj", RpcTarget.All);
         BounceDamage = _damage;
         BounceBeElasticity = _beElasticity;
         BounceExploseEffectName = _effectName;
-        _prevPos = transform.position;
+       // _prevPos = transform.parent.position;
         _prevDir = _dir;
         _beShotShakeValue = _beShotShake;
         ShootBounce(transform.position, _dir);
@@ -81,6 +90,7 @@ public class Bounce : MonoBehaviour
 
     void Update()
     {
+        //transform.localRotation = Quaternion.identity;
         IsBounceEvent();
     }
 
@@ -89,6 +99,7 @@ public class Bounce : MonoBehaviour
         _isBounce = true;
         int vertexCounter = 1; 
         _laserRenderer.SetPosition(0, _pos);
+        HitGroundLocalPos.Add(gameObject.transform.InverseTransformPoint(_pos));
 
         for (int i = 0; i < _laserLimit; i++)
         {
@@ -103,9 +114,12 @@ public class Bounce : MonoBehaviour
                 _laserRenderer.SetPosition(vertexCounter - 1, hit.point);
                 _pos = hit.point;
                 HitGroundPos.Add(_pos);
+                HitGroundLocalPos.Add(gameObject.transform.InverseTransformPoint(_pos));
                 _dir = Vector3.Reflect(_dir, hit.normal);
             }
         }
+        Physics2D.queriesStartInColliders = true;
+        //transform.parent = gameObject.transform.parent.transform;
     }
 
     void IsBounceEvent()
@@ -130,36 +144,7 @@ public class Bounce : MonoBehaviour
                             ObjectsPool.Instance.SpawnFromPool(BounceExploseEffectName, HitGroundPos[i], transform.rotation, null);
                         }
                     }
-
-                    /*for (int i = 0; i < _laserLimit; i++)
-                    {
-                        RaycastHit2D[] hits = Physics2D.RaycastAll(_prevPos, _prevDir, _laserDistance);
-
-                        for (int j = 0; j < hits.Length; j++)
-                        {
-                            if (hits[i].collider.gameObject.CompareTag("Ground"))
-                            {
-                                Debug.Log("Line" + _prevPos);
-                                _prevPos = hits[i].point;
-                                _prevDir = Vector3.Reflect(_prevDir, hits[i].normal);
-                                if (_pv.IsMine)
-                                {
-                                    _pv.RPC("Rpc_Explose", RpcTarget.All, _prevPos);
-                                }
-                            }
-
-                            if (hits[i].collider.gameObject.CompareTag("Player"))
-                            {
-                                PlayerController _playerController = hits[i].collider.GetComponent<PlayerController>();
-                                if (_pv.IsMine != _playerController.Pv.IsMine && _playerController.Pv.IsMine&&!_playerController.IsBounce)
-                                {
-                                    _playerController.DamageFunc(BounceDamage, BounceBeElasticity, _prevDir.x, _prevDir.y, _beShotShakeValue);
-                                    _playerController.IsBounceEvent();
-                                }
-                            }
-                        }
-                    }*/
-
+                    _edgeCollider.points = HitGroundLocalPos.ToArray();
                     _isChangeColor = true;
                 }
             }
@@ -175,8 +160,14 @@ public class Bounce : MonoBehaviour
                 if (_laserTransparency <= 0)
                 {
                     _isChangeColor = _isBounce = false;
+                    for(int i=0; i < HitGroundLocalPos.Count; i++)
+                    {
+                        HitGroundLocalPos[i] = Vector2.zero;
+                    }
+                    _edgeCollider.points = _edgeCollider.points = HitGroundLocalPos.ToArray();
                     HitGroundPos.Clear();
-                    gameObject.SetActive(false);
+                    HitGroundLocalPos.Clear();
+                    _pv.RPC("Rpc_DisableObj", RpcTarget.All);
                 }
             }
         }
@@ -204,8 +195,25 @@ public class Bounce : MonoBehaviour
 
             if (_pv.IsMine != _playerController.Pv.IsMine && _playerController.Pv.IsMine&& !_playerController.IsBounce)
             {
-                _playerController.DamageFunc(BounceDamage, BounceBeElasticity, _prevDir.x, _prevDir.y,_beShotShakeValue);
+                _playerController.DamageEvent(BounceDamage, BounceBeElasticity, _prevDir.x, _prevDir.y,_beShotShakeValue);
                 _playerController.IsBounceEvent();
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
+            if (_pv.IsMine == _playerController.Pv.IsMine && _pv.IsMine && !_playerController.IsBounce)
+            {
+                
+            }
+
+            if (_pv.IsMine != _playerController.Pv.IsMine && _playerController.Pv.IsMine && !_playerController.IsBounce)
+            {
+                
             }
         }
     }

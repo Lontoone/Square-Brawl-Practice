@@ -7,24 +7,22 @@ using Photon.Pun;
 public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
 {
     [HeaderAttribute("Bullet Setting")]
-    public float GrenadeSpeed;//Grenade Speed
-    public float GrenadeDamage;//Grenade Damage
-    public float GrenadeBeElasticity;//Grenade Be Elasticity
-    public float GrenadeScaleValue;//Grenade Scale Value
-    public float FieldExplose;//Explose Field
+    protected float GrenadeSpeed;//Grenade Speed
+    protected float GrenadeDamage;//Grenade Damage
+    protected float GrenadeBeElasticity;//Grenade Be Elasticity
+    protected float GrenadeScaleValue;//Grenade Scale Value
+    protected float FieldExplose;//Explose Field
 
-    public bool isMaster;
+    protected bool isMaster;
 
     protected Vector3 _beShotShakeValue;
 
-    public string ExploseEffectName;
+    protected string ExploseEffectName;
 
     public LayerMask LayerToExplose;
 
     protected Rigidbody2D _rb;
     protected GameObject _childObj;
-
-    public Action<string,float,float,float,Vector3> GrenadeFunc;
 
     [HeaderAttribute("Sync Setting")]
     protected PhotonView _pv;
@@ -35,15 +33,14 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     protected Vector3 _childObjnetworkPosition;
     protected Vector3 _childObjnetworkScale;
     protected Quaternion _networkDir;
+
     protected virtual void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
-        GrenadeFunc = GrenadeEvent;
         if (_pv.IsMine)
         {
             SetColor();
-            //PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
     }
@@ -56,13 +53,6 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
     }
 
-    [PunRPC]
-    void ChangeColor(Vector3 color)
-    {
-        Color _color = new Color(color.x, color.y, color.z);
-        transform.GetComponent<SpriteRenderer>().color = _color;
-    }
-
     public void OnObjectSpawn()
     {
         if (_pv.IsMine)
@@ -73,7 +63,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         }
     }
 
-    protected void GrenadeEvent(string _effectName,float _speed,float _damage,float _beElasticity,Vector3 _beShotShake)
+    public void GrenadeEvent(string _effectName,float _speed,float _damage,float _beElasticity,Vector3 _beShotShake)
     {
         ExploseEffectName = _effectName;
         GrenadeSpeed = _speed;
@@ -82,7 +72,6 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         _beShotShakeValue = _beShotShake;
         _pv.RPC("Rpc_SetValue", RpcTarget.All, GrenadeSpeed, GrenadeDamage, GrenadeScaleValue, GrenadeBeElasticity, _beShotShakeValue);
         _rb.AddForce(GrenadeSpeed * transform.right);
-       // transform.eulerAngles = Vector3.zero;
         isMaster = true;
     }
 
@@ -138,6 +127,13 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
                 isMaster = true;
             }
         }
+    }
+
+    [PunRPC]
+    void ChangeColor(Vector3 color)
+    {
+        Color _color = new Color(color.x, color.y, color.z);
+        transform.GetComponent<SpriteRenderer>().color = _color;
     }
 
     [PunRPC]

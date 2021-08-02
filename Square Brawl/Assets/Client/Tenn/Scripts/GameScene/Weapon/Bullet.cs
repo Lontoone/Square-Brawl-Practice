@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     private float BulletBeElasticity;//Bullet Be Elasticity
     private float BulletScaleValue;//Bullet Scale Value
 
-    private Vector3 _beShotShakeValue;
+    private Vector3 _cameraShakeValue;
 
     private Vector3 _originPos;//Bullet Origin Position
 
@@ -24,9 +24,6 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
 
     protected Rigidbody2D _rb;
 
-    public Action<string,float,float,float,float,bool,Vector3> ShootFunc;
-    public Action<Vector3, Vector3, Vector3> ShootShakeFunc;
-
     [HeaderAttribute("Sync Setting")]
     protected PhotonView _pv;
 
@@ -37,17 +34,10 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     {
         _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
-        ShootFunc += BulletShootEvent;
         if (_pv.IsMine)
         {
             SetColor();
-            //PlayerController.instance.OnChangeColor += SetColor;
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
-            /*_pv.RPC("SetStatus", RpcTarget.All, ShootSpeed, ShootDamage, BulletScaleValue, BeShootElasticity, IsDontShootStraight, transform.position);
-            if (IsDontShootStraight)
-            {
-                transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + Random.Range(-10, 11));
-            }*/
         }
     }
 
@@ -76,7 +66,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    private void BulletShootEvent(string _name,float _speed,float _damage,float _scaleValue,float _elasticity,bool _isStraight, Vector3 _beShotShake)
+    public void ShootEvent(string _name,float _speed,float _damage,float _scaleValue,float _elasticity,bool _isStraight, Vector3 _cameraShakeValue)
     {
         ExploseEffectName = _name;
         BulletSpeed = _speed;
@@ -84,9 +74,9 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         BulletScaleValue = _scaleValue;
         BulletBeElasticity = _elasticity;
         _isDontShootStraight = _isStraight;
-        _beShotShakeValue = _beShotShake;
+        this._cameraShakeValue = _cameraShakeValue;
         _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
-        _pv.RPC("Rpc_SetValue", RpcTarget.All, BulletSpeed, BulletDamage, BulletScaleValue, BulletBeElasticity, _isDontShootStraight, _beShotShakeValue);
+        _pv.RPC("Rpc_SetValue", RpcTarget.All, BulletSpeed, BulletDamage, BulletScaleValue, BulletBeElasticity, _isDontShootStraight, this._cameraShakeValue);
 
         if (_isDontShootStraight)
         {
@@ -98,7 +88,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     {
         //ResetValue();//Reset Bullet Value
 
-        //BulletCollider();//Bullet Collider Raycast
+        BulletCollider();//Bullet Collider Raycast
     }
 
     protected virtual void FixedUpdate()
@@ -113,11 +103,11 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    /*void BulletCollider()
+    void BulletCollider()
     {
-        _originPos = transform.position + new Vector3(transform.localScale.x / 2, 0, 0);
-        RaycastHit2D[] hits = Physics2D.RaycastAll(_originPos, (transform.position - _originPos).normalized, (transform.position - _originPos).magnitude);
-
+        //_originPos = transform.position;// + new Vector3(transform.localScale.x / 2, 0, 0);
+                                        //RaycastHit2D[] hits = Physics2D.RaycastAll(_originPos, (transform.position - _originPos).normalized, (transform.position - _originPos).magnitude);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position - new Vector3(transform.localScale.x / 2, 0, 0), transform.right, transform.localScale.x);
         for (int i = 0; i < hits.Length; i++)
         {
             if (hits[i].collider.gameObject.CompareTag("Player"))
@@ -127,20 +117,27 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 {
                     if (_isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
                     {
-                        float DirX = Mathf.Cos(transform.eulerAngles.z * Mathf.PI / 180);
+                        /*float DirX = Mathf.Cos(transform.eulerAngles.z * Mathf.PI / 180);
                         float DirY = Mathf.Sin(transform.eulerAngles.z * Mathf.PI / 180);
-                        _playerController.TakeDamage(BulletDamage);
-                        _playerController.BeBounce(BulletBeElasticity, DirX, DirY);
+                        _playerController.DamageEvent(BulletDamage, BulletBeElasticity, DirX, DirY, _cameraShakeValue);
                         if (_pv.IsMine)
                         {
                             ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
                         }
-                        DisableObj();
+                        gameObject.SetActive(false);*/
+                        //_pv.RPC("Rpc_DisableObj", RpcTarget.All);
                     }
                     else if((_pv.IsMine != _playerController.Pv.IsMine && !_playerController.Pv.IsMine))
                     {
                         ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
-                        DisableObj();
+                        _pv.RPC("Rpc_DisableObj", RpcTarget.All);
+                        float DirX = Mathf.Cos(transform.eulerAngles.z * Mathf.PI / 180);
+                        float DirY = Mathf.Sin(transform.eulerAngles.z * Mathf.PI / 180);
+                        _playerController.DamageEvent(BulletDamage, BulletBeElasticity, DirX, DirY, _cameraShakeValue);
+                        if (_pv.IsMine)
+                        {
+                            ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+                        }
                     } 
                 }
                 else
@@ -158,15 +155,15 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 if (_pv.IsMine)
                 {
                     ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
-                    DisableObj();
+                    _pv.RPC("Rpc_DisableObj", RpcTarget.All);
                 }
             }
         }
 
         Debug.DrawLine(transform.position, _originPos, Color.red);
-    }*/
+    }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    /*private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
@@ -177,7 +174,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 {
                     float DirX = Mathf.Cos(transform.eulerAngles.z * Mathf.PI / 180);
                     float DirY = Mathf.Sin(transform.eulerAngles.z * Mathf.PI / 180);
-                    _playerController.TakeDamage(BulletDamage, _beShotShakeValue.x, _beShotShakeValue.y, _beShotShakeValue.z);
+                    _playerController.TakeDamage(BulletDamage, _cameraShakeValue.x, _cameraShakeValue.y, _cameraShakeValue.z);
                     _playerController.BeBounce(BulletBeElasticity, DirX, DirY);
                     if (_pv.IsMine)
                     {
@@ -209,7 +206,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 DisableObj();
             }
         }
-    }
+    }*/
 
     [PunRPC]
     public void Rpc_SetValue(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot,Vector3 _beShotShake)
@@ -219,12 +216,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         BulletScaleValue = _scaleValue;
         BulletBeElasticity = _elasticity;
         _isDontShootStraight = IsDontShoot;
-        _beShotShakeValue = _beShotShake;
-    }
-
-    void DisableObj()
-    {
-        _pv.RPC("Rpc_DisableObj", RpcTarget.All);
+        _cameraShakeValue = _beShotShake;
     }
 
     [PunRPC]

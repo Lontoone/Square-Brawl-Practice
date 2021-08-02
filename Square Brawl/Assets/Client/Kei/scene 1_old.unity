@@ -2912,7 +2912,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1066327098}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.0315682, y: -0.5843654, z: -1.1332585}
+  m_LocalPosition: {x: -1, y: 0, z: -1.1332585}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5147,9 +5147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f7bbb4d4b6ae248bb6d6334520a11d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_aim_pos: {fileID: 1979353060}
-  m_aim_object: {fileID: 1175739082}
-  distance: 350
+  m_AimPos: {fileID: 0}
+  m_AimObject: {fileID: 0}
+  m_Distance: 0
 --- !u!1 &2032333057
 GameObject:
   m_ObjectHideFlags: 0

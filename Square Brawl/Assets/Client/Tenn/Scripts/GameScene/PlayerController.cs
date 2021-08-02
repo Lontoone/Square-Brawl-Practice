@@ -33,12 +33,6 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     private bool _canSpin;//Player Can Spin?
 
-    public Action<float,float,float,Vector3> ChargeFunc;
-    public Action<float> RecoilFunc;
-    public Action<float,int,Vector3> FreezeFunc;
-    public Action<float,float,float,float,Vector3> DamageFunc;
-    public event Action OnChangeColor;
-
     [HeaderAttribute("GroundCheck Setting")]
     public float FootOffset;
     public float GroundDistance;
@@ -55,7 +49,6 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     public Transform FrontSightMidPos;//FrontSightMid Position
     public Transform FrontSightPos;//FrontSight Position
     private Rigidbody2D _rb;//Player Rigidbody
-   // public Rigidbody2D FrontSightRb;//FrontSight Rigidbody
 
     private Camera _camera;
 
@@ -83,12 +76,6 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         Pv = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody2D>();
         _playerManager = PhotonView.Find((int)Pv.InstantiationData[0]).GetComponent<PlayerManager>();
-
-        ChargeFunc = ChargeEvent;
-        RecoilFunc = PlayerRecoil;
-        FreezeFunc = FreezeEvent;
-        DamageFunc = DamageEvent;
-        //OnChangeColor += SetColor;
 
         if (Pv.IsMine)
         {
@@ -157,7 +144,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
        // else
       //  {
             GroundCheckEvent();//Is Grounding?
-      //  }
+                               //  }
     }
     void FixedUpdate()
     {
@@ -318,7 +305,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         _rb.AddForce(-Recoil * new Vector2(DirX, DirY));
     }
 
-    private void ChargeEvent(float _speed, float _elasticity, float _damage,Vector3 _beShotShake)
+    public void ChargeEvent(float _speed, float _elasticity, float _damage,Vector3 _beShotShake)
     {
         PlayerRecoil(_speed);
         BeElasticity = _elasticity;
@@ -337,7 +324,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         _isCharge = false;
     }
 
-    private void FreezeEvent(float _viewDistance, int viewCount,Vector3 _beShootShake)
+    public void FreezeEvent(float _viewDistance, int viewCount,Vector3 _beShootShake)
     {
         _beShootShakeValue = _beShootShake;
         
@@ -375,7 +362,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         Pv.RPC("Rpc_StopBeFreeze",RpcTarget.All);
     }
 
-    private void DamageEvent(float _damage,float _beElasticity,float _dirX,float _dirY,Vector3 _beShotShake)
+    public void DamageEvent(float _damage,float _beElasticity,float _dirX,float _dirY,Vector3 _beShotShake)
     {
         TakeDamage(_damage, _beShotShake.x, _beShotShake.y, _beShotShake.z);
         BeBounce(_beElasticity, _dirX, _dirY);
@@ -447,16 +434,22 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         if (other.gameObject.CompareTag("Katada")&&Pv.IsMine)
         {
             Katada _katada = other.gameObject.GetComponent<Katada>();
-            _katada.ColliderFunc(this);
+            _katada.KatadaCollider(this);
         }
         else if (other.gameObject.CompareTag("Shield") && Pv.IsMine)
         {
             Shield _shield = other.gameObject.GetComponent<Shield>();
-            _shield.ColliderFunc(this);
+            _shield.ShieldCollider(this);
         }
     }
 
     public void BeBounce(float _elasticty,float _dirX,float _dirY)
+    {
+        Pv.RPC("Rpc_BeBounce", RpcTarget.All, _elasticty, _dirX, _dirY);
+    }
+
+    [PunRPC]
+    void Rpc_BeBounce(float _elasticty, float _dirX, float _dirY)
     {
         _rb.AddForce(_elasticty * new Vector2(_dirX, _dirY));
     }
@@ -479,16 +472,17 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         _uiControl.ReduceHp(PlayerHp);
         if (PlayerHp <= 0)
         {
-            Die();
+            Invoke("Rebirth", 3f);
+            gameObject.SetActive(false);
         }
     }
 
-    void Die()
+    void Rebirth()
     {
-        gameObject.SetActive(false);
-        /*bool a = false;
-        object[] dates = new object[] { a };
-        PhotonNetwork.RaiseEvent(PLAYER_DISABLE_EVENT,dates,.)*/
+        gameObject.SetActive(true);
+        transform.position = new Vector3(UnityEngine.Random.Range(-5, 6), 0, 0);
+        PlayerHp = 100;
+        _uiControl.ReduceHp(PlayerHp);
     }
 
     [PunRPC]

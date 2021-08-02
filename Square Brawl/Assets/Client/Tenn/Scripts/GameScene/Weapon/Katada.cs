@@ -16,12 +16,20 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
 
     private bool _isKatadaReverse;//Is Katada Reverse?
 
-    public Action<float,float,float,bool,Vector3> KatadaFunc;
-    public Action<PlayerController> ColliderFunc;
-
     private Quaternion _newSyncDir;
 
     public PhotonView _pv;
+
+    void Start()
+    {
+        _pv = GetComponent<PhotonView>();
+
+        if (_pv.IsMine)
+        {
+            SetColor();
+            _pv.RPC("Rpc_DisableObj", RpcTarget.All);
+        }
+    }
 
     public void OnObjectSpawn()
     {
@@ -29,21 +37,6 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         {
             _pv.RPC("Rpc_EnableObj", RpcTarget.All,transform.eulerAngles.z);
             _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
-        }
-    }
-
-
-    void Start()
-    {
-        _pv = GetComponent<PhotonView>();
-        KatadaFunc = KatadaEvent;
-        ColliderFunc = KatadaCollider;
-
-        if (_pv.IsMine)
-        {
-            SetColor();
-            //PlayerController.instance.OnChangeColor += SetColor;
-            _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
     }
 
@@ -57,16 +50,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
     }
 
-    [PunRPC]
-    void ChangeColor(Vector3 color)
-    {
-        Color _color = new Color(color.x, color.y, color.z);
-        TrailRenderer _trail = transform.GetChild(0).GetComponent<TrailRenderer>();
-        transform.GetChild(0).GetComponent<SpriteRenderer>().color =
-            _trail.startColor = _trail.endColor = _color;
-    }
-
-    private void KatadaEvent(float _speed,float _damage,float _blasticity,bool _isReverse,Vector3 _beShotShake)
+    public void KatadaEvent(float _speed,float _damage,float _blasticity,bool _isReverse,Vector3 _beShotShake)
     {
         KatadaSpeed = _speed;
         KatadaDamage = _damage;
@@ -96,7 +80,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
             float x = Mathf.Cos(BeElasticityDir * Mathf.PI / 180);
             float y = Mathf.Sin(BeElasticityDir * Mathf.PI / 180);
-            _playerController.DamageFunc(KatadaDamage, KatadaBeElasticity, x, y, _beShotShakeValue);
+            _playerController.DamageEvent(KatadaDamage, KatadaBeElasticity, x, y, _beShotShakeValue);
         }
     }
 
@@ -128,6 +112,15 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     }
 
     [PunRPC]
+    void ChangeColor(Vector3 color)
+    {
+        Color _color = new Color(color.x, color.y, color.z);
+        TrailRenderer _trail = transform.GetChild(0).GetComponent<TrailRenderer>();
+        transform.GetChild(0).GetComponent<SpriteRenderer>().color =
+            _trail.startColor = _trail.endColor = _color;
+    }
+
+    [PunRPC]
     public void Rpc_EnableObj(float _dirZ)
     {
         gameObject.SetActive(true);
@@ -143,17 +136,17 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     }
 
     [PunRPC]
-    public void Rpc_DisableObj()
-    {
-        gameObject.SetActive(false);
-    }
-
-    [PunRPC]
-    public void Rpc_SetValue(float _damage, float _elasticity,Vector3 _beShootShake)
+    public void Rpc_SetValue(float _damage, float _elasticity, Vector3 _beShootShake)
     {
         KatadaDamage = _damage;
         KatadaBeElasticity = _elasticity;
         _beShotShakeValue = _beShootShake;
+    }
+
+    [PunRPC]
+    public void Rpc_DisableObj()
+    {
+        gameObject.SetActive(false);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -165,7 +158,6 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         else
         {
             _newSyncDir = (Quaternion)stream.ReceiveNext();
-            
         }
     }
 }

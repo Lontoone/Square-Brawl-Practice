@@ -5,15 +5,16 @@ using Photon.Pun;
 
 public class Pillar : Grenade, IPoolObject
 {
-    public float GroundDistance;
+    protected float _groundDistance;
     private float _growY;
 
-    public bool _isGrow;
-    public bool _isBoom;
-    public bool _isCanAddForce;
+    private bool _isGrow;
+    private bool _isBoom;
+    private bool _isCanAddForce;
 
     private Vector2 _colliderDir;
     private Vector2 _colliderSpawnPos;
+
     public LayerMask GroundLayer;
 
     protected override void Start()
@@ -23,12 +24,9 @@ public class Pillar : Grenade, IPoolObject
 
         _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
-        GrenadeFunc = GrenadeEvent;
         if (_pv.IsMine)
         {
             SetColor();
-            //PlayerController.instance.OnChangeColor += SetColor;
-            _pv.RPC("Rpc_DisableObj", RpcTarget.All);
         }
     }
 
@@ -38,20 +36,14 @@ public class Pillar : Grenade, IPoolObject
             CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
 
         _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
-    }
-
-    [PunRPC]
-    void ChangeColor(Vector3 color)
-    {
-        Color _color = new Color(color.x, color.y, color.z);
-        transform.GetChild(0).GetComponent<SpriteRenderer>().color = _color;
+        _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
     public void OnObjectSpawn()
     {
         if (_pv.IsMine)
         {
-            GroundDistance = 0.2f;
+            _groundDistance = 0.2f;
             _pv.RPC("Rpc_EnableObj", RpcTarget.All);
             _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
         }
@@ -62,7 +54,7 @@ public class Pillar : Grenade, IPoolObject
         ColliderEvent();
     }
 
-    protected new void FixedUpdate()
+    protected override void FixedUpdate()
     {
         base.FixedUpdate();
         if (!_pv.IsMine)
@@ -124,16 +116,16 @@ public class Pillar : Grenade, IPoolObject
         else if (other.gameObject.CompareTag("Player") && !_isCanAddForce &&!_isGrow)
         {
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
-            if (isMaster != _playerController.Pv.IsMine && !isMaster && !_playerController.IsShield)
+            if (isMaster != _playerController.Pv.IsMine && !isMaster && !_playerController.IsShield && _playerController.IsGround)
             {
-                GroundDistance = 0.65f;
+                _groundDistance = 0.65f;
                 GroundCheckEvent();
                 _playerController.BeBounce(GrenadeBeElasticity * 2, _colliderDir.x, _colliderDir.y);
             }
 
-            if (isMaster != _playerController.Pv.IsMine && isMaster && !_playerController.IsShield)
+            if (isMaster != _playerController.Pv.IsMine && isMaster && !_playerController.IsShield && _playerController.IsGround)
             {
-                GroundDistance = 0.65f;
+                _groundDistance = 0.65f;
                 transform.position = other.gameObject.transform.position;
                 GroundCheckEvent();
                 transform.position = _colliderSpawnPos;
@@ -176,10 +168,10 @@ public class Pillar : Grenade, IPoolObject
     void GroundCheckEvent()
     {
         _isGrow = _isBoom = true;
-        RaycastHit2D leftCheck = Raycast(Vector2.zero, Vector2.left, GroundDistance);
-        RaycastHit2D rightCheck = Raycast(Vector2.zero, Vector2.right, GroundDistance);
-        RaycastHit2D downCheck = Raycast(Vector2.zero, Vector2.down, GroundDistance);
-        RaycastHit2D upCheck = Raycast(Vector2.zero, Vector2.up, GroundDistance);
+        RaycastHit2D leftCheck = Raycast(Vector2.zero, Vector2.left, _groundDistance);
+        RaycastHit2D rightCheck = Raycast(Vector2.zero, Vector2.right, _groundDistance);
+        RaycastHit2D downCheck = Raycast(Vector2.zero, Vector2.down, _groundDistance);
+        RaycastHit2D upCheck = Raycast(Vector2.zero, Vector2.up, _groundDistance);
         if (leftCheck)
         {
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 270);
@@ -206,14 +198,15 @@ public class Pillar : Grenade, IPoolObject
         }
         _pv.RPC("Rpc_SyncColliderDir", RpcTarget.Others,_colliderDir,transform.eulerAngles);
     }
-    void OnDrawGizmosSelected()
+    /*void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay((Vector2)transform.position+ Vector2.zero, Vector2.left* GroundDistance);
-        Gizmos.DrawRay((Vector2)transform.position + Vector2.zero, Vector2.right * GroundDistance);
-        Gizmos.DrawRay((Vector2)transform.position + Vector2.zero, Vector2.down * GroundDistance);
-        Gizmos.DrawRay((Vector2)transform.position + Vector2.zero, Vector2.up * GroundDistance);
-    }
+        Gizmos.DrawRay((Vector2)transform.position+ Vector2.zero, Vector2.left* _groundDistance);
+        Gizmos.DrawRay((Vector2)transform.position + Vector2.zero, Vector2.right * _groundDistance);
+        Gizmos.DrawRay((Vector2)transform.position + Vector2.zero, Vector2.down * _groundDistance);
+        Gizmos.DrawRay((Vector2)transform.position + Vector2.zero, Vector2.up * _groundDistance);
+    }*/
+
     //Ground Raycast
     private RaycastHit2D Raycast(Vector2 offset, Vector2 rayDirection, float lengh)
     {
@@ -222,6 +215,13 @@ public class Pillar : Grenade, IPoolObject
         Color color = hit ? Color.red : Color.green;
         Debug.DrawRay(pos + offset, rayDirection * lengh, color);
         return hit;
+    }
+
+    [PunRPC]
+    void ChangeColor(Vector3 color)
+    {
+        Color _color = new Color(color.x, color.y, color.z);
+        transform.GetChild(0).GetComponent<SpriteRenderer>().color = _color;
     }
 
     [PunRPC]
@@ -237,12 +237,6 @@ public class Pillar : Grenade, IPoolObject
      {
         Explose();
      }
-
-    [PunRPC]
-    void Rpc_Test(PlayerController playerController)
-    {
-        playerController.BeBounce(GrenadeBeElasticity * 2, _colliderDir.x, _colliderDir.y);
-    }
 
     [PunRPC]
     void Rpc_CanAddForceFalse()

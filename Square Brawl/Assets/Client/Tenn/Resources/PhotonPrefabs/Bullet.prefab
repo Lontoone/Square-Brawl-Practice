@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1129241713218187811}
   - component: {fileID: 4325683395466346470}
   - component: {fileID: 8462599747966626384}
-  - component: {fileID: 1309057978684482397}
+  - component: {fileID: 5248060684207610889}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Bullet
@@ -145,7 +145,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1309057978684482397
+--- !u!114 &5248060684207610889
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,9 +160,9 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 0
+  observableSearch: 2
   Synchronization: 3
-  OwnershipTransfer: 1
+  OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 4325683395466346470}
   viewIdField: 0

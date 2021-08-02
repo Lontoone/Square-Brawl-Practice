@@ -91,20 +91,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dddefe720acf3a64faf561c5a07c1eba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GrenadeSpeed: 0
-  GrenadeDamage: 0
-  GrenadeBeElasticity: 0
-  GrenadeScaleValue: 0
-  FieldExplose: 1
-  isMaster: 0
-  ExploseEffectName: 
   LayerToExplose:
     serializedVersion: 2
     m_Bits: 2048
-  GroundDistance: 0.2
-  _isGrow: 0
-  _isBoom: 0
-  _isCanAddForce: 0
   GroundLayer:
     serializedVersion: 2
     m_Bits: 256
