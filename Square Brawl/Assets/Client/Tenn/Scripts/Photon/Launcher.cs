@@ -18,15 +18,25 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] Transform playerListContent;
     [SerializeField] GameObject StartGameButton;
 
+    private bool _hasSetName = false;
+
     public void Awake()
     {
         instance = this;
     }
-    void Start()
+    private void Start()
     {
+        MenuManager.instance.OpenMenu("loading");
+    }
+    public override void OnEnable()
+    {
+        base.OnEnable();
         //connect to server
         PhotonNetwork.ConnectUsingSettings();
-        MenuManager.instance.OpenMenu("loading");
+        if (MenuManager.instance != null)
+        {
+            MenuManager.instance.OpenMenu("loading");
+        }
     }
 
     public override void OnConnectedToMaster()
@@ -38,9 +48,15 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        //MenuManager.instance.OpenMenu("title");
-        MenuManager.instance.OpenMenu("name");
-        Debug.Log("Join lobby");
+        Debug.Log("Join lobby " + _hasSetName);
+        if (_hasSetName)
+        {
+            MenuManager.instance.OpenMenu("title");
+        }
+        else
+        {
+            MenuManager.instance.OpenMenu("name");
+        }
 
         //?temp
         //PhotonNetwork.NickName = "Player" + Random.Range(0, 1000).ToString("0000");
@@ -163,6 +179,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.LocalPlayer.NickName = nameInput.text;
             MenuManager.instance.OpenMenu("title");
+            _hasSetName = true;
         }
     }
     public void StartLevel()
@@ -181,9 +198,14 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
-    public void Quit() {
+    public void Quit()
+    {
+        _hasSetName = false;
         PhotonNetwork.LeaveLobby();
-        //TODO: close menu
+        PhotonNetwork.Disconnect();
+
+        Debug.Log("has set name " + _hasSetName);
+
     }
 
 

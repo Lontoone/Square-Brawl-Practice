@@ -3270,18 +3270,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 507319169}
     m_Modifications:
     - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 507319170}
@@ -3289,38 +3277,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 2041313019}
-    - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ExitLobby
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: EnableButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SceneHandler, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: MenuButtonHandler, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212045495797326, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 1238212046049126526, guid: a01c9709045242b4897de262a3081536, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3408,22 +3364,6 @@ PrefabInstance:
     - target: {fileID: 1238212046049126527, guid: a01c9709045242b4897de262a3081536, type: 3}
       propertyPath: m_Name
       value: Online Menu
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212046049126527, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212047262266418, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -152.74149
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212047262266418, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -29.472748
-      objectReference: {fileID: 0}
-    - target: {fileID: 1238212047262266418, guid: a01c9709045242b4897de262a3081536, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 173.4246
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a01c9709045242b4897de262a3081536, type: 3}
