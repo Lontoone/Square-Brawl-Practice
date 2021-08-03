@@ -22,6 +22,8 @@ public class LineSquareAction : MonoBehaviour
     [SerializeField] private float m_Thickness;
     [Range(0, 1)]
     [SerializeField] private float m_TotalFillAmount = 1;
+    [Range(0, 1)]
+    public int FillOrigin;
 
     Easetype.Current_easetype  m_CurrentEasytype;
     [Space(15)]
@@ -93,6 +95,7 @@ public class LineSquareAction : MonoBehaviour
                 m_Line[i].Mask.GetComponent<RectTransform>().sizeDelta = new Vector2(m_Size, m_Thickness);
                 m_Line[i].Line.GetComponent<RectTransform>().sizeDelta = new Vector2(m_Size, m_Thickness);
                 m_Line[i].Line.GetComponent<Image>().fillAmount = m_TotalFillAmount;
+                m_Line[i].Line.GetComponent<Image>().fillOrigin = FillOrigin;
                 /*
                 lineAnimation.Join(m_Line[i].Line.GetComponent<Image>()
                                 .DOFillAmount(m_TotalFillAmount, m_Duration)
