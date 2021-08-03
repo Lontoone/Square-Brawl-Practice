@@ -31988,30 +31988,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8add1afcab7bbe46a7a98cd8c8729e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MoveType: 1
   m_LineSquare: {fileID: 1603475579}
   m_Angle: -45
   m_Size: 360
   m_Thickness: 7
   m_TotalFillAmount: 1
-  m_TotalMoveTrigger: 1
   m_Easetpe: 21
   m_Duration: 0.5
   m_Up:
     Mask: {fileID: 480487012}
     Line: {fileID: 38396968}
-    FillAmount: 0
+    x: 0
+    y: 0
+    FillAmount: 1
+    FillOrigin: 0
   m_Down:
     Mask: {fileID: 1767203476}
     Line: {fileID: 1726475687}
-    FillAmount: 0
+    x: 0
+    y: 0
+    FillAmount: 1
+    FillOrigin: 0
   m_Left:
     Mask: {fileID: 1080300390}
     Line: {fileID: 2089393745}
-    FillAmount: 0
+    x: 0
+    y: 0
+    FillAmount: 1
+    FillOrigin: 0
   m_Right:
     Mask: {fileID: 1313495703}
     Line: {fileID: 2030354147}
-    FillAmount: 0
+    x: 0
+    y: 0
+    FillAmount: 1
+    FillOrigin: 0
 --- !u!1 &1607145698
 GameObject:
   m_ObjectHideFlags: 0

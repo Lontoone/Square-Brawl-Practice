@@ -11,6 +11,11 @@ namespace Easetype { }
 [ExecuteInEditMode]
 public class LineSquareAction : MonoBehaviour
 {
+    public enum MoveType {Total, Single}
+    public MoveType m_MoveType;
+
+    [Space(20)]
+    [Header("Total")]
     [SerializeField] private GameObject m_LineSquare;
     [SerializeField] private float m_Angle;
     [SerializeField] private float m_Size;
@@ -20,8 +25,6 @@ public class LineSquareAction : MonoBehaviour
 
     Easetype.Current_easetype  m_CurrentEasytype;
     [Space(15)]
-    [Button("TotalMove", "TotalMoveTrigger")]
-    [SerializeField] private bool m_TotalMoveTrigger;
     [SerializeField] private Easetype.Current_easetype.Easetype m_Easetpe;
     [SerializeField] private float m_Duration;
     private Sequence lineAnimation;
@@ -31,10 +34,16 @@ public class LineSquareAction : MonoBehaviour
     {
         public GameObject Mask;
         public GameObject Line;
-        [HideInInspector]
+
+        public float x;
+        public float y;
+        [Range(0, 1)]
         public float FillAmount;
+        [Range(0, 1)]
+        public int FillOrigin;
     }
-    [Space(15)]
+    [Space(20)]
+    [Header("Single")]
     [SerializeField] private LineSquare m_Up;
     [SerializeField] private LineSquare m_Down;
     [SerializeField] private LineSquare m_Left;
@@ -42,41 +51,37 @@ public class LineSquareAction : MonoBehaviour
 
     private LineSquare[] m_Line;
 
-
-
-
     private void Start()
     {
         m_CurrentEasytype = new Easetype.Current_easetype();
 
         m_Line = new LineSquare[4];
-        m_Line[0] = m_Up;
-        m_Line[1] = m_Down;
-        m_Line[2] = m_Left;
-        m_Line[3] = m_Right;
+        
     }
 
 
     private void Update()
     {
+        m_Line[0] = m_Up;
+        m_Line[1] = m_Down;
+        m_Line[2] = m_Left;
+        m_Line[3] = m_Right;
+
         if (m_Thickness < 0)
         {
             m_Thickness = -m_Thickness;
         }
 
-        TotalMove(m_TotalMoveTrigger);
-        
-    }
+        if (m_Size < 0)
+        {
+            m_Size = -m_Size;
+        }
 
-    public void TotalMoveTrigger()
-    {
-        m_TotalMoveTrigger = !m_TotalMoveTrigger;
-        Debug.Log("Total Move : " + m_TotalMoveTrigger);
+        MoveAction(m_MoveType);
     }
-
-    public void TotalMove(bool trigger)
+    public void MoveAction(MoveType m_MoveType)
     {
-        if (trigger)
+        if (m_MoveType == MoveType.Total)
         {
             m_LineSquare.GetComponent<RectTransform>().sizeDelta = new Vector2(m_Size, m_Size);
             m_LineSquare.transform.rotation = Quaternion.Euler(new Vector3(0, 0, m_Angle));
@@ -88,6 +93,26 @@ public class LineSquareAction : MonoBehaviour
                 m_Line[i].Mask.GetComponent<RectTransform>().sizeDelta = new Vector2(m_Size, m_Thickness);
                 m_Line[i].Line.GetComponent<RectTransform>().sizeDelta = new Vector2(m_Size, m_Thickness);
                 m_Line[i].Line.GetComponent<Image>().fillAmount = m_TotalFillAmount;
+                /*
+                lineAnimation.Join(m_Line[i].Line.GetComponent<Image>()
+                                .DOFillAmount(m_TotalFillAmount, m_Duration)
+                                .SetEase(m_CurrentEasytype.GetEasetype(m_Easetpe)));*/
+            }
+        }
+        else if(m_MoveType == MoveType.Single)
+        {
+            m_LineSquare.GetComponent<RectTransform>().sizeDelta = new Vector2(m_Size, m_Size);
+            m_LineSquare.transform.rotation = Quaternion.Euler(new Vector3(0, 0, m_Angle));
+
+            lineAnimation.Kill();
+            lineAnimation = DOTween.Sequence();
+            for (int i = 0; i < 4; i++)
+            {
+                m_Line[i].Line.GetComponent<RectTransform>().anchoredPosition = new Vector2(m_Line[i].x, m_Line[i].y);
+                m_Line[i].Mask.GetComponent<RectTransform>().sizeDelta = new Vector2(m_Size, m_Thickness);
+                m_Line[i].Line.GetComponent<RectTransform>().sizeDelta = new Vector2(m_Size, m_Thickness);
+                m_Line[i].Line.GetComponent<Image>().fillOrigin = m_Line[i].FillOrigin;
+                m_Line[i].Line.GetComponent<Image>().fillAmount = m_Line[i].FillAmount;
                 /*
                 lineAnimation.Join(m_Line[i].Line.GetComponent<Image>()
                                 .DOFillAmount(m_TotalFillAmount, m_Duration)
