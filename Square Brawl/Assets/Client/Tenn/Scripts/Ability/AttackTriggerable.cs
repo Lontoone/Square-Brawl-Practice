@@ -96,7 +96,7 @@ public class AttackTriggerable : MonoBehaviour
     public void Bounce()
     {
         GameObject _bounceObj = ObjectsPool.Instance.SpawnFromPool("Bounce", _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
-        Physics2D.queriesStartInColliders = false;
+       // Physics2D.queriesStartInColliders = false;
         CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
         //Bounce _bounce = PlayerController.instance.transform.GetChild(5).gameObject.GetComponent<Bounce>();
         Bounce _bounce = _bounceObj.GetComponent<Bounce>();

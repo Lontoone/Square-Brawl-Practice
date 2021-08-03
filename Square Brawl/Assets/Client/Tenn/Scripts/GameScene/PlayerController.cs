@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 using System.IO;
+using XInputDotNetPure;
 public class PlayerController : MonoBehaviourPun,IPunObservable
 {
     [HeaderAttribute("Player Setting")]
@@ -51,6 +52,9 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     private Rigidbody2D _rb;//Player Rigidbody
 
     private Camera _camera;
+
+    PlayerIndex playerIndex;
+    GamePadState state;
 
     [HeaderAttribute("Sync Setting")]
     private const byte PLAYER_DISABLE_EVENT=0;
@@ -263,7 +267,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     private void PlayerJumpDown()
     {
-        _isJump = _isCheckSpin = true;    
+        _isJump = _isCheckSpin = true;
     }
 
     private void PlayerJumpUp()
@@ -462,7 +466,14 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     public void TakeDamage(float _damage,float _shakeTime,float _shakePower,float _decrease)//,float _elasticty,float _bullletDirX,float _bullletDirY)
     {
         CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
+        GamePad.SetVibration(0, 1, 1);
+        StartCoroutine("StopGamePadShake");
         Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage);
+    }
+    IEnumerator StopGamePadShake()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GamePad.SetVibration(0, 0, 0);
     }
 
     [PunRPC]

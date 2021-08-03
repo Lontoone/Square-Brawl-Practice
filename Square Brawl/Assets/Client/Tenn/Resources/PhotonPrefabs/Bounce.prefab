@@ -147,7 +147,6 @@ MonoBehaviour:
   BounceBeElasticity: 0
   FieldExplose: 1
   BounceExploseEffectName: 
-  _beShotShakeValue: {x: 0, y: 0, z: 0}
   _edgeCollider: {fileID: 0}
   _laserRenderer: {fileID: 0}
   LayerToExplose:

@@ -115,19 +115,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 PlayerController _playerController = hits[i].collider.gameObject.GetComponent<PlayerController>();
                 if (!_playerController.IsShield) 
                 {
-                    if (_isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
-                    {
-                        /*float DirX = Mathf.Cos(transform.eulerAngles.z * Mathf.PI / 180);
-                        float DirY = Mathf.Sin(transform.eulerAngles.z * Mathf.PI / 180);
-                        _playerController.DamageEvent(BulletDamage, BulletBeElasticity, DirX, DirY, _cameraShakeValue);
-                        if (_pv.IsMine)
-                        {
-                            ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
-                        }
-                        gameObject.SetActive(false);*/
-                        //_pv.RPC("Rpc_DisableObj", RpcTarget.All);
-                    }
-                    else if((_pv.IsMine != _playerController.Pv.IsMine && !_playerController.Pv.IsMine))
+                    if((_pv.IsMine != _playerController.Pv.IsMine && !_playerController.Pv.IsMine))
                     {
                         ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
                         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
@@ -159,54 +147,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 }
             }
         }
-
-        Debug.DrawLine(transform.position, _originPos, Color.red);
     }
-
-    /*private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
-            if (!_playerController.IsShield)
-            {
-                if (_isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
-                {
-                    float DirX = Mathf.Cos(transform.eulerAngles.z * Mathf.PI / 180);
-                    float DirY = Mathf.Sin(transform.eulerAngles.z * Mathf.PI / 180);
-                    _playerController.TakeDamage(BulletDamage, _cameraShakeValue.x, _cameraShakeValue.y, _cameraShakeValue.z);
-                    _playerController.BeBounce(BulletBeElasticity, DirX, DirY);
-                    if (_pv.IsMine)
-                    {
-                        ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
-                    }
-                    DisableObj();
-                }
-                else if ((_pv.IsMine != _playerController.Pv.IsMine && !_playerController.Pv.IsMine))
-                {
-                    ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
-                    DisableObj();
-                }
-            }
-            else
-            {
-                if (_isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine && !_isBounce)
-                {
-                    transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z + 180);
-                    _pv.RPC("Rpc_ChangeAngles", RpcTarget.Others, transform.eulerAngles);
-                    _isBounce = _isMaster = true;
-                }
-            }
-        }
-        else if (other.gameObject.CompareTag("Ground"))
-        {
-            if (_pv.IsMine)
-            {
-                ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
-                DisableObj();
-            }
-        }
-    }*/
 
     [PunRPC]
     public void Rpc_SetValue(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot,Vector3 _beShotShake)

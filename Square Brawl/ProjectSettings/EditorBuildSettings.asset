@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Client/Kei/scene 1.unity
     guid: f1f24b9a67762e54a9f5d4d55d1fa354
   - enabled: 1
-    path: Assets/Client/Kei/scene 1_old.unity
-    guid: a66a8bc3caa8e6b4e8307a6905612ea9
+    path: Assets/Client/Tenn/Scenes/scene 1_old 1.unity
+    guid: 99eaf019397fadf4886086a56397caaf
   - enabled: 1
     path: Assets/Client/Tenn/Scenes/GameScene.unity
     guid: ffa73f2e2a0283e409bc098c27de3a06
