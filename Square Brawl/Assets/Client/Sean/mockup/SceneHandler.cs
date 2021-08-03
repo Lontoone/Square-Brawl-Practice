@@ -146,7 +146,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     public IEnumerator EnterLobby()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(0.5f);
         m_Menu.SetActive(false);
         m_OnlineMenu.SetActive(true);
     }
