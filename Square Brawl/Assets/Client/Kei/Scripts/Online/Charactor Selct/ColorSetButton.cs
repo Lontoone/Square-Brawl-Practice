@@ -15,11 +15,31 @@ public class ColorSetButton : MonoBehaviour
     public void SetColor()
     {
         Debug.Log("Set Color " + colorIndex);
-        colorImage.color = CustomPropertyCode.COLORS[colorIndex];
-        PhotonNetwork.LocalPlayer.SetCustomProperties(
-                                MyPhotonExtension.WrapToHash(
-                                    new object[] { CustomPropertyCode.TEAM_CODE, colorIndex }
-                                ));
+
+        if (!IsColorUsed(colorIndex))
+        {
+            colorImage.color = CustomPropertyCode.COLORS[colorIndex];
+
+            PhotonNetwork.LocalPlayer.SetCustomProperties(
+                                    MyPhotonExtension.WrapToHash(
+                                        new object[] { CustomPropertyCode.TEAM_CODE, colorIndex }
+                                    ));
+        }
+        else {
+            //該顏色已被使用
+        }
+    }
+
+    private bool IsColorUsed(int _colorIndex)
+    {
+        for (int i = 0; i < PhotonNetwork.PlayerListOthers.Length; i++)
+        {
+            if (_colorIndex == (int)PhotonNetwork.PlayerListOthers[i].CustomProperties[CustomPropertyCode.TEAM_CODE])
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
