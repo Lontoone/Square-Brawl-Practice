@@ -11,8 +11,8 @@ public class BounceAbility : Ability
         _attack.WeaponDamage = Damage;
         _attack.BeElasticity = BeElasticity;
         _attack.ExploseEffectName = ExploseEffectName;
-        _attack.ShotShakeValue = ShotShakeValue;
-        _attack.BeShotShakeValue = BeShotShakeValue;
+        _attack.ShootShakeValue = ShotShakeValue;
+        _attack.BeShootShakeValue = BeShotShakeValue;
     }
     public override void Activate()
     {

@@ -24,8 +24,8 @@ public class ShootAbility : Ability
         _attack.WeaponScaleValue = BulletScaleValue;
         _attack.IsDontContinuous = IsDontContinuous;
         _attack.IsDontShootStraight = IsDontShootStraight;
-        _attack.ShotShakeValue = ShotShakeValue;
-        _attack.BeShotShakeValue = BeShotShakeValue;
+        _attack.ShootShakeValue = ShotShakeValue;
+        _attack.BeShootShakeValue = BeShotShakeValue;
     }
 
     public override void Activate()

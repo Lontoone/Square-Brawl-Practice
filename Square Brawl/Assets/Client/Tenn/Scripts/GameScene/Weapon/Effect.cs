@@ -8,7 +8,7 @@ public class Effect : MonoBehaviour,IPoolObject
     private ParticleSystem _effect;
     private PhotonView _pv;
 
-    void Start()
+    void Awake()
     {
         _pv = GetComponent<PhotonView>();
         _effect = GetComponentInChildren<ParticleSystem>();

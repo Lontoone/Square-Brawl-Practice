@@ -11,6 +11,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     protected float GrenadeDamage;//Grenade Damage
     protected float GrenadeBeElasticity;//Grenade Be Elasticity
     protected float GrenadeScaleValue;//Grenade Scale Value
+    [SerializeField]
     protected float FieldExplose;//Explose Field
 
     protected bool isMaster;
@@ -107,10 +108,15 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
                 _playerController.BeExplode(GrenadeBeElasticity, transform.position, FieldExplose);
             }
 
-            if (isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
+            if (isMaster != _playerController.Pv.IsMine && !_playerController.Pv.IsMine)
             {
                 _playerController.TakeDamage(GrenadeDamage, _beShotShakeValue.x, _beShotShakeValue.y, _beShotShakeValue.z);
                 _playerController.BeExplode(GrenadeBeElasticity, transform.position, FieldExplose);
+                var IsKill = _playerController.IsKillAnyone();
+                if (IsKill)
+                {
+                    PlayerKillCountManager.instance.SetKillCount();
+                }
             }
         }
     }

@@ -17,7 +17,7 @@ MonoBehaviour:
   LaunchEffectName: 
   ExploseEffectName: SmallExplose
   CoolDownTime: 2
-  Damage: 10
+  Damage: 50
   Speed: 25
   Recoil: 600
   BeElasticity: 600

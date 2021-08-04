@@ -17,8 +17,8 @@ public class AttackTriggerable : MonoBehaviour
     [HideInInspector] public bool IsDontShootStraight;
     [HideInInspector] public string LaunchEffectName;
     [HideInInspector] public string ExploseEffectName;
-    [HideInInspector] public Vector3 BeShotShakeValue;
-    [HideInInspector] public Vector3 ShotShakeValue;
+    [HideInInspector] public Vector3 BeShootShakeValue;
+    [HideInInspector] public Vector3 ShootShakeValue;
 
     private bool _isKatadaReverse;
 
@@ -35,8 +35,8 @@ public class AttackTriggerable : MonoBehaviour
     {
         GameObject _bulletObj = ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Bullet _bullet = _bulletObj.GetComponent<Bullet>();
-        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
-        _bullet.ShootEvent(ExploseEffectName,WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShotShakeValue);
+        CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
+        _bullet.ShootEvent(ExploseEffectName,WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShootShakeValue);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
     }
 
@@ -47,16 +47,16 @@ public class AttackTriggerable : MonoBehaviour
             GameObject[] _bulletObj = new GameObject[5];
             _bulletObj[i]= ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
             Bullet _bullet = _bulletObj[i].GetComponent<Bullet>();
-            _bullet.ShootEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShotShakeValue);
+            _bullet.ShootEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShootShakeValue);
         }
-        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
+        CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
     }
 
     public void Charge()
     {
-        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
-        PlayerController.instance.ChargeEvent(-WeaponSpeed, BeElasticity, WeaponDamage, BeShotShakeValue);
+        CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
+        PlayerController.instance.ChargeEvent(-WeaponSpeed, BeElasticity, WeaponDamage, BeShootShakeValue);
     }
 
     public void Katada()
@@ -64,7 +64,7 @@ public class AttackTriggerable : MonoBehaviour
         _isKatadaReverse = !_isKatadaReverse;
         GameObject _katadaObj = ObjectsPool.Instance.SpawnFromPool("Katada", _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Katada _katada = _katadaObj.GetComponent<Katada>();
-        _katada.KatadaEvent(WeaponSpeed, WeaponDamage, BeElasticity, _isKatadaReverse, BeShotShakeValue);
+        _katada.KatadaEvent(WeaponSpeed, WeaponDamage, BeElasticity, _isKatadaReverse, BeShootShakeValue);
     }
 
     public void Shield()
@@ -72,15 +72,15 @@ public class AttackTriggerable : MonoBehaviour
         PlayerController.instance.IsShield = true;
         Shield _shield = PlayerController.instance.transform.GetChild(4).gameObject.GetComponent<Shield>();
         _shield.gameObject.SetActive(true);
-        _shield.ShieldEvent(WeaponSpeed, WeaponDamage, BeElasticity, BeShotShakeValue);
-        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
+        _shield.ShieldEvent(WeaponSpeed, WeaponDamage, BeElasticity, BeShootShakeValue);
+        CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
     }
 
     public void Freeze()
     {
-        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
+        CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
-        PlayerController.instance.FreezeEvent(3, 5,BeShotShakeValue);
+        PlayerController.instance.FreezeEvent(3, 5,BeShootShakeValue);
         ObjectsPool.Instance.SpawnFromPool("FreezeShoot", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
     }
 
@@ -88,18 +88,16 @@ public class AttackTriggerable : MonoBehaviour
     {
         GameObject _grenadeObj = ObjectsPool.Instance.SpawnFromPool(Name, _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Grenade _grenade = _grenadeObj.GetComponent<Grenade>();
-        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
-        _grenade.GrenadeEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, BeElasticity,BeShotShakeValue);
+        CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
+        _grenade.GrenadeEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, BeElasticity,BeShootShakeValue);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
     }
 
     public void Bounce()
     {
         GameObject _bounceObj = ObjectsPool.Instance.SpawnFromPool("Bounce", _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
-       // Physics2D.queriesStartInColliders = false;
-        CameraShake.instance.SetShakeValue(ShotShakeValue.x, ShotShakeValue.y, ShotShakeValue.z);
-        //Bounce _bounce = PlayerController.instance.transform.GetChild(5).gameObject.GetComponent<Bounce>();
+        CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         Bounce _bounce = _bounceObj.GetComponent<Bounce>();
-        _bounce.BounceEvent(WeaponDamage, BeElasticity, ExploseEffectName, _bulletSpawnPos.transform.right, BeShotShakeValue);
+        _bounce.BounceEvent(WeaponDamage, BeElasticity, ExploseEffectName, _bulletSpawnPos.transform.right, BeShootShakeValue);
     }
 }

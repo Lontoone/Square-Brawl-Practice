@@ -568,7 +568,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ButtonIndex: 0
-  play_button: {fileID: 189383768}
+  m_PlayButton: {fileID: 0}
+  m_Shadow: {fileID: 0}
+  m_Arror: {fileID: 0}
   easetype: 0
   m_duration: 1
   m_AimObject: {fileID: 0}
@@ -5149,7 +5151,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AimPos: {fileID: 0}
   m_AimObject: {fileID: 0}
+  m_Icon: {fileID: 0}
   m_Distance: 0
+  m_Sprite: []
 --- !u!1 &2032333057
 GameObject:
   m_ObjectHideFlags: 0

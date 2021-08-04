@@ -43,10 +43,15 @@ public class Shield : MonoBehaviour
 
     public void ShieldCollider(PlayerController _playerController)
     {
-        if (!_pv.IsMine)
+        if (_pv.IsMine)
         {
             Vector2 dir = _playerController.transform.position - gameObject.transform.position;
             _playerController.DamageEvent(ShieldDamage, ShieldBeElasticity, dir.x, dir.y, _cameraShakeValue);
+            var IsKill = _playerController.IsKillAnyone();
+            if (IsKill)
+            {
+                PlayerKillCountManager.instance.SetKillCount();
+            }
         }
     }
 

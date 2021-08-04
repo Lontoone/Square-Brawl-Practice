@@ -38,6 +38,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "GamePadRotationLeft",
+                    "type": "PassThrough",
+                    "id": "af7132ae-dad1-44b5-9308-3e38019427b0",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Fire1",
                     "type": "Button",
                     "id": "365bdfae-b71a-4034-8b83-d40b5fdddaef",
@@ -200,6 +208,17 @@
                 },
                 {
                     "name": "",
+                    "id": "348c62df-045d-42be-8eb2-9d2f37add18c",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ceaa26c4-e278-4591-afaf-e432500787fc",
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
@@ -316,6 +335,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Fire2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dced7144-64d7-40a8-912e-0ac6912f1011",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "GamePadRotationLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

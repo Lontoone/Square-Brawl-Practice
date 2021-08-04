@@ -1,27 +1,35 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using Photon.Pun;
-using System.IO;
 using XInputDotNetPure;
+
 public class PlayerController : MonoBehaviourPun,IPunObservable
 {
     [HeaderAttribute("Player Setting")]
-    public float MoveSpeed;//Player Move Speed
-    public float JumpForce;//Player Jump Force
-    public float FlyForce;//Player Fly Force
-    public float DownForce;//Player Down Force
-    public float SpinForce;//Player Spin Force
-    public float SpinInGroundForce;//Player Spin In Ground Force
-    public float Damage;//Player Damage
-    public float PlayerHp;//Player Hp
-    public float Recoil;//Player Recoil
-    public float BeElasticity;//Player BeElasticity
-    public float DirX, DirY;//
+    [SerializeField]
+    private float MoveSpeed;//Player Move Speed
+    [SerializeField]
+    private float JumpForce;//Player Jump Force
+    [SerializeField]
+    private float FlyForce;//Player Fly Force
+    [SerializeField]
+    private float DownForce;//Player Down Force
+    [SerializeField]
+    private float SpinForce;//Player Spin Force
+    [SerializeField]
+    private float SpinInGroundForce;//Player Spin In Ground Force
+
     public float FrontSightAngle;
+    private float Damage;//Player Damage
+    private float _playerHp;//Player Hp
+    private float Recoil;//Player Recoil
+    private float BeElasticity;//Player BeElasticity
+    private float DirX, DirY;//
 
     private Vector3 _beShootShakeValue;
     private Vector3 _freezeLeftRay;
@@ -32,17 +40,17 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     public bool IsShield;
     public bool IsBounce;
 
+    public bool IsGround;//Player Is Ground?
+    private bool _isWall;//Player Is Wall?
+    private bool _isJump;//Player Is Jump?
+    private bool _isCheckSpin;//Is Check Spin?
     private bool _canSpin;//Player Can Spin?
+    private bool _canLeftSticeSpin;
 
     [HeaderAttribute("GroundCheck Setting")]
     public float FootOffset;
     public float GroundDistance;
     public float PlayerWidth;
-
-    public bool IsGround;//Player Is Ground?
-    private bool _isWall;//Player Is Wall?
-    private bool _isJump;//Player Is Jump?
-    private bool _isCheckSpin;//Is Check Spin?
 
     public LayerMask GroundLayer;
 
@@ -53,11 +61,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     private Camera _camera;
 
-    PlayerIndex playerIndex;
-    GamePadState state;
-
     [HeaderAttribute("Sync Setting")]
-    private const byte PLAYER_DISABLE_EVENT=0;
     private float _newDirZ;
 
     private bool _newIsShield;
@@ -80,7 +84,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         Pv = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody2D>();
         _playerManager = PhotonView.Find((int)Pv.InstantiationData[0]).GetComponent<PlayerManager>();
-
+        _uiControl = transform.GetChild(6).GetComponent<PlayerUIController>();
         if (Pv.IsMine)
         {
             instance = this;
@@ -99,10 +103,11 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     void Start()
     {
-        _camera = Camera.main;
+        _playerHp = 100;
         _canSpin = true;
+        _camera = Camera.main;
         FrontSightMidPos = transform.GetChild(0).GetComponent<Transform>();
-        _uiControl = transform.GetChild(6).GetComponent<PlayerUIController>();
+        //_uiControl = transform.GetChild(6).GetComponent<PlayerUIController>();
         if (Pv.IsMine)
         {
             FrontSightPos = FrontSightMidPos.transform.GetChild(0);
@@ -113,7 +118,6 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
             _inputAction.Player.MouseRotation.performed += ctx => MouseSpin(ctx.ReadValue<Vector2>());
             _inputAction.Player.GamePadRotation.performed += ctx => GamePadSpin(ctx.ReadValue<Vector2>());
             SetColor();
-            //OnChangeColor?.Invoke();
         }
     }
 
@@ -128,15 +132,6 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         Pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
     }
 
-    [PunRPC]
-    void ChangeColor(Vector3 color)
-    {
-        Color _color = new Color(color.x, color.y, color.z);
-        transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color = _color;
-        transform.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(_color.r, _color.g, _color.b, 0.5f);
-        _uiControl.PlayerHpImg.color = _color;
-    }
-
     void Update()
     {
         if (!Pv.IsMine)
@@ -145,10 +140,8 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
             IsShield = _newIsShield;
             IsBounce = _newIsBounce;
         }
-       // else
-      //  {
-            GroundCheckEvent();//Is Grounding?
-                               //  }
+
+        GroundCheckEvent();//Is Grounding?
     }
     void FixedUpdate()
     {
@@ -156,8 +149,6 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         {
             _rb.position = Vector2.MoveTowards(_rb.position, _newPos, Time.fixedDeltaTime);
             _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, Time.fixedDeltaTime);
-           // transform.rotation = Quaternion.Lerp(transform.rotation, _newDir, 15*Time.fixedDeltaTime);
-           // ShootSpinMidPos.transform.rotation = Quaternion.Lerp(ShootSpinMidPos.transform.rotation, _newShootPointDir, 15*Time.fixedDeltaTime);
         }
         else if(!IsBeFreeze && Pv.IsMine)
         {
@@ -166,6 +157,10 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         }
     }
 
+    /// <summary>
+    /// Player Control
+    /// </summary>
+    #region
     void PlayerMovement()
     {
         //Player Move
@@ -183,48 +178,14 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         if ((IsGround || _isWall)&&_isJump)//Player Jump
         {
             _rb.AddForce(JumpForce * Vector3.up);
-            // StartCoroutine(IsJumpRecover());
-            StartCoroutine("IsJumpRecover");
+            _isJump = false;
+            Invoke("IsJumpRecover",0.3f);
         }
     }
 
-    IEnumerator IsJumpRecover()
+    void IsJumpRecover()
     {
-        _isJump = false;
-        yield return new WaitForSeconds(0.3f);
         _isJump = true ;
-    }
-
-    void LimitInputValue(Vector2 diretion)
-    {
-        Vector2 _inputMovement = diretion;
-        if (_inputMovement.x > 0.5)
-        {
-            _inputMovement.x = 1;
-        }
-        else if(_inputMovement.x < -0.5)
-        {
-            _inputMovement.x = -1;
-        }
-        else
-        {
-            _inputMovement.x = 0;
-        }
-
-        if (_inputMovement.y > 0.5)
-        {
-            _inputMovement.y = 1;
-        }
-        else if (_inputMovement.y < -0.5)
-        {
-            _inputMovement.y = -1;
-        }
-        else
-        {
-            _inputMovement.y = 0;
-        }
-
-        _inputPos = new Vector2(_inputMovement.x, _inputMovement.y);
     }
 
     void PlayerSpin()
@@ -256,13 +217,61 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
                 _isCheckSpin = false;
                 //Debug.Log("IsGroundJump");
             }
-            else if (!_isWall&&!IsGround)
+            else if (!_isWall && !IsGround)
             {
                 _rb.AddTorque(SpinForce * _inputPos.x);
                 //Debug.Log("IsNotGroundWall");
             }
             _canSpin = false;
         }
+    }
+    #endregion
+
+
+
+    /// <summary>
+    /// PlayerInputSystem Control
+    /// </summary>
+    #region
+    void LimitInputValue(Vector2 diretion)
+    {
+        if (!IsBeFreeze&&_canLeftSticeSpin)
+        {
+            if (diretion.x >= 0.3f || diretion.x <= -0.3f || diretion.y >= 0.3f || diretion.y <= -0.3f)
+            {
+                FrontSightAngle = Mathf.Atan2(diretion.y, diretion.x) * Mathf.Rad2Deg;
+                FrontSightMidPos.rotation = Quaternion.Euler(new Vector3(0, 0, FrontSightAngle));
+            }
+        }
+
+        Vector2 _inputMovement = diretion;
+        if (_inputMovement.x > 0.5)
+        {
+            _inputMovement.x = 1;
+        }
+        else if(_inputMovement.x < -0.5)
+        {
+            _inputMovement.x = -1;
+        }
+        else
+        {
+            _inputMovement.x = 0;
+        }
+
+        if (_inputMovement.y > 0.5)
+        {
+            _inputMovement.y = 1;
+        }
+        else if (_inputMovement.y < -0.5)
+        {
+            _inputMovement.y = -1;
+        }
+        else
+        {
+            _inputMovement.y = 0;
+        }
+
+        _inputPos = new Vector2(_inputMovement.x, _inputMovement.y);
     }
 
     private void PlayerJumpDown()
@@ -273,8 +282,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     private void PlayerJumpUp()
     {
         _isJump = _isCheckSpin = false;
-        //StopAllCoroutines();
-        StopCoroutine("IsJumpRecover");
+        CancelInvoke("IsJumpRecover");
     }
 
     void MouseSpin(Vector2 _mousePos)
@@ -290,6 +298,15 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     void GamePadSpin(Vector2 _mousePos)
     {
+        if (_mousePos.x != 0 && _mousePos.y != 0)
+        {
+            _canLeftSticeSpin = false;
+        }
+        else
+        {
+            _canLeftSticeSpin = true;
+        }
+
         if (!IsBeFreeze) 
         {
             if (_mousePos.x >= 0.3f || _mousePos.x <= -0.3f || _mousePos.y >= 0.3f || _mousePos.y <= -0.3f)
@@ -299,7 +316,56 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
             }
         }
     }
+    #endregion
 
+
+    /// <summary>
+    /// Player Damage And BeBounce Event
+    /// </summary>
+    #region
+    public void DamageEvent(float _damage, float _beElasticity, float _dirX, float _dirY, Vector3 _beShotShake)
+    {
+        TakeDamage(_damage, _beShotShake.x, _beShotShake.y, _beShotShake.z);
+        BeBounce(_beElasticity, _dirX, _dirY);
+    }
+
+    public bool IsKillAnyone()
+    {
+        if (_playerHp <= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void BeBounce(float _elasticty, float _dirX, float _dirY)
+    {
+        Pv.RPC("Rpc_BeBounce", RpcTarget.All, _elasticty, _dirX, _dirY);
+    }
+
+    public void BeExplode(float _elasticty, Vector3 _pos, float _field)
+    {
+        Pv.RPC("Rpc_BeExplode", RpcTarget.All, _elasticty, _pos, _field);
+        //_rb.AddExplosionForce(_elasticty, _pos, _field);
+    }
+
+    public void TakeDamage(float _damage, float _shakeTime, float _shakePower, float _decrease)//,float _elasticty,float _bullletDirX,float _bullletDirY)
+    {
+        CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
+        GamePad.SetVibration(0, 0.5f, 0.5f);
+        Invoke("StopGamePadShake", 0.5f);
+        Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage);
+    }
+    #endregion
+
+
+    /// <summary>
+    /// Player Recoil Event
+    /// </summary>
+    #region
     public void PlayerRecoil(float _recoil)
     {
         Recoil = _recoil;
@@ -308,7 +374,13 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
         _rb.AddForce(-Recoil * new Vector2(DirX, DirY));
     }
+    #endregion
 
+
+    /// <summary>
+    /// Player Charge Event
+    /// </summary>
+    #region
     public void ChargeEvent(float _speed, float _elasticity, float _damage,Vector3 _beShotShake)
     {
         PlayerRecoil(_speed);
@@ -319,15 +391,14 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         DirX = Mathf.Cos(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
         DirY = Mathf.Sin(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
         Pv.RPC("Rpc_ChargeValue", RpcTarget.All, _isCharge, BeElasticity, Damage, DirX, DirY, _beShootShakeValue);
-       // StartCoroutine(IsChargeChangeFalse());
     }
+    #endregion
 
-    IEnumerator IsChargeChangeFalse()
-    {
-        yield return new WaitForSeconds(0.5f);
-        _isCharge = false;
-    }
 
+    /// <summary>
+    /// Player Freeze Event
+    /// </summary>
+    #region
     public void FreezeEvent(float _viewDistance, int viewCount,Vector3 _beShootShake)
     {
         _beShootShakeValue = _beShootShake;
@@ -357,34 +428,36 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     {
         Pv.RPC("Rpc_ChangeBeFreeze", RpcTarget.All, _originPos, _originDir, _beShotAhake);
         //CameraShake.instance.SetShakeValue(_beShotAhake.x, _beShotAhake.y, _beShotAhake.z);
-        StartCoroutine(StopBeFreeze());
+        Invoke("StopBeFreeze",2f);
     }
 
-    IEnumerator StopBeFreeze()
+    void StopBeFreeze()
     {
-        yield return new WaitForSeconds(2f);
         Pv.RPC("Rpc_StopBeFreeze",RpcTarget.All);
     }
+    #endregion
 
-    public void DamageEvent(float _damage,float _beElasticity,float _dirX,float _dirY,Vector3 _beShotShake)
-    {
-        TakeDamage(_damage, _beShotShake.x, _beShotShake.y, _beShotShake.z);
-        BeBounce(_beElasticity, _dirX, _dirY);
-    }
 
+    /// <summary>
+    /// Bounce Event
+    /// </summary>
+    #region
     public void IsBounceEvent()
     {
-        StartCoroutine(IsBounceFalse());
+        Pv.RPC("Rpc_IsBounceEvent", RpcTarget.All);
+        Invoke("IsBounceFalse",0.5f);
     }
 
-    IEnumerator IsBounceFalse()
+    void IsBounceFalse()
     {
-        IsBounce = true;
-        yield return new WaitForSeconds(0.5f);
-        IsBounce = false;
+        Pv.RPC("Rpc_IsBounceEvent", RpcTarget.All);
     }
+    #endregion
 
-    //Ground Check
+    /// <summary>
+    /// Ground Check Event
+    /// </summary>
+    #region
     void GroundCheckEvent()
     {
         RaycastHit2D leftCheck = Raycast(new Vector2(-PlayerWidth, FootOffset), Vector2.left, GroundDistance);
@@ -420,36 +493,61 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         Debug.DrawRay(pos + offset, rayDirection * lengh, color);
         return hit;
     }
+    #endregion
+
+    void StopGamePadShake()
+    {
+        GamePad.SetVibration(0, 0, 0);
+    }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player")&&Pv.IsMine)
+        if (other.gameObject.CompareTag("Player")&&Pv.IsMine&& _isCharge)
         {
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
-            if (!other.gameObject.GetComponent<PhotonView>().IsMine && other.gameObject.GetComponent<PlayerController>()._isCharge)
+            //if (!other.gameObject.GetComponent<PhotonView>().IsMine && other.gameObject.GetComponent<PlayerController>()._isCharge)
+            if (!_playerController.Pv.IsMine)
             {
-                TakeDamage(_playerController.Damage, _playerController._beShootShakeValue.x, _playerController._beShootShakeValue.y, _playerController._beShootShakeValue.z);
-                BeBounce(_playerController.BeElasticity, _playerController.DirX, _playerController.DirY);
+                
+                //TakeDamage(_playerController.Damage, _playerController._beShootShakeValue.x, _playerController._beShootShakeValue.y, _playerController._beShootShakeValue.z);
+                // BeBounce(_playerController.BeElasticity, _playerController.DirX, _playerController.DirY);
+                _playerController.DamageEvent(Damage, BeElasticity, DirX, DirY, _beShootShakeValue);
+                var IsKill = _playerController.IsKillAnyone();
+                if (IsKill)
+                {
+                    PlayerKillCountManager.instance.SetKillCount();
+                }
+                _isCharge = false;
             }
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Katada")&&Pv.IsMine)
+        if (other.gameObject.CompareTag("Katada")&&!Pv.IsMine)
         {
             Katada _katada = other.gameObject.GetComponent<Katada>();
             _katada.KatadaCollider(this);
         }
-        else if (other.gameObject.CompareTag("Shield") && Pv.IsMine)
+        else if (other.gameObject.CompareTag("Shield") && !Pv.IsMine)
         {
             Shield _shield = other.gameObject.GetComponent<Shield>();
             _shield.ShieldCollider(this);
         }
     }
 
-    public void BeBounce(float _elasticty,float _dirX,float _dirY)
+    [PunRPC]
+    void ChangeColor(Vector3 color)
     {
-        Pv.RPC("Rpc_BeBounce", RpcTarget.All, _elasticty, _dirX, _dirY);
+        Color _color = new Color(color.x, color.y, color.z);
+        transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color = _color;
+        transform.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(_color.r, _color.g, _color.b, 0.5f);
+        _uiControl.PlayerHpImg.color = _color;
+    }
+
+    [PunRPC]
+    void Rpc_IsBounceEvent()
+    {
+        IsBounce = !IsBounce;
     }
 
     [PunRPC]
@@ -458,30 +556,18 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         _rb.AddForce(_elasticty * new Vector2(_dirX, _dirY));
     }
 
-    public void BeExplode(float _elasticty, Vector3 _pos, float _field)
+    [PunRPC]
+    void Rpc_BeExplode(float _elasticty, Vector3 _pos, float _field)
     {
         _rb.AddExplosionForce(_elasticty, _pos, _field);
-    }
-
-    public void TakeDamage(float _damage,float _shakeTime,float _shakePower,float _decrease)//,float _elasticty,float _bullletDirX,float _bullletDirY)
-    {
-        CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
-        GamePad.SetVibration(0, 1, 1);
-        StartCoroutine("StopGamePadShake");
-        Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage);
-    }
-    IEnumerator StopGamePadShake()
-    {
-        yield return new WaitForSeconds(0.5f);
-        GamePad.SetVibration(0, 0, 0);
     }
 
     [PunRPC]
     void Rpc_TakeDamage(float _damage)
     {
-        PlayerHp -= _damage;
-        _uiControl.ReduceHp(PlayerHp);
-        if (PlayerHp <= 0)
+        _playerHp -= _damage;
+        _uiControl.ReduceHp(_playerHp);
+        if (_playerHp <= 0)
         {
             Invoke("Rebirth", 3f);
             gameObject.SetActive(false);
@@ -490,10 +576,22 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     void Rebirth()
     {
+        if (Pv.IsMine)
+        {
+            gameObject.SetActive(true);
+            transform.position = new Vector3(UnityEngine.Random.Range(-5, 6), 0, 0);
+            Pv.RPC("Rpc_Rebirth",RpcTarget.Others, transform.position);
+        }
+        _playerHp = 100;
+        _uiControl.ReduceHp(_playerHp);
+    }
+
+    [PunRPC]
+    void Rpc_Rebirth(Vector3 _pos)
+    {
+        _newPos = _pos;
+        transform.position = _pos;
         gameObject.SetActive(true);
-        transform.position = new Vector3(UnityEngine.Random.Range(-5, 6), 0, 0);
-        PlayerHp = 100;
-        _uiControl.ReduceHp(PlayerHp);
     }
 
     [PunRPC]
@@ -505,7 +603,12 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         DirX = _dirX;
         DirY = _dirY;
         _beShootShakeValue = _beShootShake;
-        StartCoroutine(IsChargeChangeFalse());
+        Invoke("IsChargeChangeFalse",0.5f);
+    }
+
+    void IsChargeChangeFalse()
+    {
+        _isCharge = false;
     }
 
     [PunRPC]

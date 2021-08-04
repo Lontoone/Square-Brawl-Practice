@@ -320,24 +320,18 @@ MonoBehaviour:
   DownForce: 20
   SpinForce: -20
   SpinInGroundForce: -5
-  Damage: 0
-  PlayerHp: 100
-  Recoil: 0
-  BeElasticity: 0
-  DirX: 0
-  DirY: 0
   FrontSightAngle: 0
   IsBeFreeze: 0
   _isCharge: 0
   IsShield: 0
   IsBounce: 0
+  IsGround: 0
   FootOffset: 0
   GroundDistance: 0.45
   PlayerWidth: 0
-  IsGround: 0
   GroundLayer:
     serializedVersion: 2
-    m_Bits: 4864
+    m_Bits: 8960
   FrontSightMidPos: {fileID: 0}
   FrontSightPos: {fileID: 0}
   Pv: {fileID: 0}
@@ -1063,8 +1057,8 @@ MonoBehaviour:
   IsDontShootStraight: 0
   LaunchEffectName: 
   ExploseEffectName: 
-  BeShotShakeValue: {x: 0, y: 0, z: 0}
-  ShotShakeValue: {x: 0, y: 0, z: 0}
+  BeShootShakeValue: {x: 0, y: 0, z: 0}
+  ShootShakeValue: {x: 0, y: 0, z: 0}
 --- !u!114 &5771716123695693227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1172,8 +1166,8 @@ MonoBehaviour:
   IsDontShootStraight: 0
   LaunchEffectName: 
   ExploseEffectName: 
-  BeShotShakeValue: {x: 0, y: 0, z: 0}
-  ShotShakeValue: {x: 0, y: 0, z: 0}
+  BeShootShakeValue: {x: 0, y: 0, z: 0}
+  ShootShakeValue: {x: 0, y: 0, z: 0}
 --- !u!114 &762097059166178785
 MonoBehaviour:
   m_ObjectHideFlags: 0

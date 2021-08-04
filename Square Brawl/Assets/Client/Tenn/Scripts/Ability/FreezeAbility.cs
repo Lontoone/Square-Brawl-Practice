@@ -9,8 +9,8 @@ public class FreezeAbility : Ability
     {
         _attack = _obj.GetComponent<AttackTriggerable>();
         _attack.WeaponRecoil = Recoil;
-        _attack.ShotShakeValue = ShotShakeValue;
-        _attack.BeShotShakeValue = BeShotShakeValue;
+        _attack.ShootShakeValue = ShotShakeValue;
+        _attack.BeShootShakeValue = BeShotShakeValue;
     }
 
     public override void Activate()

@@ -51,6 +51,14 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""GamePadRotationLeft"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""af7132ae-dad1-44b5-9308-3e38019427b0"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Fire1"",
                     ""type"": ""Button"",
                     ""id"": ""365bdfae-b71a-4034-8b83-d40b5fdddaef"",
@@ -213,6 +221,17 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""348c62df-045d-42be-8eb2-9d2f37add18c"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""ceaa26c4-e278-4591-afaf-e432500787fc"",
                     ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
@@ -329,6 +348,17 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Fire2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dced7144-64d7-40a8-912e-0ac6912f1011"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""GamePadRotationLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -562,6 +592,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_MouseRotation = m_Player.FindAction("MouseRotation", throwIfNotFound: true);
         m_Player_GamePadRotation = m_Player.FindAction("GamePadRotation", throwIfNotFound: true);
+        m_Player_GamePadRotationLeft = m_Player.FindAction("GamePadRotationLeft", throwIfNotFound: true);
         m_Player_Fire1 = m_Player.FindAction("Fire1", throwIfNotFound: true);
         m_Player_Fire2 = m_Player.FindAction("Fire2", throwIfNotFound: true);
         // UI
@@ -622,6 +653,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_MouseRotation;
     private readonly InputAction m_Player_GamePadRotation;
+    private readonly InputAction m_Player_GamePadRotationLeft;
     private readonly InputAction m_Player_Fire1;
     private readonly InputAction m_Player_Fire2;
     public struct PlayerActions
@@ -632,6 +664,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @MouseRotation => m_Wrapper.m_Player_MouseRotation;
         public InputAction @GamePadRotation => m_Wrapper.m_Player_GamePadRotation;
+        public InputAction @GamePadRotationLeft => m_Wrapper.m_Player_GamePadRotationLeft;
         public InputAction @Fire1 => m_Wrapper.m_Player_Fire1;
         public InputAction @Fire2 => m_Wrapper.m_Player_Fire2;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -655,6 +688,9 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 @GamePadRotation.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamePadRotation;
                 @GamePadRotation.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamePadRotation;
                 @GamePadRotation.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamePadRotation;
+                @GamePadRotationLeft.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamePadRotationLeft;
+                @GamePadRotationLeft.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamePadRotationLeft;
+                @GamePadRotationLeft.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGamePadRotationLeft;
                 @Fire1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
                 @Fire1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
                 @Fire1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
@@ -677,6 +713,9 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 @GamePadRotation.started += instance.OnGamePadRotation;
                 @GamePadRotation.performed += instance.OnGamePadRotation;
                 @GamePadRotation.canceled += instance.OnGamePadRotation;
+                @GamePadRotationLeft.started += instance.OnGamePadRotationLeft;
+                @GamePadRotationLeft.performed += instance.OnGamePadRotationLeft;
+                @GamePadRotationLeft.canceled += instance.OnGamePadRotationLeft;
                 @Fire1.started += instance.OnFire1;
                 @Fire1.performed += instance.OnFire1;
                 @Fire1.canceled += instance.OnFire1;
@@ -760,6 +799,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnMouseRotation(InputAction.CallbackContext context);
         void OnGamePadRotation(InputAction.CallbackContext context);
+        void OnGamePadRotationLeft(InputAction.CallbackContext context);
         void OnFire1(InputAction.CallbackContext context);
         void OnFire2(InputAction.CallbackContext context);
     }

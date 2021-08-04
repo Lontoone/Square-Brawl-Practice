@@ -75,12 +75,17 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
 
     public void KatadaCollider(PlayerController _playerController)
     {
-        if (!_pv.IsMine)
+        if (_pv.IsMine)
         {
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
             float x = Mathf.Cos(BeElasticityDir * Mathf.PI / 180);
             float y = Mathf.Sin(BeElasticityDir * Mathf.PI / 180);
             _playerController.DamageEvent(KatadaDamage, KatadaBeElasticity, x, y, _beShotShakeValue);
+            var IsKill = _playerController.IsKillAnyone();
+            if (IsKill)
+            {
+                PlayerKillCountManager.instance.SetKillCount();
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
 
 public class Pillar : Grenade, IPoolObject
 {
@@ -15,6 +15,8 @@ public class Pillar : Grenade, IPoolObject
     private Vector2 _colliderDir;
     private Vector2 _colliderSpawnPos;
 
+    private BoxCollider2D _collider2D;
+
     public LayerMask GroundLayer;
 
     protected override void Start()
@@ -24,6 +26,7 @@ public class Pillar : Grenade, IPoolObject
 
         _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
+        _collider2D = transform.GetChild(0).GetComponent<BoxCollider2D>();
         if (_pv.IsMine)
         {
             SetColor();
@@ -71,7 +74,7 @@ public class Pillar : Grenade, IPoolObject
         {
             if (_isGrow)
             {
-                _growY = Mathf.Lerp(_growY, 15f, 10 * Time.deltaTime);
+                _growY = Mathf.Lerp(_growY, 12f, 10 * Time.deltaTime);
                 _childObj.transform.localPosition = new Vector3(_childObj.transform.localPosition.x, (_growY / 2) - 0.5f, _childObj.transform.localPosition.z);
                 _childObj.transform.localScale = new Vector3(_childObj.transform.localScale.x, _growY, _childObj.transform.localScale.z);
                 StartCoroutine(Shorten());
@@ -104,7 +107,8 @@ public class Pillar : Grenade, IPoolObject
                 _pv.RPC("Rpc_Explode", RpcTarget.All);
             }
         }
-        else if (other.gameObject.CompareTag("Player") && _isCanAddForce)
+
+        if (other.gameObject.CompareTag("Player")&& _isCanAddForce)
         {
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
             if (isMaster == _playerController.Pv.IsMine && isMaster)
@@ -112,25 +116,15 @@ public class Pillar : Grenade, IPoolObject
                 _playerController.BeBounce(GrenadeBeElasticity, _colliderDir.x, _colliderDir.y);
                 _isCanAddForce = false;
             }
-        }
-        else if (other.gameObject.CompareTag("Player") && !_isCanAddForce &&!_isGrow)
-        {
-            PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
-            if (isMaster != _playerController.Pv.IsMine && !isMaster && !_playerController.IsShield && _playerController.IsGround)
+            else if (isMaster != _playerController.Pv.IsMine && isMaster)
             {
-                _groundDistance = 0.65f;
-                GroundCheckEvent();
-                _playerController.BeBounce(GrenadeBeElasticity * 2, _colliderDir.x, _colliderDir.y);
-            }
-
-            if (isMaster != _playerController.Pv.IsMine && isMaster && !_playerController.IsShield && _playerController.IsGround)
-            {
-                _groundDistance = 0.65f;
-                transform.position = other.gameObject.transform.position;
-                GroundCheckEvent();
-                transform.position = _colliderSpawnPos;
-                _pv.RPC("Rpc_RbStatic", RpcTarget.All, transform.position);
-                _pv.RPC("Rpc_Explode", RpcTarget.All);
+                _playerController.DamageEvent(GrenadeDamage, GrenadeBeElasticity, _colliderDir.x, _colliderDir.y, _beShotShakeValue);
+                _isCanAddForce = false;
+                var IsKill = _playerController.IsKillAnyone();
+                if (IsKill)
+                {
+                    PlayerKillCountManager.instance.SetKillCount();
+                }
             }
         }
     }
@@ -147,11 +141,15 @@ public class Pillar : Grenade, IPoolObject
                 _playerController.BeBounce(GrenadeBeElasticity, _colliderDir.x, _colliderDir.y);
             }
 
-            if (isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine)
+            if (isMaster != _playerController.Pv.IsMine && !_playerController.Pv.IsMine)
             {
                 GroundCheckEvent();
-                _playerController.TakeDamage(GrenadeDamage, _beShotShakeValue.x, _beShotShakeValue.y, _beShotShakeValue.z);
-                _playerController.BeBounce(GrenadeBeElasticity, _colliderDir.x, _colliderDir.y);
+                _playerController.DamageEvent(GrenadeDamage, GrenadeBeElasticity, _colliderDir.x, _colliderDir.y, _beShotShakeValue);
+                var IsKill = _playerController.IsKillAnyone();
+                if (IsKill)
+                {
+                    PlayerKillCountManager.instance.SetKillCount();
+                }
             }
         }
     }
@@ -196,16 +194,23 @@ public class Pillar : Grenade, IPoolObject
             _colliderDir = new Vector2(0, -1);
             _colliderSpawnPos = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
         }
+        else
+        {
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0);
+            _colliderDir = new Vector2(0, 1);
+            _colliderSpawnPos = new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z);
+        }
         _pv.RPC("Rpc_SyncColliderDir", RpcTarget.Others,_colliderDir,transform.eulerAngles);
     }
-    /*void OnDrawGizmosSelected()
+    
+    void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay((Vector2)transform.position+ Vector2.zero, Vector2.left* _groundDistance);
         Gizmos.DrawRay((Vector2)transform.position + Vector2.zero, Vector2.right * _groundDistance);
         Gizmos.DrawRay((Vector2)transform.position + Vector2.zero, Vector2.down * _groundDistance);
         Gizmos.DrawRay((Vector2)transform.position + Vector2.zero, Vector2.up * _groundDistance);
-    }*/
+    }
 
     //Ground Raycast
     private RaycastHit2D Raycast(Vector2 offset, Vector2 rayDirection, float lengh)
@@ -229,6 +234,7 @@ public class Pillar : Grenade, IPoolObject
     {
         transform.position = _pos;
         _rb.bodyType = RigidbodyType2D.Static;
+        _collider2D.enabled = true;
         _isCanAddForce = true;
     }
 
@@ -248,6 +254,7 @@ public class Pillar : Grenade, IPoolObject
     void Rpc_RbDynamic()
     {
         _isGrow = _isBoom = _isCanAddForce = false;
+        _collider2D.enabled = false;
         _rb.bodyType = RigidbodyType2D.Dynamic;
     }
 

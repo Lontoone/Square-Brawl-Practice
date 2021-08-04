@@ -143,7 +143,7 @@ public class Bounce : MonoBehaviour,IPoolObject
                         for (int i = 0; i < HitGroundPos.Count; i++)
                         {
                             ObjectsPool.Instance.SpawnFromPool(BounceExploseEffectName, HitGroundPos[i], transform.rotation, null);
-                            _pv.RPC("Rpc_Explose", RpcTarget.All, HitGroundPos[i]);
+                            //_pv.RPC("Rpc_Explose", RpcTarget.All, HitGroundPos[i]);
                         }
                     }
                     _edgeCollider.points = HitGroundLocalPos.ToArray();
@@ -188,7 +188,7 @@ public class Bounce : MonoBehaviour,IPoolObject
         _laserRenderer.endWidth = _laserWidth;
     }
 
-    private void Explose(Vector2 _originPos)
+    /*private void Explose(Vector2 _originPos)
     {
         Collider2D[] objects = Physics2D.OverlapCircleAll(_originPos, FieldExplose, LayerToExplose);
         foreach (Collider2D obj in objects)
@@ -196,17 +196,24 @@ public class Bounce : MonoBehaviour,IPoolObject
             PlayerController _playerController = obj.GetComponent<PlayerController>();
             if (_pv.IsMine == _playerController.Pv.IsMine && _pv.IsMine && !_playerController.IsBounce)
             {
-                _playerController.BeBounce(BounceBeElasticity, _prevDir.x, _prevDir.y);
+                _playerController.BeExplode(BounceBeElasticity, transform.position, FieldExplose);
                 _playerController.IsBounceEvent();
             }
 
-            if (_pv.IsMine != _playerController.Pv.IsMine && _playerController.Pv.IsMine&& !_playerController.IsBounce)
+            if (_pv.IsMine != _playerController.Pv.IsMine && !_playerController.Pv.IsMine&& !_playerController.IsBounce)
             {
-                _playerController.DamageEvent(BounceDamage, BounceBeElasticity, _prevDir.x, _prevDir.y,_beShootShakeValue);
+               // _playerController.DamageEvent(BounceDamage, BounceBeElasticity, _prevDir.x, _prevDir.y,_beShootShakeValue);
+                _playerController.TakeDamage(BounceDamage, _beShootShakeValue.x, _beShootShakeValue.y, _beShootShakeValue.z);
+                _playerController.BeExplode(BounceBeElasticity, transform.position, FieldExplose);
                 _playerController.IsBounceEvent();
+                var IsKill = _playerController.IsKillAnyone();
+                if (IsKill)
+                {
+                    PlayerKillCountManager.instance.SetKillCount();
+                }
             }
         }
-    }
+    }*/
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -214,10 +221,15 @@ public class Bounce : MonoBehaviour,IPoolObject
         {
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
 
-            if (_pv.IsMine != _playerController.Pv.IsMine && _playerController.Pv.IsMine && !_playerController.IsBounce)
+            if (_pv.IsMine != _playerController.Pv.IsMine && !_playerController.Pv.IsMine && !_playerController.IsBounce)
             {
                 _playerController.DamageEvent(BounceDamage, BounceBeElasticity, _prevDir.x, _prevDir.y, _beShootShakeValue);
                 _playerController.IsBounceEvent();
+                var IsKill = _playerController.IsKillAnyone();
+                if (IsKill)
+                {
+                    PlayerKillCountManager.instance.SetKillCount();
+                }
             }
         }
     }
@@ -252,9 +264,9 @@ public class Bounce : MonoBehaviour,IPoolObject
         _beShootShakeValue = _beShotShake;
         ShootBounce(_pos, _dir);
     }
-    [PunRPC]
+   /* [PunRPC]
     void Rpc_Explose(Vector2 _pos)
     {
         Explose(_pos);
-    }
+    }*/
 }

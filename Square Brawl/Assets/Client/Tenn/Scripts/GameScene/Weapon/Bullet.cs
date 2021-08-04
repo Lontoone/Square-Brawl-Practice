@@ -115,18 +115,28 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 PlayerController _playerController = hits[i].collider.gameObject.GetComponent<PlayerController>();
                 if (!_playerController.IsShield) 
                 {
-                    if((_pv.IsMine != _playerController.Pv.IsMine && !_playerController.Pv.IsMine))
+                    if(_isMaster != _playerController.Pv.IsMine && !_playerController.Pv.IsMine)
                     {
                         ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
-                        _pv.RPC("Rpc_DisableObj", RpcTarget.All);
                         float DirX = Mathf.Cos(transform.eulerAngles.z * Mathf.PI / 180);
                         float DirY = Mathf.Sin(transform.eulerAngles.z * Mathf.PI / 180);
                         _playerController.DamageEvent(BulletDamage, BulletBeElasticity, DirX, DirY, _cameraShakeValue);
+                        var IsKill = _playerController.IsKillAnyone();
+                        if (IsKill)
+                        {
+                            PlayerKillCountManager.instance.SetKillCount();
+                        }
+
                         if (_pv.IsMine)
                         {
                             ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
                         }
-                    } 
+                        _pv.RPC("Rpc_DisableObj", RpcTarget.All);
+                    }
+                    else if ((_isMaster != _playerController.Pv.IsMine && !_isMaster))
+                    {
+                        gameObject.SetActive(false);
+                    }
                 }
                 else
                 {

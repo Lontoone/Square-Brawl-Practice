@@ -16,8 +16,8 @@ MonoBehaviour:
   Sound: {fileID: 0}
   LaunchEffectName: 
   ExploseEffectName: 
-  CoolDownTime: 3
-  Damage: 10
+  CoolDownTime: 2
+  Damage: 50
   Speed: 1200
   Recoil: 0
   BeElasticity: 800

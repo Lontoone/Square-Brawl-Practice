@@ -11,8 +11,8 @@ public class ShieldAbility : Ability
         _attack.WeaponSpeed = Speed;
         _attack.WeaponDamage = Damage;
         _attack.BeElasticity = BeElasticity;
-        _attack.ShotShakeValue = ShotShakeValue;
-        _attack.BeShotShakeValue = BeShotShakeValue;
+        _attack.ShootShakeValue = ShotShakeValue;
+        _attack.BeShootShakeValue = BeShotShakeValue;
     }
 
     public override void Activate()
