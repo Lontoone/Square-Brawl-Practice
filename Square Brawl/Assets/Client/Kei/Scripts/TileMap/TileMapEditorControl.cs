@@ -115,7 +115,7 @@ public class TileMapEditorControl : MonoBehaviour
             //if (cellStateMap[_cell.grid_index] == CellState.NONE)
             if (previewTileCells.Remove(_cell) && cellStateMap[_cell.grid_index] == CellState.NONE)
             {
-                _cell.SetWhiteColor();
+                _cell.SetEmptyColor();
             }
         }
     }
@@ -135,7 +135,7 @@ public class TileMapEditorControl : MonoBehaviour
 
                 if (cellStateMap[_cell.grid_index] == CellState.NONE)
                 {
-                    _cell.SetHoverColor();
+                    //_cell.SetHoverColor();
                 }
             }
         }
@@ -205,7 +205,6 @@ public class TileMapEditorControl : MonoBehaviour
                 }
                 else if (buildType == CellState.SAW)
                 {
-
                     TileCell cell = BuildSingleCell(previewTileCells[i]);
                     if (cell != _center)
                     {
@@ -217,7 +216,6 @@ public class TileMapEditorControl : MonoBehaviour
                     }
                     cell.conboundCenter = _center;
                 }
-
                 OnCellChanged?.Invoke(previewTileCells[i].grid_index);
             }
         }
@@ -240,7 +238,7 @@ public class TileMapEditorControl : MonoBehaviour
             if (previewTileCells[i].conboundCenter == previewTileCells[i])
             {
                 cellStateMap[previewTileCells[i].grid_index] = CellState.NONE;
-                previewTileCells[i].SetWhiteColor();
+                previewTileCells[i].SetEmptyColor();
 
                 OnCellChanged?.Invoke(previewTileCells[i].grid_index);
             }

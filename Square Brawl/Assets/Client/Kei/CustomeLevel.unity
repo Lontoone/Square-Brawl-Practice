@@ -1440,6 +1440,22 @@ PrefabInstance:
       propertyPath: mapSize.y
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 1393911111569538120, guid: 67b98329298d1ac43bf9ec588208cfec, type: 3}
+      propertyPath: midground
+      value: 
+      objectReference: {fileID: 1839596864}
+    - target: {fileID: 1393911111569538120, guid: 67b98329298d1ac43bf9ec588208cfec, type: 3}
+      propertyPath: background
+      value: 
+      objectReference: {fileID: 432335939}
+    - target: {fileID: 1393911111569538120, guid: 67b98329298d1ac43bf9ec588208cfec, type: 3}
+      propertyPath: foreground
+      value: 
+      objectReference: {fileID: 1950552023}
+    - target: {fileID: 1393911111569538120, guid: 67b98329298d1ac43bf9ec588208cfec, type: 3}
+      propertyPath: _useGizemos
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1393911111569538121, guid: 67b98329298d1ac43bf9ec588208cfec, type: 3}
       propertyPath: m_RootOrder
       value: 5

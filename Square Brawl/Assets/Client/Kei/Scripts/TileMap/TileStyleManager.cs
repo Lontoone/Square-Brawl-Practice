@@ -50,6 +50,7 @@ public class TileStyleManager : MonoBehaviour
             //Set none to white
             TileCell _cell = TileMapManager.instance.gridCells[_index];
             SetTillImage(_cell, 255, 0, 0, 0);
+            _cell.SetEmptyColor();
 
             //clear saw
             Destroy(_cell.GetComponent<Saw>());

@@ -73,9 +73,13 @@ public class TileCell : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandl
 
         spriteRenderer.color = Color.red;
     }
-    public void SetWhiteColor()
+    public void SetEmptyColor()
     {
-        spriteRenderer.color = Color.white;
+        //spriteRenderer.color = Color.white;
+        spriteRenderer.sprite = null;
+        spriteRenderer.color = new Color(0, 0, 0, 0);
+        hindSpriteRenderer.color = new Color(0, 0, 0, 0);
+        frontSpriteRenderer.color = new Color(0, 0, 0, 0);
     }
 
     public void SetusedColor()
@@ -85,7 +89,10 @@ public class TileCell : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandl
 
     public void SetColor(Color _color)
     {
-        spriteRenderer.color = _color;
+        //spriteRenderer.color = _color;
+        spriteRenderer.color = new Color(1, 1, 1, 1);
+        hindSpriteRenderer.color = new Color(1, 1, 1, 1);
+        frontSpriteRenderer.color = new Color(1, 1, 1, 1);
     }
 
 }
@@ -97,4 +104,5 @@ public enum CellState
     SAW = 2,
     EMPTY = 3
 }
+
 

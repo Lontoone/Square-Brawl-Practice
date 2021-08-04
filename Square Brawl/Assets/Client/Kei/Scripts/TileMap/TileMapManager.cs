@@ -90,6 +90,7 @@ public class TileMapManager : MonoBehaviour
                 cell.name = "( " + i + " , " + j + " ) ";
 
                 TileCell _cell = cell.GetComponent<TileCell>();
+                _cell.SetEmptyColor();
                 _cell.grid_index = _counter;
 
                 gridCells.Add(_cell);
