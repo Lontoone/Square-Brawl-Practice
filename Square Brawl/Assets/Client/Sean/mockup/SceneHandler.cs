@@ -16,11 +16,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     private Keyboard keyboard = Keyboard.current;
     [SerializeField] private GameObject m_Menu;
     [SerializeField] private GameObject m_Option;
-    [SerializeField] private GameObject m_OptionTest;
     [SerializeField] private GameObject m_MapEditor;
     [SerializeField] private GameObject m_Control;
     [SerializeField] private GameObject m_OnlineMenu;
-    /*
+    [SerializeField] private GameObject m_NameInput;
     [SerializeField] private GameObject m_Lobby;
     [SerializeField] private GameObject m_CreateRoom;
     [SerializeField] private GameObject m_RoomList;
@@ -29,8 +28,9 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     [SerializeField] private GameObject m_Gamemode;
     [SerializeField] private GameObject m_MapSelection;
     [SerializeField] private GameObject m_WeaponSelection;
-    */
     [SerializeField] private GameObject m_ScoreInfo;
+    [SerializeField] private GameObject m_LoadingMenu;
+    [SerializeField] private GameObject m_ErrorMenu;
     private Easetype.Current_easetype scene_current_easetype;
     [SerializeField] Easetype.Current_easetype.Easetype easetype;
     [SerializeField] public static float duration = 1f;
@@ -43,6 +43,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     [SerializeField] private Color32 m_Red;
     [SerializeField] private Color32 m_Blue;
 
+    public static SceneHandler instance;
+
     public static Color32 green;
     public static Color32 orange;
     public static Color32 red;
@@ -53,6 +55,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private void Awake()
     {
+        instance = this;
         scene_current_easetype = new Easetype.Current_easetype();
         green = m_Green;
         orange = m_Orange;
@@ -88,7 +91,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 break;
 
             case "Online Menu":
-                StartCoroutine(EnterLobby());
+                StartCoroutine(EnterOnlineMenu());
                 break;
 
             default:
@@ -113,7 +116,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 break;
 
             case "Online Menu":
-                StartCoroutine(ExitLobby());
+                StartCoroutine(ExitOnlineMenu());
                 break;
 
             default:
@@ -144,19 +147,20 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     }
 
 
-    public IEnumerator EnterLobby()
+    public IEnumerator EnterOnlineMenu()
     {
-        yield return new WaitForSeconds(2f);
-        m_Menu.SetActive(false);
+        yield return null;
         m_OnlineMenu.SetActive(true);
+        m_Menu.SetActive(false);
     }
 
-    public IEnumerator ExitLobby()
+    public IEnumerator ExitOnlineMenu()
     {
         m_Menu.SetActive(true);
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         yield return new WaitForSeconds(0.5f);
         m_OnlineMenu.SetActive(false);
+        GetComponent<Animator>().enabled = false;
     }
 
     private void SetUpMapEditor()
