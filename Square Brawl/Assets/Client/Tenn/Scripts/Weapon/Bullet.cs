@@ -154,6 +154,8 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 {
                     ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
                     _pv.RPC("Rpc_DisableObj", RpcTarget.All);
+
+                    //PlayerKillCountManager.instance.SetKillCount();
                 }
             }
         }

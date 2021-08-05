@@ -55,7 +55,15 @@ public class AbilityHolder : MonoBehaviour
         _playerController = GetComponentInParent<PlayerController>();
         _pv = GetComponent<PhotonView>();
         _inputAction = new PlayerInputManager();
+        ResultManager.OnDisableResult += OnDisableThis;
     }
+
+    private void OnDisableThis()
+    {
+        enabled = false;
+    }
+
+
     private void OnEnable()
     {
         _inputAction.Enable();

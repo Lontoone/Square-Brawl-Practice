@@ -89,6 +89,12 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         {
             instance = this;
         }
+        ResultManager.OnDisableResult += OnDisableThis;
+    }
+
+    private void OnDisableThis()
+    {
+        enabled = false;
     }
 
     private void OnEnable()
@@ -355,7 +361,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     public void TakeDamage(float _damage, float _shakeTime, float _shakePower, float _decrease)//,float _elasticty,float _bullletDirX,float _bullletDirY)
     {
         CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
-        GamePad.SetVibration(0, 0.5f, 0.5f);
+        //GamePad.SetVibration(0, 0.5f, 0.5f);
         Invoke("StopGamePadShake", 0.5f);
         Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage);
     }
@@ -566,9 +572,11 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     void Rpc_TakeDamage(float _damage)
     {
         _playerHp -= _damage;
+        GamePad.SetVibration(0, 0.5f, 0.5f);
         _uiControl.ReduceHp(_playerHp);
         if (_playerHp <= 0)
         {
+            GamePad.SetVibration(0, 1f, 1f);
             Invoke("Rebirth", 3f);
             gameObject.SetActive(false);
         }

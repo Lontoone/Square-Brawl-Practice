@@ -33,6 +33,10 @@ public class PlayerKillCountItem : MonoBehaviourPunCallbacks
         player = _p;
         index = (int)_p.CustomProperties["KillCount"];
         KillCountText.text = index.ToString();
+        if (index >= 10)
+        {
+            ResultManager.ResultCaller(_p);
+        }
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)

@@ -7,7 +7,7 @@ public class Menu : MonoBehaviour
 {
     public string menuName;
 
-    
+
 
     [HideInInspector]
     public bool open;
