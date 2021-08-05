@@ -363,7 +363,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
         //GamePad.SetVibration(0, 0.5f, 0.5f);
         Invoke("StopGamePadShake", 0.5f);
-        Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage);
+        Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage, _shakeTime, _shakePower, _decrease);
     }
     #endregion
 
@@ -569,9 +569,10 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     }
 
     [PunRPC]
-    void Rpc_TakeDamage(float _damage)
+    void Rpc_TakeDamage(float _damage, float _shakeTime, float _shakePower, float _decrease)
     {
         _playerHp -= _damage;
+        CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
         GamePad.SetVibration(0, 0.5f, 0.5f);
         _uiControl.ReduceHp(_playerHp);
         if (_playerHp <= 0)
