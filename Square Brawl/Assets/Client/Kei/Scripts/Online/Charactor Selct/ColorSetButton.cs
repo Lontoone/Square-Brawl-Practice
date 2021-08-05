@@ -25,16 +25,18 @@ public class ColorSetButton : MonoBehaviour
                                         new object[] { CustomPropertyCode.TEAM_CODE, colorIndex }
                                     ));
         }
-        else {
+        else
+        {
             //該顏色已被使用
         }
     }
 
     private bool IsColorUsed(int _colorIndex)
     {
-        for (int i = 0; i < PhotonNetwork.PlayerListOthers.Length; i++)
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         {
-            if (_colorIndex == (int)PhotonNetwork.PlayerListOthers[i].CustomProperties[CustomPropertyCode.TEAM_CODE])
+            if (PhotonNetwork.PlayerList[i] != PhotonNetwork.LocalPlayer &&
+                _colorIndex == (int)PhotonNetwork.PlayerList[i].CustomProperties[CustomPropertyCode.TEAM_CODE])
             {
                 return true;
             }
