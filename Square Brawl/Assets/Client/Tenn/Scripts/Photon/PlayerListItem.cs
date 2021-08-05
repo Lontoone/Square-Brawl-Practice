@@ -11,9 +11,11 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
     [SerializeField] Text text;
     [SerializeField] Image readyImage;
     [SerializeField] Image masterImage;
-    [SerializeField] Button readyBtn;
-    [SerializeField] Button unreadyBtn;
+    //[SerializeField] Button readyBtn;
+    //[SerializeField] Button unreadyBtn;
     [SerializeField] Button giveMasterBtn;
+
+    public MenuReadyButton readyButton;
 
     bool isReady = false;
     Player player;    
@@ -23,20 +25,22 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         text.text = _player.NickName;
 
         SetMasterImage(PhotonNetwork.MasterClient);
-        SetReady(isReady);
+        //SetReady(isReady);
+        readyButton.Init(_player);
 
-        readyBtn.onClick.AddListener(delegate { SetReadyBtn(true); });
-        unreadyBtn.onClick.AddListener(delegate { SetReadyBtn(false); });
+        //readyBtn.onClick.AddListener(delegate { SetReadyBtn(true); });
+        //unreadyBtn.onClick.AddListener(delegate { SetReadyBtn(false); });
         giveMasterBtn.onClick.AddListener(delegate { TransferMaster(); });
 
         //If this player is not mine => I can't operate his button.
+        /*
         if (!player.IsLocal)
         {
             readyBtn.gameObject.SetActive(false);
             unreadyBtn.gameObject.SetActive(false);
-        }
+        }*/
     }
-
+    /*
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
         base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
@@ -50,13 +54,13 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
                 SetReady((bool)_data);
             }
         }
-    }
+    }*/
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         base.OnMasterClientSwitched(newMasterClient);
         SetMasterImage(newMasterClient);       
     }
-
+    /*
     public void SetReadyBtn(bool _isReady)
     {
         SetReady(_isReady);
@@ -65,7 +69,8 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
 
         player.SetCustomProperties(MyPhotonExtension.WrapToHash(new object[] { CustomPropertyCode.READY, _isReady }));
 
-    }
+    }*/
+    /*
     private void SetReady(bool _isReady)
     {
         isReady = _isReady;
@@ -83,7 +88,7 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
             readyBtn.gameObject.SetActive(!_isReady);
             unreadyBtn.gameObject.SetActive(_isReady);
         }
-    }
+    }*/
     public void SetMasterImage(Player _newMaster)
     {
         if (_newMaster.IsLocal) //check master's
