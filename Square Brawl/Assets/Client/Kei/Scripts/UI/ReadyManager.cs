@@ -14,6 +14,7 @@ public class ReadyManager : MonoBehaviourPunCallbacks
     {
         startBtn.interactable = false;
     }
+    
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
         bool _isAllReady = true;

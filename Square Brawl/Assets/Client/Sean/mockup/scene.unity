@@ -50607,6 +50607,7 @@ GameObject:
   - component: {fileID: 1238212047186802963}
   - component: {fileID: 581723943}
   - component: {fileID: 581723942}
+  - component: {fileID: 1238212047186802964}
   m_Layer: 0
   m_Name: CharacterSelection
   m_TagString: Untagged
@@ -50637,6 +50638,54 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1238212047186802964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238212047186802962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed4dd73888b54a04084c688d84b2f9e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnAllReady:
+    m_PersistentCalls:
+      m_Calls: []
+  OnAllReadyMaster:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1184369486}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnReadyCancel:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReadyCancelMaster:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1184369486}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1238212047191120020
 MonoBehaviour:
   m_ObjectHideFlags: 0

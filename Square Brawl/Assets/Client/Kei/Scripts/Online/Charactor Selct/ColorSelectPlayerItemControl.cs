@@ -9,13 +9,17 @@ public class ColorSelectPlayerItemControl : MonoBehaviour
     public Player player;
     public Image colorImage;
     public Text playerText;
-    public int colorCode=0;
-    public void SetPlayer(Player _p) {
+    public int colorCode = 0;
+    public MenuReadyButton readyButton;
+    public void SetPlayer(Player _p)
+    {
         player = _p;
         playerText.text = _p.NickName;
+        readyButton?.Init(_p);
     }
 
-    public void SetColor(Color _color) {
+    public void SetColor(Color _color)
+    {
         colorImage.color = _color;
     }
 }
