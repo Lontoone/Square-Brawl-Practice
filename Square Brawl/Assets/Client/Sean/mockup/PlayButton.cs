@@ -19,6 +19,7 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private RectTransform rect;
 
     [SerializeField] private Image m_Shadow;
+    [SerializeField] private Image m_Background;
     [SerializeField] private Image m_Arror;
     private Easetype.Current_easetype m_PlayButtonCurrentEasetype;
     [SerializeField] Easetype.Current_easetype.Easetype easetype;
@@ -44,29 +45,11 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         m_AimCurrentEasetype = new Easetype.Current_easetype();
     }
 
-    public void EnterLobbyAnimation() 
+    public void EnterMenuSetUp()
     {
-        menuButtonAnimation.Kill();
-        menuButtonAnimation = DOTween.Sequence();
-        menuButtonAnimation.Append(m_Arror.transform
-                              .DOScale(new Vector3(0,0,0), m_duration)
-                              .SetEase(m_PlayButtonCurrentEasetype.GetEasetype(easetype)))
-                           .Insert(0.3f,m_PlayButton.GetComponent<RectTransform>()
-                              .DOSizeDelta(new Vector3(rect.sizeDelta.x, 20, 0), m_duration)
-                              .SetEase(Ease.InOutCirc))
-                           .Insert(0.3f + m_duration, m_PlayButton.GetComponent<RectTransform>()
-                              .DOSizeDelta(new Vector3(20, 20, 0), m_duration)
-                              .SetEase(Ease.InOutCirc));
-    }
-
-
-    public void ExitLobbyAnimation() 
-    {
-        menuButtonAnimation.Kill();
-        menuButtonAnimation = DOTween.Sequence();
-        menuButtonAnimation.Append(m_Arror.transform
-                              .DOScale(new Vector3(1, 1, 0), m_duration)
-                              .SetEase(m_PlayButtonCurrentEasetype.GetEasetype(easetype)));
+        m_Background.color = new Color32(255,255,255,0);
+        m_Shadow.color = new Color32(255, 255, 255, 0);
+        m_Arror.color = new Color32(255, 255, 255, 0);
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
