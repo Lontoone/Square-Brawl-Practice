@@ -69,12 +69,12 @@ public class AimAction : MonoBehaviour
 
     public void OnExitMenuAction()
     {
-        m_AimPos.SetActive(false);
+        m_AimObject.SetActive(false);
     }
 
     public void OnEnterMenuAction()
     {
-        m_AimPos.SetActive(true);
+        m_AimObject.SetActive(true);
     }
 
     //Use in ButtonActions' Button Event Trigger 
