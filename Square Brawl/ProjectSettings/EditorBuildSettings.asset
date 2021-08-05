@@ -17,16 +17,16 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Client/Tenn/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Client/Kei/CustomeLevel.unity
     guid: 5b747444932f1f045b420b4eea691970
-  - enabled: 1
+  - enabled: 0
     path: Assets/Client/Kei/GridSample.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 0
     path: Assets/Client/Kei/TileMapTest-Start.unity
     guid: 451eb6dd2947dcd4b9882fba70d82878
-  - enabled: 1
+  - enabled: 0
     path: Assets/Client/Sean/mockup/scene.unity
     guid: c8dda2a2f1c6ac247b1ab6333273dd5b
   m_configObjects:

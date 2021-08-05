@@ -15,7 +15,7 @@ public class PlayerKillCountManager : MonoBehaviourPunCallbacks
 
     public int KillCount;
 
-    private ExitGames.Client.Photon.Hashtable _myCustom = new ExitGames.Client.Photon.Hashtable();
+    private Hashtable _myCustom = new Hashtable();
 
     private void Start()
     {
