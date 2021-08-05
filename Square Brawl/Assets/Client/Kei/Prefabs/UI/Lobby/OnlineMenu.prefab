@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 101250891}
   - component: {fileID: 101250890}
   m_Layer: 5
-  m_Name: LoadingMenu
+  m_Name: Loading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4681,7 +4681,7 @@ GameObject:
   - component: {fileID: 1537359341}
   - component: {fileID: 1537359340}
   m_Layer: 5
-  m_Name: ErrorMenu
+  m_Name: Error
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6333,7 +6333,7 @@ GameObject:
   - component: {fileID: 1238212045721979589}
   - component: {fileID: 1516213490}
   m_Layer: 0
-  m_Name: game mode
+  m_Name: GameMode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6519,7 +6519,7 @@ GameObject:
   - component: {fileID: 1491043776}
   - component: {fileID: 1491043777}
   m_Layer: 5
-  m_Name: weapon selection
+  m_Name: WeaponSelection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6900,7 +6900,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1238212046049126526}
   m_Layer: 5
-  m_Name: Online Menu
+  m_Name: OnlineMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7016,7 +7016,7 @@ GameObject:
   - component: {fileID: 1238212046435927323}
   - component: {fileID: 1238212046435927324}
   m_Layer: 5
-  m_Name: create room
+  m_Name: CreateRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7150,7 +7150,7 @@ GameObject:
   - component: {fileID: 54679044}
   - component: {fileID: 54679047}
   m_Layer: 5
-  m_Name: map selection
+  m_Name: MapSelection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7237,7 +7237,7 @@ GameObject:
   - component: {fileID: 1238212046673713467}
   - component: {fileID: 1238212046673713468}
   m_Layer: 5
-  m_Name: Room List
+  m_Name: RoomList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7528,7 +7528,7 @@ GameObject:
   - component: {fileID: 778707534}
   - component: {fileID: 778707535}
   m_Layer: 0
-  m_Name: characterselection
+  m_Name: CharacterSelection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7810,7 +7810,7 @@ GameObject:
   - component: {fileID: 1238212047262266418}
   - component: {fileID: 1238212047262266417}
   m_Layer: 5
-  m_Name: lobby
+  m_Name: Lobby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9701,7 +9701,7 @@ GameObject:
   - component: {fileID: 7327562080111443559}
   - component: {fileID: 214320494}
   m_Layer: 5
-  m_Name: Name Input
+  m_Name: NameInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10656,7 +10656,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 610613379638810231, guid: 3676e8c79b7be6648a9c86e6e9345a2c, type: 3}
       propertyPath: m_Name
-      value: room
+      value: Room
       objectReference: {fileID: 0}
     - target: {fileID: 610613379638810231, guid: 3676e8c79b7be6648a9c86e6e9345a2c, type: 3}
       propertyPath: m_IsActive

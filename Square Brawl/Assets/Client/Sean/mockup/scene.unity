@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &5209994 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1537359339, guid: a01c9709045242b4897de262a3081536, type: 3}
-  m_PrefabInstance: {fileID: 214320489}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7913842
 GameObject:
   m_ObjectHideFlags: 0
@@ -5979,7 +5974,7 @@ GameObject:
   - component: {fileID: 355416222}
   - component: {fileID: 355416223}
   m_Layer: 5
-  m_Name: menu
+  m_Name: Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8591,13 +8586,13 @@ MonoBehaviour:
   m_CreateRoom: {fileID: 383225613}
   m_RoomList: {fileID: 744382883}
   m_Room: {fileID: 756655738}
-  m_Characterselection: {fileID: 1634586603}
-  m_Gamemode: {fileID: 103331283}
+  m_CharacterSelection: {fileID: 0}
+  m_GameMode: {fileID: 0}
   m_MapSelection: {fileID: 1258460579}
   m_WeaponSelection: {fileID: 103331283}
   m_ScoreInfo: {fileID: 831955334}
-  m_LoadingMenu: {fileID: 291729490}
-  m_ErrorMenu: {fileID: 5209994}
+  m_Loading: {fileID: 0}
+  m_Error: {fileID: 0}
   easetype: 15
   to_x: -1920
   to_y: 0
@@ -9919,7 +9914,7 @@ GameObject:
   m_Component:
   - component: {fileID: 584549820}
   m_Layer: 5
-  m_Name: control
+  m_Name: Control
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10549,7 +10544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2836492399388696927, guid: e0e0ef4262ede5c4491142357da179eb, type: 3}
       propertyPath: m_Name
-      value: map editor
+      value: MapEditor
       objectReference: {fileID: 0}
     - target: {fileID: 2836492399388696927, guid: e0e0ef4262ede5c4491142357da179eb, type: 3}
       propertyPath: m_IsActive
@@ -22046,7 +22041,7 @@ RectTransform:
   m_Children:
   - {fileID: 2089393746}
   m_Father: {fileID: 1603475580}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -33348,8 +33343,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 480487013}
-  - {fileID: 1767203477}
   - {fileID: 1080300391}
+  - {fileID: 1767203477}
   - {fileID: 1313495704}
   m_Father: {fileID: 57846068}
   m_RootOrder: 2
@@ -34097,11 +34092,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633338879}
   m_CullTransparentMesh: 0
---- !u!1 &1634586603 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1238212046997945467, guid: a01c9709045242b4897de262a3081536, type: 3}
-  m_PrefabInstance: {fileID: 214320489}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1641005164
 GameObject:
   m_ObjectHideFlags: 0
@@ -34801,7 +34791,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1676578523}
   m_Layer: 5
-  m_Name: option
+  m_Name: Option
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36606,7 +36596,7 @@ RectTransform:
   m_Children:
   - {fileID: 1726475688}
   m_Father: {fileID: 1603475580}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
