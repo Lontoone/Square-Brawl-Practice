@@ -8607,7 +8607,7 @@ MonoBehaviour:
   m_CharacterSelection: {fileID: 47942509}
   m_GameMode: {fileID: 103331283}
   m_MapSelection: {fileID: 1258460579}
-  m_WeaponSelection: {fileID: 103331283}
+  m_WeaponSelection: {fileID: 2046253808}
   m_ScoreInfo: {fileID: 831955334}
   m_Loading: {fileID: 291729490}
   m_Error: {fileID: 285766018}
@@ -39945,6 +39945,11 @@ MonoBehaviour:
   m_ButtonDown: {fileID: 974844617}
   m_ButtonLeft: {fileID: 1122086036}
   m_ButtonRight: {fileID: 1442169859}
+--- !u!1 &2046253808 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1238212045747149704, guid: a01c9709045242b4897de262a3081536, type: 3}
+  m_PrefabInstance: {fileID: 214320489}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2053400071
 GameObject:
   m_ObjectHideFlags: 0

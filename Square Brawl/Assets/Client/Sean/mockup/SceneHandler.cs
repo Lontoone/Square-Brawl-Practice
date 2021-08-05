@@ -93,6 +93,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         SetUpMapEditor();
     }
 
+    private void Update()
+    {
+        //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).IsName("ExitMenu") +"\t"+ animator.GetCurrentAnimatorClipInfoCount(0));
+    }
 
     public void EnterPage(string gameObject)
     {
@@ -146,7 +150,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 StartCoroutine(EnterMapSelection());
                 break;
 
-            case "WeaponSeleciton":
+            case "WeaponSelection":
                 StartCoroutine(EnterWeaponSelection());
                 break;
 
@@ -211,7 +215,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 StartCoroutine(ExitMapSelection());
                 break;
 
-            case "WeaponSeleciton":
+            case "WeaponSelection":
                 StartCoroutine(ExitWeaponSelection());
                 break;
 
@@ -340,7 +344,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator ExitNameInput()
     {
-        Debug.Log("exit name");
         animator.Play("ExitName");
         yield return new WaitUntil(()=> animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
         m_NameInput.SetActive(false);
