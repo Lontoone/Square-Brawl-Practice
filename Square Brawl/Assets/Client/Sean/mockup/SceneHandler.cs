@@ -44,17 +44,41 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     [SerializeField] private Color32 m_Blue;
 
     public static SceneHandler instance;
+    private Animator animator;
 
     public static Color32 green;
     public static Color32 orange;
     public static Color32 red;
     public static Color32 blue;
-
+    public enum axis {x = 0, y = 1, cons = 2}
+    public enum AnimationEnd
+    { 
+        Menu,
+        Option,
+        MapEditor,
+        Control,
+        OnlineMenu,
+        NameInput,
+        Lobby,
+        CreateRoom,
+        RoomList,
+        Room,
+        CharacterSelection,
+        GameSelection,
+        GameMode,
+        MapSelection,
+        WeaponSelection,
+        Loading,
+        Error
+    }
+    public bool onAnimationEnd;
 
 
     private void Awake()
     {
         instance = this;
+        animator = GetComponent<Animator>();
+
         scene_current_easetype = new Easetype.Current_easetype();
         green = m_Green;
         orange = m_Orange;
@@ -70,9 +94,9 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     }
 
 
-    public void EnterPage(GameObject gameObject)
+    public void EnterPage(string gameObject)
     {
-        switch (gameObject.name)
+        switch (gameObject)
         {
             case "Option":
                 StartCoroutine(EnterOption());
@@ -126,14 +150,18 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 StartCoroutine(EnterWeaponSelection());
                 break;
 
+            case "Loading":
+                StartCoroutine(EnterLoading());
+                break;
+
             default:
-                Debug.LogWarning(gameObject.name + " :switch page error");
+                Debug.LogWarning(gameObject + " :switch page error");
                 break;
         }
     }
-    public void ExitPage(GameObject gameObject)
+    public void ExitPage(string gameObject)
     {
-        switch (gameObject.name)
+        switch (gameObject)
         {
             case "Option":
                 StartCoroutine(ExitOption());
@@ -187,8 +215,12 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 StartCoroutine(ExitWeaponSelection());
                 break;
 
+            case "Loading":
+                StartCoroutine(ExitLoading());
+                break;
+
             default:
-                Debug.LogWarning(gameObject.name + " :switch page error");
+                Debug.LogWarning(gameObject + " :switch page error");
                 break;
         }
     }
@@ -275,18 +307,24 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     #region -- OnlineMenu --
     public IEnumerator EnterOnlineMenu()
     {
-        yield return null;
+        //m_Menu.GetComponentInChildren<MenuButtonHandler>().DisableButton();
         m_OnlineMenu.SetActive(true);
+        m_Menu.GetComponentInChildren<PlayButton>().EnterMenuSetUp();
+        yield return null;
         m_Menu.SetActive(false);
     }
 
     public IEnumerator ExitOnlineMenu()
     {
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+        m_NameInput.SetActive(false);
         m_Menu.SetActive(true);
+        animator.Play("EnterMenu");
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
         m_OnlineMenu.SetActive(false);
         GetComponent<Animator>().enabled = false;
+        Launcher.instance.Quit();
     }
     #endregion
 
@@ -294,12 +332,18 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterNameInput()
     {
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+        m_NameInput.SetActive(true);
+        GetComponent<Animator>().Play("EnterName");
         yield return null;
     }
 
     private IEnumerator ExitNameInput()
     {
-        yield return null;
+        Debug.Log("exit name");
+        animator.Play("ExitName");
+        yield return new WaitUntil(()=> animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+        m_NameInput.SetActive(false);
     }
 
     #endregion
@@ -308,11 +352,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLobby()
     {
+        m_Lobby.SetActive(true);
         yield return null;
     }
 
     private IEnumerator ExitLobby()
     {
+        m_Lobby.SetActive(false);
         yield return null;
     }
 
@@ -322,12 +368,15 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterCreateRoom()
     {
+        Debug.Log("create room");
+        m_CreateRoom.SetActive(true);
         yield return null;
     }
 
     private IEnumerator ExitCreateRoom()
     {
         yield return null;
+        m_CreateRoom.SetActive(false);
     }
 
     #endregion
@@ -336,11 +385,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterRoomList()
     {
+        m_RoomList.SetActive(true);
         yield return null;
     }
 
     private IEnumerator ExitRoomList()
     {
+        m_RoomList.SetActive(false);
         yield return null;
     }
 
@@ -350,11 +401,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterRoom()
     {
+        m_Room.SetActive(true);
         yield return null;
     }
 
     private IEnumerator ExitRoom()
     {
+        m_Room.SetActive(false);
         yield return null;
     }
 
@@ -364,11 +417,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterCharacterSelection()
     {
+        m_CharacterSelection.SetActive(true);
         yield return null;
     }
 
     private IEnumerator ExitCharacterSelection()
     {
+        m_CharacterSelection.SetActive(false);
         yield return null;
     }
 
@@ -378,11 +433,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterGameMode()
     {
+        m_GameMode.SetActive(true);
         yield return null;
     }
 
     private IEnumerator ExitGameMode()
     {
+        m_GameMode.SetActive(false);
         yield return null;
     }
 
@@ -392,11 +449,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterMapSelection()
     {
+        m_MapSelection.SetActive(true);
         yield return null;
     }
 
     private IEnumerator ExitMapSelection()
     {
+        m_MapSelection.SetActive(false);
         yield return null;
     }
 
@@ -406,11 +465,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterWeaponSelection()
     {
+        m_WeaponSelection.SetActive(true);
         yield return null;
     }
 
     private IEnumerator ExitWeaponSelection()
     {
+        m_WeaponSelection.SetActive(false);
         yield return null;
     }
 
@@ -420,11 +481,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterScoreInfo()
     {
+        m_ScoreInfo.SetActive(true);
         yield return null;
     }
 
     private IEnumerator ExitScoreInfo()
     {
+        m_ScoreInfo.SetActive(false);
         yield return null;
     }
 
@@ -434,12 +497,16 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLoading()
     {
+        m_Loading.SetActive(true);
+        animator.Play("Loading");
         yield return null;
     }
 
     private IEnumerator ExitLoading()
     {
-        yield return null;
+        animator.Play("ExitLoading");
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >=1);
+        m_Loading.SetActive(false);
     }
 
     #endregion
@@ -448,19 +515,19 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterError()
     {
+        m_Error.SetActive(true);
         yield return null;
     }
 
     private IEnumerator ExitError()
     {
+        m_Error.SetActive(false);
         yield return null;
     }
 
     #endregion
 
     #region -- Tool --
-    public enum axis {x = 0, y = 1, cons = 2}
-
     public static float WorldToCamera(float num, int axis)
     {
         switch (axis)
@@ -481,6 +548,11 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 break;
         }
         return num;
+    }
+
+    public bool OnAnimationEnd()
+    {
+        return onAnimationEnd = true;
     }
 
     public void Quit()

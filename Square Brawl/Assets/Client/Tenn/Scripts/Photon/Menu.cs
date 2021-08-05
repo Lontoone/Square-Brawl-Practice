@@ -20,12 +20,12 @@ public class Menu : MonoBehaviour
     public void Open()
     {
         open = true;
-        SceneHandler.instance.EnterPage(gameObject);
+        SceneHandler.instance.EnterPage(gameObject.name);
     }
     public void Close()
     {
         open = false;
-        SceneHandler.instance.ExitPage(gameObject);
+        SceneHandler.instance.ExitPage(gameObject.name);
     }
 
 
