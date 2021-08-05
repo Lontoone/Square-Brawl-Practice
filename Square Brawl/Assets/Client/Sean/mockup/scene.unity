@@ -3556,7 +3556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1238212046049126527, guid: a01c9709045242b4897de262a3081536, type: 3}
       propertyPath: m_Name
-      value: Online Menu
+      value: OnlineMenu
       objectReference: {fileID: 0}
     - target: {fileID: 1238212046049126527, guid: a01c9709045242b4897de262a3081536, type: 3}
       propertyPath: m_IsActive
@@ -3692,7 +3692,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7121998741857311747, guid: a01c9709045242b4897de262a3081536, type: 3}
       propertyPath: m_text
-      value: ENTER
+      value: ENTER NAME
       objectReference: {fileID: 0}
     - target: {fileID: 7121998741857311747, guid: a01c9709045242b4897de262a3081536, type: 3}
       propertyPath: m_fontSize

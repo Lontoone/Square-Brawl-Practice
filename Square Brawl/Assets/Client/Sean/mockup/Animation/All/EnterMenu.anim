@@ -45,7 +45,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: menu/MenuButtonHandler/Play Button/arror
+    path: Menu/MenuButtonHandler/Play Button/arror
   m_PositionCurves: []
   m_ScaleCurves: []
   m_FloatCurves:
@@ -255,7 +255,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.r
-    path: menu/MenuButtonHandler/Play Button/Play Button/BG
+    path: Menu/MenuButtonHandler/Play Button/Play Button/BG
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   - curve:
@@ -274,7 +274,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.g
-    path: menu/MenuButtonHandler/Play Button/Play Button/BG
+    path: Menu/MenuButtonHandler/Play Button/Play Button/BG
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   - curve:
@@ -293,7 +293,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.b
-    path: menu/MenuButtonHandler/Play Button/Play Button/BG
+    path: Menu/MenuButtonHandler/Play Button/Play Button/BG
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   - curve:
@@ -312,7 +312,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.a
-    path: menu/MenuButtonHandler/Play Button/Play Button/BG
+    path: Menu/MenuButtonHandler/Play Button/Play Button/BG
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   - curve:
@@ -331,7 +331,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.a
-    path: menu/MenuButtonHandler/Play Button/shadow
+    path: Menu/MenuButtonHandler/Play Button/shadow
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_PPtrCurves: []
@@ -350,7 +350,7 @@ AnimationClip:
       customType: 4
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 401789284
+      path: 625856729
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -427,35 +427,35 @@ AnimationClip:
       customType: 28
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 2099401809
+      path: 2536303338
       attribute: 2526845255
       script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 2099401809
+      path: 2536303338
       attribute: 4215373228
       script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 2099401809
+      path: 2536303338
       attribute: 2334886179
       script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 2099401809
+      path: 2536303338
       attribute: 304273561
       script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 2205158333
+      path: 915569549
       attribute: 304273561
       script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
       typeID: 114
@@ -746,7 +746,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.r
-    path: menu/MenuButtonHandler/Play Button/Play Button/BG
+    path: Menu/MenuButtonHandler/Play Button/Play Button/BG
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   - curve:
@@ -765,7 +765,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.g
-    path: menu/MenuButtonHandler/Play Button/Play Button/BG
+    path: Menu/MenuButtonHandler/Play Button/Play Button/BG
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   - curve:
@@ -784,7 +784,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.b
-    path: menu/MenuButtonHandler/Play Button/Play Button/BG
+    path: Menu/MenuButtonHandler/Play Button/Play Button/BG
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   - curve:
@@ -803,7 +803,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.a
-    path: menu/MenuButtonHandler/Play Button/Play Button/BG
+    path: Menu/MenuButtonHandler/Play Button/Play Button/BG
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   - curve:
@@ -822,7 +822,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: menu/MenuButtonHandler/Play Button/arror
+    path: Menu/MenuButtonHandler/Play Button/arror
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -841,7 +841,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: menu/MenuButtonHandler/Play Button/arror
+    path: Menu/MenuButtonHandler/Play Button/arror
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -860,7 +860,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: menu/MenuButtonHandler/Play Button/arror
+    path: Menu/MenuButtonHandler/Play Button/arror
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -879,7 +879,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.a
-    path: menu/MenuButtonHandler/Play Button/shadow
+    path: Menu/MenuButtonHandler/Play Button/shadow
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_EulerEditorCurves:
@@ -920,7 +920,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: menu/MenuButtonHandler/Play Button/arror
+    path: Menu/MenuButtonHandler/Play Button/arror
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -930,7 +930,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: menu/MenuButtonHandler/Play Button/arror
+    path: Menu/MenuButtonHandler/Play Button/arror
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -940,7 +940,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: menu/MenuButtonHandler/Play Button/arror
+    path: Menu/MenuButtonHandler/Play Button/arror
     classID: 224
     script: {fileID: 0}
   m_HasGenericRootTransform: 0
