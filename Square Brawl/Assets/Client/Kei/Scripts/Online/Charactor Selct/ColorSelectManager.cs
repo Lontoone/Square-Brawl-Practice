@@ -42,8 +42,8 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
         {
             ColorSelectPlayerItemControl _item = Instantiate(playerItemPrefab, parent: playerItemContainer);
             Player _player = PhotonNetwork.PlayerList[i];
-            Debug.Log(_player == null);
             _item.SetPlayer(_player);
+            _item.colorCode = i;
 
         }
 
@@ -66,6 +66,7 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
                 return;
             }
             _item.SetColor(CustomPropertyCode.COLORS[_colorCode]);
+            _item.colorCode = _colorCode;
 
         }
     }

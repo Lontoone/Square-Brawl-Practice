@@ -33,6 +33,18 @@ public class ColorSetButton : MonoBehaviour
 
     private bool IsColorUsed(int _colorIndex)
     {
+        ColorSelectPlayerItemControl[] _btns = FindObjectsOfType<ColorSelectPlayerItemControl>();
+        for (int i = 0; i < _btns.Length; i++)
+        {
+            if (_btns[i].player != PhotonNetwork.LocalPlayer &&
+                _btns[i].colorCode == _colorIndex)
+            {
+                return true;
+            }
+        }
+        return false;
+        /*
+        Debug.Log(PhotonNetwork.PlayerList == null);
         for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         {
             if (PhotonNetwork.PlayerList[i] != PhotonNetwork.LocalPlayer &&
@@ -41,7 +53,7 @@ public class ColorSetButton : MonoBehaviour
                 return true;
             }
         }
-        return false;
+        return false;*/
     }
 
 }

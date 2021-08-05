@@ -9,6 +9,7 @@ public class ColorSelectPlayerItemControl : MonoBehaviour
     public Player player;
     public Image colorImage;
     public Text playerText;
+    public int colorCode=0;
     public void SetPlayer(Player _p) {
         player = _p;
         playerText.text = _p.NickName;
