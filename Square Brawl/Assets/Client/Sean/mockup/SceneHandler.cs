@@ -43,6 +43,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     [SerializeField] private Color32 m_Red;
     [SerializeField] private Color32 m_Blue;
 
+    [SerializeField] private AnimationClip[] m_AnimationClips;
+
     public static SceneHandler instance;
     private Animator animator;
 
@@ -71,8 +73,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         Loading,
         Error
     }
-    public bool onAnimationEnd;
-
 
     private void Awake()
     {
@@ -311,21 +311,33 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     #region -- OnlineMenu --
     public IEnumerator EnterOnlineMenu()
     {
-        //m_Menu.GetComponentInChildren<MenuButtonHandler>().DisableButton();
+        yield return new WaitForSeconds(m_AnimationClips[1].length);
         m_OnlineMenu.SetActive(true);
-        m_Menu.GetComponentInChildren<PlayButton>().EnterMenuSetUp();
-        yield return null;
         m_Menu.SetActive(false);
     }
 
     public IEnumerator ExitOnlineMenu()
     {
-        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+        var time = 0f;
+        yield return null;
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("ExitName"))
+        {
+            time = m_AnimationClips[3].length;
+        }
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("ExitLobby"))
+        {
+            time = m_AnimationClips[7].length;
+        }
+        else
+        {
+            time = 0.5f;
+        }
+        yield return new WaitForSeconds(time);
         m_NameInput.SetActive(false);
         m_Menu.SetActive(true);
         animator.Play("EnterMenu");
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+        yield return new WaitForSeconds(m_AnimationClips[0].length);
         m_OnlineMenu.SetActive(false);
         GetComponent<Animator>().enabled = false;
         Launcher.instance.Quit();
@@ -336,16 +348,15 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterNameInput()
     {
-        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+        yield return new WaitForSeconds(m_AnimationClips[5].length);
         m_NameInput.SetActive(true);
         GetComponent<Animator>().Play("EnterName");
-        yield return null;
     }
 
     private IEnumerator ExitNameInput()
     {
         animator.Play("ExitName");
-        yield return new WaitUntil(()=> animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+        yield return new WaitForSeconds(m_AnimationClips[3].length);
         m_NameInput.SetActive(false);
     }
 
@@ -371,7 +382,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterCreateRoom()
     {
-        Debug.Log("create room");
         m_CreateRoom.SetActive(true);
         yield return null;
     }
@@ -508,7 +518,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     private IEnumerator ExitLoading()
     {
         animator.Play("ExitLoading");
-        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >=1);
+        yield return new WaitForSeconds(m_AnimationClips[5].length);
         m_Loading.SetActive(false);
     }
 
@@ -551,11 +561,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 break;
         }
         return num;
-    }
-
-    public bool OnAnimationEnd()
-    {
-        return onAnimationEnd = true;
     }
 
     public void Quit()

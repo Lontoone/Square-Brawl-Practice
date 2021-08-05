@@ -9097,7 +9097,15 @@ MonoBehaviour:
   m_Blue:
     serializedVersion: 2
     rgba: 4294355290
-  onAnimationEnd: 0
+  m_AnimationClips:
+  - {fileID: 7400000, guid: 95c0efe4f13937746a4c38c368e6fa3f, type: 2}
+  - {fileID: 7400000, guid: 2761d8ff98e454c469095da9e051a272, type: 2}
+  - {fileID: 7400000, guid: e32ea1ec9c304724ea884a9cab2740ce, type: 2}
+  - {fileID: 7400000, guid: 6cc9911b5a2a9d94cb14329f9c1da473, type: 2}
+  - {fileID: 7400000, guid: 41562c7d382e04140a42148ab9682bf8, type: 2}
+  - {fileID: 7400000, guid: 0e1afc91d16eea742ad52ce819a4bb9e, type: 2}
+  - {fileID: 7400000, guid: 7bfb4b4042ee7d04382ac5d4d01dcbaf, type: 2}
+  - {fileID: 7400000, guid: 0d23e80dcacb8f94d8fc65e5438a338b, type: 2}
 --- !u!95 &507319171
 Animator:
   serializedVersion: 3
@@ -35021,6 +35029,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 507319170}
+        m_TargetAssemblyTypeName: SceneHandler, Assembly-CSharp
+        m_MethodName: EnterPage
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: OnlineMenu
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1523872146
