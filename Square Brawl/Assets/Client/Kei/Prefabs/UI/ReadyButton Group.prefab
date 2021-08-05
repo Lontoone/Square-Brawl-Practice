@@ -331,9 +331,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7884046618493307494}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
+      - m_Target: {fileID: 5455764190085233085}
+        m_TargetAssemblyTypeName: MenuReadyButton, Assembly-CSharp
+        m_MethodName: SetReady
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
