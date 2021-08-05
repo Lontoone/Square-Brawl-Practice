@@ -45,12 +45,11 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         m_AimCurrentEasetype = new Easetype.Current_easetype();
     }
 
-    public void EnterMenuSetUp()
+    public void OnExitMenuAction()
     {
-        m_Background.color = new Color32(255,255,255,0);
-        m_Shadow.color = new Color32(255, 255, 255, 0);
-        m_Arror.color = new Color32(255, 255, 255, 0);
+        EventSystem.current.SetSelectedGameObject(m_Arror.gameObject);
     }
+
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {

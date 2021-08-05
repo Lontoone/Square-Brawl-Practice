@@ -56,9 +56,6 @@ public class AimAction : MonoBehaviour
         }
     }
 
-
-
-
     private void AimToMouse() 
     {
         m_MouseWorldPos = Mouse.current.position.ReadValue();
@@ -70,6 +67,15 @@ public class AimAction : MonoBehaviour
         m_AimObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, m_Angle));
     }
 
+    public void OnExitMenuAction()
+    {
+        m_AimPos.SetActive(false);
+    }
+
+    public void OnEnterMenuAction()
+    {
+        m_AimPos.SetActive(true);
+    }
 
     //Use in ButtonActions' Button Event Trigger 
     public void OnSelect(string direction)

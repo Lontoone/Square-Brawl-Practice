@@ -311,6 +311,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     #region -- OnlineMenu --
     public IEnumerator EnterOnlineMenu()
     {
+        m_Menu.GetComponentInChildren<MenuButtonHandler>().OnExitMenuAction();
+        m_Menu.GetComponentInChildren<AimAction>().OnExitMenuAction();
         yield return new WaitForSeconds(m_AnimationClips[1].length);
         m_OnlineMenu.SetActive(true);
         m_Menu.SetActive(false);
@@ -332,9 +334,12 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         {
             time = 0.5f;
         }
+
         yield return new WaitForSeconds(time);
         m_NameInput.SetActive(false);
         m_Menu.SetActive(true);
+        m_Menu.GetComponentInChildren<MenuButtonHandler>().OnEnterMenuAction();
+        m_Menu.GetComponentInChildren<AimAction>().gameObject.SetActive(true);
         animator.Play("EnterMenu");
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         yield return new WaitForSeconds(m_AnimationClips[0].length);

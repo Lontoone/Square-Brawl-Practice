@@ -17,10 +17,28 @@ public class MenuButtonHandler : MonoBehaviour
     public static int m_CurrentIndex;
 
 
-    private int CurrentSelectedButton(ButtonAction m_Button) 
+    private int CurrentSelectedButton(ButtonAction m_Button)
     {
         Debug.Log("CurrentSelectedButton");
         return m_Button.m_ButtonIndex;
+    }
+
+    public void OnExitMenuAction()
+    {
+        m_ButtonUp.SetActive(false);
+        m_ButtonDown.SetActive(false);
+        m_ButtonLeft.SetActive(false);
+        m_ButtonRight.SetActive(false);
+        m_PlayButton.GetComponent<PlayButton>().OnExitMenuAction();
+    }
+
+    public void OnEnterMenuAction()
+    {
+        m_ButtonUp.SetActive(true);
+        m_ButtonDown.SetActive(true);
+        m_ButtonLeft.SetActive(true);
+        m_ButtonRight.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(m_FirstSelectedButton);
     }
 
     public IEnumerator EnableButton(float duration)
