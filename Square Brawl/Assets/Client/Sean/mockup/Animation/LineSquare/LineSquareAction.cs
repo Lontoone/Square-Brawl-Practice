@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
-using UnityEditor.EventSystems;
 using DG.Tweening;
 using BasicTools.ButtonInspector;
 namespace Easetype { }

@@ -51,7 +51,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     public static Color32 blue;
 
 
-    public enum axis {x = 0, y = 1, cons = 2}
 
     private void Awake()
     {
@@ -68,9 +67,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Option.SetActive(false);
         //m_OptionTest.SetActive(false);
         SetUpMapEditor();
-        //StartCoroutine(LoadMapEditor());
-
-        //pos = m_Menu.transform.localPosition;
     }
 
 
@@ -124,6 +120,9 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 break;
         }
     }
+
+    #region -- Option --
+
     private IEnumerator EnterOption()
     {
         m_Menu.GetComponentInChildren<MenuButtonHandler>().DisableButton();
@@ -146,7 +145,9 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Option.SetActive(false);
     }
 
+    #endregion
 
+    #region -- OnlineMenu --
     public IEnumerator EnterOnlineMenu()
     {
         yield return null;
@@ -162,10 +163,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_OnlineMenu.SetActive(false);
         GetComponent<Animator>().enabled = false;
     }
+    #endregion
+
+    #region -- MapEditor --
 
     private void SetUpMapEditor()
     {
-        m_MapEditor.transform.localPosition = new Vector3(0, WorldToCamera(1080,1)*2);
+        m_MapEditor.transform.localPosition = new Vector3(0, WorldToCamera(1080, 1) * 2);
     }
 
     private void EnterMapEditor()
@@ -177,14 +181,13 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     }
 
     private IEnumerator ExitMapEditor()
-    {   
+    {
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(m_Menu.GetComponentInChildren<MenuButtonHandler>().m_FirstSelectedButton);
         m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 0, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         m_MapEditor.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 1080, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
         yield return new WaitForSeconds(duration / 3);
         m_MapEditor.SetActive(false);
-    }
-
+    } 
     private IEnumerator LoadMapEditor()
     {
         m_MapEditor.SetActive(true);
@@ -192,7 +195,9 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         yield return null;
         m_MapEditor.SetActive(false);
     }
+    #endregion
 
+    #region -- Controller --
     private void EnterController()
     {
         m_Menu.GetComponentInChildren<MenuButtonHandler>().DisableButton();
@@ -211,6 +216,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         yield return new WaitForSeconds(duration / 3);
         m_Control.SetActive(false);
     }
+    #endregion
+
+    #region -- Tool --
+    public enum axis {x = 0, y = 1, cons = 2}
 
     public static float WorldToCamera(float num, int axis)
     {
@@ -238,9 +247,9 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         Debug.Log("Quitting");
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-        #endif
+#endif
 
         Application.Quit();
     }
@@ -248,5 +257,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     public void DisableOnClickEffect()
     {
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-    }
+    } 
+    #endregion
 }
