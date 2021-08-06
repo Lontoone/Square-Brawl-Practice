@@ -93,11 +93,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         SetUpMapEditor();
     }
 
-    private void Update()
-    {
-        //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).IsName("ExitMenu") +"\t"+ animator.GetCurrentAnimatorClipInfoCount(0));
-    }
-
     public void EnterPage(string gameObject)
     {
         switch (gameObject)
