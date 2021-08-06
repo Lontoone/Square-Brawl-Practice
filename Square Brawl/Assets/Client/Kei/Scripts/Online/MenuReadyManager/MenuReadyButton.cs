@@ -17,7 +17,16 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
     {
         base.OnEnable();
 
+        SetMyButtonActive(false);
 
+    }
+    private void SetMyButtonActive(bool _hide)
+    {
+
+        foreach (Transform _child in transform)
+        {
+            _child.GetComponent<UnityEngine.UI.Button>()?.gameObject.SetActive(_hide);
+        }
     }
 
     public void Init(Player _player)
@@ -26,6 +35,10 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         if (setUnReadyOnEnable)
         {
             SetReady(false);
+        }
+        if (_player == PhotonNetwork.LocalPlayer)
+        {
+            SetMyButtonActive(true);
         }
     }
 
