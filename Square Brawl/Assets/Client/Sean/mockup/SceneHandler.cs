@@ -417,13 +417,18 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     private IEnumerator EnterCreateRoom()
     {
         m_CreateRoom.SetActive(true);
+        animator.Play("EnterCreateRoom");
         yield return null;
     }
 
     private IEnumerator ExitCreateRoom()
     {
-        yield return new WaitForEndOfFrame();
-        m_CreateRoom.SetActive(false);
+        if (m_CreateRoom.activeSelf)
+        {
+            animator.Play("ExitCreateRoom");
+            yield return new WaitForSeconds(m_AnimationClips[9].length);
+            m_CreateRoom.SetActive(false);
+        }
     }
 
     #endregion
@@ -544,9 +549,15 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLoading()
     {
+        var time = 0f;
+        if (m_CreateRoom.activeSelf)
+        {
+            time = m_AnimationClips[9].length;
+        }
+
+        yield return new WaitForSeconds(time);
         m_Loading.SetActive(true);
         animator.Play("Loading");
-        yield return null;
     }
 
     private IEnumerator ExitLoading()
