@@ -355,14 +355,17 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         yield return new WaitForSeconds(m_AnimationClips[5].length);
         m_NameInput.SetActive(true);
-        GetComponent<Animator>().Play("EnterName");
+        animator.Play("EnterName");
     }
 
     private IEnumerator ExitNameInput()
     {
-        animator.Play("ExitName");
-        yield return new WaitForSeconds(m_AnimationClips[3].length);
-        m_NameInput.SetActive(false);
+        if (m_NameInput.activeSelf)
+        {
+            animator.Play("ExitName");
+            yield return new WaitForSeconds(m_AnimationClips[3].length);
+            m_NameInput.SetActive(false);
+        }
     }
 
     #endregion
@@ -371,14 +374,40 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLobby()
     {
-        m_Lobby.SetActive(true);
-        yield return null;
+        Debug.Log("enter Lobby");
+        var time = 0f;
+        if (m_NameInput.activeSelf || m_CreateRoom.activeSelf || m_RoomList.activeSelf || m_Loading.activeSelf)
+        {
+            if (m_NameInput.activeSelf)
+            {
+                time = m_AnimationClips[3].length;
+            }
+            else if (m_CreateRoom.activeSelf)
+            {
+                time = m_AnimationClips[9].length;
+            }
+            else if (m_RoomList.activeSelf)
+            {
+                time = m_AnimationClips[11].length;
+            }
+            else if (m_Loading.activeSelf)
+            {
+                time = m_AnimationClips[5].length;
+            }
+                yield return new WaitForSeconds(time);
+                m_Lobby.SetActive(true);
+                animator.Play("EnterLobby");
+        }
     }
 
     private IEnumerator ExitLobby()
     {
-        m_Lobby.SetActive(false);
-        yield return null;
+        if (m_Lobby.activeSelf)
+        {
+            animator.Play("ExitLobby");
+            yield return new WaitForSeconds(m_AnimationClips[7].length);
+            m_Lobby.SetActive(false);
+        }
     }
 
     #endregion
@@ -393,7 +422,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator ExitCreateRoom()
     {
-        yield return null;
+        yield return new WaitForEndOfFrame();
         m_CreateRoom.SetActive(false);
     }
 
@@ -409,8 +438,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator ExitRoomList()
     {
+        yield return new WaitForEndOfFrame();
         m_RoomList.SetActive(false);
-        yield return null;
     }
 
     #endregion
