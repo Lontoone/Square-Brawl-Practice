@@ -69,7 +69,7 @@ public class AttackTriggerable : MonoBehaviour
 
     public void Shield()
     {
-        PlayerController.instance.IsShield = true;
+        PlayerController.instance.IsShieldTrue();
         Shield _shield = PlayerController.instance.transform.GetChild(4).gameObject.GetComponent<Shield>();
         _shield.gameObject.SetActive(true);
         _shield.ShieldEvent(WeaponSpeed, WeaponDamage, BeElasticity, BeShootShakeValue);

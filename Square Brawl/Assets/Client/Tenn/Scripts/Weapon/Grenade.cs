@@ -15,6 +15,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     protected float FieldExplose;//Explose Field
 
     protected bool isMaster;
+    protected bool _isBounceBullet;
 
     protected Vector3 _beShotShakeValue;
 
@@ -24,6 +25,8 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
 
     protected Rigidbody2D _rb;
     protected GameObject _childObj;
+
+    protected Color _effectChangeColor;
 
     [HeaderAttribute("Sync Setting")]
     protected PhotonView _pv;
@@ -59,7 +62,6 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         if (_pv.IsMine)
         {
             _pv.RPC("Rpc_EnableObj", RpcTarget.All);
-            _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
             StartCoroutine(Boom());
         }
     }
@@ -71,6 +73,12 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         GrenadeDamage = _damage;
         GrenadeBeElasticity = _beElasticity;
         _beShotShakeValue = _beShotShake;
+        if (_isBounceBullet)
+        {
+            SetColor();
+            _isBounceBullet = false;
+        }
+        _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
         _pv.RPC("Rpc_SetValue", RpcTarget.All, GrenadeSpeed, GrenadeDamage, GrenadeScaleValue, GrenadeBeElasticity, _beShotShakeValue);
         _rb.AddForce(GrenadeSpeed * transform.right);
         isMaster = true;
@@ -91,7 +99,16 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         _pv.RPC("Rpc_Explose", RpcTarget.All);
         if (_pv.IsMine)
         {
-            ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+            if (_isBounceBullet)
+            {
+                GameObject obj = ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+                Effect effect = obj.GetComponent<Effect>();
+                effect.ChangeColor(_effectChangeColor);
+            }
+            else
+            {
+                ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+            }
         }
         yield return new WaitForSeconds(0.1f);
         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
@@ -129,8 +146,10 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
             if (_playerController.IsShield && !isMaster)
             {
                 Vector2 dir = _playerController.transform.position - gameObject.transform.position;
-                _pv.RPC("Rpc_ChangeAngles", RpcTarget.Others, dir);
-                isMaster = true;
+                _effectChangeColor = CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
+                _pv.RPC("Rpc_ChangeAngles", RpcTarget.Others, dir, new Vector3(_effectChangeColor.r, _effectChangeColor.g, _effectChangeColor.b));
+                SetColor();
+                isMaster = _isBounceBullet = true;
             }
         }
     }
@@ -176,14 +195,16 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         transform.position = pos;
         transform.rotation = dir;
         _networkPosition = pos;
-        isMaster = false;
+        isMaster = _isBounceBullet = false;
     }
 
     [PunRPC]
-    public void Rpc_ChangeAngles(Vector2 _dir)
+    public void Rpc_ChangeAngles(Vector2 _dir,Vector3 _color)
     {
+        _effectChangeColor = new Color(_color.x, _color.y, _color.z);
         _rb.AddForce(-1 * GrenadeSpeed * _dir);
         isMaster = false;
+        _isBounceBullet = true;
     }
 
 

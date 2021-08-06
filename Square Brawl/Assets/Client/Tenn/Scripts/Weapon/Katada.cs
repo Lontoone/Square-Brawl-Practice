@@ -137,7 +137,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     {
         transform.position = _pos;
         transform.rotation = _dir;
-        _newSyncDir = _dir;
+        //_newSyncDir = _dir;
     }
 
     [PunRPC]

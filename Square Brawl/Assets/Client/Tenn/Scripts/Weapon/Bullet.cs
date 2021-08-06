@@ -17,12 +17,14 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     private Vector3 _originPos;//Bullet Origin Position
 
     private bool _isDontShootStraight;//Is Dont Shoot Straighr line?
-    protected bool _isMaster;
-    private bool _isBounce;
+    public bool _isMaster;
+    public bool _isBounceBullet;
 
     private string ExploseEffectName;
 
     protected Rigidbody2D _rb;
+
+    private Color _effectChangeColor;
 
     [HeaderAttribute("Sync Setting")]
     protected PhotonView _pv;
@@ -75,6 +77,11 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         BulletBeElasticity = _elasticity;
         _isDontShootStraight = _isStraight;
         this._cameraShakeValue = _cameraShakeValue;
+        if (_isBounceBullet)
+        {
+            SetColor();
+            _isBounceBullet = false;
+        }
         _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
         _pv.RPC("Rpc_SetValue", RpcTarget.All, BulletSpeed, BulletDamage, BulletScaleValue, BulletBeElasticity, _isDontShootStraight, this._cameraShakeValue);
 
@@ -117,7 +124,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                 {
                     if(_isMaster != _playerController.Pv.IsMine && !_playerController.Pv.IsMine)
                     {
-                        ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+                       // ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
                         float DirX = Mathf.Cos(transform.eulerAngles.z * Mathf.PI / 180);
                         float DirY = Mathf.Sin(transform.eulerAngles.z * Mathf.PI / 180);
                         _playerController.DamageEvent(BulletDamage, BulletBeElasticity, DirX, DirY, _cameraShakeValue);
@@ -133,18 +140,26 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                         }
                         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
                     }
-                    else if ((_isMaster != _playerController.Pv.IsMine && !_isMaster))
+                    else if (_isMaster != _playerController.Pv.IsMine && !_isMaster)
                     {
+                        if (_pv.IsMine&&_isBounceBullet)
+                        {
+                            GameObject obj = ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+                            Effect effect = obj.GetComponent<Effect>();
+                            effect.ChangeColor(_effectChangeColor);
+                        }
                         gameObject.SetActive(false);
                     }
                 }
                 else
                 {
-                    if (_isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine&& !_isBounce)
+                    if (_isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine&& !_isBounceBullet)
                     {
                         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z + 180);
-                        _pv.RPC("Rpc_ChangeAngles", RpcTarget.Others,transform.eulerAngles);
-                        _isBounce = _isMaster = true;
+                        _effectChangeColor = CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
+                        _pv.RPC("Rpc_ChangeAngles", RpcTarget.Others, transform.eulerAngles, new Vector3(_effectChangeColor.r, _effectChangeColor.g, _effectChangeColor.b));
+                        SetColor();
+                        _isBounceBullet = _isMaster = true;
                     }
                 }
             }
@@ -152,7 +167,16 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
             {
                 if (_pv.IsMine)
                 {
-                    ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+                    if ( _isBounceBullet)
+                    {
+                        GameObject obj = ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+                        Effect effect = obj.GetComponent<Effect>();
+                        effect.ChangeColor(_effectChangeColor);
+                    }
+                    else
+                    {
+                        ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
+                    }
                     _pv.RPC("Rpc_DisableObj", RpcTarget.All);
 
                     //PlayerKillCountManager.instance.SetKillCount();
@@ -190,13 +214,15 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         transform.position = pos;
         transform.rotation = dir;
         _networkPosition = pos;
-        _isMaster = _isBounce = false;
+        _isMaster = _isBounceBullet = false;
     }
 
     [PunRPC]
-    public void Rpc_ChangeAngles(Vector3 _dir)
+    public void Rpc_ChangeAngles(Vector3 _dir,Vector3 _color)
     {
+        _effectChangeColor = new Color(_color.x, _color.y, _color.z);
         transform.eulerAngles = _dir;
+        _isBounceBullet = true;
         _isMaster = false;
     }
 

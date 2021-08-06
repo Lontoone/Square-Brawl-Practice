@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     public bool IsBeFreeze;//Is Be Freeze?
     public bool _isCharge;//Is Change?
     public bool IsShield;
+    public bool IsBeShield;
     public bool IsBounce;
 
     public bool IsGround;//Player Is Ground?
@@ -63,9 +64,6 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     [HeaderAttribute("Sync Setting")]
     private float _newDirZ;
-
-    private bool _newIsShield;
-    private bool _newIsBounce;
 
     private Vector2 _newPos;
 
@@ -143,30 +141,27 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         if (!Pv.IsMine)
         {
             FrontSightMidPos.transform.rotation = Quaternion.Lerp(FrontSightMidPos.transform.rotation, _newShootPointDir, 15 * Time.deltaTime);
-            IsShield = _newIsShield;
-            IsBounce = _newIsBounce;
+            _rb.position = Vector2.MoveTowards(_rb.position, _newPos, 2*Time.deltaTime);
+            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 5*Time.deltaTime);
         }
 
         GroundCheckEvent();//Is Grounding?
     }
     void FixedUpdate()
     {
-        if (!Pv.IsMine)
+        /*if (!Pv.IsMine)
         {
-            _rb.position = Vector2.MoveTowards(_rb.position, _newPos, Time.fixedDeltaTime);
-            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, Time.fixedDeltaTime);
-        }
-        else if(!IsBeFreeze && Pv.IsMine)
+            _rb.position = Vector2.MoveTowards(_rb.position, _newPos, 2*Time.fixedDeltaTime);
+            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 3*Time.fixedDeltaTime);
+        }*/
+        if(!IsBeFreeze && Pv.IsMine)
         {
             PlayerMovement();//Player Move
             PlayerSpin();//Player Spin
         }
     }
 
-    /// <summary>
-    /// Player Control
-    /// </summary>
-    #region
+    #region -- Player Control --
     void PlayerMovement()
     {
         //Player Move
@@ -234,11 +229,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     #endregion
 
 
-
-    /// <summary>
-    /// PlayerInputSystem Control
-    /// </summary>
-    #region
+    #region -- PlayerInputSystem Control --
     void LimitInputValue(Vector2 diretion)
     {
         if (!IsBeFreeze&&_canLeftSticeSpin)
@@ -325,10 +316,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     #endregion
 
 
-    /// <summary>
-    /// Player Damage And BeBounce Event
-    /// </summary>
-    #region
+    #region -- Player Damage And BeBounce Event --
     public void DamageEvent(float _damage, float _beElasticity, float _dirX, float _dirY, Vector3 _beShotShake)
     {
         TakeDamage(_damage, _beShotShake.x, _beShotShake.y, _beShotShake.z);
@@ -362,16 +350,12 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     {
         CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
         //GamePad.SetVibration(0, 0.5f, 0.5f);
-        Invoke("StopGamePadShake", 0.5f);
         Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage, _shakeTime, _shakePower, _decrease);
     }
     #endregion
 
 
-    /// <summary>
-    /// Player Recoil Event
-    /// </summary>
-    #region
+    #region -- Player Recoil Event --
     public void PlayerRecoil(float _recoil)
     {
         Recoil = _recoil;
@@ -383,10 +367,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     #endregion
 
 
-    /// <summary>
-    /// Player Charge Event
-    /// </summary>
-    #region
+    #region -- Player Charge Event --
     public void ChargeEvent(float _speed, float _elasticity, float _damage,Vector3 _beShotShake)
     {
         PlayerRecoil(_speed);
@@ -401,10 +382,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     #endregion
 
 
-    /// <summary>
-    /// Player Freeze Event
-    /// </summary>
-    #region
+    #region -- Player Freeze Event --
     public void FreezeEvent(float _viewDistance, int viewCount,Vector3 _beShootShake)
     {
         _beShootShakeValue = _beShootShake;
@@ -444,26 +422,21 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     #endregion
 
 
-    /// <summary>
-    /// Bounce Event
-    /// </summary>
-    #region
-    public void IsBounceEvent()
+    #region -- Bounce Event --
+    public void IsBounceTrue()
     {
-        Pv.RPC("Rpc_IsBounceEvent", RpcTarget.All);
-        Invoke("IsBounceFalse",0.5f);
+        Pv.RPC("Rpc_IsBounceTrue", RpcTarget.All);
+        Invoke("IsBounceFalse",1f);
     }
 
     void IsBounceFalse()
     {
-        Pv.RPC("Rpc_IsBounceEvent", RpcTarget.All);
+        Pv.RPC("Rpc_IsBounceFalse", RpcTarget.All);
     }
     #endregion
 
-    /// <summary>
-    /// Ground Check Event
-    /// </summary>
-    #region
+
+    #region -- Ground Check Event --
     void GroundCheckEvent()
     {
         RaycastHit2D leftCheck = Raycast(new Vector2(-PlayerWidth, FootOffset), Vector2.left, GroundDistance);
@@ -501,6 +474,31 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     }
     #endregion
 
+
+    #region -- ShieldEvent --
+    public void IsShieldTrue()
+    {
+        Pv.RPC("Rpc_IsShieldTrue", RpcTarget.All);
+        Invoke("IsShieldFalse", 1f);
+    }
+
+    public void IsShieldFalse()
+    {
+        Pv.RPC("Rpc_IsShieldFalse", RpcTarget.All);
+    }
+
+    public void IsBeShieldTrue()
+    {
+        Pv.RPC("Rpc_IsBeShieldTrue", RpcTarget.All);
+        Invoke("IsBeShieldFalse", 1f);
+    }
+
+    void IsBeShieldFalse()
+    {
+        Pv.RPC("Rpc_IsBeShieldFalse", RpcTarget.All);
+    }
+    #endregion
+
     void StopGamePadShake()
     {
         GamePad.SetVibration(0, 0, 0);
@@ -508,15 +506,11 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player")&&Pv.IsMine&& _isCharge)
+        if (other.gameObject.CompareTag("Player")&& Pv.IsMine && _isCharge)
         {
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
-            //if (!other.gameObject.GetComponent<PhotonView>().IsMine && other.gameObject.GetComponent<PlayerController>()._isCharge)
-            if (!_playerController.Pv.IsMine)
+            if (!_playerController.Pv.IsMine && !_playerController.IsShield)
             {
-                
-                //TakeDamage(_playerController.Damage, _playerController._beShootShakeValue.x, _playerController._beShootShakeValue.y, _playerController._beShootShakeValue.z);
-                // BeBounce(_playerController.BeElasticity, _playerController.DirX, _playerController.DirY);
                 _playerController.DamageEvent(Damage, BeElasticity, DirX, DirY, _beShootShakeValue);
                 var IsKill = _playerController.IsKillAnyone();
                 if (IsKill)
@@ -529,12 +523,12 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Katada")&&!Pv.IsMine)
+        if (other.gameObject.CompareTag("Katada")&&!Pv.IsMine&&!IsShield)
         {
             Katada _katada = other.gameObject.GetComponent<Katada>();
             _katada.KatadaCollider(this);
         }
-        else if (other.gameObject.CompareTag("Shield") && !Pv.IsMine)
+        else if (other.gameObject.CompareTag("Shield") && !Pv.IsMine&&!IsBeShield)
         {
             Shield _shield = other.gameObject.GetComponent<Shield>();
             _shield.ShieldCollider(this);
@@ -551,9 +545,39 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     }
 
     [PunRPC]
-    void Rpc_IsBounceEvent()
+    void Rpc_IsBounceTrue()
     {
-        IsBounce = !IsBounce;
+        IsBounce = true;
+    }
+
+    [PunRPC]
+    void Rpc_IsBounceFalse()
+    {
+        IsBounce = false;
+    }
+
+    [PunRPC]
+    void Rpc_IsShieldTrue()
+    {
+        IsShield = true;
+    }
+
+    [PunRPC]
+    void Rpc_IsShieldFalse()
+    {
+        IsShield = false;
+    }
+
+    [PunRPC]
+    void Rpc_IsBeShieldTrue()
+    {
+        IsBeShield = true;
+    }
+
+    [PunRPC]
+    void Rpc_IsBeShieldFalse()
+    {
+        IsBeShield = false;
     }
 
     [PunRPC]
@@ -574,10 +598,12 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         _playerHp -= _damage;
         CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
         GamePad.SetVibration(0, 0.5f, 0.5f);
+        Invoke("StopGamePadShake", 0.5f);
         _uiControl.ReduceHp(_playerHp);
         if (_playerHp <= 0)
         {
             GamePad.SetVibration(0, 1f, 1f);
+            Invoke("StopGamePadShake", 0.5f);
             Invoke("Rebirth", 3f);
             gameObject.SetActive(false);
         }
@@ -651,7 +677,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
             stream.SendNext(FrontSightMidPos.transform.rotation);
             stream.SendNext(_rb.velocity);
             stream.SendNext(_rb.angularVelocity);
-            stream.SendNext(IsShield);
+            stream.SendNext(IsBeShield);
             stream.SendNext(IsBounce);
         }
         else
@@ -662,8 +688,6 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
             _newShootPointDir = (Quaternion)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();
             _rb.angularVelocity = (float)stream.ReceiveNext();
-            _newIsShield=(bool)stream.ReceiveNext();
-            _newIsBounce = (bool)stream.ReceiveNext();
 
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing()*0.001f);
             _newPos += (_rb.velocity * lag);

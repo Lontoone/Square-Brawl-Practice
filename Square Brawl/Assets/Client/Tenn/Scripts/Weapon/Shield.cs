@@ -37,7 +37,7 @@ public class Shield : MonoBehaviour
         ShieldDamage = _damage;
         ShieldBeElasticity = _beElasticity;
         this._cameraShakeValue = _cameraShakeValue;
-        StartCoroutine(DestroyObj());
+        Invoke("DestroyObj",0.8f);
         _pv.RPC("Rpc_EnableObj", RpcTarget.Others, ShieldSpeed, ShieldDamage, ShieldBeElasticity, this._cameraShakeValue);
     }
 
@@ -47,6 +47,7 @@ public class Shield : MonoBehaviour
         {
             Vector2 dir = _playerController.transform.position - gameObject.transform.position;
             _playerController.DamageEvent(ShieldDamage, ShieldBeElasticity, dir.x, dir.y, _cameraShakeValue);
+            _playerController.IsBeShieldTrue();
             var IsKill = _playerController.IsKillAnyone();
             if (IsKill)
             {
@@ -60,9 +61,8 @@ public class Shield : MonoBehaviour
         transform.eulerAngles = Vector3.zero;
     }
 
-    IEnumerator DestroyObj()
+    void DestroyObj()
     {
-        yield return new WaitForSeconds(0.5f);
         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
@@ -77,7 +77,7 @@ public class Shield : MonoBehaviour
     public void Rpc_DisableObj()
     {
         gameObject.SetActive(false);
-        GetComponentInParent<PlayerController>().IsShield = false;
+        GetComponentInParent<PlayerController>().IsBeShield = false;
     }
 
      [PunRPC]

@@ -159,7 +159,7 @@ public class Bounce : MonoBehaviour,IPoolObject
                 }
                 LaserColorAndWidth(_laserTransparency, _laserWidth);
 
-                if(_laserTransparency <= 0.3f)
+                if(_laserTransparency <= 0.5f)
                 {
                     for (int i = 0; i < HitGroundLocalPos.Count; i++)
                     {
@@ -224,7 +224,7 @@ public class Bounce : MonoBehaviour,IPoolObject
             if (_pv.IsMine != _playerController.Pv.IsMine && !_playerController.Pv.IsMine && !_playerController.IsBounce)
             {
                 _playerController.DamageEvent(BounceDamage, BounceBeElasticity, _prevDir.x, _prevDir.y, _beShootShakeValue);
-                _playerController.IsBounceEvent();
+                _playerController.IsBounceTrue();
                 var IsKill = _playerController.IsKillAnyone();
                 if (IsKill)
                 {
