@@ -8,7 +8,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 {
 
     public static Launcher instance;
-    [SerializeField] TMP_InputField nameInput;
+    [SerializeField] UnityEngine.UI.InputField nameInput;
     [SerializeField] UnityEngine.UI.InputField roomNameInputField;
     [SerializeField] UnityEngine.UI.Text errorText;
     [SerializeField] UnityEngine.UI.Text roomNameText;
