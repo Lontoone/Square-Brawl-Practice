@@ -40,6 +40,9 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         {
             SetMyButtonActive(true);
         }
+        else {
+            SetMyButtonActive(false);
+        }
     }
 
     public void SetReadyInverse()
