@@ -433,12 +433,14 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     private IEnumerator EnterRoomList()
     {
         m_RoomList.SetActive(true);
+        animator.Play("EnterRoomList");
         yield return null;
     }
 
     private IEnumerator ExitRoomList()
     {
-        yield return new WaitForEndOfFrame();
+        animator.Play("ExitRoomList");
+        yield return new WaitForSeconds(m_AnimationClips[11].length);
         m_RoomList.SetActive(false);
     }
 
@@ -549,7 +551,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         {
             time = m_AnimationClips[9].length;
         }
-
+        else if (m_RoomList.activeSelf)
+        {
+            time = m_AnimationClips[11].length;
+        }
         yield return new WaitForSeconds(time);
         m_Loading.SetActive(true);
         animator.Play("Loading");
