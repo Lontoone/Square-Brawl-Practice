@@ -93,6 +93,15 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         SetUpMapEditor();
     }
 
+    /*private void Update()
+    {
+        var length = 0f;
+        var name = "";
+        length = animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
+        name = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        Debug.Log(name +": "+ length);
+    }*/
+
     public void EnterPage(string gameObject)
     {
         switch (gameObject)
@@ -369,7 +378,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLobby()
     {
-        Debug.Log("enter Lobby");
         var time = 0f;
         if (m_NameInput.activeSelf || m_CreateRoom.activeSelf || m_RoomList.activeSelf || m_Loading.activeSelf)
         {
@@ -432,16 +440,22 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterRoomList()
     {
-        m_RoomList.SetActive(true);
-        animator.Play("EnterRoomList");
-        yield return null;
+        if (m_Lobby.activeSelf)
+        {
+            m_RoomList.SetActive(true);
+            animator.Play("EnterRoomList");
+            yield return null;
+        }
     }
 
     private IEnumerator ExitRoomList()
     {
-        animator.Play("ExitRoomList");
-        yield return new WaitForSeconds(m_AnimationClips[11].length);
-        m_RoomList.SetActive(false);
+        if (m_RoomList.activeSelf)
+        {
+            animator.Play("ExitRoomList");
+            yield return new WaitForSeconds(m_AnimationClips[11].length);
+            m_RoomList.SetActive(false);
+        }
     }
 
     #endregion
@@ -450,14 +464,22 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterRoom()
     {
-        m_Room.SetActive(true);
-        yield return null;
+        if (m_CreateRoom.activeSelf || m_RoomList.activeSelf || m_Loading.activeSelf)
+        {
+            yield return new WaitForSeconds(m_AnimationClips[5].length);
+            animator.Play("EnterRoom");
+            m_Room.SetActive(true);
+        }
     }
 
     private IEnumerator ExitRoom()
     {
-        m_Room.SetActive(false);
-        yield return null;
+        if (m_Room.activeSelf)
+        {
+            animator.Play("ExitRoom");
+            yield return new WaitForSeconds(m_AnimationClips[13].length);
+            m_Room.SetActive(false);
+        }
     }
 
     #endregion
