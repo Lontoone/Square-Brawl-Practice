@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileMapManager : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class TileMapManager : MonoBehaviour
     //Vector2 gridSize = new Vector2(1.05f, 1.05f);
 
     public SpriteRenderer foreground, midground, background;
+
 
     public TileCell center_cell { get { return (gridCells[(gridCells.Count - 1) / 2]); } }
 
@@ -40,6 +42,7 @@ public class TileMapManager : MonoBehaviour
     {
         //GenerateGrid(); 
     }
+
     [ContextMenu("GenerateGrid")]
     public void GenerateGrid()
     {

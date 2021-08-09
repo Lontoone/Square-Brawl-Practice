@@ -11,6 +11,8 @@ public class TillStyleLoader : MonoBehaviour
     public GameObject container;
     public Button buttonPrefab;
     private const string styleDataPaht = "TileData/";
+
+    public static string s_StyleName;
     public void Start()
     {
         LoadStyleData();
@@ -59,6 +61,7 @@ public class TillStyleLoader : MonoBehaviour
         if (eventCode == CustomPropertyCode.UPDATE_STYLE_EVENTCODE)
         {
             string styleName= (string)MyPhotonExtension.ByteArrayToObject((byte[])obj.CustomData);
+            s_StyleName = styleName;
             TileImageCollection tileImageCollection = Resources.Load<TileImageCollection>(styleDataPaht+styleName);
             TileStyleManager.instance.ApplyNewStyle(tileImageCollection);
         }

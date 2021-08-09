@@ -201,6 +201,9 @@ public class TileImageCollection : ScriptableObject
          { new TileImage("Midground",302) },
          { new TileImage("Background",303) },
 
+         { new TileImage("PlayerBody",401) },
+         { new TileImage("PlayerUI",402) },
+
         { new TileImage("Mat",900) },
         { new TileImage("Below",901) }
     };

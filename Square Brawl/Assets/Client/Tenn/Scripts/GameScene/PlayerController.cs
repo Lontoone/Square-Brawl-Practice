@@ -48,6 +48,9 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     private bool _canSpin;//Player Can Spin?
     private bool _canLeftSticeSpin;
 
+    private SpriteRenderer _bodySprite;
+    private Image _hpSprite;
+
     [HeaderAttribute("GroundCheck Setting")]
     public float FootOffset;
     public float GroundDistance;
@@ -81,6 +84,8 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         _inputAction = new PlayerInputManager();
         Pv = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody2D>();
+        _bodySprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
+        _hpSprite = transform.GetChild(6).GetChild(0).GetComponent<Image>();
         _playerManager = PhotonView.Find((int)Pv.InstantiationData[0]).GetComponent<PlayerManager>();
         _uiControl = transform.GetChild(6).GetComponent<PlayerUIController>();
         if (Pv.IsMine)
@@ -107,11 +112,13 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     void Start()
     {
+        _bodySprite.sprite = Resources.Load<Sprite>("PlayerStyle/" + TillStyleLoader.s_StyleName + "/PlayerBody");
+        _hpSprite.sprite= Resources.Load<Sprite>("PlayerStyle/" + TillStyleLoader.s_StyleName + "/PlayerUI");
+
         _playerHp = 100;
         _canSpin = true;
         _camera = Camera.main;
         FrontSightMidPos = transform.GetChild(0).GetComponent<Transform>();
-        //_uiControl = transform.GetChild(6).GetComponent<PlayerUIController>();
         if (Pv.IsMine)
         {
             FrontSightPos = FrontSightMidPos.transform.GetChild(0);
@@ -317,9 +324,9 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
 
     #region -- Player Damage And BeBounce Event --
-    public void DamageEvent(float _damage, float _beElasticity, float _dirX, float _dirY, Vector3 _beShotShake)
+    public void DamageEvent(float _damage, float _beElasticity, float _dirX, float _dirY, Vector3 _beShootShake)
     {
-        TakeDamage(_damage, _beShotShake.x, _beShotShake.y, _beShotShake.z);
+        TakeDamage(_damage, _beShootShake.x, _beShootShake.y, _beShootShake.z);
         BeBounce(_beElasticity, _dirX, _dirY);
     }
 
@@ -343,13 +350,11 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     public void BeExplode(float _elasticty, Vector3 _pos, float _field)
     {
         Pv.RPC("Rpc_BeExplode", RpcTarget.All, _elasticty, _pos, _field);
-        //_rb.AddExplosionForce(_elasticty, _pos, _field);
     }
 
     public void TakeDamage(float _damage, float _shakeTime, float _shakePower, float _decrease)//,float _elasticty,float _bullletDirX,float _bullletDirY)
     {
         CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
-        //GamePad.SetVibration(0, 0.5f, 0.5f);
         Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage, _shakeTime, _shakePower, _decrease);
     }
     #endregion

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileStyleManager : MonoBehaviour
 {
@@ -170,5 +171,14 @@ public class TileStyleManager : MonoBehaviour
         if (background != null)
             background.sprite = TileStyleManager.selectedCollection.GetSprite(303);
     }
+
+    /*private void SetPlayer()
+    {
+        if (playerBody != null)
+            playerBody.sprite = TileStyleManager.selectedCollection.GetSprite(401);
+
+        if (playerUI != null)
+            playerUI.sprite = TileStyleManager.selectedCollection.GetSprite(402);
+    }*/
 
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Bounce
   Sound: {fileID: 0}
   LaunchEffectName: 
-  ExploseEffectName: SmallExplose
+  ExploseEffectName: Hit_Cube
   CoolDownTime: 2
   Damage: 50
   Speed: 0

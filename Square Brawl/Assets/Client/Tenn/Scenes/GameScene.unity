@@ -494,7 +494,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerItemParent: {fileID: 5182857589403166417}
   playerItemPrefab: {fileID: 6165589556170921947, guid: 6ecb1cc9b539bff43963b7d893b910aa, type: 3}
-  KillCount: 0
 --- !u!1 &410365254
 GameObject:
   m_ObjectHideFlags: 0

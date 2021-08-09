@@ -69,6 +69,9 @@ MonoBehaviour:
   - tag: Bounce
     prefab: {fileID: 3556891715108532301, guid: de3b29a1a36503246babee692949c8d4, type: 3}
     size: 1
+  - tag: Hit_Cube
+    prefab: {fileID: 2339855429722352612, guid: 7e7bbb4cccfc5e649bac97a075d9767e, type: 3}
+    size: 4
   _pv: {fileID: 0}
 --- !u!114 &7958008732146023615
 MonoBehaviour:

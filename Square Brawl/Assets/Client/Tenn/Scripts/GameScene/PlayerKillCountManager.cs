@@ -8,12 +8,13 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerKillCountManager : MonoBehaviourPunCallbacks
 {
+    private int _killCount;
+
     public Transform playerItemParent;
+
     public PlayerKillCountItem playerItemPrefab;
 
     public static PlayerKillCountManager instance;
-
-    public int KillCount;
 
     private Hashtable _myCustom = new Hashtable();
 
@@ -38,8 +39,8 @@ public class PlayerKillCountManager : MonoBehaviourPunCallbacks
 
     public void SetKillCount()
     {
-        KillCount++;
-        _myCustom["KillCount"] = KillCount;
+        _killCount++;
+        _myCustom["KillCount"] = _killCount;
         PhotonNetwork.SetPlayerCustomProperties(_myCustom);
     }
 }
