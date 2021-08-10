@@ -40,15 +40,19 @@ public class TileMapManager : MonoBehaviour
             Destroy(instance);
         }
     }
+    private void OnDisable()
+    {
+        Destroy(instance);
+    }
     public void Start()
     {
         //GenerateGrid(); 
     }
 
     [ContextMenu("GenerateGrid")]
-    public void GenerateGrid()
+    public void GenerateGrid(bool _setActive=true)
     {
-        StartCoroutine(GenerateGridCoro());
+        StartCoroutine(GenerateGridCoro(_setActive));
         /*
         Debug.Log("Generate Grid");
         float _sizePandingFactor = 1f;
@@ -75,8 +79,9 @@ public class TileMapManager : MonoBehaviour
         }*/
     }
 
-    private IEnumerator GenerateGridCoro()
+    private IEnumerator GenerateGridCoro(bool _setActive = true)
     {
+        Debug.Log("Do generate map");
         WaitForEndOfFrame _wait = new WaitForEndOfFrame();
 
         float _sizePandingFactor = 1f;
@@ -102,11 +107,15 @@ public class TileMapManager : MonoBehaviour
                 _cell.SetEmptyColor();
                 _cell.grid_index = _counter;
 
+                _cell.gameObject.SetActive(_setActive);
+
                 gridCells.Add(_cell);
                 _counter++;
             }
             yield return _wait;
         }
+
+        Debug.Log("Do generate map - finished");
     }
 
     public Vector2Int CellToVector2(Transform cell)

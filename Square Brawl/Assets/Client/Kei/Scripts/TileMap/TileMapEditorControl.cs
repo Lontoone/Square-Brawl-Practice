@@ -59,20 +59,18 @@ public class TileMapEditorControl : MonoBehaviour
 
     private void OnDisable()
     {
-
         previewTileCells.Clear();
-    }
-
-    public void OnDestroy()
-    {
         TileCell.OnCellMouseEnter -= SetPreviewRange;
         TileCell.OnCellMouseExit -= ClearPreviewCell;
         //TileCell.OnCellMouseExit -= SetPreviousId;
 
         LoadMapUIControl.OnLevelFileLoaded -= Load;
         SceneManager.sceneLoaded -= OnSceneLoad;
+    }
 
-
+    public void OnDestroy()
+    {
+      
     }
     public void Update()
     {

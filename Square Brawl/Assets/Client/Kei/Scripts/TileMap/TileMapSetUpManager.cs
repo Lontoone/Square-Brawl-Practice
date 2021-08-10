@@ -9,6 +9,7 @@ public class TileMapSetUpManager : MonoBehaviour
 
     private string levelFileName; //temp
 
+    [SerializeField]
     private List<TileCell> activeTileCells = new List<TileCell>();
 
     //public SpriteRenderer foreground, midground, background;
@@ -34,12 +35,12 @@ public class TileMapSetUpManager : MonoBehaviour
         if (TileMapManager.instance.gridCells.Count < TileMapManager.instance.cellCount)
         {
             Debug.Log("Gernerate Grid");
-            TileMapManager.instance.GenerateGrid();
+            TileMapManager.instance.GenerateGrid(false);
             yield return new WaitForSeconds(1.5f);
+            Debug.Log("Gernerate Grid - finished");
         }
         SetUpLevelTiles(_mapData);
         SetUpCellOrientation();
-        //SetupBackground();
     }
 
     private void SetUpLevelTiles(MapData _mapData)
@@ -52,6 +53,7 @@ public class TileMapSetUpManager : MonoBehaviour
 
             if (i == _mapData.cellDatas[_dataCount].index)
             {
+                Debug.Log("i is active " + i);
                 TileMapManager.instance.cellStateMap[i] = _mapData.cellDatas[_dataCount].state;
                 activeTileCells.Add(_cell);
                 //_dataCount++;
