@@ -85,7 +85,7 @@ public class TileMapEditorControl : MonoBehaviour
         {
             inMouseHolding = false;
         }
-        if (inMouseHolding)
+        if (inMouseHolding && IsMousePosInsideMapBounds())
         {
             Select(_currentMouseHoverCellId);
         }
@@ -118,6 +118,7 @@ public class TileMapEditorControl : MonoBehaviour
                 _cell.SetEmptyColor();
             }
         }
+        _currentMouseHoverCellId = 0;
     }
     public void SetPreviewRange(int _centerGridId)
     {
@@ -135,7 +136,7 @@ public class TileMapEditorControl : MonoBehaviour
 
                 if (cellStateMap[_cell.grid_index] == CellState.NONE)
                 {
-                    //_cell.SetHoverColor();
+                    _cell.SetHoverColor();
                 }
             }
         }
@@ -219,6 +220,12 @@ public class TileMapEditorControl : MonoBehaviour
                 OnCellChanged?.Invoke(previewTileCells[i].grid_index);
             }
         }
+    }
+
+    //check is the current mouse position is inside the map bounds:
+    private bool IsMousePosInsideMapBounds() {
+        Vector2 _mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        return TileMapManager.instance.mapBounds.Contains(_mousePos);
     }
 
     private TileCell BuildSingleCell(TileCell _cell)

@@ -24,6 +24,8 @@ public class TileMapManager : MonoBehaviour
 
     public TileCell center_cell { get { return (gridCells[(gridCells.Count - 1) / 2]); } }
 
+    public Bounds mapBounds;
+
     [SerializeField]
     private bool _useGizemos = true;
 
@@ -82,6 +84,10 @@ public class TileMapManager : MonoBehaviour
         float halfHeight = firstCell.bounds.size.y / 2 * _sizePandingFactor;
         //float halfWidth = gridSize.x / 2 * _sizePandingFactor;
         //float halfHeight = gridSize.y / 2 * _sizePandingFactor;
+
+        //set bounds:
+        mapBounds.min = firstCell.transform.position;
+        mapBounds.max = (Vector2)firstCell.transform.position + new Vector2(halfWidth * mapSize.x * 2, halfHeight * mapSize.y * 2);
 
         int _counter = 0;
         for (int i = 0; i < mapSize.x; i++)

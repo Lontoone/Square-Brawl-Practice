@@ -11,7 +11,7 @@ public class TileMapSetUpManager : MonoBehaviour
 
     private List<TileCell> activeTileCells = new List<TileCell>();
 
-    public SpriteRenderer foreground, midground, background;
+    //public SpriteRenderer foreground, midground, background;
     private void Start()
     {
         /*

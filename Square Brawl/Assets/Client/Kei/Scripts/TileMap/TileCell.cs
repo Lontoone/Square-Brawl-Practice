@@ -70,8 +70,8 @@ public class TileCell : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandl
 
     public void SetHoverColor()
     {
-
-        spriteRenderer.color = Color.red;
+        spriteRenderer.color = new Color(1, 0, 0, 1);
+        //spriteRenderer.color = Color.red;
     }
     public void SetEmptyColor()
     {
