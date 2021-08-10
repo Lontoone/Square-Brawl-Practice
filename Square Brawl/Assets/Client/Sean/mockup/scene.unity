@@ -7449,9 +7449,7 @@ MonoBehaviour:
   detecateRange:
     data: {fileID: 4900000, guid: 9445171c46489fd45b11ed7b8aa50bf8, type: 3}
     range: []
-  foreground: {fileID: 0}
-  midground: {fileID: 0}
-  background: {fileID: 0}
+  activeTileCells: []
 --- !u!224 &347354321
 RectTransform:
   m_ObjectHideFlags: 0
@@ -56213,7 +56211,7 @@ MonoBehaviour:
   roomNameInputField: {fileID: 2093130029}
   errorText: {fileID: 1008535649}
   roomNameText: {fileID: 1238212047353555068}
-  roomListItemPrefab: {fileID: 8504368908441455293}
+  roomListItemPrefab: {fileID: 7433918226048932978, guid: c0ffccb57efe92848a6d6fb4f1d4e7e8, type: 3}
   roomListContent: {fileID: 671363780}
   playerListItemPrefab: {fileID: 5323153199086270458, guid: 39f49da8c107fd9418851300375a7f68, type: 3}
   playerListContent: {fileID: 1238212046844072098}
