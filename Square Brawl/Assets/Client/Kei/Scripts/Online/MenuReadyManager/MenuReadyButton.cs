@@ -11,13 +11,13 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
     public bool setUnReadyOnEnable = true;
     public UnityEvent OnReady;
     public UnityEvent OnCancelReady;
-    public Player player;
+    public Player player;    
 
     public override void OnEnable()
     {
         base.OnEnable();
 
-        SetMyButtonActive(false);
+        //SetMyButtonActive(false);
 
     }
     private void SetMyButtonActive(bool _hide)
@@ -31,6 +31,7 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
 
     public void Init(Player _player)
     {
+        Debug.Log("Photon btn " + (_player == PhotonNetwork.LocalPlayer));
         player = _player;
         if (setUnReadyOnEnable)
         {
@@ -40,9 +41,11 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         {
             SetMyButtonActive(true);
         }
-        else {
+        else
+        {
             SetMyButtonActive(false);
         }
+        SetReadyLocal(false);
     }
 
     public void SetReadyInverse()
