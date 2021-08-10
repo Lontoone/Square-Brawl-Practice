@@ -36,7 +36,13 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         if (setUnReadyOnEnable)
         {
             SetReady(false);
+            SetReadyLocal(false);
         }
+        else {
+            SetReady(true);
+            SetReadyLocal(true);
+        }
+
         if (_player == PhotonNetwork.LocalPlayer)
         {
             SetMyButtonActive(true);
@@ -45,7 +51,7 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         {
             SetMyButtonActive(false);
         }
-        SetReadyLocal(false);
+        //SetReadyLocal(false);
     }
 
     public void SetReadyInverse()
