@@ -53897,7 +53897,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Katada
+  m_Text: Katana
 --- !u!222 &513925765495720057
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -58931,7 +58931,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Aevolver
+  m_Text: Revolver
 --- !u!224 &1589444703136061169
 RectTransform:
   m_ObjectHideFlags: 0

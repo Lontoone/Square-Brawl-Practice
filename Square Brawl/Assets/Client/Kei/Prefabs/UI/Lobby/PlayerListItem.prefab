@@ -470,7 +470,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 91.27963}
+  m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5323153199086270456
 CanvasRenderer:
@@ -661,6 +661,10 @@ PrefabInstance:
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 9008430805377751782}
+    - target: {fileID: 4868958680892051501, guid: 78144ef06390d2548b9a7a1dc2d1e205, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5455764190085233085, guid: 78144ef06390d2548b9a7a1dc2d1e205, type: 3}
       propertyPath: OnReady.m_PersistentCalls.m_Calls.Array.size
       value: 3
