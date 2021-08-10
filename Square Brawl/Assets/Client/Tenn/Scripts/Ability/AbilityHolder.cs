@@ -7,9 +7,10 @@ using Photon.Realtime;
 
 public class AbilityHolder : MonoBehaviour
 {
-    private float _cooldownTime;
+    private float _curretCooldownTime;
     private float _activeTime;
     private float isCdAddCount;
+    private float _coolTime;
     public int _abilityNum;
 
     public bool isWeapon01;
@@ -22,6 +23,8 @@ public class AbilityHolder : MonoBehaviour
     private PlayerInputManager _inputAction;
     private PhotonView _pv;
     public Player player;
+
+    public static event Action<float,float,bool> OnColdTime;
 
     public enum WeaponType2
     {
@@ -143,7 +146,7 @@ public class AbilityHolder : MonoBehaviour
                     
                     if(!ability[_abilityNum].isCdCanAdd&&!ability[_abilityNum].isHaveTwoCd)
                     {
-                        _cooldownTime = ability[_abilityNum].CoolDownTime;
+                         _coolTime = _curretCooldownTime = ability[_abilityNum].CoolDownTime;
                     }
                     
                     _state = AbilityState.CoolDown;
@@ -160,9 +163,10 @@ public class AbilityHolder : MonoBehaviour
                 }
                 break;
             case AbilityState.CoolDown:
-                if (_cooldownTime > 0)
+                if (_curretCooldownTime > 0)
                 {
-                    _cooldownTime -= Time.deltaTime;
+                    _curretCooldownTime -= Time.deltaTime;
+                    OnColdTime(_coolTime, _curretCooldownTime, isWeapon01);
                 }
                 else
                 {
@@ -179,11 +183,11 @@ public class AbilityHolder : MonoBehaviour
                 isCdAddCount += 1;
                 if (isCdAddCount % 3 == 0)
                 {
-                    _cooldownTime = _activeTime += 0.05f;
+                    _coolTime = _curretCooldownTime = _activeTime += 0.05f;
                 }
                 else
                 {
-                    _cooldownTime = _activeTime;
+                    _coolTime = _curretCooldownTime = _activeTime;
                 }
             }
             else if (ability[_abilityNum].isHaveTwoCd)//Aevolver
@@ -201,11 +205,11 @@ public class AbilityHolder : MonoBehaviour
 
                 if (isCdAddCount % 6 == 0)
                 {
-                    _cooldownTime = 2;
+                    _coolTime = _curretCooldownTime = 2;
                 }
                 else
                 {
-                    _cooldownTime = ability[_abilityNum].CoolDownTime;
+                    _coolTime = _curretCooldownTime = ability[_abilityNum].CoolDownTime;
                 }
             }
         }

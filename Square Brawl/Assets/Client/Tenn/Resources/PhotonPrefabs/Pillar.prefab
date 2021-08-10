@@ -97,7 +97,7 @@ MonoBehaviour:
     m_Bits: 2048
   GroundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 768
 --- !u!61 &9174280215237800888
 BoxCollider2D:
   m_ObjectHideFlags: 0
