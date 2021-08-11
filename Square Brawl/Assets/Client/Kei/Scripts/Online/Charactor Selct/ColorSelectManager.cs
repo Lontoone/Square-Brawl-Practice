@@ -24,6 +24,11 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
 
     private void CreateButtonItem()
     {
+        foreach (Transform child in buttonItemContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
         for (int i = 0; i < CustomPropertyCode.COLORS.Length; i++)
         {
             ColorSetButton _button = Instantiate(buttonItemPrefab, parent: buttonItemContainer);
@@ -38,6 +43,11 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
 
     private void CreatePlayerItem()
     {
+        foreach (Transform child in playerItemContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
         for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         {
             ColorSelectPlayerItemControl _item = Instantiate(playerItemPrefab, parent: playerItemContainer);
@@ -46,9 +56,6 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
             _item.colorCode = i;
 
         }
-
-
-
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
