@@ -13,7 +13,6 @@ public class RoomLayout : MonoBehaviour
     private void Update()
     {
         m_Index = m_Transform.childCount;
-        Debug.Log(m_Transform.childCount);
 
         if (m_Index <= 4)
         {

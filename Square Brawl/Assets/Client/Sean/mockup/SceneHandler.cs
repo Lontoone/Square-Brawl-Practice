@@ -569,6 +569,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLoading()
     {
+        Debug.Log("enter loading");
         var time = 0f;
         if (m_CreateRoom.activeSelf)
         {
