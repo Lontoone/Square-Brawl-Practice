@@ -165,6 +165,12 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         }
     }
 
+    public void OnBegin()
+    {
+        _rb.bodyType = RigidbodyType2D.Dynamic;
+        IsBeFreeze = false;
+    }
+
     #region -- Player Control --
     void PlayerMovement()
     {

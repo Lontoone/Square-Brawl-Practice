@@ -24,13 +24,13 @@ public class PlayerManager : MonoBehaviour
     {
         if (_pv.IsMine)
         {
-            Invoke("CreatController", 2f);
+            CreatController();
         }
     }
 
     void CreatController()
     {
-        _obj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), new Vector3(Random.Range(-5,6), Random.Range(0, 3), 0), Quaternion.identity, 0, new object[] { _pv.ViewID });
+        _obj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), new Vector3(Random.Range(-5,6), 1, 0), Quaternion.identity, 0, new object[] { _pv.ViewID });
         
     }
 
