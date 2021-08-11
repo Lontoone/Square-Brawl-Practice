@@ -398,9 +398,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             {
                 time = m_AnimationClips[5].length;
             }
-                yield return new WaitForSeconds(time);
-                m_Lobby.SetActive(true);
-                animator.Play("EnterLobby");
+            yield return new WaitForSeconds(time);
+            m_Loading.SetActive(false);     //Todo : 關掉Room的時候流程問題
+            m_Lobby.SetActive(true);
+            animator.Play("EnterLobby");
         }
     }
 
@@ -475,6 +476,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator ExitRoom()
     {
+        //Todo : 關掉Room的時候流程問題
         if (m_Room.activeSelf)
         {
             animator.Play("ExitRoom");
@@ -590,6 +592,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator ExitLoading()
     {
+        //Todo : 關掉Room的時候流程問題
         if (m_Loading.activeSelf)
         {
             animator.Play("ExitLoading");
