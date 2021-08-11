@@ -378,6 +378,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLobby()
     {
+        Debug.Log("enter lobby");
         var time = 0f;
         if (m_NameInput.activeSelf || m_CreateRoom.activeSelf || m_RoomList.activeSelf || m_Loading.activeSelf)
         {
@@ -577,6 +578,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         {
             time = m_AnimationClips[11].length;
         }
+        else if (m_Room.activeSelf)
+        {
+            time = m_AnimationClips[13].length;
+        }
         yield return new WaitForSeconds(time);
         m_Loading.SetActive(true);
         animator.Play("Loading");
@@ -584,9 +589,14 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator ExitLoading()
     {
-        animator.Play("ExitLoading");
-        yield return new WaitForSeconds(m_AnimationClips[5].length);
-        m_Loading.SetActive(false);
+        if (m_Loading.activeSelf)
+        {
+            animator.Play("ExitLoading");
+            Debug.Log("enter exit loading");
+            yield return new WaitForSeconds(m_AnimationClips[5].length);
+            Debug.Log("enter loading false");
+            m_Loading.SetActive(false);
+        }
     }
 
     #endregion
