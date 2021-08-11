@@ -45,7 +45,7 @@ public class RoomLayout : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Player Room List Out of Range");
+            Debug.LogWarning("Player Room List Out of Range" , gameObject);
         }
     }
 
