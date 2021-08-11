@@ -102,6 +102,11 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                               .SetEase(menu_current_easetype.GetEasetype(string_easetype)));
     }
 
+    public void IdleChar()
+    {
+        SplitCharAction.IdleChar(m_Char);
+    }
+
 
     public void OnPointerEnter(PointerEventData eventData)
     {
