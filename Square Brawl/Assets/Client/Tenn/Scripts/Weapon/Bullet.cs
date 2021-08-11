@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
 {
     [HeaderAttribute("Bullet Setting")]
     private float BulletSpeed;//Bullet Speed
-    private float BulletDamage;//Bullet Damage
+    [SerializeField] private float BulletDamage;//Bullet Damage
     private float BulletBeElasticity;//Bullet Be Elasticity
     private float BulletScaleValue;//Bullet Scale Value
 
@@ -16,9 +16,10 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
 
     private Vector3 _originPos;//Bullet Origin Position
 
+    public bool IsSniper;
     private bool _isDontShootStraight;//Is Dont Shoot Straighr line?
-    public bool _isMaster;
-    public bool _isBounceBullet;
+    private bool _isMaster;
+    private bool _isBounceBullet;
 
     private string ExploseEffectName;
 
@@ -29,9 +30,10 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     [HeaderAttribute("Sync Setting")]
     protected PhotonView _pv;
 
-    protected Vector2 _networkPosition;
+    private float _newDamage;
+    protected Vector2 _newPos;
     protected Vector2 _beginPos;
-    protected Quaternion _networkRotation;
+    protected Quaternion _newDir;
     protected virtual void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -83,6 +85,11 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
             SetColor();
             _isBounceBullet = false;
         }
+
+        if (IsSniper)
+        {
+            _pv.RPC("RPC_SetIsSniper", RpcTarget.Others,IsSniper);
+        }
         _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
         _pv.RPC("Rpc_SetValue", RpcTarget.All, BulletSpeed, BulletDamage, BulletScaleValue, BulletBeElasticity, _isDontShootStraight, this._cameraShakeValue);
 
@@ -97,6 +104,8 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         //ResetValue();//Reset Bullet Value
 
         BulletCollider();//Bullet Collider Raycast
+
+        SniperEvent();
     }
 
     protected virtual void FixedUpdate()
@@ -107,7 +116,11 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
         else if (!_pv.IsMine)
         {
-            _rb.position = Vector2.Lerp(_rb.position, _networkPosition, 10 * Time.fixedDeltaTime);
+            _rb.position = Vector2.Lerp(_rb.position, _newPos, 5 * Time.fixedDeltaTime);
+            if (IsSniper)
+            {
+                BulletDamage = _newDamage;
+            }
         }
     }
 
@@ -115,7 +128,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     {
         //_originPos = transform.position;// + new Vector3(transform.localScale.x / 2, 0, 0);
                                         //RaycastHit2D[] hits = Physics2D.RaycastAll(_originPos, (transform.position - _originPos).normalized, (transform.position - _originPos).magnitude);
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position - new Vector3(transform.localScale.x / 2, 0, 0), transform.right, transform.localScale.x);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position - new Vector3(transform.localScale.x / 2, 0, 0), transform.right, transform.localScale.x*2);
         for (int i = 0; i < hits.Length; i++)
         {
             if (hits[i].collider.gameObject.CompareTag("Player"))
@@ -190,6 +203,14 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
+    void SniperEvent()
+    {
+        if (IsSniper)
+        {
+            BulletDamage += 150*Time.deltaTime;
+        }
+    }
+
     [PunRPC]
     public void Rpc_SetValue(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot,Vector3 _beShotShake)
     {
@@ -215,11 +236,17 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     }
 
     [PunRPC]
+    public void RPC_SetIsSniper(bool _isSniper)
+    {
+        IsSniper = _isSniper;
+    }
+
+    [PunRPC]
     public void Rpc_ResetPos(Vector3 pos, Quaternion dir)
     {
         transform.position = pos;
         transform.rotation = dir;
-        _networkPosition = pos;
+        _newPos = pos;
         _isMaster = _isBounceBullet = false;
     }
 
@@ -239,13 +266,21 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         {
             stream.SendNext(_rb.position);
             stream.SendNext(_rb.velocity);
+            if (IsSniper)
+            {
+                stream.SendNext(BulletDamage);
+            }
         }
         else
         {
-            _networkPosition = (Vector2)stream.ReceiveNext();
+            _newPos = (Vector2)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();
+            if (IsSniper)
+            {
+                _newDamage = (float)stream.ReceiveNext();
+            }
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.0001f);
-            _networkPosition += (_rb.velocity * lag);
+            _newPos += (_rb.velocity * lag);
         }
     }
 }

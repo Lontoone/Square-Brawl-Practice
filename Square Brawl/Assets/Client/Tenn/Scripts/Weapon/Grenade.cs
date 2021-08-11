@@ -234,7 +234,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
                 _childObjnetworkPosition = (Vector3)stream.ReceiveNext();
                 _childObjnetworkScale = (Vector3)stream.ReceiveNext();
             }
-            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));// + (float)(PhotonNetwork.GetPing() * 0.001f);
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.0001f);
             _networkPosition += (_rb.velocity * lag);
         }
     }

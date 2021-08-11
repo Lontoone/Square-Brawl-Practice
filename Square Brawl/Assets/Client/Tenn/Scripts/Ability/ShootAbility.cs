@@ -10,6 +10,7 @@ public class ShootAbility : Ability
     public bool IsDontShootStraight;
     public bool IsScatterShot;
     public bool IsGrenade;
+    public bool IsSniper;
 
     public override void Initalize(GameObject _obj)
     {
@@ -32,6 +33,10 @@ public class ShootAbility : Ability
     {
         if (!IsScatterShot&&!IsGrenade)
         {
+            if (IsSniper)
+            {
+                _attack.IsSniper = IsSniper;
+            }
             _attack.Fire();
         }
         else if (IsScatterShot)

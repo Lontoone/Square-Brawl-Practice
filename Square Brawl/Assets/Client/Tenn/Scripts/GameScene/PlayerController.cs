@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     private float _playerHp;//Player Hp
     private float Recoil;//Player Recoil
     private float BeElasticity;//Player BeElasticity
-    private float DirX, DirY;//
+    private float DirX, DirY;//Player Shoot Point Dir
 
     private Vector3 _beShootShakeValue;
     private Vector3 _freezeLeftRay;
@@ -67,10 +67,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     [HeaderAttribute("Sync Setting")]
     private float _newDirZ;
-
     private Vector2 _newPos;
-
-    //private Quaternion _newDir;
     private Quaternion _newShootPointDir;
 
     public PhotonView Pv;
@@ -148,19 +145,19 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         if (!Pv.IsMine)
         {
             FrontSightMidPos.transform.rotation = Quaternion.Lerp(FrontSightMidPos.transform.rotation, _newShootPointDir, 15 * Time.deltaTime);
-            _rb.position = Vector2.Lerp(_rb.position, _newPos, Time.deltaTime);
-            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 3 * Time.deltaTime);
+            //_rb.position = Vector2.Lerp(_rb.position, _newPos, Time.deltaTime);
+            //_rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 3 * Time.deltaTime);
         }
 
         GroundCheckEvent();//Is Grounding?
     }
     void FixedUpdate()
     {
-       /* if (!Pv.IsMine)
+        if (!Pv.IsMine)
         {
-            _rb.position = Vector2.Lerp(_rb.position, _newPos, 5 * Time.fixedDeltaTime);
-            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 3*Time.fixedDeltaTime);
-        }*/
+            _rb.position = Vector2.Lerp(_rb.position, _newPos, 5f * Time.fixedDeltaTime);
+            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 5 * Time.fixedDeltaTime);
+        }
         if(!IsBeFreeze && Pv.IsMine)
         {
             PlayerMovement();//Player Move
@@ -416,7 +413,6 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     private void BeFreezeEvent(Vector3 _originPos,Quaternion _originDir,Vector3 _beShotAhake)
     {
         Pv.RPC("Rpc_ChangeBeFreeze", RpcTarget.All, _originPos, _originDir, _beShotAhake);
-        //CameraShake.instance.SetShakeValue(_beShotAhake.x, _beShotAhake.y, _beShotAhake.z);
         Invoke("StopBeFreeze",2f);
     }
 
@@ -677,7 +673,6 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(_rb.position);
-            //stream.SendNext(transform.rotation);
             stream.SendNext(_rb.rotation);
             stream.SendNext(FrontSightMidPos.transform.rotation);
             stream.SendNext(_rb.velocity);
@@ -687,13 +682,12 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         else
         {
             _newPos = (Vector2)stream.ReceiveNext();
-            //_newDir = (Quaternion)stream.ReceiveNext();
             _newDirZ = (float)stream.ReceiveNext();
             _newShootPointDir = (Quaternion)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();
             _rb.angularVelocity = (float)stream.ReceiveNext();
 
-            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.001f);
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.0001f);
             _newPos += (_rb.velocity * lag);
             _newDirZ += (_rb.angularVelocity * lag);
         }

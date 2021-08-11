@@ -317,7 +317,6 @@ GameObject:
   - component: {fileID: 5292270166853021771}
   - component: {fileID: 2110465305499821295}
   - component: {fileID: 3724183295208971859}
-  - component: {fileID: 457483617108328531}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -334,7 +333,7 @@ Transform:
   m_GameObject: {fileID: 2110465305499821290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.42, y: -3.63, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 5898218076483180907}
   - {fileID: 1529287232533982333}
@@ -380,7 +379,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0056729317, y: 0.0005196333}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -391,7 +390,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.9040005, y: 0.8994086}
   m_EdgeRadius: 0
 --- !u!114 &5292270166853021771
 MonoBehaviour:
@@ -413,7 +412,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 2110465305499821295}
-  - {fileID: 457483617108328531}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -429,21 +427,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e2324aca3077f74d8e212ab5e237bdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 20
-  JumpForce: 750
+  MoveSpeed: 18
+  JumpForce: 600
   FlyForce: 7
   DownForce: 10
-  SpinForce: -15
-  SpinInGroundForce: -3
-  FrontSightAngle: -174.47646
+  SpinForce: -30
+  SpinInGroundForce: -2
+  FrontSightAngle: -155.964
   IsBeFreeze: 0
   _isCharge: 0
   IsShield: 0
   IsBeShield: 0
   IsBounce: 0
-  IsGround: 1
+  IsGround: 0
   FootOffset: 0
-  GroundDistance: 0.45
+  GroundDistance: 0.25
   PlayerWidth: 0
   GroundLayer:
     serializedVersion: 2
@@ -481,22 +479,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &457483617108328531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110465305499821290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 1
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &5898218075960249730
 GameObject:
   m_ObjectHideFlags: 0
@@ -1259,6 +1241,7 @@ MonoBehaviour:
   WeaponScaleValue: 0
   IsDontContinuous: 0
   IsDontShootStraight: 0
+  IsSniper: 0
   LaunchEffectName: 
   ExploseEffectName: 
   BeShootShakeValue: {x: 0, y: 0, z: 0}
@@ -1368,6 +1351,7 @@ MonoBehaviour:
   WeaponScaleValue: 0
   IsDontContinuous: 0
   IsDontShootStraight: 0
+  IsSniper: 0
   LaunchEffectName: 
   ExploseEffectName: 
   BeShootShakeValue: {x: 0, y: 0, z: 0}

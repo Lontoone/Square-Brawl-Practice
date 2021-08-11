@@ -15,10 +15,12 @@ public class AttackTriggerable : MonoBehaviour
     [HideInInspector] public float WeaponScaleValue;
     [HideInInspector] public bool IsDontContinuous;
     [HideInInspector] public bool IsDontShootStraight;
+    [HideInInspector] public bool IsSniper;
     [HideInInspector] public string LaunchEffectName;
     [HideInInspector] public string ExploseEffectName;
     [HideInInspector] public Vector3 BeShootShakeValue;
     [HideInInspector] public Vector3 ShootShakeValue;
+
 
     private bool _isKatadaReverse;
 
@@ -35,6 +37,10 @@ public class AttackTriggerable : MonoBehaviour
     {
         GameObject _bulletObj = ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Bullet _bullet = _bulletObj.GetComponent<Bullet>();
+        if (IsSniper)
+        {
+            _bullet.IsSniper = true;
+        }
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         _bullet.ShootEvent(ExploseEffectName,WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShootShakeValue);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
