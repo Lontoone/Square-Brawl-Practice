@@ -9,7 +9,7 @@ public class Menu : MonoBehaviour
 
 
 
-    [HideInInspector]
+    //[HideInInspector]
     public bool open;
 
     public void Start()
@@ -19,11 +19,13 @@ public class Menu : MonoBehaviour
 
     public void Open()
     {
+        Debug.Log("open" + gameObject.name);
         open = true;
         SceneHandler.instance.EnterPage(gameObject.name);
     }
     public void Close()
     {
+        Debug.Log("close" + gameObject.name);
         open = false;
         SceneHandler.instance.ExitPage(gameObject.name);
     }
