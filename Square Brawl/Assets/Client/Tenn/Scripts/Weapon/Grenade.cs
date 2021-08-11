@@ -17,7 +17,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     protected bool isMaster;
     protected bool _isBounceBullet;
 
-    protected Vector3 _beShotShakeValue;
+    protected Vector3 _beShootShakeValue;
 
     protected string ExploseEffectName;
 
@@ -66,20 +66,22 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         }
     }
 
-    public void GrenadeEvent(string _effectName,float _speed,float _damage,float _beElasticity,Vector3 _beShotShake)
+    public void GrenadeEvent(string _effectName,float _speed,float _damage,float _scaleValue,float _beElasticity,Vector3 _beShootShake)
     {
         ExploseEffectName = _effectName;
         GrenadeSpeed = _speed;
         GrenadeDamage = _damage;
+        GrenadeScaleValue = _scaleValue;
+        transform.localScale = new Vector3(_scaleValue, _scaleValue, _scaleValue);
         GrenadeBeElasticity = _beElasticity;
-        _beShotShakeValue = _beShotShake;
+        _beShootShakeValue = _beShootShake;
         if (_isBounceBullet)
         {
             SetColor();
             _isBounceBullet = false;
         }
         _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
-        _pv.RPC("Rpc_SetValue", RpcTarget.All, GrenadeSpeed, GrenadeDamage, GrenadeScaleValue, GrenadeBeElasticity, _beShotShakeValue);
+        _pv.RPC("Rpc_SetValue", RpcTarget.All, GrenadeSpeed, GrenadeDamage, GrenadeScaleValue, GrenadeBeElasticity, _beShootShakeValue);
         _rb.AddForce(GrenadeSpeed * transform.right);
         isMaster = true;
     }
@@ -127,7 +129,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
 
             if (isMaster != _playerController.Pv.IsMine && !_playerController.Pv.IsMine)
             {
-                _playerController.TakeDamage(GrenadeDamage, _beShotShakeValue.x, _beShotShakeValue.y, _beShotShakeValue.z);
+                _playerController.TakeDamage(GrenadeDamage, _beShootShakeValue.x, _beShootShakeValue.y, _beShootShakeValue.z);
                 _playerController.BeExplode(GrenadeBeElasticity, transform.position, FieldExplose);
                 var IsKill = _playerController.IsKillAnyone();
                 if (IsKill)
@@ -167,8 +169,9 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         GrenadeSpeed = _speed;
         GrenadeDamage = _damage;
         GrenadeScaleValue = _scaleValue;
+        transform.localScale = new Vector3(GrenadeScaleValue, GrenadeScaleValue, GrenadeScaleValue);
         GrenadeBeElasticity = _elasticity;
-        _beShotShakeValue = _beShotShake;
+        _beShootShakeValue = _beShotShake;
     }
 
     [PunRPC]

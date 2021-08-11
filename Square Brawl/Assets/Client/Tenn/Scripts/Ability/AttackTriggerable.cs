@@ -80,7 +80,7 @@ public class AttackTriggerable : MonoBehaviour
     {
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
-        PlayerController.instance.FreezeEvent(3, 5,BeShootShakeValue);
+        PlayerController.instance.FreezeEvent(1.8f, 5,BeShootShakeValue);
         ObjectsPool.Instance.SpawnFromPool("FreezeShoot", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
     }
 
@@ -89,7 +89,7 @@ public class AttackTriggerable : MonoBehaviour
         GameObject _grenadeObj = ObjectsPool.Instance.SpawnFromPool(Name, _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Grenade _grenade = _grenadeObj.GetComponent<Grenade>();
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
-        _grenade.GrenadeEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, BeElasticity,BeShootShakeValue);
+        _grenade.GrenadeEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity,BeShootShakeValue);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
     }
 

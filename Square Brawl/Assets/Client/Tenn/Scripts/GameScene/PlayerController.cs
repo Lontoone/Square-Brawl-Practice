@@ -148,17 +148,17 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         if (!Pv.IsMine)
         {
             FrontSightMidPos.transform.rotation = Quaternion.Lerp(FrontSightMidPos.transform.rotation, _newShootPointDir, 15 * Time.deltaTime);
-            _rb.position = Vector2.MoveTowards(_rb.position, _newPos, 2*Time.deltaTime);
-            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 5*Time.deltaTime);
+            _rb.position = Vector2.Lerp(_rb.position, _newPos, Time.deltaTime);
+            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 3 * Time.deltaTime);
         }
 
         GroundCheckEvent();//Is Grounding?
     }
     void FixedUpdate()
     {
-        /*if (!Pv.IsMine)
+       /* if (!Pv.IsMine)
         {
-            _rb.position = Vector2.MoveTowards(_rb.position, _newPos, 2*Time.fixedDeltaTime);
+            _rb.position = Vector2.Lerp(_rb.position, _newPos, 5 * Time.fixedDeltaTime);
             _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 3*Time.fixedDeltaTime);
         }*/
         if(!IsBeFreeze && Pv.IsMine)
@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         {
             if (_inputPos.x != 0 && _isCheckSpin)//Limit Player Rotation Speed
             {
-                Physics2D.maxRotationSpeed = 30;
+                Physics2D.maxRotationSpeed = 20;
             }
             else
             {
@@ -682,8 +682,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
             stream.SendNext(FrontSightMidPos.transform.rotation);
             stream.SendNext(_rb.velocity);
             stream.SendNext(_rb.angularVelocity);
-            stream.SendNext(IsBeShield);
-            stream.SendNext(IsBounce);
+
         }
         else
         {
@@ -694,7 +693,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
             _rb.velocity = (Vector2)stream.ReceiveNext();
             _rb.angularVelocity = (float)stream.ReceiveNext();
 
-            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing()*0.001f);
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.001f);
             _newPos += (_rb.velocity * lag);
             _newDirZ += (_rb.angularVelocity * lag);
         }

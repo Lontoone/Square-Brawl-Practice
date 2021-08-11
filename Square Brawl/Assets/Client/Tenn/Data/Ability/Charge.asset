@@ -18,9 +18,9 @@ MonoBehaviour:
   ExploseEffectName: 
   CoolDownTime: 2
   Damage: 50
-  Speed: 1200
+  Speed: 900
   Recoil: 0
-  BeElasticity: 800
+  BeElasticity: 400
   BeShotShakeValue: {x: 0.6, y: 0.3, z: 1}
   ShotShakeValue: {x: 0.4, y: 0.2, z: 1}
   isCdCanAdd: 0

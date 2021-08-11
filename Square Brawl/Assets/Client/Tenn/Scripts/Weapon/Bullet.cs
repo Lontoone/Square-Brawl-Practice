@@ -74,6 +74,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         BulletSpeed = _speed;
         BulletDamage = _damage;
         BulletScaleValue = _scaleValue;
+        transform.localScale = new Vector3(_scaleValue, _scaleValue, _scaleValue);
         BulletBeElasticity = _elasticity;
         _isDontShootStraight = _isStraight;
         this._cameraShakeValue = _cameraShakeValue;
@@ -106,7 +107,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
         else if (!_pv.IsMine)
         {
-            _rb.position = Vector2.Lerp(_rb.position, _networkPosition, 5 * Time.fixedDeltaTime);
+            _rb.position = Vector2.Lerp(_rb.position, _networkPosition, 10 * Time.fixedDeltaTime);
         }
     }
 
@@ -181,6 +182,10 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
 
                     //PlayerKillCountManager.instance.SetKillCount();
                 }
+                else
+                {
+                    gameObject.SetActive(false);
+                }
             }
         }
     }
@@ -191,6 +196,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         BulletSpeed = _speed;
         BulletDamage = _damage;
         BulletScaleValue = _scaleValue;
+        transform.localScale = new Vector3(BulletScaleValue, BulletScaleValue, BulletScaleValue);
         BulletBeElasticity = _elasticity;
         _isDontShootStraight = IsDontShoot;
         _cameraShakeValue = _beShotShake;
@@ -238,7 +244,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         {
             _networkPosition = (Vector2)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();
-            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.001f);
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.0001f);
             _networkPosition += (_rb.velocity * lag);
         }
     }

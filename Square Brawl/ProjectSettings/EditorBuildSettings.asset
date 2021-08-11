@@ -9,14 +9,8 @@ EditorBuildSettings:
     path: Assets/Client/Sean/mockup/scene.unity
     guid: c8dda2a2f1c6ac247b1ab6333273dd5b
   - enabled: 0
-    path: Assets/Client/Tenn/Scenes/GameScene.unity
-    guid: ffa73f2e2a0283e409bc098c27de3a06
-  - enabled: 0
     path: Assets/Client/Kei/scene 1.unity
     guid: f1f24b9a67762e54a9f5d4d55d1fa354
-  - enabled: 0
-    path: Assets/Client/Tenn/Scenes/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
     path: Assets/Client/Kei/CustomeLevel.unity
     guid: 5b747444932f1f045b420b4eea691970

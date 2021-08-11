@@ -18,14 +18,14 @@ MonoBehaviour:
   ExploseEffectName: BigExplose
   CoolDownTime: 2
   Damage: 50
-  Speed: 7
+  Speed: 6
   Recoil: 150
-  BeElasticity: 1300
+  BeElasticity: 600
   BeShotShakeValue: {x: 0.6, y: 0.3, z: 1}
   ShotShakeValue: {x: 0.4, y: 0.2, z: 1}
   isCdCanAdd: 0
   isHaveTwoCd: 0
-  BulletScaleValue: 0.2
+  BulletScaleValue: 0.15
   IsDontContinuous: 0
   IsDontShootStraight: 0
   IsScatterShot: 0

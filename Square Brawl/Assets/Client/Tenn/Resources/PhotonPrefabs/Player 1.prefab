@@ -334,7 +334,7 @@ Transform:
   m_GameObject: {fileID: 2110465305499821290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.42, y: -3.63, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 5898218076483180907}
   - {fileID: 1529287232533982333}
@@ -359,7 +359,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 4
+  m_LinearDrag: 3
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -432,16 +432,16 @@ MonoBehaviour:
   MoveSpeed: 20
   JumpForce: 750
   FlyForce: 7
-  DownForce: 10
-  SpinForce: -15
-  SpinInGroundForce: -3
-  FrontSightAngle: -174.47646
+  DownForce: 20
+  SpinForce: -20
+  SpinInGroundForce: -5
+  FrontSightAngle: 0
   IsBeFreeze: 0
   _isCharge: 0
   IsShield: 0
   IsBeShield: 0
   IsBounce: 0
-  IsGround: 1
+  IsGround: 0
   FootOffset: 0
   GroundDistance: 0.45
   PlayerWidth: 0
@@ -494,7 +494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 1
+  m_SynchronizeAngularVelocity: 0
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &5898218075960249730
@@ -812,7 +812,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1344050676988021851
 Transform:
   m_ObjectHideFlags: 0
@@ -871,13 +871,13 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.05
+    widthMultiplier: 0.1
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.49999744
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1012,7 +1012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5320457202908584123
 Transform:
   m_ObjectHideFlags: 0

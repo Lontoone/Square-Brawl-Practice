@@ -130,7 +130,7 @@ public class Bounce : MonoBehaviour,IPoolObject
             if (!_isChangeColor)
             {
                 _laserTransparency += Time.deltaTime;
-                if (_laserWidth <= 0.1f)
+                if (_laserWidth <= 0.06f)
                 {
                     _laserWidth += Time.deltaTime*0.1f;
                 }
@@ -146,6 +146,7 @@ public class Bounce : MonoBehaviour,IPoolObject
                             //_pv.RPC("Rpc_Explose", RpcTarget.All, HitGroundPos[i]);
                         }
                     }
+                    CameraShake.instance.SetShakeValue(_beShootShakeValue.x, _beShootShakeValue.y, _beShootShakeValue.z) ;
                     _edgeCollider.points = HitGroundLocalPos.ToArray();
                     _isChangeColor = true;
                 }
@@ -153,7 +154,7 @@ public class Bounce : MonoBehaviour,IPoolObject
             else if (_isChangeColor)
             {
                 _laserTransparency -= Time.deltaTime * 1.5f;
-                if (_laserWidth >= 0.05f)
+                if (_laserWidth >= 0.03f)
                 {
                     _laserWidth -= Time.deltaTime * 0.1f;
                 }

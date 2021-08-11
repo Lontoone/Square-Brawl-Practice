@@ -118,7 +118,7 @@ public class Pillar : Grenade, IPoolObject
             }
             else if (isMaster != _playerController.Pv.IsMine && isMaster)
             {
-                _playerController.DamageEvent(GrenadeDamage, GrenadeBeElasticity, _colliderDir.x, _colliderDir.y, _beShotShakeValue);
+                _playerController.DamageEvent(GrenadeDamage, GrenadeBeElasticity, _colliderDir.x, _colliderDir.y, _beShootShakeValue);
                 _isCanAddForce = false;
                 var IsKill = _playerController.IsKillAnyone();
                 if (IsKill)
@@ -144,7 +144,7 @@ public class Pillar : Grenade, IPoolObject
             if (isMaster != _playerController.Pv.IsMine && !_playerController.Pv.IsMine)
             {
                 GroundCheckEvent();
-                _playerController.DamageEvent(GrenadeDamage, GrenadeBeElasticity, _colliderDir.x, _colliderDir.y, _beShotShakeValue);
+                _playerController.DamageEvent(GrenadeDamage, GrenadeBeElasticity, _colliderDir.x, _colliderDir.y, _beShootShakeValue);
                 var IsKill = _playerController.IsKillAnyone();
                 if (IsKill)
                 {
