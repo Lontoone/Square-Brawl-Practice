@@ -72,6 +72,9 @@ MonoBehaviour:
   - tag: Hit_Cube
     prefab: {fileID: 2339855429722352612, guid: 7e7bbb4cccfc5e649bac97a075d9767e, type: 3}
     size: 4
+  - tag: Spark
+    prefab: {fileID: 1117826876694119334, guid: 8e8482aef9109984080a905b4c66d5e0, type: 3}
+    size: 5
   _pv: {fileID: 0}
 --- !u!114 &7958008732146023615
 MonoBehaviour:

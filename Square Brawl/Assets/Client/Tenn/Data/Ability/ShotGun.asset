@@ -25,8 +25,9 @@ MonoBehaviour:
   ShotShakeValue: {x: 0.4, y: 0.2, z: 1}
   isCdCanAdd: 0
   isHaveTwoCd: 0
-  BulletScaleValue: 0.1
+  BulletScaleValue: 0.12
   IsDontContinuous: 0
   IsDontShootStraight: 1
   IsScatterShot: 1
   IsGrenade: 0
+  IsSniper: 0

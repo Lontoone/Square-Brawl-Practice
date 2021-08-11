@@ -18,14 +18,14 @@ MonoBehaviour:
   ExploseEffectName: SmallExplose
   CoolDownTime: 0.3
   Damage: 25
-  Speed: 13
+  Speed: 12
   Recoil: 300
   BeElasticity: 600
   BeShotShakeValue: {x: 0.4, y: 0.2, z: 1}
   ShotShakeValue: {x: 0, y: 0, z: 0}
   isCdCanAdd: 0
   isHaveTwoCd: 1
-  BulletScaleValue: 0.07
+  BulletScaleValue: 0.1
   IsDontContinuous: 0
   IsDontShootStraight: 0
   IsScatterShot: 0

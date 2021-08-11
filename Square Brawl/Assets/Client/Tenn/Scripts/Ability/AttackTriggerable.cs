@@ -37,10 +37,12 @@ public class AttackTriggerable : MonoBehaviour
     {
         GameObject _bulletObj = ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Bullet _bullet = _bulletObj.GetComponent<Bullet>();
-        if (IsSniper)
+        if (!IsDontShootStraight)
         {
-            _bullet.IsSniper = true;
+            ObjectsPool.Instance.SpawnFromPool("Spark", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         }
+
+        _bullet.IsSniper = IsSniper;
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         _bullet.ShootEvent(ExploseEffectName,WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShootShakeValue);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
@@ -55,6 +57,7 @@ public class AttackTriggerable : MonoBehaviour
             Bullet _bullet = _bulletObj[i].GetComponent<Bullet>();
             _bullet.ShootEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShootShakeValue);
         }
+        ObjectsPool.Instance.SpawnFromPool("Spark", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
     }

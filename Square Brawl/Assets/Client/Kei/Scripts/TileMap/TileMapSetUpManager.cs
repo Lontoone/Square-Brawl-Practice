@@ -67,7 +67,7 @@ public class TileMapSetUpManager : MonoBehaviour
                 _cell.gameObject.SetActive(false);
             }
         }
-
+        Debug.Log("OK");
     }
     private void SetUpCellOrientation()
     {

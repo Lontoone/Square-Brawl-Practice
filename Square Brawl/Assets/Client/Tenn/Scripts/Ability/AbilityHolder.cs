@@ -183,7 +183,7 @@ public class AbilityHolder : MonoBehaviour
                 isCdAddCount += 1;
                 if (isCdAddCount % 3 == 0)
                 {
-                    _coolTime = _curretCooldownTime = _activeTime += 0.05f;
+                    _coolTime = _curretCooldownTime = _activeTime += 0.07f;
                 }
                 else
                 {

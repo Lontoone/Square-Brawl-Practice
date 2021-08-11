@@ -37,14 +37,14 @@ public enum ModeType
 
 public enum WeaponType {
     None,
-    Aevolver,
+    Revolver,
     BigBoom,
     Sniper,
     CubeShoot,
     ShotGun,
     Grenade,
     Pillar,
-    Katada,
+    Katana,
     Charge,
     Shield,
     Freeze,
