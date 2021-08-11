@@ -11,7 +11,7 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
     public bool setUnReadyOnEnable = true;
     public UnityEvent OnReady;
     public UnityEvent OnCancelReady;
-    public Player player;    
+    public Player player;
 
     public override void OnEnable()
     {
@@ -22,10 +22,12 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
     }
     private void SetMyButtonActive(bool _hide)
     {
-
         foreach (Transform _child in transform)
         {
-            _child.GetComponent<UnityEngine.UI.Button>()?.gameObject.SetActive(_hide);
+            UnityEngine.UI.Button btn = _child.GetComponent<UnityEngine.UI.Button>();
+            if (btn != null)
+                btn.interactable = _hide;
+            Debug.Log("child " + _child.name + " " + btn.interactable);
         }
     }
 
@@ -38,7 +40,8 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
             SetReady(false);
             SetReadyLocal(false);
         }
-        else {
+        else
+        {
             SetReady(true);
             SetReadyLocal(true);
         }
