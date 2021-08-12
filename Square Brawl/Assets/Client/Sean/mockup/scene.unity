@@ -4159,7 +4159,7 @@ RectTransform:
   - {fileID: 1349699331}
   - {fileID: 785811672}
   m_Father: {fileID: 1238212046429211997}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4284,7 +4284,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1855046657}
   m_HandleRect: {fileID: 1855046670}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -9878,7 +9878,7 @@ RectTransform:
   m_Children:
   - {fileID: 703126603}
   m_Father: {fileID: 1238212046429211997}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -16139,7 +16139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &624710011
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23354,7 +23354,7 @@ RectTransform:
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 1238212046429211997}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -25485,7 +25485,7 @@ RectTransform:
   m_Children:
   - {fileID: 564723090}
   m_Father: {fileID: 1238212046429211997}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -65518,7 +65518,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1238212045818044130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65738,7 +65738,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1238212045985836311
 RectTransform:
   m_ObjectHideFlags: 0
@@ -65945,10 +65945,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 178377278}
   - {fileID: 844403169}
   - {fileID: 398377522}
   - {fileID: 914179716}
-  - {fileID: 178377278}
   - {fileID: 976358907}
   - {fileID: 1162549199}
   - {fileID: 904346343}
