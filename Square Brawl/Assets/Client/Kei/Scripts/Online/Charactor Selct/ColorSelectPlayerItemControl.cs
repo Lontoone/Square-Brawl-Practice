@@ -8,6 +8,8 @@ public class ColorSelectPlayerItemControl : MonoBehaviour
 {
     public Player player;
     public Image colorImage;
+    public Image iconImage;
+    public Image readyImage;
     public Text playerText;
     public int colorCode = 0;
     public MenuReadyButton readyButton;
@@ -20,6 +22,9 @@ public class ColorSelectPlayerItemControl : MonoBehaviour
 
     public void SetColor(Color _color)
     {
-        colorImage.color = _color;
+        colorImage.color = new Color(_color.r, _color.g, _color.b, 0.5f);
+        playerText.color = _color;
+        iconImage.color = _color;
+        readyImage.color = _color;
     }
 }

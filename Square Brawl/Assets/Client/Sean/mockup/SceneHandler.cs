@@ -491,14 +491,25 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterCharacterSelection()
     {
+        var time = 0f;
+        if (m_GameMode.activeSelf)
+        { 
+        
+        }
+
+        yield return new WaitForSeconds(time);
         m_CharacterSelection.SetActive(true);
-        yield return null;
+        animator.Play("EnterCharacterSelection");
     }
 
     private IEnumerator ExitCharacterSelection()
     {
-        m_CharacterSelection.SetActive(false);
-        yield return null;
+        if (m_CharacterSelection.activeSelf)
+        {
+            animator.Play("ExitCharacterSelection");
+            yield return new WaitForSeconds(m_AnimationClips[15].length);
+            m_CharacterSelection.SetActive(false);
+        }
     }
 
     #endregion

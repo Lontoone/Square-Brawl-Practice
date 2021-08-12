@@ -216,7 +216,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Give Master Button
+    path: GameObject/Give Master Button
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -277,7 +277,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Master Image
+    path: GameObject/Master Image
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -347,7 +347,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: PlayerName
+    path: GameObject/PlayerName
   m_FloatCurves:
   - curve:
       serializedVersion: 2
@@ -907,21 +907,21 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 1956748359
+      path: 3570614693
       attribute: 3
       script: {fileID: 0}
       typeID: 4
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3539739494
+      path: 3902988184
       attribute: 3
       script: {fileID: 0}
       typeID: 4
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 2164689457
+      path: 570479860
       attribute: 3
       script: {fileID: 0}
       typeID: 4
@@ -2056,7 +2056,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.x
-    path: Give Master Button
+    path: GameObject/Give Master Button
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -2129,7 +2129,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.y
-    path: Give Master Button
+    path: GameObject/Give Master Button
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -2202,7 +2202,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.z
-    path: Give Master Button
+    path: GameObject/Give Master Button
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -2266,7 +2266,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.x
-    path: Master Image
+    path: GameObject/Master Image
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -2330,7 +2330,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.y
-    path: Master Image
+    path: GameObject/Master Image
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -2394,7 +2394,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.z
-    path: Master Image
+    path: GameObject/Master Image
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -2467,7 +2467,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.x
-    path: PlayerName
+    path: GameObject/PlayerName
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -2540,7 +2540,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.y
-    path: PlayerName
+    path: GameObject/PlayerName
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -2613,7 +2613,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.z
-    path: PlayerName
+    path: GameObject/PlayerName
     classID: 224
     script: {fileID: 0}
   m_EulerEditorCurves: []
