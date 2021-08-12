@@ -466,9 +466,18 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterRoom()
     {
-        if (m_CreateRoom.activeSelf || m_RoomList.activeSelf || m_Loading.activeSelf)
+        if (m_CreateRoom.activeSelf || m_RoomList.activeSelf || m_Loading.activeSelf ||m_CharacterSelection.activeSelf)
         {
-            yield return new WaitForSeconds(m_AnimationClips[5].length);
+            var time = 0f;
+            if (m_CharacterSelection.activeSelf)
+            {
+                time = m_AnimationClips[15].length;
+            }
+            else if (m_Loading.activeSelf)
+            {
+                time = m_AnimationClips[5].length;
+            }
+            yield return new WaitForSeconds(time);
             animator.Play("EnterRoom");
             m_Room.SetActive(true);
         }
@@ -518,14 +527,25 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterGameMode()
     {
+        var time = 0f;
+        if (m_WeaponSelection.activeSelf)
+        {
+
+        }
+
+        yield return new WaitForSeconds(time);
+        animator.Play("EnterGameMode");
         m_GameMode.SetActive(true);
-        yield return null;
     }
 
     private IEnumerator ExitGameMode()
     {
-        m_GameMode.SetActive(false);
-        yield return null;
+        if (m_GameMode.activeSelf)
+        {
+            animator.Play("ExitGameMode");
+            yield return new WaitForSeconds(m_AnimationClips[17].length);  
+            m_GameMode.SetActive(false);
+        }
     }
 
     #endregion
