@@ -10,8 +10,8 @@ public class AbilityHolder : MonoBehaviour
     private float _curretCooldownTime;
     private float _activeTime;
     private float isCdAddCount;
-    private float _coolTime;
-    public int _abilityNum;
+    private float _coolDownTime;
+    private int _abilityNum;
 
     public bool isWeapon01;
     protected bool _isFire01;
@@ -22,9 +22,9 @@ public class AbilityHolder : MonoBehaviour
     private PlayerController _playerController;
     private PlayerInputManager _inputAction;
     private PhotonView _pv;
-    public Player player;
+    public Player _player;
 
-    public static event Action<float,float,bool> OnColdTime;
+    public static event Action<float,float,bool> OnCoolDownTime;
 
     public enum WeaponType2
     {
@@ -84,7 +84,6 @@ public class AbilityHolder : MonoBehaviour
             if (isWeapon01)
             {
                 _abilityNum = (int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON1CODE];
-                //_abilityNum = (int)weapon1;
                 _inputAction.Player.Fire1.performed += _ => PlayerFire1Down();
                 _inputAction.Player.Fire1.canceled += _ => PlayerFire1Up();
                 SetWeapon();
@@ -92,7 +91,6 @@ public class AbilityHolder : MonoBehaviour
             else
             {
                 _abilityNum = (int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON2CODE];
-                //_abilityNum = (int)weapon2;
                 _inputAction.Player.Fire2.performed += _ => PlayerFire2Down();
                 _inputAction.Player.Fire2.canceled += _ => PlayerFire2Up();
                 SetWeapon();
@@ -100,13 +98,7 @@ public class AbilityHolder : MonoBehaviour
         }
     }
 
-    public void SetWeapon()
-    {
-        ability[_abilityNum].Initalize(gameObject);
-        _activeTime = ability[_abilityNum].CoolDownTime;
-    }
-
-
+    #region -- FireInputSystem --
     private void PlayerFire1Down()
     {
         _isFire01 = true;
@@ -126,8 +118,14 @@ public class AbilityHolder : MonoBehaviour
     {
         _isFire02 = false;
     }
+    #endregion
 
-    // Update is called once per frame
+    public void SetWeapon()
+    {
+        ability[_abilityNum].Initalize(gameObject);
+        _activeTime = ability[_abilityNum].CoolDownTime;
+    }
+
     void Update()
     {
         if (!_pv.IsMine || _playerController.IsBeFreeze)
@@ -138,15 +136,15 @@ public class AbilityHolder : MonoBehaviour
         switch (_state)
         {
             case AbilityState.Ready:
-                if (_isFire01||_isFire02)
+                if (_isFire01 || _isFire02)
                 {
                     ability[_abilityNum].Activate();
 
                     SpecialEvent();
                     
-                    if(!ability[_abilityNum].isCdCanAdd&&!ability[_abilityNum].isHaveTwoCd)
+                    if(!ability[_abilityNum].isCdCanAdd && !ability[_abilityNum].isHaveTwoCd)
                     {
-                         _coolTime = _curretCooldownTime = ability[_abilityNum].CoolDownTime;
+                         _coolDownTime = _curretCooldownTime = ability[_abilityNum].CoolDownTime;
                     }
                     
                     _state = AbilityState.CoolDown;
@@ -157,7 +155,7 @@ public class AbilityHolder : MonoBehaviour
                     {
                         if (_activeTime > ability[_abilityNum].CoolDownTime)
                         {
-                            _activeTime -= Time.deltaTime/5;
+                            _activeTime -= Time.deltaTime / 5;
                         }
                     }
                 }
@@ -166,7 +164,7 @@ public class AbilityHolder : MonoBehaviour
                 if (_curretCooldownTime > 0)
                 {
                     _curretCooldownTime -= Time.deltaTime;
-                    OnColdTime(_coolTime, _curretCooldownTime, isWeapon01);
+                    OnCoolDownTime(_coolDownTime, _curretCooldownTime, isWeapon01);
                 }
                 else
                 {
@@ -174,43 +172,42 @@ public class AbilityHolder : MonoBehaviour
                 }
                 break;
         }
+    }
 
-
-        void SpecialEvent()
+    void SpecialEvent()
+    {
+        if (ability[_abilityNum].isCdCanAdd)//CubeShot and Katada
         {
-            if (ability[_abilityNum].isCdCanAdd)//CubeShot and Katada
+            isCdAddCount += 1;
+            if (isCdAddCount % 3 == 0)
             {
-                isCdAddCount += 1;
-                if (isCdAddCount % 3 == 0)
-                {
-                    _coolTime = _curretCooldownTime = _activeTime += 0.07f;
-                }
-                else
-                {
-                    _coolTime = _curretCooldownTime = _activeTime;
-                }
+                _coolDownTime = _curretCooldownTime = _activeTime += 0.07f;
             }
-            else if (ability[_abilityNum].isHaveTwoCd)//Aevolver
+            else
             {
-                isCdAddCount += 1;
+                _coolDownTime = _curretCooldownTime = _activeTime;
+            }
+        }
+        else if (ability[_abilityNum].isHaveTwoCd)//Aevolver
+        {
+            isCdAddCount += 1;
 
-                if (_isFire01)
-                {
-                    _isFire01 = false;
-                }
-                else if (_isFire02)
-                {
-                    _isFire02 = false;
-                }
+            if (_isFire01)
+            {
+                _isFire01 = false;
+            }
+            else if (_isFire02)
+            {
+                _isFire02 = false;
+            }
 
-                if (isCdAddCount % 6 == 0)
-                {
-                    _coolTime = _curretCooldownTime = 2;
-                }
-                else
-                {
-                    _coolTime = _curretCooldownTime = ability[_abilityNum].CoolDownTime;
-                }
+            if (isCdAddCount % 6 == 0)
+            {
+                _coolDownTime = _curretCooldownTime = 2;
+            }
+            else
+            {
+                _coolDownTime = _curretCooldownTime = ability[_abilityNum].CoolDownTime;
             }
         }
     }

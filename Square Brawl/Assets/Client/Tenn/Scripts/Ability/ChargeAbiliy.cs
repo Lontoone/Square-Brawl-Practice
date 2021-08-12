@@ -11,8 +11,8 @@ public class ChargeAbiliy : Ability
         _attack.WeaponDamage = Damage;
         _attack.WeaponSpeed = Speed;
         _attack.BeElasticity = BeElasticity;
-        _attack.ShootShakeValue = ShotShakeValue;
-        _attack.BeShootShakeValue = BeShotShakeValue;
+        _attack.ShootShakeValue = ShootShakeValue;
+        _attack.BeShootShakeValue = BeShootShakeValue;
     }
 
     public override void Activate()

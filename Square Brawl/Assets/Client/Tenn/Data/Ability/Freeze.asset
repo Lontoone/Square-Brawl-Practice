@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Freeze
   m_EditorClassIdentifier: 
   Name: Freeze
-  Sound: {fileID: 0}
   LaunchEffectName: 
   ExploseEffectName: 
   CoolDownTime: 3
@@ -21,7 +20,8 @@ MonoBehaviour:
   Speed: 0
   Recoil: 100
   BeElasticity: 0
-  BeShotShakeValue: {x: 0.6, y: 0.3, z: 1}
-  ShotShakeValue: {x: 0.4, y: 0.2, z: 1}
+  BeShootShakeValue: {x: 0.6, y: 0.3, z: 1}
+  ShootShakeValue: {x: 0.4, y: 0.2, z: 1}
   isCdCanAdd: 0
   isHaveTwoCd: 0
+  FireSound: 

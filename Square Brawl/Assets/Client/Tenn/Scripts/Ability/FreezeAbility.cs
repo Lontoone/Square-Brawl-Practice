@@ -8,9 +8,10 @@ public class FreezeAbility : Ability
     public override void Initalize(GameObject _obj)
     {
         _attack = _obj.GetComponent<AttackTriggerable>();
+        _attack.SoundName = Name;
         _attack.WeaponRecoil = Recoil;
-        _attack.ShootShakeValue = ShotShakeValue;
-        _attack.BeShootShakeValue = BeShotShakeValue;
+        _attack.ShootShakeValue = ShootShakeValue;
+        _attack.BeShootShakeValue = BeShootShakeValue;
     }
 
     public override void Activate()

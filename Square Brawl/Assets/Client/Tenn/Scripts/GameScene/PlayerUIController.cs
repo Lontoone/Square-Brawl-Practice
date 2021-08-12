@@ -19,14 +19,14 @@ public class PlayerUIController : MonoBehaviourPunCallbacks
         _pv = GetComponent<PhotonView>();
         if (_pv.IsMine)
         {
-            AbilityHolder.OnColdTime += ColdTime;
+            AbilityHolder.OnCoolDownTime += ColdTime;
         }
         SetColor();
     }
 
     private void OnDestroy()
     {
-        AbilityHolder.OnColdTime -= ColdTime;
+        AbilityHolder.OnCoolDownTime -= ColdTime;
     }
 
     private void SetColor()

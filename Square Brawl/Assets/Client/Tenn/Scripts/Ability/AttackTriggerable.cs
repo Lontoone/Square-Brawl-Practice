@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.IO;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class AttackTriggerable : MonoBehaviour
 {
@@ -21,16 +23,77 @@ public class AttackTriggerable : MonoBehaviour
     [HideInInspector] public Vector3 BeShootShakeValue;
     [HideInInspector] public Vector3 ShootShakeValue;
 
+    [System.Serializable]
+    public class FireSound
+    {
+        public string tag;
+        public AudioClip sound;
+    }
+    public List<FireSound> FireSounds;
+    public Dictionary<string, AudioClip> soundsDictionary;
+
+    public string SoundName;
 
     private bool _isKatadaReverse;
 
     private GameObject _bulletSpawnPos;
     private GameObject _bulletMidSpawnPos;
 
+    private AudioSource _audio;
+
+    private const byte PLAY_SOUND_EVENT=0;
     private void Start()
     {
         _bulletSpawnPos = GameObject.FindGameObjectWithTag("BulletSpawnPos");
         _bulletMidSpawnPos = GameObject.FindGameObjectWithTag("MidPos");
+        _audio = GetComponent<AudioSource>();
+
+        soundsDictionary = new Dictionary<string, AudioClip>();
+        foreach (FireSound sound in FireSounds)
+        {
+            soundsDictionary.Add(sound.tag, sound.sound);
+        }
+    }
+
+    public AudioClip PlaySound(string tag)
+    {
+        if (!soundsDictionary.ContainsKey(tag))
+        {
+            return null;
+        }
+
+        AudioClip sound = soundsDictionary[tag];
+
+        return sound;
+    }
+
+    private void OnEnable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived += NetClient;
+    }
+
+    private void OnDisble()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived += NetClient;
+    }
+
+    void PlaySound()
+    {
+        string _soundName = SoundName;
+
+        object[] datas = new object[] { _soundName };
+        PhotonNetwork.RaiseEvent(PLAY_SOUND_EVENT, datas, RaiseEventOptions.Default, SendOptions.SendUnreliable);
+        _audio.PlayOneShot(PlaySound(SoundName));
+    }
+
+    void NetClient(EventData obj)
+    {
+        if (obj.Code == PLAY_SOUND_EVENT)
+        {
+            object[]datas= (object[])obj.CustomData;
+            string _soundName = (string)datas[0];
+            _audio.PlayOneShot(PlaySound(_soundName));
+        }
     }
 
     public void Fire()
@@ -41,11 +104,10 @@ public class AttackTriggerable : MonoBehaviour
         {
             ObjectsPool.Instance.SpawnFromPool("Spark", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         }
-
-        _bullet.IsSniper = IsSniper;
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         _bullet.ShootEvent(ExploseEffectName,WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShootShakeValue);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
+        PlaySound();
     }
 
     public void ScatterFire()
@@ -60,6 +122,7 @@ public class AttackTriggerable : MonoBehaviour
         ObjectsPool.Instance.SpawnFromPool("Spark", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
+        PlaySound();
     }
 
     public void Charge()
@@ -87,18 +150,19 @@ public class AttackTriggerable : MonoBehaviour
 
     public void Freeze()
     {
-        CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
         PlayerController.instance.FreezeEvent(1.8f, 5,BeShootShakeValue);
         ObjectsPool.Instance.SpawnFromPool("FreezeShoot", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
+        PlaySound();
     }
 
     public void GrenadeFire()
     {
         GameObject _grenadeObj = ObjectsPool.Instance.SpawnFromPool(Name, _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Grenade _grenade = _grenadeObj.GetComponent<Grenade>();
-        CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         _grenade.GrenadeEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity,BeShootShakeValue);
+        CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
     }
 
@@ -108,5 +172,6 @@ public class AttackTriggerable : MonoBehaviour
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         Bounce _bounce = _bounceObj.GetComponent<Bounce>();
         _bounce.BounceEvent(WeaponDamage, BeElasticity, ExploseEffectName, _bulletSpawnPos.transform.right, BeShootShakeValue);
+        PlaySound();
     }
 }

@@ -7,8 +7,8 @@ using Photon.Pun;
 public class Bounce : MonoBehaviour,IPoolObject
 {
     [HeaderAttribute("Bounce Setting")]
-    public int BounceDamage;
-    public float BounceBeElasticity;
+    public int BounceDamage;//Bounce Damage
+    public float BounceBeElasticity;// Bounce BeElasticity
     public float FieldExplose;//Explose Field
 
     public string BounceExploseEffectName;
@@ -19,8 +19,8 @@ public class Bounce : MonoBehaviour,IPoolObject
     private int _laserDistance = 100; //max raycasting distance
     private int _laserLimit = 4; //the laser can be reflected this many times
 
-    private float _laserTransparency;
-    private float _laserWidth;
+    private float _laserTransparency;//laser Transparency value
+    private float _laserWidth;//laser Width value
 
     private bool _isBounce;
     private bool _isChangeColor;
@@ -67,16 +67,8 @@ public class Bounce : MonoBehaviour,IPoolObject
         _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
     }
 
-    [PunRPC]
-    void ChangeColor(Vector3 color)
-    {
-        Color _color = new Color(color.x, color.y, color.z);
-        _laserRenderer.startColor = _laserRenderer.endColor = new Color(_color.r, _color.g, _color.b, 0);
-    }
-
     public void BounceEvent (int _damage,float _beElasticity,string _effectName,Vector2 _dir,Vector3 _beShotShake)
     {
-        // _pv.RPC("Rpc_EnableObj", RpcTarget.All);
         BounceDamage = _damage;
         BounceBeElasticity = _beElasticity;
         BounceExploseEffectName = _effectName;
@@ -90,7 +82,6 @@ public class Bounce : MonoBehaviour,IPoolObject
 
     void Update()
     {
-        //transform.localRotation = Quaternion.identity;
         IsBounceEvent();
     }
 
@@ -120,7 +111,6 @@ public class Bounce : MonoBehaviour,IPoolObject
             }
         }
         Physics2D.queriesStartInColliders = true;
-        //transform.parent = gameObject.transform.parent.transform;
     }
 
     void IsBounceEvent()
@@ -130,7 +120,7 @@ public class Bounce : MonoBehaviour,IPoolObject
             if (!_isChangeColor)
             {
                 _laserTransparency += Time.deltaTime;
-                if (_laserWidth <= 0.06f)
+                if (_laserWidth <= 0.1f)
                 {
                     _laserWidth += Time.deltaTime*0.1f;
                 }
@@ -143,7 +133,6 @@ public class Bounce : MonoBehaviour,IPoolObject
                         for (int i = 0; i < HitGroundPos.Count; i++)
                         {
                             ObjectsPool.Instance.SpawnFromPool(BounceExploseEffectName, HitGroundPos[i], transform.rotation, null);
-                            //_pv.RPC("Rpc_Explose", RpcTarget.All, HitGroundPos[i]);
                         }
                     }
                     CameraShake.instance.SetShakeValue(_beShootShakeValue.x, _beShootShakeValue.y, _beShootShakeValue.z) ;
@@ -154,7 +143,7 @@ public class Bounce : MonoBehaviour,IPoolObject
             else if (_isChangeColor)
             {
                 _laserTransparency -= Time.deltaTime * 1.5f;
-                if (_laserWidth >= 0.03f)
+                if (_laserWidth >= 0.5f)
                 {
                     _laserWidth -= Time.deltaTime * 0.1f;
                 }
@@ -175,7 +164,6 @@ public class Bounce : MonoBehaviour,IPoolObject
                     HitGroundPos.Clear();
                     HitGroundLocalPos.Clear();
                     gameObject.SetActive(false);
-                    //_pv.RPC("Rpc_DisableObj", RpcTarget.All);
                 }
             }
         }
@@ -188,33 +176,6 @@ public class Bounce : MonoBehaviour,IPoolObject
         _laserRenderer.startWidth = _laserWidth;
         _laserRenderer.endWidth = _laserWidth;
     }
-
-    /*private void Explose(Vector2 _originPos)
-    {
-        Collider2D[] objects = Physics2D.OverlapCircleAll(_originPos, FieldExplose, LayerToExplose);
-        foreach (Collider2D obj in objects)
-        {
-            PlayerController _playerController = obj.GetComponent<PlayerController>();
-            if (_pv.IsMine == _playerController.Pv.IsMine && _pv.IsMine && !_playerController.IsBounce)
-            {
-                _playerController.BeExplode(BounceBeElasticity, transform.position, FieldExplose);
-                _playerController.IsBounceEvent();
-            }
-
-            if (_pv.IsMine != _playerController.Pv.IsMine && !_playerController.Pv.IsMine&& !_playerController.IsBounce)
-            {
-               // _playerController.DamageEvent(BounceDamage, BounceBeElasticity, _prevDir.x, _prevDir.y,_beShootShakeValue);
-                _playerController.TakeDamage(BounceDamage, _beShootShakeValue.x, _beShootShakeValue.y, _beShootShakeValue.z);
-                _playerController.BeExplode(BounceBeElasticity, transform.position, FieldExplose);
-                _playerController.IsBounceEvent();
-                var IsKill = _playerController.IsKillAnyone();
-                if (IsKill)
-                {
-                    PlayerKillCountManager.instance.SetKillCount();
-                }
-            }
-        }
-    }*/
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -236,6 +197,13 @@ public class Bounce : MonoBehaviour,IPoolObject
     }
 
     [PunRPC]
+    void ChangeColor(Vector3 color)
+    {
+        Color _color = new Color(color.x, color.y, color.z);
+        _laserRenderer.startColor = _laserRenderer.endColor = new Color(_color.r, _color.g, _color.b, 0);
+    }
+
+    [PunRPC]
     public void Rpc_EnableObj()
     {
         gameObject.SetActive(true);
@@ -254,7 +222,6 @@ public class Bounce : MonoBehaviour,IPoolObject
         transform.rotation = dir;
     }
 
-
     [PunRPC]
     void Rpc_ShootBounce(Vector2 _pos, Vector2 _dir, int _damage, float _beElasticity,Vector3 _beShotShake)
     {
@@ -265,9 +232,4 @@ public class Bounce : MonoBehaviour,IPoolObject
         _beShootShakeValue = _beShotShake;
         ShootBounce(_pos, _dir);
     }
-   /* [PunRPC]
-    void Rpc_Explose(Vector2 _pos)
-    {
-        Explose(_pos);
-    }*/
 }

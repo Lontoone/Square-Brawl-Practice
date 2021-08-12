@@ -295,11 +295,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellPrefab: {fileID: 913758580300549186, guid: 35df8e287129cd8499b47a1d3b59a56b, type: 3}
   firstCell: {fileID: 853472373}
-  mapSize: {x: 37, y: 21}
+  mapSize: {x: 50, y: 30}
   gridCells: []
   foreground: {fileID: 34245952}
   midground: {fileID: 472860554}
   background: {fileID: 2038587075}
+  mapBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
   _useGizemos: 1
 --- !u!1001 &913758580071036982
 PrefabInstance:

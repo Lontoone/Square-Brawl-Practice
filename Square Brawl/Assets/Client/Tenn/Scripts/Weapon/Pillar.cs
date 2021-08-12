@@ -42,7 +42,7 @@ public class Pillar : Grenade, IPoolObject
         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
-    public void OnObjectSpawn()
+    public new void OnObjectSpawn()
     {
         if (_pv.IsMine)
         {

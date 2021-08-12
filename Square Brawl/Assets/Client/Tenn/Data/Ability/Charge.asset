@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Charge
   m_EditorClassIdentifier: 
   Name: Charge
-  Sound: {fileID: 0}
   LaunchEffectName: 
   ExploseEffectName: 
   CoolDownTime: 2
   Damage: 50
-  Speed: 900
+  Speed: 1200
   Recoil: 0
   BeElasticity: 600
-  BeShotShakeValue: {x: 0.6, y: 0.3, z: 1}
-  ShotShakeValue: {x: 0.4, y: 0.2, z: 1}
+  BeShootShakeValue: {x: 0.6, y: 0.3, z: 1}
+  ShootShakeValue: {x: 0.4, y: 0.2, z: 1}
   isCdCanAdd: 0
   isHaveTwoCd: 0
+  FireSound: 

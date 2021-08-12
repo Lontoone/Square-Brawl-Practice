@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Shield
   m_EditorClassIdentifier: 
   Name: New Ability
-  Sound: {fileID: 0}
   LaunchEffectName: 
   ExploseEffectName: 
   CoolDownTime: 3
   Damage: 50
   Speed: 20
   Recoil: 0
-  BeElasticity: 200
-  BeShotShakeValue: {x: 0.6, y: 0.3, z: 1}
-  ShotShakeValue: {x: 0.4, y: 0.2, z: 1}
+  BeElasticity: 700
+  BeShootShakeValue: {x: 0.6, y: 0.3, z: 1}
+  ShootShakeValue: {x: 0.4, y: 0.2, z: 1}
   isCdCanAdd: 0
   isHaveTwoCd: 0
+  FireSound: 

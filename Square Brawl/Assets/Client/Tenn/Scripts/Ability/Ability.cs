@@ -5,7 +5,6 @@ using UnityEngine;
 public abstract class Ability : ScriptableObject
 {
     public string Name = "New Ability";
-    public AudioClip Sound;
     public string LaunchEffectName;
     public string ExploseEffectName;
     public float CoolDownTime;
@@ -14,11 +13,13 @@ public abstract class Ability : ScriptableObject
     public float Recoil;
     public float BeElasticity;
 
-    public Vector3 BeShotShakeValue;
-    public Vector3 ShotShakeValue;
+    public Vector3 BeShootShakeValue;
+    public Vector3 ShootShakeValue;
 
     public bool isCdCanAdd;
     public bool isHaveTwoCd;
+
+    public string FireSound;
 
     protected AttackTriggerable _attack;
 

@@ -13,21 +13,20 @@ MonoBehaviour:
   m_Name: CubeShoot
   m_EditorClassIdentifier: 
   Name: CubeShoot
-  Sound: {fileID: 0}
   LaunchEffectName: 
   ExploseEffectName: SmallExplose
   CoolDownTime: 0.05
   Damage: 20
-  Speed: 7
+  Speed: 10
   Recoil: 70
   BeElasticity: 150
-  BeShotShakeValue: {x: 0.4, y: 0.2, z: 1}
-  ShotShakeValue: {x: 0, y: 0, z: 0}
+  BeShootShakeValue: {x: 0.4, y: 0.2, z: 1}
+  ShootShakeValue: {x: 0, y: 0, z: 0}
   isCdCanAdd: 1
   isHaveTwoCd: 0
-  BulletScaleValue: 0.12
+  FireSound: 
+  BulletScaleValue: 0.18
   IsDontContinuous: 0
   IsDontShootStraight: 1
   IsScatterShot: 0
   IsGrenade: 0
-  IsSniper: 0

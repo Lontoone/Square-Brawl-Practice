@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using XInputDotNetPure;
 
-public class PlayerController : MonoBehaviourPun,IPunObservable
+public class PlayerController : MonoBehaviourPun, IPunObservable
 {
     [HeaderAttribute("Player Setting")]
     [SerializeField]
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     private float _playerHp;//Player Hp
     private float Recoil;//Player Recoil
     private float BeElasticity;//Player BeElasticity
-    private float DirX, DirY;//Player Shoot Point Dir
+    private float DirX, DirY;//
 
     private Vector3 _beShootShakeValue;
     private Vector3 _freezeLeftRay;
@@ -67,7 +67,10 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     [HeaderAttribute("Sync Setting")]
     private float _newDirZ;
+
     private Vector2 _newPos;
+
+    //private Quaternion _newDir;
     private Quaternion _newShootPointDir;
 
     public PhotonView Pv;
@@ -110,7 +113,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     void Start()
     {
         _bodySprite.sprite = Resources.Load<Sprite>("PlayerStyle/" + TillStyleLoader.s_StyleName + "/PlayerBody");
-        _hpSprite.sprite= Resources.Load<Sprite>("PlayerStyle/" + TillStyleLoader.s_StyleName + "/PlayerUI");
+        _hpSprite.sprite = Resources.Load<Sprite>("PlayerStyle/" + TillStyleLoader.s_StyleName + "/PlayerUI");
 
         _playerHp = 100;
         _canSpin = true;
@@ -145,8 +148,8 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         if (!Pv.IsMine)
         {
             FrontSightMidPos.transform.rotation = Quaternion.Lerp(FrontSightMidPos.transform.rotation, _newShootPointDir, 15 * Time.deltaTime);
-            //_rb.position = Vector2.Lerp(_rb.position, _newPos, Time.deltaTime);
-            //_rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 3 * Time.deltaTime);
+            /*_rb.position = Vector2.MoveTowards(_rb.position, _newPos, Time.deltaTime);
+            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 5 * Time.deltaTime);*/
         }
 
         GroundCheckEvent();//Is Grounding?
@@ -155,10 +158,10 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     {
         if (!Pv.IsMine)
         {
-            _rb.position = Vector2.Lerp(_rb.position, _newPos, 5f * Time.fixedDeltaTime);
-            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 5 * Time.fixedDeltaTime);
+            _rb.position = Vector2.MoveTowards(_rb.position, _newPos, 2*Time.fixedDeltaTime);
+            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 3*Time.fixedDeltaTime);
         }
-        if(!IsBeFreeze && Pv.IsMine)
+        if (!IsBeFreeze && Pv.IsMine)
         {
             PlayerMovement();//Player Move
             PlayerSpin();//Player Spin
@@ -167,36 +170,35 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     public void OnBegin()
     {
-        _rb.bodyType = RigidbodyType2D.Dynamic;
-        IsBeFreeze = false;
+        
     }
 
     #region -- Player Control --
     void PlayerMovement()
     {
         //Player Move
-        _rb.AddForce(MoveSpeed * new Vector2(_inputPos.x, 0)) ;
+        _rb.AddForce(MoveSpeed * new Vector2(_inputPos.x, 0));
 
-        if (_inputPos.y > 0&&!_isWall&&!IsGround)//Player Fly
+        if (_inputPos.y > 0 && !_isWall && !IsGround)//Player Fly
         {
-            _rb.AddForce(FlyForce * new Vector2(0,_inputPos.y));
+            _rb.AddForce(FlyForce * new Vector2(0, _inputPos.y));
         }
-        else if(_inputPos.y < 0&&!IsGround)//Player Down
+        else if (_inputPos.y < 0 && !IsGround)//Player Down
         {
             _rb.AddForce(DownForce * new Vector2(0, _inputPos.y));
         }
 
-        if ((IsGround || _isWall)&&_isJump)//Player Jump
+        if ((IsGround || _isWall) && _isJump)//Player Jump
         {
             _rb.AddForce(JumpForce * Vector3.up);
             _isJump = false;
-            Invoke("IsJumpRecover",0.3f);
+            Invoke("IsJumpRecover", 0.3f);
         }
     }
 
     void IsJumpRecover()
     {
-        _isJump = true ;
+        _isJump = true;
     }
 
     void PlayerSpin()
@@ -242,7 +244,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     #region -- PlayerInputSystem Control --
     void LimitInputValue(Vector2 diretion)
     {
-        if (!IsBeFreeze&&_canLeftSticeSpin)
+        if (!IsBeFreeze && _canLeftSticeSpin)
         {
             if (diretion.x >= 0.3f || diretion.x <= -0.3f || diretion.y >= 0.3f || diretion.y <= -0.3f)
             {
@@ -256,7 +258,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         {
             _inputMovement.x = 1;
         }
-        else if(_inputMovement.x < -0.5)
+        else if (_inputMovement.x < -0.5)
         {
             _inputMovement.x = -1;
         }
@@ -314,7 +316,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
             _canLeftSticeSpin = true;
         }
 
-        if (!IsBeFreeze) 
+        if (!IsBeFreeze)
         {
             if (_mousePos.x >= 0.3f || _mousePos.x <= -0.3f || _mousePos.y >= 0.3f || _mousePos.y <= -0.3f)
             {
@@ -376,7 +378,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
 
     #region -- Player Charge Event --
-    public void ChargeEvent(float _speed, float _elasticity, float _damage,Vector3 _beShotShake)
+    public void ChargeEvent(float _speed, float _elasticity, float _damage, Vector3 _beShotShake)
     {
         PlayerRecoil(_speed);
         BeElasticity = _elasticity;
@@ -391,10 +393,10 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
 
     #region -- Player Freeze Event --
-    public void FreezeEvent(float _viewDistance, int viewCount,Vector3 _beShootShake)
+    public void FreezeEvent(float _viewDistance, int viewCount, Vector3 _beShootShake)
     {
         _beShootShakeValue = _beShootShake;
-        
+
         _freezeLeftRay = Quaternion.Euler(0, 0, FrontSightPos.eulerAngles.z - 17.5f) * Vector2.right * _viewDistance;
         Vector3 _originPos = FrontSightPos.transform.position;
 
@@ -416,15 +418,16 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         }
     }
 
-    private void BeFreezeEvent(Vector3 _originPos,Quaternion _originDir,Vector3 _beShotAhake)
+    private void BeFreezeEvent(Vector3 _originPos, Quaternion _originDir, Vector3 _beShotAhake)
     {
         Pv.RPC("Rpc_ChangeBeFreeze", RpcTarget.All, _originPos, _originDir, _beShotAhake);
-        Invoke("StopBeFreeze",2f);
+        //CameraShake.instance.SetShakeValue(_beShotAhake.x, _beShotAhake.y, _beShotAhake.z);
+        Invoke("StopBeFreeze", 2f);
     }
 
-    void StopBeFreeze()
+    public void StopBeFreeze()
     {
-        Pv.RPC("Rpc_StopBeFreeze",RpcTarget.All);
+        Pv.RPC("Rpc_StopBeFreeze", RpcTarget.All);
     }
     #endregion
 
@@ -433,7 +436,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     public void IsBounceTrue()
     {
         Pv.RPC("Rpc_IsBounceTrue", RpcTarget.All);
-        Invoke("IsBounceFalse",1f);
+        Invoke("IsBounceFalse", 1f);
     }
 
     void IsBounceFalse()
@@ -450,13 +453,13 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         RaycastHit2D rightCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.right, GroundDistance);
         RaycastHit2D downCheck = Raycast(new Vector2(-PlayerWidth, FootOffset), Vector2.down, GroundDistance);
         RaycastHit2D upCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.up, GroundDistance);
-        if (downCheck&&(!leftCheck && !rightCheck))
+        if (downCheck && (!leftCheck && !rightCheck))
         {
             //Physics2D.IgnoreLayerCollision(11, 12, false);
             IsGround = _canSpin = true;
             _isWall = false;
         }
-        else if(leftCheck || rightCheck || upCheck)
+        else if (leftCheck || rightCheck || upCheck)
         {
             //Physics2D.IgnoreLayerCollision(11, 12, false);
             _isWall = _canSpin = true;
@@ -489,7 +492,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         Invoke("IsShieldFalse", 1f);
     }
 
-    public void IsShieldFalse()
+    void IsShieldFalse()
     {
         Pv.RPC("Rpc_IsShieldFalse", RpcTarget.All);
     }
@@ -513,7 +516,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player")&& Pv.IsMine && _isCharge)
+        if (other.gameObject.CompareTag("Player") && Pv.IsMine && _isCharge)
         {
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
             if (!_playerController.Pv.IsMine && !_playerController.IsShield)
@@ -530,12 +533,12 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Katada")&&!Pv.IsMine&&!IsShield)
+        if (other.gameObject.CompareTag("Katada") && !Pv.IsMine && !IsShield)
         {
             Katada _katada = other.gameObject.GetComponent<Katada>();
             _katada.KatadaCollider(this);
         }
-        else if (other.gameObject.CompareTag("Shield") && !Pv.IsMine&&!IsBeShield)
+        else if (other.gameObject.CompareTag("Shield") && !Pv.IsMine && !IsBeShield)
         {
             Shield _shield = other.gameObject.GetComponent<Shield>();
             _shield.ShieldCollider(this);
@@ -622,7 +625,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         {
             gameObject.SetActive(true);
             transform.position = new Vector3(UnityEngine.Random.Range(-5, 6), 0, 0);
-            Pv.RPC("Rpc_Rebirth",RpcTarget.Others, transform.position);
+            Pv.RPC("Rpc_Rebirth", RpcTarget.Others, transform.position);
         }
         _playerHp = 100;
         _uiControl.ReduceHp(_playerHp);
@@ -637,7 +640,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     }
 
     [PunRPC]
-    void Rpc_ChargeValue(bool _isCharge,float _elasticity,float _damage,float _dirX,float _dirY,Vector3 _beShootShake)
+    void Rpc_ChargeValue(bool _isCharge, float _elasticity, float _damage, float _dirX, float _dirY, Vector3 _beShootShake)
     {
         this._isCharge = _isCharge;
         BeElasticity = _elasticity;
@@ -645,7 +648,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         DirX = _dirX;
         DirY = _dirY;
         _beShootShakeValue = _beShootShake;
-        Invoke("IsChargeChangeFalse",0.5f);
+        Invoke("IsChargeChangeFalse", 0.5f);
     }
 
     void IsChargeChangeFalse()
@@ -654,7 +657,7 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
     }
 
     [PunRPC]
-    void Rpc_ChangeBeFreeze(Vector3 _pos,Quaternion _dir,Vector3 _beShotAhake)
+    void Rpc_ChangeBeFreeze(Vector3 _pos, Quaternion _dir, Vector3 _beShotAhake)
     {
         IsBeFreeze = true;
         transform.position = _pos;
@@ -679,15 +682,18 @@ public class PlayerController : MonoBehaviourPun,IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(_rb.position);
+            //stream.SendNext(transform.rotation);
             stream.SendNext(_rb.rotation);
             stream.SendNext(FrontSightMidPos.transform.rotation);
             stream.SendNext(_rb.velocity);
             stream.SendNext(_rb.angularVelocity);
-
+            stream.SendNext(IsBeShield);
+            stream.SendNext(IsBounce);
         }
         else
         {
             _newPos = (Vector2)stream.ReceiveNext();
+            //_newDir = (Quaternion)stream.ReceiveNext();
             _newDirZ = (float)stream.ReceiveNext();
             _newShootPointDir = (Quaternion)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();

@@ -12,7 +12,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     private float BeElasticityDir;//Be Elasticity Direction
     private float _dir;//Katada Mid Direction
 
-    private Vector3 _beShotShakeValue;
+    private Vector3 _beShootShakeValue;
 
     private bool _isKatadaReverse;//Is Katada Reverse?
 
@@ -50,13 +50,13 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
     }
 
-    public void KatadaEvent(float _speed,float _damage,float _blasticity,bool _isReverse,Vector3 _beShotShake)
+    public void KatadaEvent(float _speed,float _damage,float _blasticity,bool _isReverse,Vector3 _beShootShake)
     {
         KatadaSpeed = _speed;
         KatadaDamage = _damage;
         KatadaBeElasticity = _blasticity;
         _isKatadaReverse= _isReverse;
-        _beShotShakeValue = _beShotShake;
+        _beShootShakeValue = _beShootShake;
         if (_isKatadaReverse)
         {
             _dir = transform.eulerAngles.z + 45;
@@ -68,7 +68,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
             transform.eulerAngles = new Vector3(0, 0, _dir);
         }
 
-        _pv.RPC("Rpc_SetValue", RpcTarget.Others, KatadaDamage, KatadaBeElasticity, _beShotShakeValue);
+        _pv.RPC("Rpc_SetValue", RpcTarget.Others, KatadaDamage, KatadaBeElasticity, _beShootShakeValue);
 
         StartCoroutine(DestroyObj());
     }
@@ -80,7 +80,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
             float x = Mathf.Cos(BeElasticityDir * Mathf.PI / 180);
             float y = Mathf.Sin(BeElasticityDir * Mathf.PI / 180);
-            _playerController.DamageEvent(KatadaDamage, KatadaBeElasticity, x, y, _beShotShakeValue);
+            _playerController.DamageEvent(KatadaDamage, KatadaBeElasticity, x, y, _beShootShakeValue);
             var IsKill = _playerController.IsKillAnyone();
             if (IsKill)
             {
@@ -137,7 +137,6 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     {
         transform.position = _pos;
         transform.rotation = _dir;
-        //_newSyncDir = _dir;
     }
 
     [PunRPC]
@@ -145,7 +144,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     {
         KatadaDamage = _damage;
         KatadaBeElasticity = _elasticity;
-        _beShotShakeValue = _beShootShake;
+        _beShootShakeValue = _beShootShake;
     }
 
     [PunRPC]
