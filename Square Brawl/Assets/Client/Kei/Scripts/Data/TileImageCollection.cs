@@ -275,6 +275,11 @@ public class TileImageCollection : ScriptableObject
 
     };
 
+    public Sprite GetIcon()
+    {
+        Sprite _sp = Resources.Load<Sprite>("Tile/" + name + "/Icon");
+        return _sp;
+    }
 
     public Sprite GetSprite(int _index)
     {

@@ -10,12 +10,39 @@ public class TillStyleLoader : MonoBehaviour
 {
     public GameObject container;
     public Button buttonPrefab;
+
+    public Image currentStyleIcon;
+    public Image nextStyleIcon;
+    public Image prevStyleIcon;
+
+    private int currentStyleIndex = 0;
+    private TileImageCollection[] styleDatas;
+
     private const string styleDataPaht = "TileData/";
 
     public static string s_StyleName;
     public void Start()
     {
         LoadStyleData();
+
+        //TODO:改成preview btn
+        styleDatas = Resources.LoadAll<TileImageCollection>(styleDataPaht);
+    }
+
+    public void Switch(int _optration)
+    {
+        currentStyleIndex = Mathf.Clamp(currentStyleIndex + _optration, 0, styleDatas.Length - 1);
+        ChangeStyle(styleDatas[currentStyleIndex]);
+
+        currentStyleIcon.sprite = styleDatas[currentStyleIndex].GetIcon();
+        if (currentStyleIndex > 0)
+        {
+            prevStyleIcon.sprite = styleDatas[currentStyleIndex - 1].GetIcon();
+        }
+        if (currentStyleIndex < styleDatas.Length - 1)
+        {
+            nextStyleIcon.sprite = styleDatas[currentStyleIndex + 1].GetIcon();
+        }
     }
 
     private void OnEnable()
@@ -60,9 +87,9 @@ public class TillStyleLoader : MonoBehaviour
         byte eventCode = obj.Code;
         if (eventCode == CustomPropertyCode.UPDATE_STYLE_EVENTCODE)
         {
-            string styleName= (string)MyPhotonExtension.ByteArrayToObject((byte[])obj.CustomData);
+            string styleName = (string)MyPhotonExtension.ByteArrayToObject((byte[])obj.CustomData);
             s_StyleName = styleName;
-            TileImageCollection tileImageCollection = Resources.Load<TileImageCollection>(styleDataPaht+styleName);
+            TileImageCollection tileImageCollection = Resources.Load<TileImageCollection>(styleDataPaht + styleName);
             TileStyleManager.instance.ApplyNewStyle(tileImageCollection);
         }
     }
