@@ -67,7 +67,10 @@ public class TileMapSetUpManager : MonoBehaviour
                 _cell.gameObject.SetActive(false);
             }
         }
-        PlayerController.instance.StopBeFreeze();
+        if (PlayerController.instance != null)
+        {
+            PlayerController.instance.StopBeFreeze();
+        }
     }
     private void SetUpCellOrientation()
     {
