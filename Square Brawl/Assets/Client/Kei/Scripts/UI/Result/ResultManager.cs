@@ -135,7 +135,6 @@ public class ResultManager : MonoBehaviour
 
     public void BackToLobby()
     {
-        Time.timeScale = 1;
         PhotonNetwork.LeaveLobby();
         PhotonNetwork.Disconnect();
         PhotonNetwork.LoadLevel(0);
