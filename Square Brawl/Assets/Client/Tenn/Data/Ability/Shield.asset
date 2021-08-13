@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4328166d5e6e89344acde543d24613de, type: 3}
   m_Name: Shield
   m_EditorClassIdentifier: 
-  Name: New Ability
+  Name: Shield
   LaunchEffectName: 
   ExploseEffectName: 
   CoolDownTime: 3

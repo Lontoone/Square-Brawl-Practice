@@ -8,13 +8,19 @@ public class Effect : MonoBehaviour,IPoolObject
 {
     private ParticleSystem _effect;
     private PhotonView _pv;
+    private AudioSource _BombSound;
 
     private bool _isChangeColor;
-
+    public bool isHaveSound;
     void Awake()
     {
         _pv = GetComponent<PhotonView>();
         _effect = GetComponentInChildren<ParticleSystem>();
+        if (isHaveSound)
+        {
+            _BombSound = GetComponent<AudioSource>();
+        }
+
         if (_pv.IsMine)
         {
             SetColor();
@@ -75,6 +81,10 @@ public class Effect : MonoBehaviour,IPoolObject
     public void EnableObj(Vector3 _pos,Quaternion _dir)
     {
         gameObject.SetActive(true);
+        if (_BombSound != null)
+        {
+            _BombSound.Play();
+        }
         transform.position = _pos;
         transform.rotation = _dir;
     }

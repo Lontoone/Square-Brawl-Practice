@@ -16,6 +16,7 @@ public class Pillar : Grenade, IPoolObject
     private Vector2 _colliderSpawnPos;
 
     private BoxCollider2D _collider2D;
+    protected AudioSource _pillarSound;
 
     public LayerMask GroundLayer;
 
@@ -26,6 +27,7 @@ public class Pillar : Grenade, IPoolObject
 
         _rb = GetComponent<Rigidbody2D>();
         _pv = GetComponent<PhotonView>();
+        _pillarSound = GetComponent<AudioSource>();
         _collider2D = transform.GetChild(0).GetComponent<BoxCollider2D>();
         if (_pv.IsMine)
         {
@@ -62,8 +64,8 @@ public class Pillar : Grenade, IPoolObject
         base.FixedUpdate();
         if (!_pv.IsMine)
         {
-            _childObj.transform.localPosition = Vector3.Lerp(_childObj.transform.localPosition, _childObjnetworkPosition, 15 * Time.deltaTime);
-            _childObj.transform.localScale = Vector3.Lerp(_childObj.transform.localScale, _childObjnetworkScale, 15 * Time.deltaTime);
+            _childObj.transform.localPosition = Vector3.Lerp(_childObj.transform.localPosition, _childObjnetworkPosition, 15 * Time.fixedDeltaTime);
+            _childObj.transform.localScale = Vector3.Lerp(_childObj.transform.localScale, _childObjnetworkScale, 15 * Time.fixedDeltaTime);
             transform.rotation = _networkDir;
         }
     }
@@ -97,6 +99,7 @@ public class Pillar : Grenade, IPoolObject
     protected override void OnCollisionEnter2D(Collision2D other)
     {
         base.OnCollisionEnter2D(other);
+        _pillarSound.Play();
         if (other.gameObject.CompareTag("Ground") && !_isGrow)
         {
             if (_pv.IsMine)

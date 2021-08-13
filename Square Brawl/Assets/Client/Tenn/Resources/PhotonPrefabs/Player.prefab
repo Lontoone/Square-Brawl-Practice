@@ -99,9 +99,22 @@ MonoBehaviour:
     sound: {fileID: 8300000, guid: 8208b52f352c4574c921f4ef0afd5175, type: 3}
   - tag: Freeze
     sound: {fileID: 8300000, guid: 8f8fc8bd43aa52545b28ca7765a258a9, type: 3}
+  - tag: CubeShoot
+    sound: {fileID: 8300000, guid: e2c378bf8106eef46bfd746dcd8571de, type: 3}
+  - tag: Charge
+    sound: {fileID: 8300000, guid: 68cec5018e47b484aa57abb135ba7f93, type: 3}
   - tag: Bounce
-    sound: {fileID: 8300000, guid: b881c9e6e3ba2f94eb4fd5b88840ed33, type: 3}
+    sound: {fileID: 8300000, guid: c5031face00cb4c40938441664000052, type: 3}
+  - tag: Katana
+    sound: {fileID: 8300000, guid: 0ac020beba460a6479e5c6d54b57f3b8, type: 3}
+  - tag: Shield
+    sound: {fileID: 8300000, guid: f6ba2164cb3a5624295a1fdb6df9d9f8, type: 3}
+  - tag: Grenade
+    sound: {fileID: 8300000, guid: 0fea376ff4c6a3647a172d7d813ca2ee, type: 3}
+  - tag: Pillar
+    sound: {fileID: 8300000, guid: 0fea376ff4c6a3647a172d7d813ca2ee, type: 3}
   SoundName: 
+  _audio: {fileID: 0}
 --- !u!114 &2970010027936221734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,9 +332,22 @@ MonoBehaviour:
     sound: {fileID: 8300000, guid: 8208b52f352c4574c921f4ef0afd5175, type: 3}
   - tag: Freeze
     sound: {fileID: 8300000, guid: 8f8fc8bd43aa52545b28ca7765a258a9, type: 3}
+  - tag: CubeShoot
+    sound: {fileID: 8300000, guid: e2c378bf8106eef46bfd746dcd8571de, type: 3}
+  - tag: Charge
+    sound: {fileID: 8300000, guid: 68cec5018e47b484aa57abb135ba7f93, type: 3}
   - tag: Bounce
-    sound: {fileID: 8300000, guid: b881c9e6e3ba2f94eb4fd5b88840ed33, type: 3}
+    sound: {fileID: 8300000, guid: c5031face00cb4c40938441664000052, type: 3}
+  - tag: Katana
+    sound: {fileID: 8300000, guid: 0ac020beba460a6479e5c6d54b57f3b8, type: 3}
+  - tag: Shield
+    sound: {fileID: 8300000, guid: f6ba2164cb3a5624295a1fdb6df9d9f8, type: 3}
+  - tag: Grenade
+    sound: {fileID: 8300000, guid: 0fea376ff4c6a3647a172d7d813ca2ee, type: 3}
+  - tag: Pillar
+    sound: {fileID: 8300000, guid: 0fea376ff4c6a3647a172d7d813ca2ee, type: 3}
   SoundName: 
+  _audio: {fileID: 0}
 --- !u!114 &8339921464744639084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,7 +485,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7748970539515165654
 Transform:
   m_ObjectHideFlags: 0
@@ -659,7 +685,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3528806692059017014
 Transform:
   m_ObjectHideFlags: 0

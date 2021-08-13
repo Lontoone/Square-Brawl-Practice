@@ -8,6 +8,7 @@ public class ShieldAbility : Ability
     public override void Initalize(GameObject _obj)
     {
         _attack = _obj.GetComponent<AttackTriggerable>();
+        _attack.SoundName = Name;
         _attack.WeaponSpeed = Speed;
         _attack.WeaponDamage = Damage;
         _attack.BeElasticity = BeElasticity;

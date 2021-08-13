@@ -39,7 +39,7 @@ public class AttackTriggerable : MonoBehaviour
     private GameObject _bulletSpawnPos;
     private GameObject _bulletMidSpawnPos;
 
-    private AudioSource _audio;
+    public AudioSource _audio;
 
     private const byte PLAY_SOUND_EVENT=0;
     private void Start()
@@ -83,7 +83,7 @@ public class AttackTriggerable : MonoBehaviour
 
         object[] datas = new object[] { _soundName };
         PhotonNetwork.RaiseEvent(PLAY_SOUND_EVENT, datas, RaiseEventOptions.Default, SendOptions.SendUnreliable);
-        _audio.PlayOneShot(PlaySound(SoundName));
+        _audio.PlayOneShot(PlaySound(SoundName),0.5f);
     }
 
     void NetClient(EventData obj)
@@ -92,7 +92,7 @@ public class AttackTriggerable : MonoBehaviour
         {
             object[]datas= (object[])obj.CustomData;
             string _soundName = (string)datas[0];
-            _audio.PlayOneShot(PlaySound(_soundName));
+            _audio.PlayOneShot(PlaySound(_soundName),0.1f);
         }
     }
 
@@ -129,6 +129,7 @@ public class AttackTriggerable : MonoBehaviour
     {
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         PlayerController.instance.ChargeEvent(-WeaponSpeed, BeElasticity, WeaponDamage, BeShootShakeValue);
+        PlaySound();
     }
 
     public void Katada()
@@ -137,6 +138,7 @@ public class AttackTriggerable : MonoBehaviour
         GameObject _katadaObj = ObjectsPool.Instance.SpawnFromPool("Katada", _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Katada _katada = _katadaObj.GetComponent<Katada>();
         _katada.KatadaEvent(WeaponSpeed, WeaponDamage, BeElasticity, _isKatadaReverse, BeShootShakeValue);
+        PlaySound();
     }
 
     public void Shield()
@@ -146,6 +148,7 @@ public class AttackTriggerable : MonoBehaviour
         _shield.gameObject.SetActive(true);
         _shield.ShieldEvent(WeaponSpeed, WeaponDamage, BeElasticity, BeShootShakeValue);
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
+        PlaySound();
     }
 
     public void Freeze()
@@ -164,6 +167,7 @@ public class AttackTriggerable : MonoBehaviour
         _grenade.GrenadeEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity,BeShootShakeValue);
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
+        PlaySound();
     }
 
     public void Bounce()

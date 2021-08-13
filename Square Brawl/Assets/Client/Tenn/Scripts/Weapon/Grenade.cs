@@ -164,7 +164,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     }
 
     [PunRPC]
-    public void Rpc_SetValue(float _speed, float _damage, float _scaleValue, float _elasticity,Vector3 _beShotShake)
+    void Rpc_SetValue(float _speed, float _damage, float _scaleValue, float _elasticity,Vector3 _beShotShake)
     {
         GrenadeSpeed = _speed;
         GrenadeDamage = _damage;
@@ -181,19 +181,19 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     }
 
     [PunRPC]
-    public void Rpc_DisableObj()
+    protected void Rpc_DisableObj()
     {
         gameObject.SetActive(false);
     }
 
     [PunRPC]
-    public void Rpc_EnableObj()
+    protected void Rpc_EnableObj()
     {
         gameObject.SetActive(true);
     }
 
     [PunRPC]
-    public void Rpc_ResetPos(Vector3 pos, Quaternion dir)
+    protected void Rpc_ResetPos(Vector3 pos, Quaternion dir)
     {
         transform.position = pos;
         transform.rotation = dir;
@@ -202,7 +202,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     }
 
     [PunRPC]
-    public void Rpc_ChangeAngles(Vector2 _dir,Vector3 _color)
+    void Rpc_ChangeAngles(Vector2 _dir,Vector3 _color)
     {
         _effectChangeColor = new Color(_color.x, _color.y, _color.z);
         _rb.AddForce(-1 * GrenadeSpeed * _dir);

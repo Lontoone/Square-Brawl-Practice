@@ -8,6 +8,7 @@ public class KatadaAbiliy : Ability
     public override void Initalize(GameObject _obj)
     {
         _attack = _obj.GetComponent<AttackTriggerable>();
+        _attack.SoundName = Name;
         _attack.WeaponDamage = Damage;
         _attack.WeaponSpeed = Speed;
         _attack.BeElasticity = BeElasticity;
