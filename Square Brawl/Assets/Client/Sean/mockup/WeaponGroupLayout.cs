@@ -11,6 +11,7 @@ public class WeaponGroupLayout : MonoBehaviour
     [SerializeField] private int m_Row;
     [SerializeField] private int m_Column;
     [SerializeField] private Vector2 m_Spacing;
+    //Todo
     /*
     void Update()
     {

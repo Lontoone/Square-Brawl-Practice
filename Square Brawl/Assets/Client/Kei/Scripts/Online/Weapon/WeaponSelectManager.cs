@@ -22,6 +22,11 @@ public class WeaponSelectManager : MonoBehaviourPunCallbacks
 
     private void CreatePlayerItem()
     {
+        foreach (Transform child in playerItemContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
         for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         {
             {
