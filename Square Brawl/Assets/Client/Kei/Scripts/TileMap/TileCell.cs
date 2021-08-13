@@ -20,6 +20,8 @@ public class TileCell : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandl
     public static event Action<int> OnCellMouseExit;
     public static event Action<int> OnCellMouseDown;
 
+    private static readonly Color _s_transprentColor = new Color(1, 1, 1, 0);
+    private static readonly Color _s_opaqueColor = new Color(1, 1, 1, 1);
 
     public void Start()
     {
@@ -77,9 +79,9 @@ public class TileCell : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandl
     {
         //spriteRenderer.color = Color.white;
         spriteRenderer.sprite = null;
-        spriteRenderer.color = new Color(0, 0, 0, 0);
-        hindSpriteRenderer.color = new Color(0, 0, 0, 0);
-        frontSpriteRenderer.color = new Color(0, 0, 0, 0);
+        spriteRenderer.color = _s_transprentColor;
+        hindSpriteRenderer.color = _s_transprentColor;
+        frontSpriteRenderer.color = _s_transprentColor;
     }
 
     public void SetusedColor()
@@ -87,12 +89,18 @@ public class TileCell : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandl
         spriteRenderer.color = Color.blue;
     }
 
+    public void OpenCellSprite()
+    {
+        spriteRenderer.color = _s_opaqueColor;
+        hindSpriteRenderer.color = _s_opaqueColor;
+        frontSpriteRenderer.color = _s_opaqueColor;
+    }
     public void SetColor(Color _color)
     {
         //spriteRenderer.color = _color;
-        spriteRenderer.color = new Color(1, 1, 1, 1);
-        hindSpriteRenderer.color = new Color(1, 1, 1, 1);
-        frontSpriteRenderer.color = new Color(1, 1, 1, 1);
+        spriteRenderer.color = _s_opaqueColor;
+        hindSpriteRenderer.color = _s_opaqueColor;
+        frontSpriteRenderer.color = _s_opaqueColor;
     }
 
 }

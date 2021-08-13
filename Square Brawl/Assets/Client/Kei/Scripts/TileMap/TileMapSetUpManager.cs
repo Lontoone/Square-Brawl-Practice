@@ -53,7 +53,6 @@ public class TileMapSetUpManager : MonoBehaviour
 
             if (i == _mapData.cellDatas[_dataCount].index)
             {
-                Debug.Log("i is active " + i);
                 TileMapManager.instance.cellStateMap[i] = _mapData.cellDatas[_dataCount].state;
                 activeTileCells.Add(_cell);
                 //_dataCount++;

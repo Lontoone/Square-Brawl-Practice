@@ -29,11 +29,16 @@ public class TillStyleLoader : MonoBehaviour
         //TODO:改成preview btn
         styleDatas = Resources.LoadAll<TileImageCollection>(styleDataPaht);
 
-        //Switch(0); error
+        Switch(0); //error
     }
 
     public void Switch(int _optration)
     {
+        if (prevStyleIcon == null)
+        {
+            return;
+        }
+
         currentStyleIndex = Mathf.Clamp(currentStyleIndex + _optration, 0, styleDatas.Length - 1);
         ChangeStyle(styleDatas[currentStyleIndex]);
 

@@ -23,7 +23,7 @@ public class TileStyleManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }    
+    }
     public void Start()
     {
         checkRange.ReadData();
@@ -130,6 +130,7 @@ public class TileStyleManager : MonoBehaviour
         _cell.spriteRenderer.sprite = imageCollection.GetSprite(_conditionCode);
         _cell.hindSpriteRenderer.sprite = imageCollection.GetHindSprite(_conditionCode);
         _cell.frontSpriteRenderer.sprite = imageCollection.GetFrontSprite(_conditionCode);
+        _cell.OpenCellSprite();
 
         _cell.spriteRenderer.sortingOrder = _midOrder;
         _cell.hindSpriteRenderer.sortingOrder = _hindOrder;
@@ -141,6 +142,9 @@ public class TileStyleManager : MonoBehaviour
     {
         imageCollection = _data;
         selectedCollection = _data;
+
+        if (TileMapManager.instance == null) { return; }
+
         for (int i = 0; i < TileMapManager.instance.gridCells.Count; i++)
         {
             SetCell(i);
