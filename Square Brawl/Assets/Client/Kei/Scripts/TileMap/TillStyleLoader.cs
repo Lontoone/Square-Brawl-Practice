@@ -10,6 +10,7 @@ public class TillStyleLoader : MonoBehaviour
 {
     public GameObject container;
     public Button buttonPrefab;
+    public Text styleNameText;
 
     public Image currentStyleIcon;
     public Image nextStyleIcon;
@@ -27,12 +28,16 @@ public class TillStyleLoader : MonoBehaviour
 
         //TODO:改成preview btn
         styleDatas = Resources.LoadAll<TileImageCollection>(styleDataPaht);
+
+        Switch(0);
     }
 
     public void Switch(int _optration)
     {
         currentStyleIndex = Mathf.Clamp(currentStyleIndex + _optration, 0, styleDatas.Length - 1);
         ChangeStyle(styleDatas[currentStyleIndex]);
+
+        styleNameText.text = styleDatas[currentStyleIndex].name;
 
         currentStyleIcon.sprite = styleDatas[currentStyleIndex].GetIcon();
         if (currentStyleIndex > 0)
