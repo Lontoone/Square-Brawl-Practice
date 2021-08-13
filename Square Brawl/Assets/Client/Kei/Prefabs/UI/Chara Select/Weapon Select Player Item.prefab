@@ -366,6 +366,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorImage: {fileID: 7219863575124268456}
+  iconImage: {fileID: 0}
+  readyImage: {fileID: 0}
   playerText: {fileID: 7219863574610534361}
   colorCode: 0
   readyButton: {fileID: 1593688547400167312}
@@ -423,6 +425,34 @@ PrefabInstance:
     - target: {fileID: 496882111724873856, guid: 78144ef06390d2548b9a7a1dc2d1e205, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455764190085233085, guid: 78144ef06390d2548b9a7a1dc2d1e205, type: 3}
+      propertyPath: OnReady.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455764190085233085, guid: 78144ef06390d2548b9a7a1dc2d1e205, type: 3}
+      propertyPath: OnReady.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455764190085233085, guid: 78144ef06390d2548b9a7a1dc2d1e205, type: 3}
+      propertyPath: OnCancelReady.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455764190085233085, guid: 78144ef06390d2548b9a7a1dc2d1e205, type: 3}
+      propertyPath: OnCancelReady.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455764190085233085, guid: 78144ef06390d2548b9a7a1dc2d1e205, type: 3}
+      propertyPath: OnReady.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455764190085233085, guid: 78144ef06390d2548b9a7a1dc2d1e205, type: 3}
+      propertyPath: OnReady.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455764190085233085, guid: 78144ef06390d2548b9a7a1dc2d1e205, type: 3}
+      propertyPath: OnCancelReady.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7884046618493307494, guid: 78144ef06390d2548b9a7a1dc2d1e205, type: 3}
       propertyPath: m_Name

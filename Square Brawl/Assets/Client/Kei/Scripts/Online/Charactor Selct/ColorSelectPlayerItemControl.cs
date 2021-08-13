@@ -22,9 +22,21 @@ public class ColorSelectPlayerItemControl : MonoBehaviour
 
     public void SetColor(Color _color)
     {
-        colorImage.color = new Color(_color.r, _color.g, _color.b, 0.5f);
-        playerText.color = _color;
-        iconImage.color = _color;
-        readyImage.color = _color;
+        if (colorImage != null)
+        {
+            colorImage.color = new Color(_color.r, _color.g, _color.b, 0.5f);
+        }
+        if (playerText != null)
+        {
+            playerText.color = _color;
+        }
+        if (iconImage != null)
+        { 
+            iconImage.color = _color;
+        }
+        if (readyImage != null)
+        { 
+            readyImage.color = _color;
+        }
     }
 }
