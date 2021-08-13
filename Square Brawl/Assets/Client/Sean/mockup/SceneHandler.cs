@@ -554,14 +554,25 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterMapSelection()
     {
+        var time = 0f;
+        if (m_GameMode.activeSelf)
+        {
+            time = m_AnimationClips[17].length;
+        }
+        else if (m_WeaponSelection.activeSelf)
+        {
+            time = m_AnimationClips[21].length;
+        }
         m_MapSelection.SetActive(true);
-        yield return null;
+        yield return new WaitForSeconds(time);
+        animator.Play("EnterMapSelection");
     }
 
     private IEnumerator ExitMapSelection()
     {
+        animator.Play("ExitMapSelection");
+        yield return new WaitForSeconds(m_AnimationClips[19].length);
         m_MapSelection.SetActive(false);
-        yield return null;
     }
 
     #endregion
