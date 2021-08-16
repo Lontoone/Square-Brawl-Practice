@@ -32,7 +32,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         base.OnEnable();
         //connect to server
-        PhotonNetwork.ConnectUsingSettings();
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }
         if (MenuManager.instance != null)
         {
             MenuManager.instance.OpenMenu("loading");

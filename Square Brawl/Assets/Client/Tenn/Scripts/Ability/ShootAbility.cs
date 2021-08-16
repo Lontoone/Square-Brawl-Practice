@@ -8,8 +8,9 @@ public class ShootAbility : Ability
     public float BulletScaleValue;
     public bool IsDontContinuous;
     public bool IsDontShootStraight;
-    public bool IsScatterShot;
+    public bool IsShotgun;
     public bool IsGrenade;
+    public bool IsSniper;
 
     public override void Initalize(GameObject _obj)
     {
@@ -24,19 +25,20 @@ public class ShootAbility : Ability
         _attack.WeaponScaleValue = BulletScaleValue;
         _attack.IsDontContinuous = IsDontContinuous;
         _attack.IsDontShootStraight = IsDontShootStraight;
+        _attack.IsSniper = IsSniper;
         _attack.ShootShakeValue = ShootShakeValue;
         _attack.BeShootShakeValue = BeShootShakeValue;
     }
 
     public override void Activate()
     {
-        if (!IsScatterShot&&!IsGrenade)
+        if (!IsShotgun && !IsGrenade)
         {
             _attack.Fire();
         }
-        else if (IsScatterShot)
+        else if (IsShotgun)
         {
-            _attack.ScatterFire();
+            _attack.ShotgunFire();
         }
         else if (IsGrenade)
         {

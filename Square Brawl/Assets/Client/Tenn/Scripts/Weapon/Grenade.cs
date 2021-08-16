@@ -164,7 +164,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     }
 
     [PunRPC]
-    void Rpc_SetValue(float _speed, float _damage, float _scaleValue, float _elasticity,Vector3 _beShotShake)
+    protected void Rpc_SetValue(float _speed, float _damage, float _scaleValue, float _elasticity,Vector3 _beShotShake)
     {
         GrenadeSpeed = _speed;
         GrenadeDamage = _damage;

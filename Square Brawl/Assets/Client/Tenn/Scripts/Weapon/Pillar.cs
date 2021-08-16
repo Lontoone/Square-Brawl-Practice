@@ -99,9 +99,9 @@ public class Pillar : Grenade, IPoolObject
     protected override void OnCollisionEnter2D(Collision2D other)
     {
         base.OnCollisionEnter2D(other);
-        _pillarSound.Play();
         if (other.gameObject.CompareTag("Ground") && !_isGrow)
         {
+            _pillarSound.Play();
             if (_pv.IsMine)
             {
                 ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);

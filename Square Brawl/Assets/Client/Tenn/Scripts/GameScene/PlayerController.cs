@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public Transform FrontSightMidPos;//FrontSightMid Position
     public Transform FrontSightPos;//FrontSight Position
     private Rigidbody2D _rb;//Player Rigidbody
+    public GameObject DieEffectObj;
 
     private Camera _camera;
 
@@ -449,17 +450,22 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     #region -- Ground Check Event --
     void GroundCheckEvent()
     {
-        RaycastHit2D leftCheck = Raycast(new Vector2(-PlayerWidth, FootOffset), Vector2.left, GroundDistance);
-        RaycastHit2D rightCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.right, GroundDistance);
-        RaycastHit2D downCheck = Raycast(new Vector2(-PlayerWidth, FootOffset), Vector2.down, GroundDistance);
+        RaycastHit2D leftCheck = Raycast(new Vector2(FootOffset, PlayerWidth), Vector2.left, GroundDistance);
+        RaycastHit2D leftCheck2 = Raycast(new Vector2(FootOffset, -PlayerWidth), Vector2.left, GroundDistance);
+        RaycastHit2D rightCheck = Raycast(new Vector2(FootOffset, PlayerWidth), Vector2.right, GroundDistance);
+        RaycastHit2D rightCheck2 = Raycast(new Vector2(FootOffset, -PlayerWidth), Vector2.right, GroundDistance);
+        RaycastHit2D downCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.down, GroundDistance);
+        RaycastHit2D downCheck2 = Raycast(new Vector2(-PlayerWidth, FootOffset), Vector2.down, GroundDistance);
         RaycastHit2D upCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.up, GroundDistance);
-        if (downCheck && (!leftCheck && !rightCheck))
+        RaycastHit2D upCheck2 = Raycast(new Vector2(-PlayerWidth, FootOffset), Vector2.up, GroundDistance);
+        //if (downCheck && (!leftCheck && !rightCheck))
+        if ((downCheck || downCheck2) && ((!leftCheck || !leftCheck2) && (!rightCheck || !rightCheck2)))
         {
             //Physics2D.IgnoreLayerCollision(11, 12, false);
             IsGround = _canSpin = true;
             _isWall = false;
         }
-        else if (leftCheck || rightCheck || upCheck)
+        else if (leftCheck || rightCheck || upCheck|| leftCheck2 || rightCheck2 || upCheck2)
         {
             //Physics2D.IgnoreLayerCollision(11, 12, false);
             _isWall = _canSpin = true;
@@ -615,6 +621,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             GamePad.SetVibration(0, 1f, 1f);
             Invoke("StopGamePadShake", 0.5f);
             Invoke("Rebirth", 3f);
+            GameObject dieEffectObj =  Instantiate(DieEffectObj, transform.position, Quaternion.identity);
             gameObject.SetActive(false);
         }
     }

@@ -41,11 +41,13 @@ public class AttackTriggerable : MonoBehaviour
 
     public AudioSource _audio;
 
-    private const byte PLAY_SOUND_EVENT=0;
+    private PhotonView _pv;
+    //private const byte PLAY_SOUND_EVENT=0;
     private void Start()
     {
         _bulletSpawnPos = GameObject.FindGameObjectWithTag("BulletSpawnPos");
         _bulletMidSpawnPos = GameObject.FindGameObjectWithTag("MidPos");
+        _pv = GetComponent<PhotonView>();
         _audio = GetComponent<AudioSource>();
 
         soundsDictionary = new Dictionary<string, AudioClip>();
@@ -67,57 +69,68 @@ public class AttackTriggerable : MonoBehaviour
         return sound;
     }
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         PhotonNetwork.NetworkingClient.EventReceived += NetClient;
     }
 
     private void OnDisble()
     {
-        PhotonNetwork.NetworkingClient.EventReceived += NetClient;
-    }
+        PhotonNetwork.NetworkingClient.EventReceived -= NetClient;
+    }*/
 
     void PlaySound()
     {
-        string _soundName = SoundName;
+        _audio.PlayOneShot(PlaySound(SoundName), 0.5f);
+        _pv.RPC("Rpc_PlaySound",RpcTarget.Others, SoundName);
+       /* string _soundName = SoundName;
 
         object[] datas = new object[] { _soundName };
         PhotonNetwork.RaiseEvent(PLAY_SOUND_EVENT, datas, RaiseEventOptions.Default, SendOptions.SendUnreliable);
-        _audio.PlayOneShot(PlaySound(SoundName),0.5f);
+        _audio.PlayOneShot(PlaySound(SoundName),0.5f);*/
     }
 
-    void NetClient(EventData obj)
+    [PunRPC]
+    void Rpc_PlaySound(string _soundName)
+    {
+        _audio.PlayOneShot(PlaySound(_soundName), 0.5f);
+    }
+
+    /*void NetClient(EventData obj)
     {
         if (obj.Code == PLAY_SOUND_EVENT)
         {
             object[]datas= (object[])obj.CustomData;
             string _soundName = (string)datas[0];
             _audio.PlayOneShot(PlaySound(_soundName),0.1f);
+            Debug.Log("OK");
+            Debug.Log(_audio);
+            Debug.Log(GetComponent<PhotonView>().ViewID);
         }
-    }
+    }*/
 
     public void Fire()
     {
-        GameObject _bulletObj = ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        GameObject _bulletObj = ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Bullet _bullet = _bulletObj.GetComponent<Bullet>();
         if (!IsDontShootStraight)
         {
             ObjectsPool.Instance.SpawnFromPool("Spark", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         }
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
-        _bullet.ShootEvent(ExploseEffectName,WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShootShakeValue);
+        _bullet.ShootEvent(ExploseEffectName,WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, IsSniper, BeShootShakeValue);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
         PlaySound();
     }
 
-    public void ScatterFire()
+    public void ShotgunFire()
     {
         for (int i = 0; i <= 4; i++)
         {
             GameObject[] _bulletObj = new GameObject[5];
-            _bulletObj[i]= ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+            _bulletObj[i]= ObjectsPool.Instance.SpawnFromPool("Bullet", _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
             Bullet _bullet = _bulletObj[i].GetComponent<Bullet>();
-            _bullet.ShootEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, BeShootShakeValue);
+            _bullet.ShootEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, IsSniper, BeShootShakeValue);
         }
         ObjectsPool.Instance.SpawnFromPool("Spark", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
@@ -162,7 +175,7 @@ public class AttackTriggerable : MonoBehaviour
 
     public void GrenadeFire()
     {
-        GameObject _grenadeObj = ObjectsPool.Instance.SpawnFromPool(Name, _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        GameObject _grenadeObj = ObjectsPool.Instance.SpawnFromPool(Name, _bulletMidSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Grenade _grenade = _grenadeObj.GetComponent<Grenade>();
         _grenade.GrenadeEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity,BeShootShakeValue);
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);

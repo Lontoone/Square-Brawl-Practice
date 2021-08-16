@@ -8,13 +8,14 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
 {
     [HeaderAttribute("Bullet Setting")]
     private float BulletSpeed;//Bullet Speed
-    private float BulletDamage;//Bullet Damage
+    [SerializeField] private float BulletDamage;//Bullet Damage
     private float BulletBeElasticity;//Bullet Be Elasticity
     private float BulletScaleValue;//Bullet Scale Value
 
     private Vector3 _cameraShakeValue;
 
     private bool _isDontShootStraight;//Is Dont Shoot Straighr line?
+    private bool _isSniper;
     private bool _isMaster;
     private bool _isBounceBullet;
 
@@ -58,7 +59,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    public void ShootEvent(string _name,float _speed,float _damage,float _scaleValue,float _elasticity,bool _isStraight, Vector3 _cameraShakeValue)
+    public void ShootEvent(string _name,float _speed,float _damage,float _scaleValue,float _elasticity,bool _isStraight,bool _isSniper, Vector3 _cameraShakeValue)
     {
         ExploseEffectName = _name;
         BulletSpeed = _speed;
@@ -67,6 +68,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         transform.localScale = new Vector3(_scaleValue, _scaleValue, _scaleValue);
         BulletBeElasticity = _elasticity;
         _isDontShootStraight = _isStraight;
+        this._isSniper = _isSniper;
         this._cameraShakeValue = _cameraShakeValue;
         if (_isBounceBullet)
         {
@@ -86,6 +88,11 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     protected virtual void Update()
     {
         BulletCollider();//Bullet Collider Raycast
+
+        if (_isSniper)
+        {
+            BulletDamage += 200 * Time.deltaTime;
+        }
     }
 
     protected virtual void FixedUpdate()
@@ -231,11 +238,19 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         {
             stream.SendNext(_rb.position);
             stream.SendNext(_rb.velocity);
+            if (_isSniper)
+            {
+                stream.SendNext(BulletDamage);
+            }
         }
         else
         {
             _newPos = (Vector2)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();
+            if (_isSniper)
+            {
+                BulletDamage = (float)stream.ReceiveNext();
+            }
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime)) + (float)(PhotonNetwork.GetPing() * 0.0001f);
             _newPos += (_rb.velocity * lag);
         }

@@ -75,6 +75,9 @@ MonoBehaviour:
   - tag: Spark
     prefab: {fileID: 1117826876694119334, guid: 8e8482aef9109984080a905b4c66d5e0, type: 3}
     size: 5
+  - tag: DieEffect
+    prefab: {fileID: 4273670996832051688, guid: f6eddf2908cfd0741b6d003ce3971a2f, type: 3}
+    size: 1
   _pv: {fileID: 0}
 --- !u!114 &7958008732146023615
 MonoBehaviour:
