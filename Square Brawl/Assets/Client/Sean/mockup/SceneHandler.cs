@@ -342,6 +342,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         yield return new WaitForSeconds(time);
         m_NameInput.SetActive(false);
         m_Menu.SetActive(true);
+        m_Menu.GetComponentInChildren<Animator>().enabled = true;
         m_Menu.GetComponentInChildren<MenuButtonHandler>().OnEnterMenuAction();
         m_Menu.GetComponentInChildren<AimAction>().m_AimObject.SetActive(true);
         animator.Play("EnterMenu");
