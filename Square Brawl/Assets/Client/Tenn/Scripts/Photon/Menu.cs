@@ -19,7 +19,7 @@ public class Menu : MonoBehaviour
 
     public void Open()
     {
-        Debug.Log("open" + menuName);
+        //Debug.Log("open" + menuName);
         open = true;
         SceneHandler.instance.EnterPage(gameObject.name);
     }

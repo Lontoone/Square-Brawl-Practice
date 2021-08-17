@@ -4,16 +4,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerKillCountItem : MonoBehaviourPunCallbacks
 {
     public Player player;
-    public Text KillCountText;
+    public TextMeshProUGUI KillCountText;
 
     void Start()
     {
-        KillCountText = transform.GetChild(0).GetComponent<Text>();
+        KillCountText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         SetColor(CustomPropertyCode.COLORS[(int)player.CustomProperties[CustomPropertyCode.TEAM_CODE]]);
     }
 
@@ -25,6 +26,7 @@ public class PlayerKillCountItem : MonoBehaviourPunCallbacks
     public void SetColor(Color _color)
     {
         GetComponent<Image>().color = _color;
+        KillCountText.color = _color;
     }
 
     public void SetKillCount(Player _p)
