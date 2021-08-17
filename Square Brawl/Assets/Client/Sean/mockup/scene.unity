@@ -73628,7 +73628,7 @@ MonoBehaviour:
   OnAllReadyMaster:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1126485954}
+      - m_Target: {fileID: 1162549203}
         m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
         m_MethodName: set_interactable
         m_Mode: 6
@@ -73646,7 +73646,7 @@ MonoBehaviour:
   OnReadyCancelMaster:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1126485954}
+      - m_Target: {fileID: 1162549203}
         m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
         m_MethodName: set_interactable
         m_Mode: 6
