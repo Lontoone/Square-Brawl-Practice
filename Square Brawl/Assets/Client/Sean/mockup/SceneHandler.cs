@@ -89,7 +89,21 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     void Start()
     {
         m_Option.SetActive(false);
-        //m_OptionTest.SetActive(false);
+        m_MapEditor.SetActive(false);
+        m_Control.SetActive(false);
+        m_OnlineMenu.SetActive(false);
+        m_NameInput.SetActive(false);
+        m_Lobby.SetActive(false);
+        m_CreateRoom.SetActive(false);
+        m_RoomList.SetActive(false);
+        m_Room.SetActive(false);
+        m_CharacterSelection.SetActive(false);
+        m_GameMode.SetActive(false);
+        m_MapSelection.SetActive(false);
+        m_WeaponSelection.SetActive(false);
+        m_ScoreInfo.SetActive(false);
+        m_Loading.SetActive(false);
+        m_Error.SetActive(false);
         SetUpMapEditor();
     }
 

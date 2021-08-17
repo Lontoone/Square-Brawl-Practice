@@ -24,7 +24,7 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private Image m_Arror;
     private Easetype.Current_easetype m_PlayButtonCurrentEasetype;
     [SerializeField] Easetype.Current_easetype.Easetype easetype;
-    [SerializeField] private float m_duration =1f;
+    [SerializeField] private float m_duration;
     
     [Space(10)]
     [Header("Aim Object")]
