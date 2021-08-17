@@ -6,6 +6,17 @@ using UnityEngine;
 
 public class LoadTileHelper
 {
+    public static int mapCounts
+    {
+        get
+        {
+            int fCount = Directory.GetFiles(SaveTile.SAVE_FOLDER.CombinePersistentPath(), "*", SearchOption.TopDirectoryOnly).Length;
+            int resCount = Resources.LoadAll(MapSelectManager.BUILTIN_MAPS_FOLDER).Length;
+            Resources.UnloadUnusedAssets();
+            Debug.Log("map count " + (fCount + resCount));
+            return fCount + resCount;
+        }
+    }
     public static MapData[] LoadTileMaps()
     {
         List<MapData> res = new List<MapData>();

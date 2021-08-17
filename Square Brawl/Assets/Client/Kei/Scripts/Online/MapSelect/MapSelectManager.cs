@@ -38,6 +38,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             LoadMapList();
+            SendData(mapDatas[0]);
         }
         else
         {
@@ -137,7 +138,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
     public void Switch(int _optration)
     {
         int _preIndex = fileIndex;
-        fileIndex = Mathf.Clamp(fileIndex + _optration, 0, filePaths.Length-1);
+        fileIndex = Mathf.Clamp(fileIndex + _optration, 0, filePaths.Length - 1);
 
         if (_preIndex == fileIndex) { return; }
 
@@ -146,5 +147,12 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         PhotonNetwork.RaiseEvent(CustomPropertyCode.UPDATE_MAP_EVENTCODE, _byteData, raiseEventOptions, SendOptions.SendReliable);
 
+    }
+
+    private void SendData(MapData _data)
+    {
+        var _byteData = MyPhotonExtension.ObjectToByteArray(_data);
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
+        PhotonNetwork.RaiseEvent(CustomPropertyCode.UPDATE_MAP_EVENTCODE, _byteData, raiseEventOptions, SendOptions.SendReliable);
     }
 }
