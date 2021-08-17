@@ -126,6 +126,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                         if (IsKill)
                         {
                             PlayerKillCountManager.instance.SetKillCount();
+                            _playerController.GenerateDieEffect();
                         }
 
                         if (_pv.IsMine)

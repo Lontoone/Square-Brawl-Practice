@@ -191,6 +191,7 @@ public class Bounce : MonoBehaviour,IPoolObject
                 if (IsKill)
                 {
                     PlayerKillCountManager.instance.SetKillCount();
+                    _playerController.GenerateDieEffect();
                 }
             }
         }

@@ -52,6 +52,7 @@ public class Shield : MonoBehaviour
             if (IsKill)
             {
                 PlayerKillCountManager.instance.SetKillCount();
+                _playerController.GenerateDieEffect();
             }
         }
     }

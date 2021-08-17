@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     private bool _canSpin;//Player Can Spin?
     private bool _canLeftSticeSpin;
 
+    public Color DieEffectColor;
+
     private SpriteRenderer _bodySprite;
     private Image _hpSprite;
 
@@ -62,7 +64,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public Transform FrontSightMidPos;//FrontSightMid Position
     public Transform FrontSightPos;//FrontSight Position
     private Rigidbody2D _rb;//Player Rigidbody
-    public GameObject DieEffectObj;
+    public DieEffect DieEffectObj;
 
     private Camera _camera;
 
@@ -135,7 +137,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     private void SetColor()
     {
-        Color _color = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color =
+        Color _color = DieEffectColor = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color =
             CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
 
         transform.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(_color.r, _color.g, _color.b, 0.5f);
@@ -167,11 +169,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             PlayerMovement();//Player Move
             PlayerSpin();//Player Spin
         }
-    }
-
-    public void OnBegin()
-    {
-        
     }
 
     #region -- Player Control --
@@ -532,6 +529,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
                 if (IsKill)
                 {
                     PlayerKillCountManager.instance.SetKillCount();
+                    _playerController.GenerateDieEffect();
                 }
                 _isCharge = false;
             }
@@ -554,7 +552,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     [PunRPC]
     void ChangeColor(Vector3 color)
     {
-        Color _color = new Color(color.x, color.y, color.z);
+        Color _color = DieEffectColor = new Color(color.x, color.y, color.z);
         transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color = _color;
         transform.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(_color.r, _color.g, _color.b, 0.5f);
         _uiControl.PlayerHpImg.color = _color;
@@ -621,9 +619,25 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             GamePad.SetVibration(0, 1f, 1f);
             Invoke("StopGamePadShake", 0.5f);
             Invoke("Rebirth", 3f);
-            GameObject dieEffectObj =  Instantiate(DieEffectObj, transform.position, Quaternion.identity);
+            /*DieEffect dieEffectObj = Instantiate(DieEffectObj, transform.position, Quaternion.identity);
+            dieEffectObj.SetColor(DieEffectColor);*/
             gameObject.SetActive(false);
         }
+    }
+
+    public void GenerateDieEffect()
+    {
+        //Color color = CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
+        DieEffect dieEffectObj = Instantiate(DieEffectObj, transform.position, Quaternion.identity);
+        dieEffectObj.SetColor(DieEffectColor);
+        Pv.RPC("Rpc_GenerateDieEffect", RpcTarget.Others, new Vector3(DieEffectColor.r, DieEffectColor.g, DieEffectColor.b));
+    }
+
+    [PunRPC]
+    void Rpc_GenerateDieEffect(Vector3 color)
+    {
+        DieEffect dieEffectObj = Instantiate(DieEffectObj, transform.position, Quaternion.identity);
+        dieEffectObj.SetColor(new Color(color.x, color.y, color.z));
     }
 
     void Rebirth()

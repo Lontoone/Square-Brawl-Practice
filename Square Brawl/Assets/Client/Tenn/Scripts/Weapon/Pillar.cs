@@ -127,6 +127,7 @@ public class Pillar : Grenade, IPoolObject
                 if (IsKill)
                 {
                     PlayerKillCountManager.instance.SetKillCount();
+                    _playerController.GenerateDieEffect();
                 }
             }
         }

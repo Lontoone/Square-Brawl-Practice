@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 public class ResultManager : MonoBehaviour
@@ -136,6 +137,6 @@ public class ResultManager : MonoBehaviour
     public void BackToLobby()
     {
         PhotonNetwork.Disconnect();
-        PhotonNetwork.LoadLevel(0);
+        SceneManager.LoadScene(0);
     }
 }
