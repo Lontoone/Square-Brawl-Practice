@@ -66,4 +66,12 @@ public class MenuReadyManager : MonoBehaviourPunCallbacks
             CheckAllReady();
         }
     }
+
+    public void UnReadyAllButtons()
+    {
+        foreach (MenuReadyButton _btn in allReadyButtons)
+        {
+            _btn.SetReady(false);
+        }
+    }
 }
