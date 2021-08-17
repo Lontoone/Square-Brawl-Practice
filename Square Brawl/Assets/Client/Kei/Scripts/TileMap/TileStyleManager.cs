@@ -24,7 +24,7 @@ public class TileStyleManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public void Start()
+    public void OnEnable()
     {
         checkRange.ReadData();
 
@@ -36,9 +36,13 @@ public class TileStyleManager : MonoBehaviour
         TileMapEditorControl.OnCellChanged += SetCell;
         TileMapEditorControl.OnCellChanged += SetNearbyCell;
     }
+
+
     private void OnDisable()
     {
-        Destroy(instance);
+        TileMapEditorControl.OnCellChanged -= SetCell;
+        TileMapEditorControl.OnCellChanged -= SetNearbyCell;
+        //Destroy(instance);
     }
     private void OnDestroy()
     {

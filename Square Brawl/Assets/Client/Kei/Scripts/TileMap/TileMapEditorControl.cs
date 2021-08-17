@@ -32,7 +32,8 @@ public class TileMapEditorControl : MonoBehaviour
         { CellState.EMPTY, Color.cyan },
     };
 
-    public void Start()
+    //public void Start()
+    public void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoad;
 
@@ -70,7 +71,7 @@ public class TileMapEditorControl : MonoBehaviour
 
     public void OnDestroy()
     {
-      
+
     }
     public void Update()
     {
@@ -221,7 +222,8 @@ public class TileMapEditorControl : MonoBehaviour
     }
 
     //check is the current mouse position is inside the map bounds:
-    private bool IsMousePosInsideMapBounds() {
+    private bool IsMousePosInsideMapBounds()
+    {
         Vector2 _mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         return TileMapManager.instance.mapBounds.Contains(_mousePos);
     }
@@ -314,7 +316,7 @@ public class TileMapEditorControl : MonoBehaviour
     private void SetCellStateColor(int _index, CellState _state)
     {
         TileCell _cell = TileMapManager.instance.gridCells[_index];
-        
+
         TileStyleManager.instance.SetCell(_index);
         TileStyleManager.instance.SetNearbyCell(_index);
         _cell.SetColor(cellStateColor[_state]);
@@ -322,7 +324,7 @@ public class TileMapEditorControl : MonoBehaviour
 
     private void Load(string _path)
     {
-        Debug.Log("load Map "+ _path);
+        Debug.Log("load Map " + _path);
         //reset picture
         MapData mapData = SaveAndLoad.Load<MapData>(_path);
 
@@ -359,12 +361,13 @@ public class TileMapEditorControl : MonoBehaviour
         buildType = _state;
     }
 
-    
+
     private void OnSceneLoad(Scene arg0, LoadSceneMode arg1)
     {
 
         if (arg0.name == "GridSample")
         {
+            Debug.Log("editor load map");
             FindObjectOfType<TileMapManager>().GenerateGrid();
             InitDict();
         }

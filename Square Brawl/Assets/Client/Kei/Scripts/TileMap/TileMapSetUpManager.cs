@@ -35,7 +35,9 @@ public class TileMapSetUpManager : MonoBehaviour
         if (TileMapManager.instance.gridCells.Count < TileMapManager.instance.cellCount)
         {
             Debug.Log("Gernerate Grid");
-            TileMapManager.instance.GenerateGrid(false);
+            if (!TileMapManager.instance.generated)
+                TileMapManager.instance.GenerateGrid(false);
+
             yield return new WaitForSeconds(1.5f);
             Debug.Log("Gernerate Grid - finished");
         }

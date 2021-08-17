@@ -48,7 +48,7 @@ public class TillStyleLoader : MonoBehaviour
         if (currentStyleIndex > 0)
         {
             prevStyleIcon.sprite = styleDatas[currentStyleIndex - 1].GetIcon();
-            Debug.Log("prevStyleIcon " + (prevStyleIcon.sprite == null));
+            //Debug.Log("prevStyleIcon " + (prevStyleIcon.sprite == null));
         }
         if (currentStyleIndex < styleDatas.Length - 1)
         {

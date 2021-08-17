@@ -99,7 +99,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
             MapData _data = (MapData)MyPhotonExtension.ByteArrayToObject((byte[])obj.CustomData);
             currentSelectedData = _data;
 
-            selectText.text = _data.fileName;
+            selectText.text = _data.fileName;            
             setupManager.SetUpLevel(_data);
         }
     }

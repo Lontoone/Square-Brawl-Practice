@@ -8,6 +8,7 @@ public class TileMapManager : MonoBehaviour
 {
     public static TileMapManager instance;
     public GameObject cellPrefab;
+    public bool generated = false;
 
     public SpriteRenderer firstCell;
 
@@ -42,6 +43,7 @@ public class TileMapManager : MonoBehaviour
     }
     private void OnDisable()
     {
+        generated = false;
         Destroy(instance);
     }
     public void Start()
@@ -52,6 +54,7 @@ public class TileMapManager : MonoBehaviour
     [ContextMenu("GenerateGrid")]
     public void GenerateGrid(bool _setActive=true)
     {
+        generated = true;
         StartCoroutine(GenerateGridCoro(_setActive));
         /*
         Debug.Log("Generate Grid");
