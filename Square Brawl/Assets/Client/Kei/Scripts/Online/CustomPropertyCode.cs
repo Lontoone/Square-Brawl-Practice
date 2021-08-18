@@ -12,7 +12,7 @@ public class CustomPropertyCode
     public const string TEAM_CODE = "TEAMCODE";
     public static readonly Color[] COLORS = new Color[] { new Color(0.827451f, 0.3372549f, 0.3294118f), 
         new Color(0.3529412f, 0.6627451f, 0.9647059f), 
-        new Color(0.9803922f, 0.6666667f, 0.3019608f), 
+        new Color(0.9803922f, 0.6666667f, 0.3019608f),
         new Color(0.3411765f, 0.8313726f, 0.4666667f) };
 
     /* WEAPON */

@@ -18,7 +18,7 @@ MonoBehaviour:
   CoolDownTime: 0.3
   Damage: 25
   Speed: 20
-  Recoil: 300
+  Recoil: 0
   BeElasticity: 800
   BeShootShakeValue: {x: 0.4, y: 0.2, z: 1}
   ShootShakeValue: {x: 0, y: 0, z: 0}
@@ -28,5 +28,6 @@ MonoBehaviour:
   BulletScaleValue: 0.13
   IsDontContinuous: 0
   IsDontShootStraight: 0
-  IsScatterShot: 0
+  IsShotgun: 0
   IsGrenade: 0
+  IsSniper: 0

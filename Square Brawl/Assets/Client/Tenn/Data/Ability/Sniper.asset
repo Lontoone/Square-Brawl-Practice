@@ -18,7 +18,7 @@ MonoBehaviour:
   CoolDownTime: 2
   Damage: 35
   Speed: 25
-  Recoil: 600
+  Recoil: 0
   BeElasticity: 600
   BeShootShakeValue: {x: 0.6, y: 0.3, z: 1}
   ShootShakeValue: {x: 0, y: 0, z: 0}

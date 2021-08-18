@@ -76,7 +76,7 @@ public class Pillar : Grenade, IPoolObject
         {
             if (_isGrow)
             {
-                _growY = Mathf.Lerp(_growY, 12f, 10 * Time.deltaTime);
+                _growY = Mathf.Lerp(_growY, 10f, 10 * Time.deltaTime);
                 _childObj.transform.localPosition = new Vector3(_childObj.transform.localPosition.x, (_growY / 2) - 0.5f, _childObj.transform.localPosition.z);
                 _childObj.transform.localScale = new Vector3(_childObj.transform.localScale.x, _growY, _childObj.transform.localScale.z);
                 StartCoroutine(Shorten());
