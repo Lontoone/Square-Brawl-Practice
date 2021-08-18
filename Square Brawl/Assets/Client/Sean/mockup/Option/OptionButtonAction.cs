@@ -168,7 +168,7 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         {
             lastSelectIndex = currentSelectIndex;
 
-            if (currentSelectIndex != m_ButtonIndex)
+            if (currentSelectIndex != m_ButtonIndex && OptionManager.onPressIndex != m_ButtonIndex)
             {
                 IdleBackground();
             }
@@ -181,10 +181,10 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
         m_Press.Kill();
         m_Press = DOTween.Sequence();
         m_Press.Append(m_Aim.m_AimPos.transform
-                    .DOLocalMove(new Vector3(0, 450), 0.5f)
+                    .DOLocalMove(new Vector3(0, 150), 0.5f)
                     .SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)))
                .Join(m_Background.rectTransform
-                    .DOSizeDelta(new Vector2(680, 1000), 0.5f)
+                    .DOSizeDelta(new Vector2(680, 500), 0.5f)
                     .SetEase(m_CurrentEasetype.GetEasetype(m_Aim.m_Easetype)))
                .Join(m_Background.DOColor(m_DefaultColor, 0.5f));
         if (m_button_text != null)

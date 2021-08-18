@@ -63,11 +63,6 @@ public class OptionManager : MonoBehaviour
         m_Input.UI.backclick.performed += ctx => KeyUnSelected();
     }
 
-    private void test123()
-    {
-        Debug.Log("start");
-    }
-
     private void Start()
     {
         m_CurrentEasetype = new Easetype.Current_easetype();
@@ -211,11 +206,11 @@ public class OptionManager : MonoBehaviour
 
             m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>().SettingOut();
         }
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
 
         m_OptionAnimation.Append(m_BackButton.transform.DOLocalMove(m_BackButtonPos, m_Duration * 2)
                             .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
 
         for (int i = m_SettingGroup.Length - 1; i >= 0; i--)
         {
@@ -263,8 +258,6 @@ public class OptionManager : MonoBehaviour
         }
     }
 
-
-
     // Used in button onclick 
     public void SetPressedIndex(int Index)
     {
@@ -293,7 +286,6 @@ public class OptionManager : MonoBehaviour
             }
         }
     }
-
 
     public void ResetDeselected()
     {
@@ -330,6 +322,7 @@ public class OptionManager : MonoBehaviour
             }
         }
     }
+
     private void Firstpress()
     {
         if (moveValue == new Vector2(0, 0))
@@ -423,7 +416,7 @@ public class OptionManager : MonoBehaviour
                 {
                     m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().HighlightedBackground();
                 }
-                else
+                else if(i != onPressIndex)
                 {
                     m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().IdleBackground();
                 }

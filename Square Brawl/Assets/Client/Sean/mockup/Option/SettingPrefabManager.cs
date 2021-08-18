@@ -20,6 +20,7 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
     public enum SettingType {ListSelection, SliderSelection}
     [Space (15)]
     [SerializeField] private SettingType m_SettingType;
+    public OptionSetting.ChangeType m_ChangeType;
     [Serializable]
     public struct ListSelection
     {
@@ -76,10 +77,55 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
         }
     }
 
-    public int ReturnSettingValue()
+    public void ReturnSettingValue()
     {
-        //Debug.Log(m_CurrentIndex);
-        return m_CurrentIndex;
+        Debug.Log(this.name +"\t"+ m_CurrentIndex, gameObject);
+        ChangeSetting(m_ChangeType);
+    }
+
+    public void ChangeSetting(OptionSetting.ChangeType m_ChangeType)
+    {
+        switch (m_ChangeType)
+        {
+            case OptionSetting.ChangeType.FullScreen:
+                switch (m_CurrentIndex)
+                {
+                    case 0:
+                        OptionSetting.FULLSCREEN = Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+                        break;
+
+                    case 1:
+                        OptionSetting.FULLSCREEN = Screen.fullScreenMode = FullScreenMode.Windowed;
+                        break;
+                }
+                break;
+
+            case OptionSetting.ChangeType.Resolution:
+                Screen.SetResolution((int)OptionSetting.resolution[m_CurrentIndex].x, (int)OptionSetting.resolution[m_CurrentIndex].y, FullScreenMode.Windowed);
+                OptionSetting.RESOLUTION = Screen.currentResolution;
+                break;
+
+            case OptionSetting.ChangeType.MusicVolume:
+                OptionSetting.MUSICVOLUME = m_CurrentIndex * 0.1f;
+                break;
+
+            case OptionSetting.ChangeType.SFXVolume:
+                OptionSetting.SFXVOLUME = m_CurrentIndex * 0.1f;
+                break;
+
+            case OptionSetting.ChangeType.ControllerRumble:
+                switch (m_CurrentIndex)
+                {
+                    case 0:
+                        OptionSetting.CONTROLLER_RUMBLE = true;
+                        break;
+
+                    case 1:
+                        OptionSetting.CONTROLLER_RUMBLE = false;
+                        break;
+                }
+                break;
+        }
     }
 
     public void SetUpListSelection(ListSelection ListSelection)

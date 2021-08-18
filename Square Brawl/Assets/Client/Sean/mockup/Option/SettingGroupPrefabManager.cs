@@ -99,7 +99,7 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
                     {
                         m_SettingPrefab[i].GetComponent<RectTransform>().localScale = new Vector3(0,0);
                     }
-
+                    m_Sequence.AppendInterval(0.2f);
                     for (int i = 0; i < m_SettingPrefab.Length; i++)
                     {
                         m_Sequence.Append(m_SettingPrefab[i].transform
