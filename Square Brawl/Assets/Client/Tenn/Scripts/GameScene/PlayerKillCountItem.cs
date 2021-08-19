@@ -11,10 +11,11 @@ public class PlayerKillCountItem : MonoBehaviourPunCallbacks
 {
     public Player player;
     public TextMeshProUGUI KillCountText;
+    public Image image;
 
     void Start()
     {
-        KillCountText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        KillCountText = transform.GetComponentInChildren<TextMeshProUGUI>();
         SetColor(CustomPropertyCode.COLORS[(int)player.CustomProperties[CustomPropertyCode.TEAM_CODE]]);
     }
 
@@ -27,6 +28,7 @@ public class PlayerKillCountItem : MonoBehaviourPunCallbacks
     {
         GetComponent<Image>().color = _color;
         KillCountText.color = _color;
+        image.color = new Color(_color.r, _color.g, _color.b, 0.3f);
     }
 
     public void SetKillCount(Player _p)
