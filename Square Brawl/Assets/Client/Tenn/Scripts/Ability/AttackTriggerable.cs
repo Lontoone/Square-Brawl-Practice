@@ -83,7 +83,8 @@ public class AttackTriggerable : MonoBehaviour
 
     void PlaySound()
     {
-        _audio.PlayOneShot(PlaySound(SoundName), 0.5f);
+        _audio.PlayOneShot(PlaySound(SoundName), OptionSetting.SFXVOLUME);
+
         _pv.RPC("Rpc_PlaySound",RpcTarget.Others, SoundName);
        /* string _soundName = SoundName;
 
@@ -95,7 +96,7 @@ public class AttackTriggerable : MonoBehaviour
     [PunRPC]
     void Rpc_PlaySound(string _soundName)
     {
-        _audio.PlayOneShot(PlaySound(_soundName), 0.5f);
+        _audio.PlayOneShot(PlaySound(_soundName), OptionSetting.SFXVOLUME);
     }
 
     /*void NetClient(EventData obj)
@@ -117,7 +118,7 @@ public class AttackTriggerable : MonoBehaviour
         Bullet _bullet = _bulletObj.GetComponent<Bullet>();
         if (!IsDontShootStraight)
         {
-            ObjectsPool.Instance.SpawnFromPool("Spark", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+            ObjectsPool.Instance.SpawnFromPool(LaunchEffectName, _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         }
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         _bullet.ShootEvent(ExploseEffectName,WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, IsSniper, BeShootShakeValue);
@@ -134,7 +135,7 @@ public class AttackTriggerable : MonoBehaviour
             Bullet _bullet = _bulletObj[i].GetComponent<Bullet>();
             _bullet.ShootEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity, IsDontShootStraight, IsSniper, BeShootShakeValue);
         }
-        ObjectsPool.Instance.SpawnFromPool("Spark", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        ObjectsPool.Instance.SpawnFromPool(LaunchEffectName, _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
         PlaySound();

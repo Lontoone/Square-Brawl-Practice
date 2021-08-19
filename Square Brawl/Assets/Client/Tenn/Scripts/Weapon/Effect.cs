@@ -83,6 +83,7 @@ public class Effect : MonoBehaviour,IPoolObject
         gameObject.SetActive(true);
         if (_BombSound != null)
         {
+            _BombSound.volume = OptionSetting.SFXVOLUME;
             _BombSound.Play();
         }
         transform.position = _pos;

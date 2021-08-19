@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sniper
   m_EditorClassIdentifier: 
   Name: Sniper
-  LaunchEffectName: 
+  LaunchEffectName: Spark
   ExploseEffectName: SmallExplose
   CoolDownTime: 2
   Damage: 35

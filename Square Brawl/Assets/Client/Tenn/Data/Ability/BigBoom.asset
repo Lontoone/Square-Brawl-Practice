@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BigBoom
   m_EditorClassIdentifier: 
   Name: BigBoom
-  LaunchEffectName: 
+  LaunchEffectName: Spark
   ExploseEffectName: BigExplose
   CoolDownTime: 2
   Damage: 50

@@ -6,9 +6,9 @@ public class OptionSetting : MonoBehaviour
 {
     public static FullScreenMode FULLSCREEN;
     public static Resolution RESOLUTION;
-    public static float MUSICVOLUME;
-    public static float SFXVOLUME;
-    public static bool CONTROLLER_RUMBLE;
+    public static float MUSICVOLUME = 0.5f;
+    public static float SFXVOLUME = 0.5f;
+    public static bool CONTROLLER_RUMBLE = true;
 
     public static Vector2[] resolution = new Vector2[] { new Vector2(640, 360),
                                                          new Vector2(854, 480),

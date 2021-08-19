@@ -13,6 +13,8 @@ TagManager:
   - Katada
   - FreezeShoot
   - Shield
+  - GrenadaPos
+  - Boundary
   layers:
   - Default
   - TransparentFX

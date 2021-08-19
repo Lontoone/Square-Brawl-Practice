@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Aevolver
   m_EditorClassIdentifier: 
   Name: Revolver
-  LaunchEffectName: 
+  LaunchEffectName: Spark
   ExploseEffectName: SmallExplose
   CoolDownTime: 0.3
   Damage: 25

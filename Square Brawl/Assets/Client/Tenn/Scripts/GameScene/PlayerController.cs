@@ -512,6 +512,15 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
     #endregion
 
+    void GamePadShakeEvent(float leftMotor,float rightMotor, float time)
+    {
+        if (OptionSetting.CONTROLLER_RUMBLE)
+        {
+            GamePad.SetVibration(0, leftMotor, rightMotor);
+            Invoke("StopGamePadShake", time);
+        }
+    }
+
     void StopGamePadShake()
     {
         GamePad.SetVibration(0, 0, 0);
@@ -546,6 +555,16 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         {
             Shield _shield = other.gameObject.GetComponent<Shield>();
             _shield.ShieldCollider(this);
+        }
+
+        if (other.gameObject.CompareTag("Boundary"))
+        {
+            if (Pv.IsMine)
+            {
+                CameraShake.instance.SetShakeValue(0.6f, 0.3f, 1);
+                GamePadShakeEvent(0.5f, 0.5f, 0.5f);
+                Pv.RPC("Rpc_OnBoundary", RpcTarget.All);
+            }
         }
     }
 
@@ -611,18 +630,23 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
         _playerHp -= _damage;
         CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
-        GamePad.SetVibration(0, 0.5f, 0.5f);
-        Invoke("StopGamePadShake", 0.5f);
+        GamePadShakeEvent(0.5f, 0.5f, 0.5f);
         _uiControl.ReduceHp(_playerHp);
         if (_playerHp <= 0)
         {
-            GamePad.SetVibration(0, 1f, 1f);
-            Invoke("StopGamePadShake", 0.5f);
+            GamePadShakeEvent(1f, 1f, 0.5f);
             Invoke("Rebirth", 3f);
             /*DieEffect dieEffectObj = Instantiate(DieEffectObj, transform.position, Quaternion.identity);
             dieEffectObj.SetColor(DieEffectColor);*/
             gameObject.SetActive(false);
         }
+    }
+
+    [PunRPC]
+    void Rpc_OnBoundary()
+    {
+        Invoke("Rebirth", 3f);
+        gameObject.SetActive(false);
     }
 
     public void GenerateDieEffect()
