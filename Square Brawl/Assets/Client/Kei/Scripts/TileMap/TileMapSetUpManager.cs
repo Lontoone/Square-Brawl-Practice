@@ -80,6 +80,11 @@ public class TileMapSetUpManager : MonoBehaviour
         {
             TileStyleManager.instance.SetCell(activeTileCells[i].grid_index);
             TileStyleManager.instance.SetNearbyCell(activeTileCells[i].grid_index);
+
+            //saw:
+            if (TileMapManager.instance.cellStateMap[activeTileCells[i].grid_index]==CellState.SAW) {
+                TileMapManager.instance.gridCells[activeTileCells[i].grid_index].gameObject.AddComponent<Saw>();
+            }
         }
 
     }

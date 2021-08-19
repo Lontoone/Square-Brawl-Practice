@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Saw : MonoBehaviour
 {
-    public float speed = 100;
+    public float speed = 50;
+    /*
     private TileCell cell;
     private Transform cellHind;
     public void Start()
     {
+        cell = GetComponent<TileCell>();
         cellHind = cell.transform.GetChild(0);
-    }
+    }*/
     public void FixedUpdate()
     {
-        cellHind.Rotate(Vector3.forward, speed * Time.fixedDeltaTime);
+        //cellHind.Rotate(Vector3.forward, speed * Time.fixedDeltaTime);
+        transform.Rotate(Vector3.forward, speed * Time.fixedDeltaTime);
     }
 }

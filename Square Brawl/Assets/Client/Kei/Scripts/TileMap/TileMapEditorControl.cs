@@ -206,6 +206,7 @@ public class TileMapEditorControl : MonoBehaviour
                 else if (buildType == CellState.SAW)
                 {
                     TileCell cell = BuildSingleCell(previewTileCells[i]);
+                    //cell.gameObject.AddComponent<Saw>();
                     if (cell != _center)
                     {
                         cellStateMap[cell.grid_index] = CellState.EMPTY;
