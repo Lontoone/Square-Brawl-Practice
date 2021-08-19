@@ -33,8 +33,14 @@ public class LoadTileHelper
         }
 
         //For resources Build in:
-        List<TextAsset> builtinMapsAssets = Resources.LoadAll<TextAsset>(MapSelectManager.BUILTIN_MAPS_FOLDER).ToList();
-        for (int i = 0; i < builtinMapsAssets.Count; i++)
+        TextAsset[] builtinMapsAssets = Resources.LoadAll<TextAsset>(MapSelectManager.BUILTIN_MAPS_FOLDER);
+        Debug.Log("load res maps " + builtinMapsAssets.Length);
+        //object[] builtinMapsAssets = Resources.LoadAll("DefaultMaps");
+        /*
+        TextAsset _t = Resources.Load<TextAsset>("DefaultMaps/Default1");
+        Debug.Log("load res maps " + _t);*/
+
+        for (int i = 0; i < builtinMapsAssets.Length; i++)
         {
             MapData _data = JsonUtility.FromJson<MapData>(builtinMapsAssets[i].text);
             res.Add(_data);

@@ -24,7 +24,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
     public LoadSceneAsyncUI loadSceneUI;
     public TileMapSetUpManager setupManager;
 
-    public const string BUILTIN_MAPS_FOLDER = "Maps/";
+    public const string BUILTIN_MAPS_FOLDER = "DefaultMaps";
 
     private static string[] filePaths;
 
@@ -59,6 +59,8 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
         ClearContainer();
         if (!Directory.Exists(SaveTile.SAVE_FOLDER.CombinePersistentPath())) { return; }
 
+        mapDatas.AddRange(LoadTileHelper.LoadTileMaps());
+        /*
         filePaths = Directory.GetFiles(SaveTile.SAVE_FOLDER.CombinePersistentPath());
         Debug.Log(" [Load Map] " + filePaths.Length);
         for (int i = 0; i < filePaths.Length; i++)
@@ -79,7 +81,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
             mapDatas.Add(_data);
             _btn.SetButton(_data);
 
-        }
+        }*/
 
         if (currentSelectedData == null)
         {
@@ -138,7 +140,8 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
     public void Switch(int _optration)
     {
         int _preIndex = fileIndex;
-        fileIndex = Mathf.Clamp(fileIndex + _optration, 0, filePaths.Length - 1);
+        //fileIndex = Mathf.Clamp(fileIndex + _optration, 0, filePaths.Length - 1);
+        fileIndex = Mathf.Clamp(fileIndex + _optration, 0, mapDatas.Count - 1);
 
         if (_preIndex == fileIndex) { return; }
 

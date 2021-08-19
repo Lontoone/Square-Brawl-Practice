@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Saw : MonoBehaviour
 {
-    public float speed = 50;
+    private float speed = 100;
     /*
     private TileCell cell;
     private Transform cellHind;
