@@ -84,7 +84,7 @@ public class ResultManager : MonoBehaviour
         _item.SetWinner(_winner);
         OnDisableResult?.Invoke();
 
-        PhotonNetwork.LocalPlayer.SetCustomProperties(
+        /*PhotonNetwork.LocalPlayer.SetCustomProperties(
                                MyPhotonExtension.WrapToHash(
                                    new object[] { CustomPropertyCode.WEAPON1CODE, WeaponType.None }
                                ));
@@ -92,7 +92,7 @@ public class ResultManager : MonoBehaviour
         PhotonNetwork.LocalPlayer.SetCustomProperties(
                                MyPhotonExtension.WrapToHash(
                                    new object[] { CustomPropertyCode.WEAPON2CODE, WeaponType.None }
-                               ));
+                               ));*/
     }
 
     public void EndGame()

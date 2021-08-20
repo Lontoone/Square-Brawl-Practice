@@ -113,6 +113,11 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         _inputAction.Disable();
     }
 
+    public void OnDestroy()
+    {
+        ResultManager.OnDisableResult -= OnDisableThis;
+    }
+
     void Start()
     {
         _bodySprite.sprite = Resources.Load<Sprite>("PlayerStyle/" + TillStyleLoader.s_StyleName + "/PlayerBody");
