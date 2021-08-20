@@ -78,12 +78,20 @@ public class TileMapSetUpManager : MonoBehaviour
         //Set up image
         for (int i = 0; i < activeTileCells.Count; i++)
         {
-            TileStyleManager.instance.SetCell(activeTileCells[i].grid_index);
-            TileStyleManager.instance.SetNearbyCell(activeTileCells[i].grid_index);
+            TileCell _cell = activeTileCells[i];
+            TileStyleManager.instance.SetCell(_cell.grid_index);
+            TileStyleManager.instance.SetNearbyCell(_cell.grid_index);
 
             //saw:
-            if (TileMapManager.instance.cellStateMap[activeTileCells[i].grid_index]==CellState.SAW) {
-                TileMapManager.instance.gridCells[activeTileCells[i].grid_index].gameObject.AddComponent<Saw>();
+            if (TileMapManager.instance.cellStateMap[_cell.grid_index] == CellState.SAW &&
+                 TileMapManager.instance.gridCells[_cell.grid_index].gameObject.GetComponent<Saw>() == null)
+            {
+                Debug.Log("add saw");
+                TileMapManager.instance.gridCells[_cell.grid_index].gameObject.AddComponent<Saw>();
+            }
+            else
+            {
+                Destroy(TileMapManager.instance.gridCells[_cell.grid_index].gameObject.GetComponent<Saw>());
             }
         }
 

@@ -18,4 +18,8 @@ public class Saw : MonoBehaviour
         //cellHind.Rotate(Vector3.forward, speed * Time.fixedDeltaTime);
         transform.Rotate(Vector3.forward, speed * Time.fixedDeltaTime);
     }
+    private void OnDestroy()
+    {
+        transform.eulerAngles = Vector3.zero;
+    }
 }

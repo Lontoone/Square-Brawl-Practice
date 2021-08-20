@@ -67,11 +67,11 @@ public class TileStyleManager : MonoBehaviour
         {
             SetTillImage(TileMapManager.instance.gridCells[_index], 300);
             TileCell _cell = TileMapManager.instance.gridCells[_index];
-
+            /*
             if (_cell.GetComponent<Saw>() != null)
             {
                 _cell.gameObject.AddComponent<Saw>();
-            }
+            }*/
         }
         else
         {
