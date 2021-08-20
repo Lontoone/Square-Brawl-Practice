@@ -134,8 +134,8 @@ public class Bounce : MonoBehaviour,IPoolObject
                         {
                             ObjectsPool.Instance.SpawnFromPool(BounceExploseEffectName, HitGroundPos[i], transform.rotation, null);
                         }
+                        CameraShake.instance.SetShakeValue(_beShootShakeValue.x, _beShootShakeValue.y, _beShootShakeValue.z);
                     }
-                    CameraShake.instance.SetShakeValue(_beShootShakeValue.x, _beShootShakeValue.y, _beShootShakeValue.z) ;
                     _edgeCollider.points = HitGroundLocalPos.ToArray();
                     _isChangeColor = true;
                 }

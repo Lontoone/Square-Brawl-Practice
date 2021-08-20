@@ -22,4 +22,18 @@ public class Saw : MonoBehaviour
     {
         transform.eulerAngles = Vector3.zero;
     }
+
+    /*private void OnCollisionEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
+            if (playerController.Pv.IsMine)
+            {
+                Debug.Log("OK");
+                Vector2 dir = other.gameObject.transform.position - transform.position;
+                playerController.DamageEvent(20, 1500, dir.x, dir.y, new Vector3(0.6f, 0.3f, 1));
+            }
+        }
+    }*/
 }

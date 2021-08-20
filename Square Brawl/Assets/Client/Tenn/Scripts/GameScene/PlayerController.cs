@@ -548,6 +548,15 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
                 _isCharge = false;
             }
         }
+
+        if (other.gameObject.CompareTag("Saw"))
+        {
+            if (Pv.IsMine)
+            {
+                Vector2 dir = transform.position - other.gameObject.transform.position;
+                DamageEvent(20, 1500, dir.x, dir.y, new Vector3(0.6f, 0.3f, 1));
+            }
+        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {

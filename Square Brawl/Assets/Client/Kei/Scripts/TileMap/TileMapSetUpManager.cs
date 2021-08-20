@@ -88,6 +88,9 @@ public class TileMapSetUpManager : MonoBehaviour
             {
                 Debug.Log("add saw");
                 TileMapManager.instance.gridCells[_cell.grid_index].gameObject.AddComponent<Saw>();
+                BoxCollider2D boxCollider2D = TileMapManager.instance.gridCells[_cell.grid_index].gameObject.GetComponent<BoxCollider2D>();
+                boxCollider2D.size = new Vector2(7.5f, 7.5f);
+                boxCollider2D.gameObject.tag = "Saw";
             }
             else
             {

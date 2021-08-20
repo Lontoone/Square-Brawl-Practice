@@ -45,7 +45,7 @@ public class PlayerKillCountManager : MonoBehaviourPunCallbacks
         _killCount++;
         _myCustom["KillCount"] = _killCount;
         PhotonNetwork.SetPlayerCustomProperties(_myCustom);
-        if (_killCount >= 2)
+        if (_killCount >= 10)
         {
             _myCustom["KillCount"] = 0;
             PhotonNetwork.SetPlayerCustomProperties(_myCustom);
