@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,23 +20,30 @@ public class WeaponSelectPlayerItem : ColorSelectPlayerItemControl
     {
         color = CustomPropertyCode.COLORS[(int)player.CustomProperties[CustomPropertyCode.TEAM_CODE]];
         SetColor(color);
+        StartCoroutine(SetUpReadyButton());
     }
 
     public void SetWeapon1(WeaponType _targetWeapon)
     {
+        if(ready.gameObject.activeSelf)
+        {
         weapon1 = _targetWeapon;
         weapon1Text.text = _targetWeapon.ToString();
 
         ChangeWeaponImage(icon1, _targetWeapon);
         SetReadyButton();
+        }
     }
     public void SetWeapon2(WeaponType _targetWeapon)
     {
-        weapon2 = _targetWeapon;
-        weapon2Text.text = _targetWeapon.ToString();
-        
-        ChangeWeaponImage(icon2, _targetWeapon);
-        SetReadyButton();
+        if (ready.gameObject.activeSelf)
+        {
+            weapon2 = _targetWeapon;
+            weapon2Text.text = _targetWeapon.ToString();
+
+            ChangeWeaponImage(icon2, _targetWeapon);
+            SetReadyButton();
+        }
     }
 
     private void ChangeWeaponImage(Image image, WeaponType _targetWeapon)
@@ -63,15 +71,24 @@ public class WeaponSelectPlayerItem : ColorSelectPlayerItemControl
         }
     }
 
-    private void SetReadyButton()
+    private IEnumerator SetUpReadyButton()
     {
-        if (weapon1 != WeaponType.None && weapon2 != WeaponType.None)
+        yield return null;
+        ready.interactable = false;
+    }
+
+    public void SetReadyButton()
+    {
+        if(player == PhotonNetwork.LocalPlayer)
         {
-            ready.interactable = true;
-        }
-        else 
-        {
-            ready.interactable = false;
+            if (weapon1 != WeaponType.None && weapon2 != WeaponType.None)
+            {
+                ready.interactable = true;
+            }
+            else 
+            {
+                ready.interactable = false;
+            }
         }
     }
 
