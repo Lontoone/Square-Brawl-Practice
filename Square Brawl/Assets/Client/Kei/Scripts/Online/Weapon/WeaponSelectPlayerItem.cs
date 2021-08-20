@@ -3,14 +3,24 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+
 public class WeaponSelectPlayerItem : ColorSelectPlayerItemControl
 {
     public Text weapon1Text, weapon2Text;
     [HideInInspector]
     public WeaponType weapon1, weapon2;
+
+    public Image icon1, icon2;
+    public Button ready;
+
+    private Color color;
+    private Sequence sequence;
+
     public void Start()
     {
-        SetColor(CustomPropertyCode.COLORS[(int)player.CustomProperties[CustomPropertyCode.TEAM_CODE]]);
+        color = CustomPropertyCode.COLORS[(int)player.CustomProperties[CustomPropertyCode.TEAM_CODE]];
+        SetColor(color);
         ResetWeapon();
     }
 
@@ -28,13 +38,42 @@ public class WeaponSelectPlayerItem : ColorSelectPlayerItemControl
     }
     public void SetWeapon1(WeaponType _targetWeapon)
     {
-        weapon1 = _targetWeapon;
-        weapon1Text.text = _targetWeapon.ToString();
+            weapon1 = _targetWeapon;
+            weapon1Text.text = _targetWeapon.ToString();
+
+            ChangeWeaponImage(icon1, _targetWeapon);
     }
     public void SetWeapon2(WeaponType _targetWeapon)
     {
-        weapon2 = _targetWeapon;
-        weapon2Text.text = _targetWeapon.ToString();
+            weapon2 = _targetWeapon;
+            weapon2Text.text = _targetWeapon.ToString();
+
+            ChangeWeaponImage(icon2, _targetWeapon);
+    }
+
+    private void ChangeWeaponImage(Image image, WeaponType _targetWeapon)
+    {
+        image.sprite = PlayerWeaponImage.instance.IconGroup[(int)_targetWeapon].sprite;
+
+        if ((int)_targetWeapon != 0)
+        {
+            sequence.Kill();
+            sequence = DOTween.Sequence();
+            sequence.Append(image
+                        .DOColor(new Color(color.r, color.g, color.b, 1), 0.3f)
+                        .SetEase(Ease.OutCirc))
+                    .Join(image.transform
+                        .DOPunchScale(new Vector3(0.2f, 0.2f), 0.3f)
+                        .SetEase(Ease.OutElastic));
+        }
+        else
+        {
+            sequence.Kill();
+            sequence = DOTween.Sequence();
+            sequence.Append(image
+                        .DOColor(new Color(0.801f, 0.801f, 0.801f, 0.2705882f), 0.3f)
+                        .SetEase(Ease.OutCirc));
+        }
     }
 
     /*
