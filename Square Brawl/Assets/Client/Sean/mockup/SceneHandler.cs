@@ -712,9 +712,9 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         Debug.Log("Quitting");
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-#endif
+        #endif
 
         Application.Quit();
     }
