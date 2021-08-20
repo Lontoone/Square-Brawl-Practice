@@ -64,6 +64,12 @@ public class MenuManager : MonoBehaviour
             if (!_backMenu.Equals("title"))
             {
                 OpenMenu(_backMenu);
+                //sync menu
+                PhotonNetwork.CurrentRoom.SetCustomProperties(MyPhotonExtension.WrapToHash(
+                                                                       new object[] {
+                                                                            CustomPropertyCode.ROOM_MENU,
+                                                                            _backMenu
+                                                                       }));
             }
             else
             {

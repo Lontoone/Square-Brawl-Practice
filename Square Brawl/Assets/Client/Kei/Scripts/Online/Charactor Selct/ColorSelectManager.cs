@@ -38,7 +38,7 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
             colorBtns.Add(_button);
         }
         //預設隊伍
-        colorBtns[0].SetColor();
+        //colorBtns[0].SetColor();
     }
 
     private void CreatePlayerItem()
@@ -53,7 +53,7 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
             ColorSelectPlayerItemControl _item = Instantiate(playerItemPrefab, parent: playerItemContainer);
             Player _player = PhotonNetwork.PlayerList[i];
             _item.SetPlayer(_player);
-            _item.colorCode = i;
+            _item.colorCode = -1;
 
         }
     }
