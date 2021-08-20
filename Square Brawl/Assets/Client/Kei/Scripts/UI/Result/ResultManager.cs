@@ -10,6 +10,7 @@ using DG.Tweening;
 
 public class ResultManager : MonoBehaviour
 {
+    bool isCanScene;
     public static event Action<Player> OnShowResult;
     public static event Action OnDisableResult;
     public GameObject resultPanel;
@@ -19,6 +20,7 @@ public class ResultManager : MonoBehaviour
     public ResultPlayerListItem playerListItem;
     public WinnerController winnerItem;
     public TileMapSetUpManager setupManager;
+    public Animator LoadingAnim;
 
     private Dictionary<Player, ResultPlayerListItem> m_playerList = new Dictionary<Player, ResultPlayerListItem>();
 
@@ -32,7 +34,7 @@ public class ResultManager : MonoBehaviour
     {
        // GeneratePlayerList();
         endGameMenu.SetActive(false);
-        resultPanel.SetActive(false);
+        //resultPanel.SetActive(false);
 
         //Load map data for random loop:
         if (PhotonNetwork.IsMasterClient)
@@ -134,9 +136,25 @@ public class ResultManager : MonoBehaviour
    
     }
 
+    public void CanChangeScene()
+    {
+        isCanScene = true;
+    }
+
     public void BackToLobby()
     {
         PhotonNetwork.Disconnect();
-        SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(0);
+        StartCoroutine(LoadScene(0));
+    }
+    IEnumerator LoadScene(int sceneIndex)
+    {
+        LoadingAnim.gameObject.SetActive(true);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
+        operation.allowSceneActivation = false;
+        yield return new WaitForSeconds(2.7f);
+        LoadingAnim.SetTrigger("ExitTrigger");
+        yield return new WaitForSeconds(1f);
+        operation.allowSceneActivation = true;
     }
 }
