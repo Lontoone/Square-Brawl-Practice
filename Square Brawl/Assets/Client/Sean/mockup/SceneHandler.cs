@@ -181,6 +181,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 break;
         }
     }
+
     public void ExitPage(string gameObject)
     {
         switch (gameObject)
@@ -245,6 +246,12 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 Debug.LogWarning(gameObject + " :switch page error");
                 break;
         }
+    }
+
+    public void BackToCharacterSelection()
+    {
+        m_OnlineMenu.SetActive(true);
+        StartCoroutine(EnterCharacterSelection());
     }
 
     #region -- Option --

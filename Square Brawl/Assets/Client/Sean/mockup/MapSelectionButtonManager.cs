@@ -38,4 +38,5 @@ public class MapSelectionButtonManager : MonoBehaviour
         mapSelectManager.Switch(index);
     }
 
+    //TODO 動畫沒同步到非房主玩家畫面
 }
