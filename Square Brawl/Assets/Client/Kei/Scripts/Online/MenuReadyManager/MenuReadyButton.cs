@@ -35,24 +35,27 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
     {
         Debug.Log("Photon btn " + (_player == PhotonNetwork.LocalPlayer));
         player = _player;
-        if (setUnReadyOnEnable)
-        {
-            SetReady(false);
-            SetReadyLocal(false);
-        }
-        else
-        {
-            SetReady(true);
-            SetReadyLocal(true);
-        }
+
 
         if (_player == PhotonNetwork.LocalPlayer)
         {
+            if (setUnReadyOnEnable)
+            {
+                SetReady(false);
+                SetReadyLocal(false);
+            }
+            else
+            {
+                SetReady(true);
+                SetReadyLocal(true);
+            }
             SetMyButtonActive(true);
         }
         else
         {
             SetMyButtonActive(false);
+            Debug.Log(player.NickName + " ready " + (bool)player.CustomProperties[CustomPropertyCode.READY]);
+            SetReadyLocal((bool)player.CustomProperties[CustomPropertyCode.READY]);
         }
         //SetReadyLocal(false);
     }
