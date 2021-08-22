@@ -97,7 +97,7 @@ public class Bounce : MonoBehaviour,IPoolObject
         {
             RaycastHit2D hit = Physics2D.Raycast(_pos, _dir, _laserDistance, ~LayerToExplose);
 
-            if (hit.collider.gameObject.CompareTag("Ground"))
+            if (hit.collider.gameObject.CompareTag("Ground")|| hit.collider.gameObject.CompareTag("Saw"))
             {
                 vertexCounter+=3;
                 _laserRenderer.positionCount = vertexCounter;

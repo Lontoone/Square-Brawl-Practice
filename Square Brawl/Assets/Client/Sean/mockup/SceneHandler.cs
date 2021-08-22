@@ -154,6 +154,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
             case "Room":
                 StartCoroutine(EnterRoom());
+                Debug.Log("1111");
                 break;
 
             case "CharacterSelection":
