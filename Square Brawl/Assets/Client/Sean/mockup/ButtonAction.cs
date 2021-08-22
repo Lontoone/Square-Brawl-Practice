@@ -113,20 +113,14 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         m_MouseSelectedState = true;
         if (m_KeySelectedState != true && m_MouseSelectedState == true)
         {
-            switch (dotweentype) 
+            switch (OptionSetting.TRANSITIONANIMATION) 
             {
-                case Dotweentype.m_string:
+                case false:
                     HighlightedString();
                     break;
 
-                case Dotweentype.m_char:
+                case true:
                     SplitCharAction.HighlightedChar(m_Char);
-                    break;
-
-                case Dotweentype.None:
-                    break;
-
-                default:
                     break;
             }
         }
@@ -134,20 +128,14 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-            switch (dotweentype)
+            switch (OptionSetting.TRANSITIONANIMATION)
             {
-                case Dotweentype.m_string:
+                case false:
                     IdleString();
                     break;
 
-                case Dotweentype.m_char:
+                case true:
                     SplitCharAction.IdleChar(m_Char);
-                    break;
-
-                case Dotweentype.None:
-                    break;
-
-                default:
                     break;
             }
             IdleIcon();
@@ -160,20 +148,14 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         m_KeySelectedState = true;
         if (m_MouseSelectedState != true && m_KeySelectedState == true)
         {
-            switch (dotweentype)
+            switch (OptionSetting.TRANSITIONANIMATION)
             {
-                case Dotweentype.m_string:
+                case false:
                     HighlightedString();
                     break;
 
-                case Dotweentype.m_char:
+                case true:
                     SplitCharAction.HighlightedChar(m_Char);
-                    break;
-
-                case Dotweentype.None:
-                    break;
-
-                default:
                     break;
             }
         }
@@ -182,20 +164,14 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
-            switch (dotweentype)
+            switch (OptionSetting.TRANSITIONANIMATION)
             {
-                case Dotweentype.m_string:
+                case false:
                     IdleString();
                     break;
 
-                case Dotweentype.m_char:
+                case true:
                     SplitCharAction.IdleChar(m_Char);
-                    break;
-
-                case Dotweentype.None:
-                    break;
-
-                default:
                     break;
             }
             IdleIcon();

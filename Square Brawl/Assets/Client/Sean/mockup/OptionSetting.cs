@@ -9,6 +9,7 @@ public class OptionSetting : MonoBehaviour
     public static float MUSICVOLUME = 0.5f;
     public static float SFXVOLUME = 0.5f;
     public static bool CONTROLLER_RUMBLE = true;
+    public static bool TRANSITIONANIMATION = true;
 
     public static Vector2[] resolution = new Vector2[] { new Vector2(640, 360),
                                                          new Vector2(854, 480),
@@ -24,7 +25,8 @@ public class OptionSetting : MonoBehaviour
         Resolution,
         MusicVolume,
         SFXVolume,
-        ControllerRumble
+        ControllerRumble,
+        TransitionAnimation
     }
 
 }

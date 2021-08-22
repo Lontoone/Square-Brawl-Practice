@@ -47,6 +47,7 @@ namespace ToSplitChar
             pos = m_Text.m_Text.transform.localPosition;
             charIdlePostion = new Vector3[m_TextLength];
 
+
             return m_Text;
             //Debug.Log(m_TextLength);
             /*
@@ -58,18 +59,22 @@ namespace ToSplitChar
 
         private TextMeshProUGUI[] Generate(TextMeshProUGUI m_Text, Transform m_transform)
         {
+
             int length = m_Text.text.Length;
             string tmpstring = m_Text.text;
             char[] tmpchar = tmpstring.ToCharArray();
+
             TextMeshProUGUI[] textArray = new TextMeshProUGUI[length];
             TextMeshProUGUI[] m_textArray = new TextMeshProUGUI[length];
-
+            TextMeshProUGUI reference = m_Text.GetComponent<TextMeshProUGUI>(); //TODO : 暫時解決方法
+            string temp = m_Text.text; //TODO : 暫時解決方法
             for (int counter = 0; counter < length; counter++)
             {
-                textArray[counter] = m_Text.GetComponent<TextMeshProUGUI>();
-                textArray[counter].text = tmpchar[counter].ToString();
+                textArray[counter] = reference;
+                textArray[counter].text = tmpchar[counter].ToString(); //TODO : 不知道為啥會影響到父輩物件
                 m_textArray[counter] =Instantiate(textArray[counter], m_Text.transform.position, m_Text.transform.rotation, m_transform);
             }
+            m_Text.text = temp; //TODO : 暫時解決方法
             return m_textArray;
         }
 

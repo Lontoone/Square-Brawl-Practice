@@ -259,23 +259,49 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterOption()
     {
+        var time = 0f;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            time = duration;
+        }
+        else
+        {
+            time = 0f;
+        }
         m_Menu.GetComponentInChildren<MenuButtonHandler>().DisableButton();
         m_Option.SetActive(true);
         yield return null;
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x - 1920, m_Menu.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        m_Option.transform.DOLocalMove(new Vector3(0, m_Option.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        StartCoroutine(m_Option.GetComponentInChildren<OptionManager>().EnterAnimation());
+        m_Menu.transform
+            .DOLocalMove(new Vector3(m_Menu.transform.localPosition.x - 1920, m_Menu.transform.localPosition.y + to_y, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Option.transform
+            .DOLocalMove(new Vector3(0, m_Option.transform.localPosition.y + to_y, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
+        StartCoroutine(m_Option.GetComponentInChildren<OptionManager>().EnterAnimation(time));
     }
 
     public IEnumerator ExitOption()
     {
+        var time = 0f;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            time = duration;
+        }
+        else
+        {
+            time = 0f;
+        }
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(m_Menu.GetComponentInChildren<MenuButtonHandler>().m_FirstSelectedButton);
-        m_Menu.transform.DOLocalMove(new Vector3(0, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        m_Option.transform.DOLocalMove(new Vector3(1920, m_Option.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Menu.transform
+            .DOLocalMove(new Vector3(0, m_Menu.transform.localPosition.y + -to_y, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Option.transform
+            .DOLocalMove(new Vector3(1920, m_Option.transform.localPosition.y + -to_y, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
         StartCoroutine(m_Menu.GetComponentInChildren<MenuButtonHandler>().EnableButton(0.8f));
         m_Option.GetComponentInChildren<OptionManager>().ExitAnimation();
-        yield return new WaitForSeconds(duration / 3);
+        yield return new WaitForSeconds(time / 3);
         m_Option.SetActive(false);
     }
 
@@ -290,18 +316,44 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private void EnterMapEditor()
     {
+        var time = 0f;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            time = duration;
+        }
+        else
+        {
+            time = 0f;
+        }
         m_MapEditor.SetActive(true);
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, -1080, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        m_MapEditor.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 0, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Menu.transform
+            .DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, -1080, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_MapEditor.transform
+            .DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 0, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
     private IEnumerator ExitMapEditor()
     {
+        var time = 0f;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            time = duration;
+        }
+        else
+        {
+            time = 0f;
+        }
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(m_Menu.GetComponentInChildren<MenuButtonHandler>().m_FirstSelectedButton);
-        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 0, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        m_MapEditor.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 1080, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        yield return new WaitForSeconds(duration / 3);
+        m_Menu.transform
+            .DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 0, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_MapEditor.transform
+            .DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, 1080, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
+        yield return new WaitForSeconds(time / 3);
         m_MapEditor.SetActive(false);
     } 
     private IEnumerator LoadMapEditor()
@@ -316,20 +368,46 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     #region -- Control --
     private void EnterControl()
     {
+        var time = 0f;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            time = duration;
+        }
+        else
+        {
+            time = 0f;
+        }
         m_Menu.GetComponentInChildren<MenuButtonHandler>().DisableButton();
         m_Control.SetActive(true);
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
-        m_Menu.transform.DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        m_Control.transform.DOLocalMove(new Vector3(0, m_Control.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Menu.transform
+            .DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Control.transform
+            .DOLocalMove(new Vector3(0, m_Control.transform.localPosition.y + to_y, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
     }
 
     private IEnumerator ExitControl()
     {
+        var time = 0f;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            time = duration;
+        }
+        else
+        {
+            time = 0f;
+        }
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(m_Menu.GetComponentInChildren<MenuButtonHandler>().m_FirstSelectedButton);
-        m_Menu.transform.DOLocalMove(new Vector3(0, m_Menu.transform.localPosition.y + to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
-        m_Control.transform.DOLocalMove(new Vector3(-Screen.width, m_Control.transform.localPosition.y + -to_y, 0), duration).SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Menu.transform
+            .DOLocalMove(new Vector3(0, m_Menu.transform.localPosition.y + to_y, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
+        m_Control.transform
+            .DOLocalMove(new Vector3(-Screen.width, m_Control.transform.localPosition.y + -to_y, 0), time)
+            .SetEase(scene_current_easetype.GetEasetype(easetype));
         StartCoroutine(m_Menu.GetComponentInChildren<MenuButtonHandler>().EnableButton(0.5f));
-        yield return new WaitForSeconds(duration / 3);
+        yield return new WaitForSeconds(time / 3);
         m_Control.SetActive(false);
     }
     #endregion
@@ -337,9 +415,18 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     #region -- OnlineMenu --
     public IEnumerator EnterOnlineMenu()
     {
+        var time = 0f;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            time = m_AnimationClips[1].length;
+        }
+        else
+        {
+            time = 0f;
+        }
         m_Menu.GetComponentInChildren<MenuButtonHandler>().OnExitMenuAction();
         m_Menu.GetComponentInChildren<AimAction>().OnExitMenuAction();
-        yield return new WaitForSeconds(m_AnimationClips[1].length);
+        yield return new WaitForSeconds(time);
         m_OnlineMenu.SetActive(true);
         m_Menu.SetActive(false);
     }
@@ -348,7 +435,11 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         var time = 0f;
         yield return null;
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("ExitName"))
+        if (OptionSetting.TRANSITIONANIMATION == false)
+        {
+            time = 0f;
+        }
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("ExitName"))
         {
             time = m_AnimationClips[3].length;
         }
@@ -380,17 +471,33 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterNameInput()
     {
-        yield return new WaitForSeconds(m_AnimationClips[5].length);
-        m_NameInput.SetActive(true);
-        animator.Play("EnterName");
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            yield return new WaitForSeconds(m_AnimationClips[5].length);
+            m_NameInput.SetActive(true);
+            animator.Play("EnterName");
+        }
+        else
+        {
+            m_NameInput.SetActive(true);
+            animator.Play("NoneName");
+        }
+        
     }
 
     private IEnumerator ExitNameInput()
     {
-        if (m_NameInput.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
-            animator.Play("ExitName");
-            yield return new WaitForSeconds(m_AnimationClips[3].length);
+            if (m_NameInput.activeSelf)
+            {
+                animator.Play("ExitName");
+                yield return new WaitForSeconds(m_AnimationClips[3].length);
+                m_NameInput.SetActive(false);
+            }
+        }
+        else
+        {
             m_NameInput.SetActive(false);
         }
     }
@@ -401,38 +508,54 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLobby()
     {
-        var time = 0f;
-        if (m_NameInput.activeSelf || m_CreateRoom.activeSelf || m_RoomList.activeSelf || m_Loading.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
-            if (m_NameInput.activeSelf)
+            var time = 0f;
+            if (m_NameInput.activeSelf || m_CreateRoom.activeSelf || m_RoomList.activeSelf || m_Loading.activeSelf)
             {
-                time = m_AnimationClips[3].length;
+                if (m_NameInput.activeSelf)
+                {
+                    time = m_AnimationClips[3].length;
+                }
+                else if (m_CreateRoom.activeSelf)
+                {
+                    time = m_AnimationClips[9].length;
+                }
+                else if (m_RoomList.activeSelf)
+                {
+                    time = m_AnimationClips[11].length;
+                }
+                else if (m_Loading.activeSelf)
+                {
+                    time = m_AnimationClips[5].length;
+                }
+                yield return new WaitForSeconds(time);
+                m_Loading.SetActive(false);     //Todo : 關掉Room的時候流程問題
+                m_Lobby.SetActive(true);
+                animator.Play("EnterLobby");
             }
-            else if (m_CreateRoom.activeSelf)
-            {
-                time = m_AnimationClips[9].length;
-            }
-            else if (m_RoomList.activeSelf)
-            {
-                time = m_AnimationClips[11].length;
-            }
-            else if (m_Loading.activeSelf)
-            {
-                time = m_AnimationClips[5].length;
-            }
-            yield return new WaitForSeconds(time);
-            m_Loading.SetActive(false);     //Todo : 關掉Room的時候流程問題
+        }
+        else
+        {
+            m_Loading.SetActive(false);
             m_Lobby.SetActive(true);
-            animator.Play("EnterLobby");
+            animator.Play("NoneLobby");
         }
     }
 
     private IEnumerator ExitLobby()
     {
-        if (m_Lobby.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
-            animator.Play("ExitLobby");
-            yield return new WaitForSeconds(m_AnimationClips[7].length);
+            if (m_Lobby.activeSelf)
+            {
+                animator.Play("ExitLobby");
+                yield return new WaitForSeconds(m_AnimationClips[7].length);
+                m_Lobby.SetActive(false);
+            }
+        }
+        else
+        {
             m_Lobby.SetActive(false);
         }
     }
@@ -443,17 +566,32 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterCreateRoom()
     {
-        m_CreateRoom.SetActive(true);
-        animator.Play("EnterCreateRoom");
-        yield return null;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            m_CreateRoom.SetActive(true);
+            animator.Play("EnterCreateRoom");
+            yield return null;
+        }
+        else
+        {
+            m_CreateRoom.SetActive(true);
+            animator.Play("NoneCreateRoom");
+        }
     }
 
     private IEnumerator ExitCreateRoom()
     {
-        if (m_CreateRoom.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
-            animator.Play("ExitCreateRoom");
-            yield return new WaitForSeconds(m_AnimationClips[9].length);
+            if (m_CreateRoom.activeSelf)
+            {
+                animator.Play("ExitCreateRoom");
+                yield return new WaitForSeconds(m_AnimationClips[9].length);
+                m_CreateRoom.SetActive(false);
+            }
+        }
+        else
+        {
             m_CreateRoom.SetActive(false);
         }
     }
@@ -464,21 +602,37 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterRoomList()
     {
-        if (m_Lobby.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            if (m_Lobby.activeSelf)
+            {
+                m_RoomList.SetActive(true);
+                animator.Play("EnterRoomList");
+                yield return null;
+            }
+        }
+        else
         {
             m_RoomList.SetActive(true);
-            animator.Play("EnterRoomList");
-            yield return null;
+            animator.Play("NoneRoomList");
         }
+
     }
 
     private IEnumerator ExitRoomList()
     {
-        if (m_RoomList.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
-            animator.Play("ExitRoomList");
-            yield return new WaitForSeconds(m_AnimationClips[11].length);
-            m_RoomList.SetActive(false);
+            if (m_RoomList.activeSelf)
+            {
+                animator.Play("ExitRoomList");
+                yield return new WaitForSeconds(m_AnimationClips[11].length);
+                m_RoomList.SetActive(false);
+            }
+        }
+        else
+        {
+            m_RoomList.SetActive(true);
         }
     }
 
@@ -488,30 +642,45 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterRoom()
     {
-        if (m_Loading.activeSelf ||m_CharacterSelection.activeSelf)
+        if(OptionSetting.TRANSITIONANIMATION)
         {
-            var time = 0f;
-            if (m_CharacterSelection.activeSelf)
+            if (m_Loading.activeSelf ||m_CharacterSelection.activeSelf)
             {
-                time = m_AnimationClips[15].length;
+                var time = 0f;
+                if (m_CharacterSelection.activeSelf)
+                {
+                    time = m_AnimationClips[15].length;
+                }
+                else if (m_Loading.activeSelf)
+                {
+                    time = m_AnimationClips[5].length;
+                }
+                yield return new WaitForSeconds(time);
+                animator.Play("EnterRoom");
+                m_Room.SetActive(true);
             }
-            else if (m_Loading.activeSelf)
-            {
-                time = m_AnimationClips[5].length;
-            }
-            yield return new WaitForSeconds(time);
-            animator.Play("EnterRoom");
+        }
+        else
+        {
             m_Room.SetActive(true);
+            animator.Play("NoneRoom");
         }
     }
 
     private IEnumerator ExitRoom()
     {
-        //Todo : 關掉Room的時候流程問題
-        if (m_Room.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
-            animator.Play("ExitRoom");
-            yield return new WaitForSeconds(m_AnimationClips[13].length);
+            //Todo : 關掉Room的時候流程問題
+            if (m_Room.activeSelf)
+            {
+                animator.Play("ExitRoom");
+                yield return new WaitForSeconds(m_AnimationClips[13].length);
+                m_Room.SetActive(false);
+            }
+        }
+        else
+        {
             m_Room.SetActive(false);
         }
     }
@@ -522,23 +691,33 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterCharacterSelection()
     {
-        var time = 0f;
-        if (m_GameMode.activeSelf)
-        { 
-        
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            var time = 0f;
+            yield return new WaitForSeconds(time);
+            m_CharacterSelection.SetActive(true);
+            animator.Play("EnterCharacterSelection");
         }
-
-        yield return new WaitForSeconds(time);
-        m_CharacterSelection.SetActive(true);
-        animator.Play("EnterCharacterSelection");
+        else
+        {
+            m_CharacterSelection.SetActive(true);
+            animator.Play("NoneCharacterSelection");
+        }
     }
 
     private IEnumerator ExitCharacterSelection()
     {
-        if (m_CharacterSelection.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
-            animator.Play("ExitCharacterSelection");
-            yield return new WaitForSeconds(m_AnimationClips[15].length);
+            if (m_CharacterSelection.activeSelf)
+            {
+                animator.Play("ExitCharacterSelection");
+                yield return new WaitForSeconds(m_AnimationClips[15].length);
+                m_CharacterSelection.SetActive(false);
+            }
+        }
+        else
+        {
             m_CharacterSelection.SetActive(false);
         }
     }
@@ -549,23 +728,34 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterGameMode()
     {
-        var time = 0f;
-        if (m_WeaponSelection.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
+            var time = 0f;
 
+            yield return new WaitForSeconds(time);
+            animator.Play("EnterGameMode");
+            m_GameMode.SetActive(true);
         }
-
-        yield return new WaitForSeconds(time);
-        animator.Play("EnterGameMode");
-        m_GameMode.SetActive(true);
+        else
+        {
+            m_GameMode.SetActive(true);
+            animator.Play("NoneGameMode");
+        }
     }
 
     private IEnumerator ExitGameMode()
     {
-        if (m_GameMode.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
-            animator.Play("ExitGameMode");
-            yield return new WaitForSeconds(m_AnimationClips[17].length);  
+            if (m_GameMode.activeSelf)
+            {
+                animator.Play("ExitGameMode");
+                yield return new WaitForSeconds(m_AnimationClips[17].length);
+                m_GameMode.SetActive(false);
+            }
+        }
+        else
+        {
             m_GameMode.SetActive(false);
         }
     }
@@ -576,25 +766,40 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterMapSelection()
     {
-        var time = 0f;
-        if (m_GameMode.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
-            time = m_AnimationClips[17].length;
+            var time = 0f;
+            if (m_GameMode.activeSelf)
+            {
+                time = m_AnimationClips[17].length;
+            }
+            else if (m_WeaponSelection.activeSelf)
+            {
+                time = m_AnimationClips[21].length;
+            }
+            m_MapSelection.SetActive(true);
+            yield return new WaitForSeconds(time);
+            animator.Play("EnterMapSelection");
         }
-        else if (m_WeaponSelection.activeSelf)
+        else
         {
-            time = m_AnimationClips[21].length;
+            m_MapSelection.SetActive(true);
+            animator.Play("NoneMapSelection");
         }
-        m_MapSelection.SetActive(true);
-        yield return new WaitForSeconds(time);
-        animator.Play("EnterMapSelection");
     }
 
     private IEnumerator ExitMapSelection()
     {
-        animator.Play("ExitMapSelection");
-        yield return new WaitForSeconds(m_AnimationClips[19].length);
-        m_MapSelection.SetActive(false);
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            animator.Play("ExitMapSelection");
+            yield return new WaitForSeconds(m_AnimationClips[19].length);
+            m_MapSelection.SetActive(false);
+        }
+        else
+        {
+            m_MapSelection.SetActive(false);
+        }
     }
 
     #endregion
@@ -603,14 +808,29 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterWeaponSelection()
     {
-        m_WeaponSelection.SetActive(true);
-        yield return null;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            m_WeaponSelection.SetActive(true);
+            yield return null;
+        }
+        else
+        {
+            m_WeaponSelection.SetActive(true);
+            animator.Play("NoneWeaponSelection");
+        }
     }
 
     private IEnumerator ExitWeaponSelection()
     {
-        m_WeaponSelection.SetActive(false);
-        yield return null;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            m_WeaponSelection.SetActive(false);
+            yield return null;
+        }
+        else
+        {
+            m_WeaponSelection.SetActive(false);
+        }
     }
 
     #endregion
@@ -635,22 +855,31 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLoading()
     {
-        var time = 0f;
-        if (m_CreateRoom.activeSelf)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
-            time = m_AnimationClips[9].length;
+            var time = 0f;
+            if (m_CreateRoom.activeSelf)
+            {
+                time = m_AnimationClips[9].length;
+            }
+            else if (m_RoomList.activeSelf)
+            {
+                time = m_AnimationClips[11].length;
+            }
+            else if (m_Room.activeSelf)
+            {
+                time = m_AnimationClips[13].length;
+            }
+            yield return new WaitForSeconds(time);
+            m_Loading.SetActive(true);
+            animator.Play("Loading");
         }
-        else if (m_RoomList.activeSelf)
+        else
         {
-            time = m_AnimationClips[11].length;
+            m_Loading.SetActive(true);
+            animator.Play("NoneLoading");
         }
-        else if (m_Room.activeSelf)
-        {
-            time = m_AnimationClips[13].length;
-        }
-        yield return new WaitForSeconds(time);
-        m_Loading.SetActive(true);
-        animator.Play("Loading");
+
     }
 
     private IEnumerator ExitLoading()

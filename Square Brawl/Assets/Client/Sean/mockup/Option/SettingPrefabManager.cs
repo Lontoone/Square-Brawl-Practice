@@ -126,6 +126,19 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
                         break;
                 }
                 break;
+
+            case OptionSetting.ChangeType.TransitionAnimation:
+                switch (m_CurrentIndex)
+                {
+                    case 0:
+                        OptionSetting.TRANSITIONANIMATION = true;
+                        break;
+
+                    case 1:
+                        OptionSetting.TRANSITIONANIMATION = false;
+                        break;
+                }
+                break;
         }
     }
 

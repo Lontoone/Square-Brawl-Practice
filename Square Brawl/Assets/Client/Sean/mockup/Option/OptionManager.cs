@@ -188,8 +188,16 @@ public class OptionManager : MonoBehaviour
         backOnSelect = false;
     }
 
-    public IEnumerator EnterAnimation()
+    public IEnumerator EnterAnimation(float IfTransitionOn)
     {
+        var time = m_Duration;
+        var spacingTime = 0.1f;
+        if (IfTransitionOn ==0)
+        {
+            time = 0;
+            spacingTime = 0f;
+        }
+
         yield return null;
         m_OptionAnimation.Kill();
         m_OptionAnimation = DOTween.Sequence();
@@ -206,17 +214,17 @@ public class OptionManager : MonoBehaviour
 
             m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>().SettingOut();
         }
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(spacingTime * 2);
 
-        m_OptionAnimation.Append(m_BackButton.transform.DOLocalMove(m_BackButtonPos, m_Duration * 2)
+        m_OptionAnimation.Append(m_BackButton.transform.DOLocalMove(m_BackButtonPos, time * 2)
                             .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(spacingTime * 2);
 
         for (int i = m_SettingGroup.Length - 1; i >= 0; i--)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(spacingTime);
             m_OptionAnimation.Append(m_SettingGroup[i].transform
-                                .DOLocalMoveX(m_SettingGroupPos[i].x, m_Duration)
+                                .DOLocalMoveX(m_SettingGroupPos[i].x, time)
                                 .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype)));
         }
     }
@@ -242,19 +250,50 @@ public class OptionManager : MonoBehaviour
         }
     }
 
+    private void BackButtonAction(string type)
+    {
+        var obj = m_BackButton.GetComponent<ButtonAction>();
+        switch (type)
+        {
+            case "Highlighted":
+                if (OptionSetting.TRANSITIONANIMATION)
+                {
+                    obj.SplitCharAction.HighlightedChar(obj.m_Char);
+                }
+                else
+                {
+                    obj.HighlightedString();
+                }
+                break;
+
+            case "Idle":
+                if (OptionSetting.TRANSITIONANIMATION)
+                {
+                    obj.SplitCharAction.IdleChar(obj.m_Char);
+                }
+                else
+                {
+                    obj.IdleString();
+                }
+                break;
+
+            default:
+                Debug.Log("Error Input", gameObject);
+                break;
+        }
+    }
+
     private void BackButtonAnimation()
     {
-        if (onSelectIndex != m_SettingGroup.Length && backOnSelect ==true)
+        if (onSelectIndex != m_SettingGroup.Length && backOnSelect == true)
         {
             backOnSelect = false;
-            var obj = m_BackButton.GetComponent<ButtonAction>();
-            obj.SplitCharAction.IdleChar(obj.m_Char);
+            BackButtonAction("Idle");
         }
         else if (onSelectIndex == m_SettingGroup.Length && backOnSelect == false)
         {
             backOnSelect = true;
-            var obj = m_BackButton.GetComponent<ButtonAction>();
-            obj.SplitCharAction.HighlightedChar(obj.m_Char);
+            BackButtonAction("Highlighted");
         }
     }
 
@@ -394,19 +433,18 @@ public class OptionManager : MonoBehaviour
                 onSelectIndex = onPressIndex;
             }
         }
-
         //Move onSelected
         if (onSelectThisFrame == true && onPress != true)
         {
             if (onSelectIndex == m_SettingGroup.Length)
             {
                 EventSystem.current.SetSelectedGameObject(m_BackButton);
-                m_BackButton.GetComponent<ButtonAction>().SplitCharAction.HighlightedChar(m_BackButton.GetComponent<ButtonAction>().m_Char);
+                BackButtonAction("Highlighted");
             }
             else
             {
                 EventSystem.current.SetSelectedGameObject(m_SettingGroup[onSelectIndex]);
-                m_BackButton.GetComponent<ButtonAction>().SplitCharAction.IdleChar(m_BackButton.GetComponent<ButtonAction>().m_Char);
+                BackButtonAction("Idle");
             }
 
             for (int i = 0; i < m_SettingGroup.Length; i++)
@@ -429,12 +467,12 @@ public class OptionManager : MonoBehaviour
             if (onPressIndex == m_SettingGroup.Length)
             {
                 EventSystem.current.SetSelectedGameObject(m_BackButton);
-                m_BackButton.GetComponent<ButtonAction>().SplitCharAction.HighlightedChar(m_BackButton.GetComponent<ButtonAction>().m_Char);
+                BackButtonAction("Highlighted");
             }
             else
             {
                 EventSystem.current.SetSelectedGameObject(m_SettingGroup[onPressIndex]);
-                m_BackButton.GetComponent<ButtonAction>().SplitCharAction.IdleChar(m_BackButton.GetComponent<ButtonAction>().m_Char);
+                BackButtonAction("Idle");
             }
 
             for (int i = 0; i < m_SettingGroup.Length; i++)
@@ -462,12 +500,12 @@ public class OptionManager : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(m_SettingGroup[onPressIndex]);
                 m_SettingGroup[onPressIndex].GetComponentInChildren<OptionButtonAction>().OnPress();
                 ResetDeselected();
-                m_BackButton.GetComponent<ButtonAction>().SplitCharAction.IdleChar(m_BackButton.GetComponent<ButtonAction>().m_Char);
+                BackButtonAction("Idle");
             }
             else if (onPressIndex == m_SettingGroup.Length)
             {
                 EventSystem.current.SetSelectedGameObject(m_BackButton);
-                m_BackButton.GetComponent<ButtonAction>().SplitCharAction.HighlightedChar(m_BackButton.GetComponent<ButtonAction>().m_Char);
+                BackButtonAction("Highlighted");
                 ResetDeselected();
                 StartCoroutine(GetComponentInParent<SceneHandler>().ExitOption());
             }
@@ -479,7 +517,7 @@ public class OptionManager : MonoBehaviour
     {
         if (onPressIndex == 99 || onPressIndex == m_SettingGroup.Length)
         {
-            m_BackButton.GetComponent<ButtonAction>().SplitCharAction.HighlightedChar(m_BackButton.GetComponent<ButtonAction>().m_Char);
+            BackButtonAction("Highlighted");
             ResetDeselected();
             StartCoroutine(GetComponentInParent<SceneHandler>().ExitOption());
         }

@@ -39,8 +39,26 @@ public class Credits : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
         sequence.Append(text.transform
                     .DOPunchScale(new Vector2(0.05f, 0.05f), 0.5f)
                     .SetEase(Ease.OutCirc));
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            animator.Play("EnterCredit");
+        }
+        else
+        {
+            animator.Play("NoneCredit");
+        }
+    }
 
-        animator.Play("EnterCredit");
+    public void OnBackAnimation()
+    {
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            animator.Play("ExitCredit");
+        }
+        else
+        {
+            animator.Play("None");
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
