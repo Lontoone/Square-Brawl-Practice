@@ -107,75 +107,60 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         SplitCharAction.IdleChar(m_Char);
     }
 
+    public void IdleController()
+    {
+        switch (OptionSetting.TRANSITIONANIMATION)
+        {
+            case false:
+                IdleString();
+                break;
+
+            case true:
+                SplitCharAction.IdleChar(m_Char);
+                break;
+        }
+    }
+
+    public void HighlightedConrtoller()
+    {
+        switch (OptionSetting.TRANSITIONANIMATION)
+        {
+            case false:
+                HighlightedString();
+                break;
+
+            case true:
+                SplitCharAction.HighlightedChar(m_Char);
+                break;
+        }
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         m_MouseSelectedState = true;
-        if (m_KeySelectedState != true && m_MouseSelectedState == true)
-        {
-            switch (OptionSetting.TRANSITIONANIMATION) 
-            {
-                case false:
-                    HighlightedString();
-                    break;
-
-                case true:
-                    SplitCharAction.HighlightedChar(m_Char);
-                    break;
-            }
-        }
+        HighlightedConrtoller();
         HighlightedIcon();
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-            switch (OptionSetting.TRANSITIONANIMATION)
-            {
-                case false:
-                    IdleString();
-                    break;
-
-                case true:
-                    SplitCharAction.IdleChar(m_Char);
-                    break;
-            }
-            IdleIcon();
-            m_MouseSelectedState = false;
-            m_KeySelectedState = false;
+        IdleController();
+        IdleIcon();
+        m_MouseSelectedState = false;
+        m_KeySelectedState = false;
     }
 
     public virtual void OnSelect(BaseEventData eventData)
     {
         m_KeySelectedState = true;
-        if (m_MouseSelectedState != true && m_KeySelectedState == true)
-        {
-            switch (OptionSetting.TRANSITIONANIMATION)
-            {
-                case false:
-                    HighlightedString();
-                    break;
-
-                case true:
-                    SplitCharAction.HighlightedChar(m_Char);
-                    break;
-            }
-        }
+        HighlightedConrtoller();
         HighlightedIcon();
     }
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
-            switch (OptionSetting.TRANSITIONANIMATION)
-            {
-                case false:
-                    IdleString();
-                    break;
-
-                case true:
-                    SplitCharAction.IdleChar(m_Char);
-                    break;
-            }
-            IdleIcon();
-            m_MouseSelectedState = false;
-            m_KeySelectedState = false;
+        IdleController();
+        IdleIcon();
+        m_MouseSelectedState = false;
+        m_KeySelectedState = false;
     }
 }

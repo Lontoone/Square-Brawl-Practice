@@ -434,10 +434,12 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     public IEnumerator ExitOnlineMenu()
     {
         var time = 0f;
+        var enterMenuTime = m_AnimationClips[0].length;
         yield return null;
         if (OptionSetting.TRANSITIONANIMATION == false)
         {
             time = 0f;
+            enterMenuTime = 0f;
         }
         else if (animator.GetCurrentAnimatorStateInfo(0).IsName("ExitName"))
         {
@@ -458,9 +460,14 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Menu.GetComponentInChildren<Animator>().enabled = true;
         m_Menu.GetComponentInChildren<MenuButtonHandler>().OnEnterMenuAction();
         m_Menu.GetComponentInChildren<AimAction>().m_AimObject.SetActive(true);
-        animator.Play("EnterMenu");
+
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            animator.Play("EnterMenu");
+        }
+
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(m_Menu.GetComponentInChildren<MenuButtonHandler>().m_FirstSelectedButton);
-        yield return new WaitForSeconds(m_AnimationClips[0].length);
+        yield return new WaitForSeconds(enterMenuTime);
         m_OnlineMenu.SetActive(false);
         GetComponent<Animator>().enabled = false;
         Launcher.instance.Quit();
@@ -632,7 +639,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         }
         else
         {
-            m_RoomList.SetActive(true);
+            m_RoomList.SetActive(false);
         }
     }
 
