@@ -5997,7 +5997,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 44}
-  m_SizeDelta: {x: 252.70898, y: 39.686035}
+  m_SizeDelta: {x: 276.21143, y: 39.686035}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &228053537
 MonoBehaviour:
@@ -22202,7 +22202,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Credits INTERN 05.
+  m_text: CREDITS  INTERN 05.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bfa8b94aef027f040904b64e2907c82a, type: 2}
   m_sharedMaterial: {fileID: -8609809001071447783, guid: bfa8b94aef027f040904b64e2907c82a, type: 2}
@@ -37572,7 +37572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ad0cc342560dc84f92ece11cebabd75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imageCollection: {fileID: 11400000, guid: 0831f9e186159714e9a7cb7b0fb7cdb4, type: 2}
+  imageCollection: {fileID: 0}
   checkRange:
     data: {fileID: 4900000, guid: 9445171c46489fd45b11ed7b8aa50bf8, type: 3}
     range: []
