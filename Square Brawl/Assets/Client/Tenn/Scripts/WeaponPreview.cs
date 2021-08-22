@@ -14,6 +14,7 @@ public class WeaponPreview : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public VideoPlayer videoPlayer;
     public VideoClip[] myclip;
     public Image[] icon;
+    public TextMeshProUGUI[] weaponName;
     public RawImage rawImage;
     public TextMeshProUGUI text;
 
@@ -31,13 +32,14 @@ public class WeaponPreview : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                     .SetEase(Ease.OutCirc))
                 .Join(icon[WeaponNumber]
                     .DOColor(new Color(rawImage.color.r, rawImage.color.g, rawImage.color.b, 1f), 0.3f)
+                    .SetEase(Ease.OutCirc))
+                .Join(weaponName[WeaponNumber]
+                    .DOColor(new Color(1, 1, 1, 1f), 0.3f)
                     .SetEase(Ease.OutCirc));
     }
 
     private void ExitPreview()
     {
-        enterButton = false;
-
         videoPlayer.clip = myclip[0];
 
         sequence.Kill();
@@ -47,6 +49,9 @@ public class WeaponPreview : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                     .SetEase(Ease.OutCirc))
                 .Join(icon[WeaponNumber]
                     .DOColor(new Color(rawImage.color.r, rawImage.color.g, rawImage.color.b, 0f), 0.3f)
+                    .SetEase(Ease.OutCirc))
+                .Join(weaponName[WeaponNumber]
+                    .DOColor(new Color(1, 1, 1, 0f), 0.3f)
                     .SetEase(Ease.OutCirc));
     }
 
@@ -60,14 +65,14 @@ public class WeaponPreview : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData eventData)    //滑鼠移入
     {
+        PlayPreview();
         //enterButton = true;
         //text.DOColor(new Color(0.7f, 0.7f, 0.7f, 1), 0.3f).SetEase(Ease.OutCirc);
-        videoPlayer.clip = myclip[WeaponNumber];
     }
 
     public void OnPointerExit(PointerEventData eventData)    //滑鼠移出
     {
-        //ExitPreview();
+        ExitPreview();
         //enterButton = false;
         //text.DOColor(new Color(1, 1, 1, 0), 0.3f).SetEase(Ease.OutCirc);
         //videoPlayer.clip = myclip[0];

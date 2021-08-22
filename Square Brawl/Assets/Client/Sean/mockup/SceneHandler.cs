@@ -400,7 +400,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLobby()
     {
-        Debug.Log("enter lobby");
         var time = 0f;
         if (m_NameInput.activeSelf || m_CreateRoom.activeSelf || m_RoomList.activeSelf || m_Loading.activeSelf)
         {
@@ -488,7 +487,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterRoom()
     {
-        if (m_CreateRoom.activeSelf || m_RoomList.activeSelf || m_Loading.activeSelf ||m_CharacterSelection.activeSelf)
+        if (m_Loading.activeSelf ||m_CharacterSelection.activeSelf)
         {
             var time = 0f;
             if (m_CharacterSelection.activeSelf)
@@ -635,7 +634,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLoading()
     {
-        Debug.Log("enter loading");
         var time = 0f;
         if (m_CreateRoom.activeSelf)
         {
@@ -660,9 +658,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         if (m_Loading.activeSelf)
         {
             animator.Play("ExitLoading");
-            Debug.Log("enter exit loading");
             yield return new WaitForSeconds(m_AnimationClips[5].length);
-            Debug.Log("enter loading false");
             m_Loading.SetActive(false);
         }
     }

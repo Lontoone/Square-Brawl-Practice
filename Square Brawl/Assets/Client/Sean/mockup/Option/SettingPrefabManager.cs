@@ -98,10 +98,11 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
                         OptionSetting.FULLSCREEN = Screen.fullScreenMode = FullScreenMode.Windowed;
                         break;
                 }
+                OptionSetting.RESOLUTION = Screen.currentResolution;
                 break;
 
             case OptionSetting.ChangeType.Resolution:
-                Screen.SetResolution((int)OptionSetting.resolution[m_CurrentIndex].x, (int)OptionSetting.resolution[m_CurrentIndex].y, FullScreenMode.ExclusiveFullScreen);
+                Screen.SetResolution((int)OptionSetting.resolution[m_CurrentIndex].x, (int)OptionSetting.resolution[m_CurrentIndex].y, OptionSetting.FULLSCREEN);
                 OptionSetting.RESOLUTION = Screen.currentResolution;
                 break;
 
