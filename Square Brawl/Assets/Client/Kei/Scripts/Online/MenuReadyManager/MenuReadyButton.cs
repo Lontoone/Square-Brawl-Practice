@@ -54,7 +54,7 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         else
         {
             SetMyButtonActive(false);
-            Debug.Log(player.NickName + " ready " + (bool)player.CustomProperties[CustomPropertyCode.READY]);
+            //Debug.Log(player.NickName + " ready " + (bool)player.CustomProperties[CustomPropertyCode.READY]);
             SetReadyLocal((bool)player.CustomProperties[CustomPropertyCode.READY]);
         }
         //SetReadyLocal(false);

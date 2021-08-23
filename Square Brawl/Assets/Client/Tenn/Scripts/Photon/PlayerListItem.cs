@@ -75,10 +75,10 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
     {
         if (player == otherPlayer)
         {
+            Debug.Log(otherPlayer.NickName+" leave room");
             Destroy(gameObject);
         }
     }
-
     public override void OnLeftRoom()
     {
         Destroy(gameObject);
