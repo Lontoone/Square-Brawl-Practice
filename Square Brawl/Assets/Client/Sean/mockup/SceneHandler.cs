@@ -648,7 +648,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterRoom()
     {
-        if (m_CreateRoom.activeSelf)
+        if (m_CreateRoom.activeSelf || m_RoomList.activeSelf)
         {
             m_Room.SetActive(true);
             animator.Play("EnterRoom");
@@ -867,6 +867,22 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLoading()
     {
+        if (m_CreateRoom.activeSelf || m_RoomList.activeSelf)
+        {
+            m_Loading.SetActive(false);
+        }
+        else
+        {
+            m_Loading.SetActive(true);
+            animator.Play("NoneLoading");
+        }
+
+
+        if (false)
+        {
+            yield return null;
+        }
+        /*
         if (m_CreateRoom.activeSelf)
         { 
             m_Loading.SetActive(false);
@@ -894,7 +910,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         {
             m_Loading.SetActive(true);
             animator.Play("NoneLoading");
-        }
+        }*/
     }
 
     private IEnumerator ExitLoading()
