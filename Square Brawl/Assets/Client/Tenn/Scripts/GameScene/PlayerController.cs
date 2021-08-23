@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     private float _playerHp;//Player Hp
     private float Recoil;//Player Recoil
     private float BeElasticity;//Player BeElasticity
-    private float DirX, DirY;//
+    private float DirX, DirY;
 
     private Vector3 _beShootShakeValue;
     private Vector3 _freezeLeftRay;
@@ -40,7 +40,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public bool IsShield;
     public bool IsBeShield;
     public bool IsBounce;
-
     public bool IsGround;//Player Is Ground?
     private bool _isWall;//Player Is Wall?
     private bool _isJump;//Player Is Jump?
@@ -63,17 +62,14 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     [HeaderAttribute("Other Setting")]
     public Transform FrontSightMidPos;//FrontSightMid Position
     public Transform FrontSightPos;//FrontSight Position
-    private Rigidbody2D _rb;//Player Rigidbody
     public DieEffect DieEffectObj;
-
+    private Rigidbody2D _rb;//Player Rigidbody
     private Camera _camera;
 
     [HeaderAttribute("Sync Setting")]
     private float _newDirZ;
 
     private Vector2 _newPos;
-
-    //private Quaternion _newDir;
     private Quaternion _newShootPointDir;
 
     public PhotonView Pv;
@@ -156,8 +152,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         if (!Pv.IsMine)
         {
             FrontSightMidPos.transform.rotation = Quaternion.Lerp(FrontSightMidPos.transform.rotation, _newShootPointDir, 15 * Time.deltaTime);
-            /*_rb.position = Vector2.MoveTowards(_rb.position, _newPos, Time.deltaTime);
-            _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 5 * Time.deltaTime);*/
         }
 
         GroundCheckEvent();//Is Grounding?
@@ -175,7 +169,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             PlayerSpin();//Player Spin
         }
     }
-
+    /// <summary>
+    /// Player  Control
+    /// </summary>
     #region -- Player Control --
     void PlayerMovement()
     {
@@ -220,30 +216,28 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             if (IsGround && !_isCheckSpin)
             {
                 _rb.AddTorque(SpinInGroundForce * _inputPos.x);
-                //Debug.Log("IsGround");
             }
             else if (_isWall)
             {
                 _rb.AddTorque(SpinInGroundForce * _inputPos.x);
-                //Debug.Log("IsWall");
             }
             else if (IsGround && _isCheckSpin)
             {
                 _rb.AddTorque(SpinForce * _inputPos.x);
                 _isCheckSpin = false;
-                //Debug.Log("IsGroundJump");
             }
             else if (!_isWall && !IsGround)
             {
                 _rb.AddTorque(SpinForce * _inputPos.x);
-                //Debug.Log("IsNotGroundWall");
             }
             _canSpin = false;
         }
     }
     #endregion
 
-
+    /// <summary>
+    /// Player InputSystem Control
+    /// </summary>
     #region -- PlayerInputSystem Control --
     void LimitInputValue(Vector2 diretion)
     {
@@ -330,7 +324,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
     #endregion
 
-
+    /// <summary>
+    /// Player Damage And BeBounce Event
+    /// </summary>
     #region -- Player Damage And BeBounce Event --
     public void DamageEvent(float _damage, float _beElasticity, float _dirX, float _dirY, Vector3 _beShootShake)
     {
@@ -741,7 +737,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(_rb.position);
-            //stream.SendNext(transform.rotation);
             stream.SendNext(_rb.rotation);
             stream.SendNext(FrontSightMidPos.transform.rotation);
             stream.SendNext(_rb.velocity);
@@ -750,7 +745,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         else
         {
             _newPos = (Vector2)stream.ReceiveNext();
-            //_newDir = (Quaternion)stream.ReceiveNext();
             _newDirZ = (float)stream.ReceiveNext();
             _newShootPointDir = (Quaternion)stream.ReceiveNext();
             _rb.velocity = (Vector2)stream.ReceiveNext();
