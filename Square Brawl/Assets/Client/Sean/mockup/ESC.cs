@@ -13,7 +13,15 @@ public class ESC : MonoBehaviour
         if (Keyboard.current.escapeKey.wasPressedThisFrame && buttonGroup.activeSelf == false)
         {
             buttonGroup.SetActive(true);
-            animator.Play("EnterESC");
+
+            if (OptionSetting.TRANSITIONANIMATION)
+            {
+                animator.Play("EnterESC");
+            }
+            else
+            {
+                animator.Play("NoneESC");
+            }
             Debug.Log("Esc Was Pressed");
         }
     }
@@ -25,7 +33,14 @@ public class ESC : MonoBehaviour
 
     private IEnumerator Back()
     {
-        animator.Play("ExitESC");
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            animator.Play("ExitESC");
+        }
+        else
+        {
+            animator.Play("None");
+        }
 
         var time = animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
         yield return new WaitForSeconds(time);
