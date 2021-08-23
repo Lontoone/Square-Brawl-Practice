@@ -16,7 +16,7 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
 
     private List<ColorSetButton> colorBtns = new List<ColorSetButton>();
 
-    private void OnEnable()
+    private void Start()
     {
         CreatePlayerItem();
         CreateButtonItem();
