@@ -8,6 +8,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 {
 
     public static Launcher instance;
+    private List<RoomListItem> _roomItems = new List<RoomListItem>();
     [SerializeField] UnityEngine.UI.InputField nameInput;
     [SerializeField] UnityEngine.UI.InputField roomNameInputField;
     [SerializeField] UnityEngine.UI.Text errorText;
@@ -132,18 +133,30 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        foreach (Transform child in roomListContent)
+        //Create room list items:
+
+        //  Check is Delete or Create
+        foreach (RoomInfo _room in roomList)
         {
-            Destroy(child.gameObject);
-        }
-        for (int i = 0; i < roomList.Count; i++)
-        {
-            if (roomList[i].RemovedFromList)
+            Debug.Log("room list update " + _room.Name + " " + _room.RemovedFromList);
+            //      Delete
+            if (_room.RemovedFromList)
             {
-                continue;
+                //Debug.Log("delete room list " + (_roomItems.Find(x => x.info.Name == _room.Name).name));
+                Destroy(_roomItems.Find(x => x.info.Name == _room.Name)?.gameObject);
             }
-            Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
+            //      Create:
+            else if (!_roomItems.Exists(x => x.info.Name == _room.Name))
+            {
+                RoomListItem _newItem = Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>();
+                _newItem.SetUp(_room);
+                _roomItems.Add(_newItem);
+
+                //Debug.Log("create room list " + _newItem.name);
+            }
+
         }
+
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
