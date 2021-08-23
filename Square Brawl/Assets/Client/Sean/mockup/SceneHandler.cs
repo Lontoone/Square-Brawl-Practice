@@ -154,7 +154,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
             case "Room":
                 StartCoroutine(EnterRoom());
-                Debug.Log("1111");
                 break;
 
             case "CharacterSelection":
@@ -649,10 +648,16 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterRoom()
     {
-        if(OptionSetting.TRANSITIONANIMATION)
+        if (m_CreateRoom.activeSelf)
         {
-            if (m_Loading.activeSelf ||m_CharacterSelection.activeSelf)
+            m_Room.SetActive(true);
+            animator.Play("EnterRoom");
+        }
+        else if(OptionSetting.TRANSITIONANIMATION)
+        {
+            if (m_CharacterSelection.activeSelf)
             {
+                Debug.LogError("N");
                 var time = 0f;
                 if (m_CharacterSelection.activeSelf)
                 {
@@ -862,7 +867,11 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLoading()
     {
-        if (OptionSetting.TRANSITIONANIMATION)
+        if (m_CreateRoom.activeSelf)
+        { 
+            m_Loading.SetActive(false);
+        }
+        else if (OptionSetting.TRANSITIONANIMATION)
         {
             var time = 0f;
             if (m_CreateRoom.activeSelf)
@@ -886,7 +895,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             m_Loading.SetActive(true);
             animator.Play("NoneLoading");
         }
-
     }
 
     private IEnumerator ExitLoading()
@@ -894,6 +902,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         //Todo : 關掉Room的時候流程問題
         if (m_Loading.activeSelf)
         {
+            Debug.LogError("X");
             animator.Play("ExitLoading");
             yield return new WaitForSeconds(m_AnimationClips[5].length);
             m_Loading.SetActive(false);
