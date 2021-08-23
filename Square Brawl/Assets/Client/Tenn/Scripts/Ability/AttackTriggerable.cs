@@ -170,7 +170,7 @@ public class AttackTriggerable : MonoBehaviour
     public void Freeze()
     {
         PlayerController.instance.PlayerRecoil(WeaponRecoil);
-        PlayerController.instance.FreezeEvent(1.8f, 5,BeShootShakeValue);
+        PlayerController.instance.FreezeEvent(2.5f, 5,BeShootShakeValue);
         ObjectsPool.Instance.SpawnFromPool("FreezeShoot", _bulletSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
         PlaySound();

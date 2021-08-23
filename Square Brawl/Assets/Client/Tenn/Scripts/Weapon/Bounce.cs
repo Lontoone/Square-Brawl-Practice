@@ -149,7 +149,7 @@ public class Bounce : MonoBehaviour,IPoolObject
                 }
                 LaserColorAndWidth(_laserTransparency, _laserWidth);
 
-                if(_laserTransparency <= 0.5f)
+                if(_laserTransparency <= 0.7f)//Reset EdgeCollider Point
                 {
                     for (int i = 0; i < HitGroundLocalPos.Count; i++)
                     {

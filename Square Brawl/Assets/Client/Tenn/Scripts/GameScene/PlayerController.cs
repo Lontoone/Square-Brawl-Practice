@@ -746,8 +746,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             stream.SendNext(FrontSightMidPos.transform.rotation);
             stream.SendNext(_rb.velocity);
             stream.SendNext(_rb.angularVelocity);
-            stream.SendNext(IsBeShield);
-            stream.SendNext(IsBounce);
         }
         else
         {
