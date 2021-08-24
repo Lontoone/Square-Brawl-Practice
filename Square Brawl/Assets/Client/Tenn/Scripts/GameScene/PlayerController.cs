@@ -80,8 +80,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public static PlayerController instance;
     private void Awake()
     {
-        _inputAction = new PlayerInputManager();
         Pv = GetComponent<PhotonView>();
+        _inputAction = new PlayerInputManager();
         _rb = GetComponent<Rigidbody2D>();
         _bodySprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
         _hpSprite = transform.GetChild(6).GetChild(0).GetComponent<Image>();
@@ -136,6 +136,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
     }
 
+    /// <summary>
+    /// 設定角色顏色，並同步到客戶端
+    /// </summary>
     private void SetColor()
     {
         Color _color = DieEffectColor = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color =
@@ -158,7 +161,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
     void FixedUpdate()
     {
-        if (!Pv.IsMine)
+        if (!Pv.IsMine)//客戶端同步位置
         {
             _rb.position = Vector2.MoveTowards(_rb.position, _newPos, 2*Time.fixedDeltaTime);
             _rb.rotation = Mathf.Lerp(_rb.rotation, _newDirZ, 3*Time.fixedDeltaTime);
@@ -200,6 +203,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         _isJump = true;
     }
 
+    /// <summary>
+    /// Player Spin Event
+    /// </summary>
     void PlayerSpin()
     {
         if (_canSpin && _inputPos.x != 0)
@@ -213,20 +219,20 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
                 Physics2D.maxRotationSpeed = 6;
             }
 
-            if (IsGround && !_isCheckSpin)
+            if ((IsGround && !_isCheckSpin)||_isWall)//在地面或牆上的角色旋轉
             {
                 _rb.AddTorque(SpinInGroundForce * _inputPos.x);
             }
-            else if (_isWall)
+            /*else if (_isWall)
             {
                 _rb.AddTorque(SpinInGroundForce * _inputPos.x);
-            }
-            else if (IsGround && _isCheckSpin)
+            }*/
+            else if (IsGround && _isCheckSpin)//點擊跳躍後但還在地面的角色旋轉
             {
                 _rb.AddTorque(SpinForce * _inputPos.x);
                 _isCheckSpin = false;
             }
-            else if (!_isWall && !IsGround)
+            else if (!_isWall && !IsGround)//不再牆上或地上的角色旋轉
             {
                 _rb.AddTorque(SpinForce * _inputPos.x);
             }
@@ -241,9 +247,10 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     #region -- PlayerInputSystem Control --
     void LimitInputValue(Vector2 diretion)
     {
-        if (!IsBeFreeze && _canLeftSticeSpin)
+        if (!IsBeFreeze && _canLeftSticeSpin)//限制值要大於0.3，預防不小心觸發
         {
-            if (diretion.x >= 0.3f || diretion.x <= -0.3f || diretion.y >= 0.3f || diretion.y <= -0.3f)
+            //if (diretion.x >= 0.3f || diretion.x <= -0.3f || diretion.y >= 0.3f || diretion.y <= -0.3f)
+            if (Mathf.Abs(diretion.x) >= 0.3f|| Mathf.Abs(diretion.y) >= 0.3f)
             {
                 FrontSightAngle = Mathf.Atan2(diretion.y, diretion.x) * Mathf.Rad2Deg;
                 FrontSightMidPos.rotation = Quaternion.Euler(new Vector3(0, 0, FrontSightAngle));
@@ -251,6 +258,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
 
         Vector2 _inputMovement = diretion;
+        //值大於0.5，強制設為1
         if (_inputMovement.x > 0.5)
         {
             _inputMovement.x = 1;
@@ -280,18 +288,18 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         _inputPos = new Vector2(_inputMovement.x, _inputMovement.y);
     }
 
-    private void PlayerJumpDown()
+    private void PlayerJumpDown()//按下Jump
     {
         _isJump = _isCheckSpin = true;
     }
 
-    private void PlayerJumpUp()
+    private void PlayerJumpUp()//放開Jump
     {
         _isJump = _isCheckSpin = false;
         CancelInvoke("IsJumpRecover");
     }
 
-    void MouseSpin(Vector2 _mousePos)
+    void MouseSpin(Vector2 _mousePos)//滑鼠旋轉(瞄準點)
     {
         if (!IsBeFreeze)
         {
@@ -302,7 +310,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
     }
 
-    void GamePadSpin(Vector2 _mousePos)
+    void GamePadSpin(Vector2 _mousePos)//GamePad蘑菇頭旋轉
     {
         if (_mousePos.x != 0 && _mousePos.y != 0)
         {
@@ -315,7 +323,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
         if (!IsBeFreeze)
         {
-            if (_mousePos.x >= 0.3f || _mousePos.x <= -0.3f || _mousePos.y >= 0.3f || _mousePos.y <= -0.3f)
+            //if (_mousePos.x >= 0.3f || _mousePos.x <= -0.3f || _mousePos.y >= 0.3f || _mousePos.y <= -0.3f)
+            if(Mathf.Abs(_mousePos.x)>=0.3f|| Mathf.Abs(_mousePos.y) >= 0.3f)
             {
                 FrontSightAngle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg;
                 FrontSightMidPos.rotation = Quaternion.Euler(new Vector3(0, 0, FrontSightAngle));
@@ -330,11 +339,11 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     #region -- Player Damage And BeBounce Event --
     public void DamageEvent(float _damage, float _beElasticity, float _dirX, float _dirY, Vector3 _beShootShake)
     {
-        TakeDamage(_damage, _beShootShake.x, _beShootShake.y, _beShootShake.z);
-        BeBounce(_beElasticity, _dirX, _dirY);
+        TakeDamage(_damage, _beShootShake.x, _beShootShake.y, _beShootShake.z);//傷害，並同步到客戶端
+        BeBounce(_beElasticity, _dirX, _dirY);//被射到往後彈的力，並同步到客戶端
     }
 
-    public bool IsKillAnyone()
+    public bool IsKillAnyone()//是否殺到人?
     {
         if (_playerHp <= 0)
         {
@@ -346,17 +355,17 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public void BeBounce(float _elasticty, float _dirX, float _dirY)
+    public void BeBounce(float _elasticty, float _dirX, float _dirY)//被射到往後彈的力，並同步到客戶端
     {
         Pv.RPC("Rpc_BeBounce", RpcTarget.All, _elasticty, _dirX, _dirY);
     }
 
-    public void BeExplode(float _elasticty, Vector3 _pos, float _field)
+    public void BeExplode(float _elasticty, Vector3 _pos, float _field)//被爆炸到的力，並同步到客戶端
     {
         Pv.RPC("Rpc_BeExplode", RpcTarget.All, _elasticty, _pos, _field);
     }
 
-    public void TakeDamage(float _damage, float _shakeTime, float _shakePower, float _decrease)//,float _elasticty,float _bullletDirX,float _bullletDirY)
+    public void TakeDamage(float _damage, float _shakeTime, float _shakePower, float _decrease)//傷害，並同步到客戶端
     {
         CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
         Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage, _shakeTime, _shakePower, _decrease);
@@ -367,11 +376,11 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     /// Player Recoil
     /// </summary>
     #region -- Player Recoil Event --
-    public void PlayerRecoil(float _recoil)
+    public void PlayerRecoil(float _recoil)//後座力
     {
         Recoil = _recoil;
-        DirX = Mathf.Cos(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
-        DirY = Mathf.Sin(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);
+        DirX = Mathf.Cos(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);//瞄準點的角度轉換成極座標X
+        DirY = Mathf.Sin(FrontSightMidPos.eulerAngles.z * Mathf.PI / 180);//瞄準點的角度轉換成極座標Y
 
         _rb.AddForce(-Recoil * new Vector2(DirX, DirY));
     }
@@ -381,7 +390,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     /// Player Charge
     /// </summary>
     #region -- Player Charge Event --
-    public void ChargeEvent(float _speed, float _elasticity, float _damage, Vector3 _beShotShake)
+    public void ChargeEvent(float _speed, float _elasticity, float _damage, Vector3 _beShotShake)//發動Charge
     {
         PlayerRecoil(_speed);
         BeElasticity = _elasticity;
@@ -398,14 +407,14 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     /// Player Freeze
     /// </summary>
     #region -- Player Freeze Event --
-    public void FreezeEvent(float _viewDistance, int viewCount, Vector3 _beShootShake)
+    public void FreezeEvent(float _viewDistance, int viewCount, Vector3 _beShootShake)//發動Freeze
     {
         _beShootShakeValue = _beShootShake;
 
         _freezeLeftRay = Quaternion.Euler(0, 0, FrontSightPos.eulerAngles.z - 17.5f) * Vector2.right * _viewDistance;
         Vector3 _originPos = FrontSightPos.transform.position;
 
-        for (int i = 0; i <= viewCount; i++)
+        for (int i = 0; i <= viewCount; i++)//扇形檢測區
         {
             Vector3 _freezeRay = Quaternion.Euler(0, 0, (35 / viewCount) * i) * _freezeLeftRay;
             int mask = LayerMask.GetMask("Player");
@@ -423,14 +432,13 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
     }
 
-    private void BeFreezeEvent(Vector3 _originPos, Quaternion _originDir, Vector3 _beShotAhake)
+    private void BeFreezeEvent(Vector3 _originPos, Quaternion _originDir, Vector3 _beShootAhake)//角色被凍結，並同步客戶端
     {
-        Pv.RPC("Rpc_ChangeBeFreeze", RpcTarget.All, _originPos, _originDir, _beShotAhake);
-        //CameraShake.instance.SetShakeValue(_beShotAhake.x, _beShotAhake.y, _beShotAhake.z);
+        Pv.RPC("Rpc_ChangeBeFreeze", RpcTarget.All, _originPos, _originDir, _beShootAhake);
         Invoke("StopBeFreeze", 2f);
     }
 
-    public void StopBeFreeze()
+    public void StopBeFreeze()//角色被凍結結束，並同步客戶端
     {
         Pv.RPC("Rpc_StopBeFreeze", RpcTarget.All);
     }
@@ -440,13 +448,13 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     /// Bounce
     /// </summary>
     #region -- Bounce Event --
-    public void IsBounceTrue()
+    public void IsBounceTrue()//被Bounce傷害中，並同步到客戶端
     {
         Pv.RPC("Rpc_IsBounceTrue", RpcTarget.All);
         Invoke("IsBounceFalse", 1f);
     }
 
-    void IsBounceFalse()
+    void IsBounceFalse()//被Bounce傷害結束，並同步到客戶端
     {
         Pv.RPC("Rpc_IsBounceFalse", RpcTarget.All);
     }
@@ -456,7 +464,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     /// Ground Check
     /// </summary>
     #region -- Ground Check Event --
-    void GroundCheckEvent()
+    void GroundCheckEvent()//檢測是否在地上會牆上
     {
         RaycastHit2D leftCheck = Raycast(new Vector2(FootOffset, PlayerWidth), Vector2.left, GroundDistance);
         RaycastHit2D leftCheck2 = Raycast(new Vector2(FootOffset, -PlayerWidth), Vector2.left, GroundDistance);
@@ -466,22 +474,18 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         RaycastHit2D downCheck2 = Raycast(new Vector2(-PlayerWidth, FootOffset), Vector2.down, GroundDistance);
         RaycastHit2D upCheck = Raycast(new Vector2(PlayerWidth, FootOffset), Vector2.up, GroundDistance);
         RaycastHit2D upCheck2 = Raycast(new Vector2(-PlayerWidth, FootOffset), Vector2.up, GroundDistance);
-        //if (downCheck && (!leftCheck && !rightCheck))
         if ((downCheck || downCheck2) && ((!leftCheck || !leftCheck2) && (!rightCheck || !rightCheck2)))
         {
-            //Physics2D.IgnoreLayerCollision(11, 12, false);
             IsGround = _canSpin = true;
             _isWall = false;
         }
         else if (leftCheck || rightCheck || upCheck|| leftCheck2 || rightCheck2 || upCheck2)
         {
-            //Physics2D.IgnoreLayerCollision(11, 12, false);
             _isWall = _canSpin = true;
             IsGround = false;
         }
         else
         {
-            //Physics2D.IgnoreLayerCollision(11, 12, true);
             IsGround = false;
             _isWall = false;
         }
@@ -502,30 +506,34 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     /// Shield
     /// </summary>
     #region -- ShieldEvent --
-    public void IsShieldTrue()
+    public void IsShieldTrue()//發動Shield，並同步到客戶端
     {
         Pv.RPC("Rpc_IsShieldTrue", RpcTarget.All);
         Invoke("IsShieldFalse", 1f);
     }
 
-    void IsShieldFalse()
+    void IsShieldFalse()//結束Shield，並同步到客戶端
     {
         Pv.RPC("Rpc_IsShieldFalse", RpcTarget.All);
     }
 
-    public void IsBeShieldTrue()
+    public void IsBeShieldTrue()//被Shield傷害中，並同步到客戶端
     {
         Pv.RPC("Rpc_IsBeShieldTrue", RpcTarget.All);
         Invoke("IsBeShieldFalse", 1f);
     }
 
-    void IsBeShieldFalse()
+    void IsBeShieldFalse()//被Shield傷害結束，並同步到客戶端
     {
         Pv.RPC("Rpc_IsBeShieldFalse", RpcTarget.All);
     }
     #endregion
 
-    void GamePadShakeEvent(float leftMotor,float rightMotor, float time)
+    /// <summary>
+    /// GamePad Shake
+    /// </summary>
+    #region -- GamePad Shake Event --
+    void GamePadShakeEvent(float leftMotor,float rightMotor, float time)//搖桿震動
     {
         if (OptionSetting.CONTROLLER_RUMBLE)
         {
@@ -534,14 +542,40 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
     }
 
-    void StopGamePadShake()
+    void StopGamePadShake()//關掉搖桿震動
     {
         GamePad.SetVibration(0, 0, 0);
+    }
+    #endregion
+
+    /// <summary>
+    /// Generate DieEffect Event
+    /// </summary>
+    public void GenerateDieEffect()//產生死亡特效與設定特效顏色，並同步到客戶端
+    {
+        DieEffect dieEffectObj = Instantiate(DieEffectObj, transform.position, Quaternion.identity);
+        dieEffectObj.SetColor(DieEffectColor);
+        Pv.RPC("Rpc_GenerateDieEffect", RpcTarget.Others, new Vector3(DieEffectColor.r, DieEffectColor.g, DieEffectColor.b));
+    }
+
+    /// <summary>
+    /// Rebirth Event
+    /// </summary>
+    void Rebirth()//重生事件，並同步到客戶端
+    {
+        if (Pv.IsMine)
+        {
+            gameObject.SetActive(true);
+            transform.position = new Vector3(UnityEngine.Random.Range(-5, 6), 0, 0);
+            Pv.RPC("Rpc_Rebirth", RpcTarget.Others, transform.position);
+        }
+        _playerHp = 100;
+        _uiControl.ReduceHp(_playerHp);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player") && Pv.IsMine && _isCharge)
+        if (other.gameObject.CompareTag("Player") && Pv.IsMine && _isCharge)//被Charge中的玩家撞到
         {
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
             if (!_playerController.Pv.IsMine && !_playerController.IsShield)
@@ -557,7 +591,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             }
         }
 
-        if (other.gameObject.CompareTag("Saw"))
+        if (other.gameObject.CompareTag("Saw"))//碰到Saw
         {
             if (Pv.IsMine)
             {
@@ -568,18 +602,18 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Katada") && !Pv.IsMine && !IsShield)
+        if (other.gameObject.CompareTag("Katada") && !Pv.IsMine && !IsShield)//被Katana打到
         {
             Katada _katada = other.gameObject.GetComponent<Katada>();
             _katada.KatadaCollider(this);
         }
-        else if (other.gameObject.CompareTag("Shield") && !Pv.IsMine && !IsBeShield)
+        else if (other.gameObject.CompareTag("Shield") && !Pv.IsMine && !IsBeShield)//被Shield打到
         {
             Shield _shield = other.gameObject.GetComponent<Shield>();
             _shield.ShieldCollider(this);
         }
 
-        if (other.gameObject.CompareTag("Boundary"))
+        if (other.gameObject.CompareTag("Boundary"))//掉出邊界
         {
             if (Pv.IsMine)
             {
@@ -595,7 +629,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     /// </summary>
     #region -- RPC Event --
     [PunRPC]
-    void ChangeColor(Vector3 color)
+    void ChangeColor(Vector3 color)//同步顏色
     {
         Color _color = DieEffectColor = new Color(color.x, color.y, color.z);
         transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color = _color;
@@ -640,19 +674,19 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
 
     [PunRPC]
-    void Rpc_BeBounce(float _elasticty, float _dirX, float _dirY)
+    void Rpc_BeBounce(float _elasticty, float _dirX, float _dirY)//同步被射到的力
     {
         _rb.AddForce(_elasticty * new Vector2(_dirX, _dirY));
     }
 
     [PunRPC]
-    void Rpc_BeExplode(float _elasticty, Vector3 _pos, float _field)
+    void Rpc_BeExplode(float _elasticty, Vector3 _pos, float _field)//同步被爆炸的力
     {
         _rb.AddExplosionForce(_elasticty, _pos, _field);
     }
 
     [PunRPC]
-    void Rpc_TakeDamage(float _damage, float _shakeTime, float _shakePower, float _decrease)
+    void Rpc_TakeDamage(float _damage, float _shakeTime, float _shakePower, float _decrease)//同步傷害
     {
         _playerHp -= _damage;
         CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
@@ -662,48 +696,26 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         {
             GamePadShakeEvent(1f, 1f, 0.5f);
             Invoke("Rebirth", 3f);
-            /*DieEffect dieEffectObj = Instantiate(DieEffectObj, transform.position, Quaternion.identity);
-            dieEffectObj.SetColor(DieEffectColor);*/
             gameObject.SetActive(false);
         }
     }
 
     [PunRPC]
-    void Rpc_OnBoundary()
+    void Rpc_OnBoundary()//同步掉出邊界後的事件
     {
         Invoke("Rebirth", 3f);
         gameObject.SetActive(false);
     }
 
-    public void GenerateDieEffect()
-    {
-        //Color color = CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
-        DieEffect dieEffectObj = Instantiate(DieEffectObj, transform.position, Quaternion.identity);
-        dieEffectObj.SetColor(DieEffectColor);
-        Pv.RPC("Rpc_GenerateDieEffect", RpcTarget.Others, new Vector3(DieEffectColor.r, DieEffectColor.g, DieEffectColor.b));
-    }
-
     [PunRPC]
-    void Rpc_GenerateDieEffect(Vector3 color)
+    void Rpc_GenerateDieEffect(Vector3 color)//同步產生死亡特效與同步特效顏色
     {
         DieEffect dieEffectObj = Instantiate(DieEffectObj, transform.position, Quaternion.identity);
         dieEffectObj.SetColor(new Color(color.x, color.y, color.z));
     }
 
-    void Rebirth()
-    {
-        if (Pv.IsMine)
-        {
-            gameObject.SetActive(true);
-            transform.position = new Vector3(UnityEngine.Random.Range(-5, 6), 0, 0);
-            Pv.RPC("Rpc_Rebirth", RpcTarget.Others, transform.position);
-        }
-        _playerHp = 100;
-        _uiControl.ReduceHp(_playerHp);
-    }
-
     [PunRPC]
-    void Rpc_Rebirth(Vector3 _pos)
+    void Rpc_Rebirth(Vector3 _pos)//同步重生事件
     {
         _newPos = _pos;
         transform.position = _pos;
@@ -711,7 +723,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
 
     [PunRPC]
-    void Rpc_ChargeValue(bool _isCharge, float _elasticity, float _damage, float _dirX, float _dirY, Vector3 _beShootShake)
+    void Rpc_ChargeValue(bool _isCharge, float _elasticity, float _damage, float _dirX, float _dirY, Vector3 _beShootShake)//同步Charge發動後的數值
     {
         this._isCharge = _isCharge;
         BeElasticity = _elasticity;
@@ -728,7 +740,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
 
     [PunRPC]
-    void Rpc_ChangeBeFreeze(Vector3 _pos, Quaternion _dir, Vector3 _beShotAhake)
+    void Rpc_ChangeBeFreeze(Vector3 _pos, Quaternion _dir, Vector3 _beShotAhake)//同步被凍結的事件
     {
         IsBeFreeze = true;
         transform.position = _pos;
@@ -742,16 +754,21 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
 
     [PunRPC]
-    void Rpc_StopBeFreeze()
+    void Rpc_StopBeFreeze()//同步結束被凍結的事件
     {
         IsBeFreeze = false;
         _rb.bodyType = RigidbodyType2D.Dynamic;
     }
     #endregion
 
+    /// <summary>
+    /// 讓用戶自定義的component被Photon View監聽
+    /// </summary>
+    /// <param name="PhotonNetwork.Time">PhotonNetwork的時間，理論上同一個Room裡的玩家此數據是相同</param>
+    /// <param name="info.SentServerTime">發送到伺服器的時間</param>
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
+        if (stream.IsWriting)//發送方
         {
             stream.SendNext(_rb.position);
             stream.SendNext(_rb.rotation);
@@ -759,7 +776,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             stream.SendNext(_rb.velocity);
             stream.SendNext(_rb.angularVelocity);
         }
-        else
+        else //接收方
         {
             _newPos = (Vector2)stream.ReceiveNext();
             _newDirZ = (float)stream.ReceiveNext();
