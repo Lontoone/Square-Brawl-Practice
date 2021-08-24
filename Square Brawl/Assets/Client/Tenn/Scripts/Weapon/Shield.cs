@@ -22,7 +22,7 @@ public class Shield : MonoBehaviour
         }
     }
 
-    private void SetColor()
+    private void SetColor()//改變顏色
     {
         Color _color = transform.GetComponent<SpriteRenderer>().color =
             CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
@@ -31,6 +31,7 @@ public class Shield : MonoBehaviour
         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
+    //發動事件
     public void ShieldEvent(float _speed,float _damage,float _beElasticity,Vector3 _cameraShakeValue)
     {
         ShieldSpeed = _speed;
@@ -41,6 +42,7 @@ public class Shield : MonoBehaviour
         _pv.RPC("Rpc_EnableObj", RpcTarget.Others, ShieldSpeed, ShieldDamage, ShieldBeElasticity, this._cameraShakeValue);
     }
 
+    //Shield碰撞事件
     public void ShieldCollider(PlayerController _playerController)
     {
         if (_pv.IsMine)
@@ -67,20 +69,25 @@ public class Shield : MonoBehaviour
         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
+    /// <summary>
+    /// RPC
+    /// </summary>
+    #region -- RPC Event --
     [PunRPC]
-    void ChangeColor(Vector3 color)
+    void ChangeColor(Vector3 color)//同步顏色
     {
         Color _color = new Color(color.x, color.y, color.z);
         transform.GetComponent<SpriteRenderer>().color = _color;
     }
 
     [PunRPC]
-    public void Rpc_DisableObj()
+    public void Rpc_DisableObj()//同步關閉
     {
         gameObject.SetActive(false);
         GetComponentInParent<PlayerController>().IsBeShield = false;
     }
 
+    //同步開啟與發動後的數值
      [PunRPC]
      public void Rpc_EnableObj(float _speed,float _damage,float _elasticity,Vector3 _beShotShake)
      {
@@ -90,5 +97,5 @@ public class Shield : MonoBehaviour
         ShieldBeElasticity = _elasticity;
         _cameraShakeValue = _beShotShake;
      }
-
+    #endregion
 }

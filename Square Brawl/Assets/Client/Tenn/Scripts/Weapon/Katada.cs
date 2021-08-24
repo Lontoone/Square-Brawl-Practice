@@ -12,7 +12,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     private float BeElasticityDir;//Be Elasticity Direction
     private float _dir;//Katada Mid Direction
 
-    private Vector3 _beShootShakeValue;
+    private Vector3 _cameraShakeValue;
 
     private bool _isKatadaReverse;//Is Katada Reverse?
 
@@ -40,7 +40,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         }
     }
 
-    private void SetColor()
+    private void SetColor()//設定顏色
     {
         TrailRenderer _trail = transform.GetChild(0).GetComponent<TrailRenderer>();
         Color _color = transform.GetChild(0).GetComponent<SpriteRenderer>().color =
@@ -50,13 +50,14 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
     }
 
+    //發動事件
     public void KatadaEvent(float _speed,float _damage,float _blasticity,bool _isReverse,Vector3 _beShootShake)
     {
         KatadaSpeed = _speed;
         KatadaDamage = _damage;
         KatadaBeElasticity = _blasticity;
         _isKatadaReverse= _isReverse;
-        _beShootShakeValue = _beShootShake;
+        _cameraShakeValue = _beShootShake;
         if (_isKatadaReverse)
         {
             _dir = transform.eulerAngles.z + 45;
@@ -68,19 +69,20 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
             transform.eulerAngles = new Vector3(0, 0, _dir);
         }
 
-        _pv.RPC("Rpc_SetValue", RpcTarget.Others, KatadaDamage, KatadaBeElasticity, _beShootShakeValue);
+        _pv.RPC("Rpc_SetValue", RpcTarget.Others, KatadaDamage, KatadaBeElasticity, _cameraShakeValue);
 
         StartCoroutine(DestroyObj());
     }
 
-    public void KatadaCollider(PlayerController _playerController)
+    //Katana Collider
+    public void KatanaCollider(PlayerController _playerController)
     {
         if (_pv.IsMine)
         {
             _pv.RPC("Rpc_DisableObj", RpcTarget.All);
             float x = Mathf.Cos(BeElasticityDir * Mathf.PI / 180);
             float y = Mathf.Sin(BeElasticityDir * Mathf.PI / 180);
-            _playerController.DamageEvent(KatadaDamage, KatadaBeElasticity, x, y, _beShootShakeValue);
+            _playerController.DamageEvent(KatadaDamage, KatadaBeElasticity, x, y, _cameraShakeValue);
             var IsKill = _playerController.IsKillAnyone();
             if (IsKill)
             {
@@ -110,6 +112,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
 
     }
 
+    //0.4秒後關閉
     IEnumerator DestroyObj()
     {
         yield return new WaitForSeconds(0.4f);
@@ -117,8 +120,12 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
+    /// <summary>
+    /// RPC
+    /// </summary>
+    #region -- RPC Event --
     [PunRPC]
-    void ChangeColor(Vector3 color)
+    void ChangeColor(Vector3 color)//同步顏色
     {
         Color _color = new Color(color.x, color.y, color.z);
         TrailRenderer _trail = transform.GetChild(0).GetComponent<TrailRenderer>();
@@ -127,33 +134,37 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
     }
 
     [PunRPC]
-    public void Rpc_EnableObj(float _dirZ)
+    public void Rpc_DisableObj()//同步關閉
+    {
+        gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    public void Rpc_EnableObj(float _dirZ)//同步開啟與對手被反彈的方向數值
     {
         gameObject.SetActive(true);
         BeElasticityDir = _dirZ;
     }
 
     [PunRPC]
-    public void Rpc_ResetPos(Vector3 _pos, Quaternion _dir)
+    public void Rpc_ResetPos(Vector3 _pos, Quaternion _dir)//同步Pos Dir
     {
         transform.position = _pos;
         transform.rotation = _dir;
     }
 
     [PunRPC]
-    public void Rpc_SetValue(float _damage, float _elasticity, Vector3 _beShootShake)
+    public void Rpc_SetValue(float _damage, float _elasticity, Vector3 _beShootShake)//同步發動後的數值
     {
         KatadaDamage = _damage;
         KatadaBeElasticity = _elasticity;
-        _beShootShakeValue = _beShootShake;
+        _cameraShakeValue = _beShootShake;
     }
+    #endregion
 
-    [PunRPC]
-    public void Rpc_DisableObj()
-    {
-        gameObject.SetActive(false);
-    }
-
+    /// <summary>
+    /// 讓用戶自定義的component被Photon View監聽
+    /// </summary>
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

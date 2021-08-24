@@ -17,7 +17,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     protected bool isMaster;
     protected bool _isBounceBullet;
 
-    protected Vector3 _beShootShakeValue;
+    protected Vector3 _cameraShakeValue;
 
     protected string ExploseEffectName;
 
@@ -49,7 +49,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         }
     }
 
-    private void SetColor()
+    private void SetColor()//設定Grenade顏色
     {
         Color _color = transform.GetComponent<SpriteRenderer>().color =
             CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
@@ -66,6 +66,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         }
     }
 
+    // 發射Grenade
     public void GrenadeEvent(string _effectName,float _speed,float _damage,float _scaleValue,float _beElasticity,Vector3 _beShootShake)
     {
         ExploseEffectName = _effectName;
@@ -74,14 +75,14 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         GrenadeScaleValue = _scaleValue;
         transform.localScale = new Vector3(_scaleValue, _scaleValue, _scaleValue);
         GrenadeBeElasticity = _beElasticity;
-        _beShootShakeValue = _beShootShake;
+        _cameraShakeValue = _beShootShake;
         if (_isBounceBullet)
         {
             SetColor();
             _isBounceBullet = false;
         }
         _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
-        _pv.RPC("Rpc_SetValue", RpcTarget.All, GrenadeSpeed, GrenadeDamage, GrenadeScaleValue, GrenadeBeElasticity, _beShootShakeValue);
+        _pv.RPC("Rpc_SetValue", RpcTarget.All, GrenadeSpeed, GrenadeDamage, GrenadeScaleValue, GrenadeBeElasticity, _cameraShakeValue);
         _rb.AddForce(GrenadeSpeed * transform.right);
         isMaster = true;
     }
@@ -95,19 +96,20 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         }
     }
 
+    //一秒後爆炸
     IEnumerator Boom()
     {
         yield return new WaitForSeconds(1f);
         _pv.RPC("Rpc_Explose", RpcTarget.All);
         if (_pv.IsMine)
         {
-            if (_isBounceBullet)
+            if (_isBounceBullet)//如果是反彈後(Shield)
             {
                 GameObject obj = ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
                 Effect effect = obj.GetComponent<Effect>();
                 effect.ChangeColor(_effectChangeColor);
             }
-            else
+            else //如果不是反彈後(Shield)
             {
                 ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
             }
@@ -116,20 +118,20 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
-    private void Explose()
+    private void Explose()//爆炸事件
     {
         Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, FieldExplose, LayerToExplose);
         foreach (Collider2D obj in objects)
         {
             PlayerController _playerController = obj.GetComponent<PlayerController>();
-            if (isMaster == _playerController.Pv.IsMine&& isMaster)
+            if (isMaster == _playerController.Pv.IsMine&& isMaster)//如果是Master
             {
                 _playerController.BeExplode(GrenadeBeElasticity, transform.position, FieldExplose);
             }
 
-            if (isMaster != _playerController.Pv.IsMine && !_playerController.Pv.IsMine)
+            if (isMaster != _playerController.Pv.IsMine && !_playerController.Pv.IsMine)//如果不是Master
             {
-                _playerController.TakeDamage(GrenadeDamage, _beShootShakeValue.x, _beShootShakeValue.y, _beShootShakeValue.z);
+                _playerController.TakeDamage(GrenadeDamage, _cameraShakeValue.x, _cameraShakeValue.y, _cameraShakeValue.z);
                 _playerController.BeExplode(GrenadeBeElasticity, transform.position, FieldExplose);
                 var IsKill = _playerController.IsKillAnyone();
                 if (IsKill)
@@ -143,10 +145,10 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
 
     protected virtual void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))//碰到玩家
         {
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
-            if (_playerController.IsShield && !isMaster)
+            if (_playerController.IsShield && !isMaster)//如果玩家有發動Shield
             {
                 Vector2 dir = _playerController.transform.position - gameObject.transform.position;
                 _effectChangeColor = CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
@@ -157,13 +159,19 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         }
     }
 
+
+    /// <summary>
+    /// RPC
+    /// </summary>
+    #region -- RPC Event --
     [PunRPC]
-    void ChangeColor(Vector3 color)
+    void ChangeColor(Vector3 color)//同步顏色
     {
         Color _color = new Color(color.x, color.y, color.z);
         transform.GetComponent<SpriteRenderer>().color = _color;
     }
 
+    //同步發射後的數值
     [PunRPC]
     protected void Rpc_SetValue(float _speed, float _damage, float _scaleValue, float _elasticity,Vector3 _beShotShake)
     {
@@ -172,29 +180,29 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         GrenadeScaleValue = _scaleValue;
         transform.localScale = new Vector3(GrenadeScaleValue, GrenadeScaleValue, GrenadeScaleValue);
         GrenadeBeElasticity = _elasticity;
-        _beShootShakeValue = _beShotShake;
+        _cameraShakeValue = _beShotShake;
     }
 
     [PunRPC]
-    public void Rpc_Explose()
+    public void Rpc_Explose()//同步爆炸
     {
         Explose();
     }
 
     [PunRPC]
-    protected void Rpc_DisableObj()
+    protected void Rpc_DisableObj()//同步關閉
     {
         gameObject.SetActive(false);
     }
 
     [PunRPC]
-    protected void Rpc_EnableObj()
+    protected void Rpc_EnableObj()//同步開啟
     {
         gameObject.SetActive(true);
     }
 
     [PunRPC]
-    protected void Rpc_ResetPos(Vector3 pos, Quaternion dir)
+    protected void Rpc_ResetPos(Vector3 pos, Quaternion dir)//同步Pos Dir
     {
         transform.position = pos;
         transform.rotation = dir;
@@ -203,15 +211,18 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     }
 
     [PunRPC]
-    void Rpc_ChangeAngles(Vector2 _dir,Vector3 _color)
+    void Rpc_ChangeAngles(Vector2 _dir,Vector3 _color)//同步改變角度
     {
         _effectChangeColor = new Color(_color.x, _color.y, _color.z);
         _rb.AddForce(-1 * GrenadeSpeed * _dir);
         isMaster = false;
         _isBounceBullet = true;
     }
+    #endregion
 
-
+    /// <summary>
+    /// 讓用戶自定義的component被Photon View監聽
+    /// </summary>
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

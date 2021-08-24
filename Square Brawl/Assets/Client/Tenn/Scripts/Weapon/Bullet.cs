@@ -42,7 +42,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    private void SetColor()
+    private void SetColor()//設定Bullet顏色，並同步到客戶端
     {
         Color _color = transform.GetComponent<SpriteRenderer>().color =
             CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
@@ -59,6 +59,9 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
+    /// <summary>
+    /// Shoot Event
+    /// </summary>
     public void ShootEvent(string _name,float _speed,float _damage,float _scaleValue,float _elasticity,bool _isStraight,bool _isSniper, Vector3 _cameraShakeValue)
     {
         ExploseEffectName = _name;
@@ -70,7 +73,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         _isDontShootStraight = _isStraight;
         this._isSniper = _isSniper;
         this._cameraShakeValue = _cameraShakeValue;
-        if (_isBounceBullet)
+        if (_isBounceBullet)//是否是反彈後的子彈(Shield)
         {
             SetColor();
             _isBounceBullet = false;
@@ -89,7 +92,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     {
         BulletCollider();//Bullet Collider Raycast
 
-        if (_isSniper)
+        if (_isSniper)//如果是Sniper，傷害隨時間增加
         {
             BulletDamage += 200 * Time.deltaTime;
         }
@@ -107,17 +110,17 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
         }
     }
 
-    void BulletCollider()
+    void BulletCollider()//Bullet的Ray Collider
     {
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position - new Vector3(transform.localScale.x / 2, 0, 0), transform.right, transform.localScale.x*2);
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].collider.gameObject.CompareTag("Player"))
+            if (hits[i].collider.gameObject.CompareTag("Player"))//射到玩家
             {
                 PlayerController _playerController = hits[i].collider.gameObject.GetComponent<PlayerController>();
-                if (!_playerController.IsShield) 
+                if (!_playerController.IsShield) //對方沒有發動Shield
                 {
-                    if(_isMaster != _playerController.Pv.IsMine && !_playerController.Pv.IsMine)
+                    if(_isMaster != _playerController.Pv.IsMine && !_playerController.Pv.IsMine)//如果是Master
                     {
                         float DirX = Mathf.Cos(transform.eulerAngles.z * Mathf.PI / 180);
                         float DirY = Mathf.Sin(transform.eulerAngles.z * Mathf.PI / 180);
@@ -135,7 +138,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                         }
                         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
                     }
-                    else if (_isMaster != _playerController.Pv.IsMine && !_isMaster)
+                    else if (_isMaster != _playerController.Pv.IsMine && !_isMaster)//如果不是Master
                     {
                         if (_pv.IsMine&&_isBounceBullet)
                         {
@@ -146,7 +149,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                         gameObject.SetActive(false);
                     }
                 }
-                else
+                else //對方有發動Shield
                 {
                     if (_isMaster != _playerController.Pv.IsMine && _playerController.Pv.IsMine&& !_isBounceBullet)
                     {
@@ -158,17 +161,17 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                     }
                 }
             }
-            else if (hits[i].collider.gameObject.CompareTag("Ground"))
+            else if (hits[i].collider.gameObject.CompareTag("Ground")&& hits[i].collider.gameObject.CompareTag("Saw"))//碰到地面或Saw
             {
                 if (_pv.IsMine)
                 {
-                    if ( _isBounceBullet)
+                    if ( _isBounceBullet)//如果是被反彈的子彈(Shield)
                     {
                         GameObject obj = ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
                         Effect effect = obj.GetComponent<Effect>();
                         effect.ChangeColor(_effectChangeColor);
                     }
-                    else
+                    else //如果不是被反彈的子彈(Shield)
                     {
                         ObjectsPool.Instance.SpawnFromPool(ExploseEffectName, transform.position, transform.rotation, null);
                     }
@@ -183,6 +186,12 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     }
 
 
+    /// <summary>
+    /// RPC
+    /// </summary>
+    #region -- Rpc Event --
+
+    //同步Bullet發射後的數值
     [PunRPC]
     public void Rpc_SetValue(float _speed, float _damage, float _scaleValue , float _elasticity, bool IsDontShoot,Vector3 _beShotShake)
     {
@@ -196,26 +205,26 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     }
 
     [PunRPC]
-    void ChangeColor(Vector3 color)
+    void ChangeColor(Vector3 color)//同步Bullet顏色
     {
         Color _color = new Color(color.x, color.y, color.z);
         transform.GetComponent<SpriteRenderer>().color = _color;
     }
 
     [PunRPC]
-    void Rpc_DisableObj()
+    void Rpc_DisableObj()//同步關掉Bullet
     {
         gameObject.SetActive(false);
     }
 
     [PunRPC]
-    void Rpc_EnableObj()
+    void Rpc_EnableObj()//同步開啟Bullet
     {
         gameObject.SetActive(true);
     }
 
     [PunRPC]
-    void Rpc_ResetPos(Vector3 pos, Quaternion dir)
+    void Rpc_ResetPos(Vector3 pos, Quaternion dir)//同步Pos與Dir
     {
         transform.position = pos;
         transform.rotation = dir;
@@ -224,15 +233,18 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
     }
 
     [PunRPC]
-    void Rpc_ChangeAngles(Vector3 _dir,Vector3 _color)
+    void Rpc_ChangeAngles(Vector3 _dir,Vector3 _color)//同步被反彈後的數值(Shield)
     {
         _effectChangeColor = new Color(_color.x, _color.y, _color.z);
         transform.eulerAngles = _dir;
         _isBounceBullet = true;
         _isMaster = false;
     }
+    #endregion
 
-
+    /// <summary>
+    /// 讓用戶自定義的component被Photon View監聽
+    /// </summary>
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

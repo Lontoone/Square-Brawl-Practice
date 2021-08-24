@@ -13,7 +13,7 @@ public class Bounce : MonoBehaviour,IPoolObject
 
     public string BounceExploseEffectName;
 
-    private Vector3 _beShootShakeValue;
+    private Vector3 _cameraShakeValue;
 
     [HeaderAttribute("Laser Setting")]
     private int _laserDistance = 100; //max raycasting distance
@@ -59,7 +59,7 @@ public class Bounce : MonoBehaviour,IPoolObject
         }
     }
 
-    private void SetColor()
+    private void SetColor()//設定Bounce顏色，並同步到客戶端
     {
         Color _color = CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
         _laserRenderer.startColor = _laserRenderer.endColor = new Color(_color.r,_color.g,_color.b,0);
@@ -67,17 +67,17 @@ public class Bounce : MonoBehaviour,IPoolObject
         _pv.RPC("ChangeColor", RpcTarget.Others, new Vector3(_color.r, _color.g, _color.b));
     }
 
-    public void BounceEvent (int _damage,float _beElasticity,string _effectName,Vector2 _dir,Vector3 _beShotShake)
+    public void BounceEvent (int _damage,float _beElasticity,string _effectName,Vector2 _dir,Vector3 _beShotShake)//Bounce發動事件，並同步數值到客戶端
     {
         BounceDamage = _damage;
         BounceBeElasticity = _beElasticity;
         BounceExploseEffectName = _effectName;
         _prevPos = transform.position;
         _prevDir = _dir;
-        _beShootShakeValue = _beShotShake;
+        _cameraShakeValue = _beShotShake;
         ShootBounce(transform.position, _dir);
         _pv.RPC("Rpc_ResetPos", RpcTarget.Others, transform.position, transform.rotation);
-        _pv.RPC("Rpc_ShootBounce", RpcTarget.Others, _prevPos, _dir, BounceDamage, BounceBeElasticity, _beShootShakeValue);
+        _pv.RPC("Rpc_ShootBounce", RpcTarget.Others, _prevPos, _dir, BounceDamage, BounceBeElasticity, _cameraShakeValue);
     }
 
     void Update()
@@ -85,7 +85,7 @@ public class Bounce : MonoBehaviour,IPoolObject
         IsBounceEvent();
     }
 
-    public void ShootBounce(Vector2 _pos,Vector2 _dir)
+    public void ShootBounce(Vector2 _pos,Vector2 _dir)//LineRenderer製造Bounce外觀
     {
         Physics2D.queriesStartInColliders = false;
         _isBounce = true;
@@ -97,7 +97,7 @@ public class Bounce : MonoBehaviour,IPoolObject
         {
             RaycastHit2D hit = Physics2D.Raycast(_pos, _dir, _laserDistance, ~LayerToExplose);
 
-            if (hit.collider.gameObject.CompareTag("Ground")|| hit.collider.gameObject.CompareTag("Saw"))
+            if (hit.collider.gameObject.CompareTag("Ground")|| hit.collider.gameObject.CompareTag("Saw"))//碰到Ground或Saw後反射
             {
                 vertexCounter+=3;
                 _laserRenderer.positionCount = vertexCounter;
@@ -120,13 +120,13 @@ public class Bounce : MonoBehaviour,IPoolObject
             if (!_isChangeColor)
             {
                 _laserTransparency += Time.deltaTime;
-                if (_laserWidth <= 0.1f)
+                if (_laserWidth <= 0.1f)//淡入
                 {
                     _laserWidth += Time.deltaTime*0.1f;
                 }
                 LaserColorAndWidth(_laserTransparency, _laserWidth);
                 
-                if (_laserTransparency >= 1)
+                if (_laserTransparency >= 1)//_laserTransparency大於1，加入EdgeCollider
                 {
                     if (_pv.IsMine)
                     {
@@ -134,7 +134,7 @@ public class Bounce : MonoBehaviour,IPoolObject
                         {
                             ObjectsPool.Instance.SpawnFromPool(BounceExploseEffectName, HitGroundPos[i], transform.rotation, null);
                         }
-                        CameraShake.instance.SetShakeValue(_beShootShakeValue.x, _beShootShakeValue.y, _beShootShakeValue.z);
+                        CameraShake.instance.SetShakeValue(_cameraShakeValue.x, _cameraShakeValue.y, _cameraShakeValue.z);
                     }
                     _edgeCollider.points = HitGroundLocalPos.ToArray();
                     _isChangeColor = true;
@@ -143,7 +143,7 @@ public class Bounce : MonoBehaviour,IPoolObject
             else if (_isChangeColor)
             {
                 _laserTransparency -= Time.deltaTime * 1.5f;
-                if (_laserWidth >= 0.5f)
+                if (_laserWidth >= 0.5f)//淡出
                 {
                     _laserWidth -= Time.deltaTime * 0.1f;
                 }
@@ -158,7 +158,7 @@ public class Bounce : MonoBehaviour,IPoolObject
                     _edgeCollider.points = HitGroundLocalPos.ToArray();
                 }
 
-                if (_laserTransparency <= 0)
+                if (_laserTransparency <= 0)//_laserTransparency等於0，Reset
                 {
                     _isChangeColor = _isBounce = false;
                     HitGroundPos.Clear();
@@ -169,7 +169,7 @@ public class Bounce : MonoBehaviour,IPoolObject
         }
     }
 
-    void LaserColorAndWidth(float _laserTransparency, float _laserWidth)
+    void LaserColorAndWidth(float _laserTransparency, float _laserWidth)//設定Laser的顏色和寬度
     {
         _laserRenderer.startColor = new Color(_laserRenderer.startColor.r, _laserRenderer.startColor.g, _laserRenderer.startColor.b, _laserTransparency);
         _laserRenderer.endColor = new Color(_laserRenderer.endColor.r, _laserRenderer.endColor.g, _laserRenderer.endColor.b, _laserTransparency);
@@ -179,13 +179,13 @@ public class Bounce : MonoBehaviour,IPoolObject
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))//Bounce碰到玩家
         {
             PlayerController _playerController = other.gameObject.GetComponent<PlayerController>();
 
             if (_pv.IsMine != _playerController.Pv.IsMine && !_playerController.Pv.IsMine && !_playerController.IsBounce)
             {
-                _playerController.DamageEvent(BounceDamage, BounceBeElasticity, _prevDir.x, _prevDir.y, _beShootShakeValue);
+                _playerController.DamageEvent(BounceDamage, BounceBeElasticity, _prevDir.x, _prevDir.y, _cameraShakeValue);
                 _playerController.IsBounceTrue();
                 var IsKill = _playerController.IsKillAnyone();
                 if (IsKill)
@@ -197,40 +197,45 @@ public class Bounce : MonoBehaviour,IPoolObject
         }
     }
 
+    /// <summary>
+    /// RPC
+    /// </summary>
+    #region -- RPC Event --
     [PunRPC]
-    void ChangeColor(Vector3 color)
+    void ChangeColor(Vector3 color)//同步顏色
     {
         Color _color = new Color(color.x, color.y, color.z);
         _laserRenderer.startColor = _laserRenderer.endColor = new Color(_color.r, _color.g, _color.b, 0);
     }
 
     [PunRPC]
-    public void Rpc_EnableObj()
+    public void Rpc_EnableObj()//同步開啟Bounce
     {
         gameObject.SetActive(true);
     }
 
     [PunRPC]
-    public void Rpc_DisableObj()
+    public void Rpc_DisableObj()//同步關閉Bounce
     {
         gameObject.SetActive(false);
     }
 
     [PunRPC]
-    public void Rpc_ResetPos(Vector3 pos, Quaternion dir)
+    public void Rpc_ResetPos(Vector3 pos, Quaternion dir)//同步初始Pos和Dir
     {
         transform.position = pos;
         transform.rotation = dir;
     }
 
     [PunRPC]
-    void Rpc_ShootBounce(Vector2 _pos, Vector2 _dir, int _damage, float _beElasticity,Vector3 _beShotShake)
+    void Rpc_ShootBounce(Vector2 _pos, Vector2 _dir, int _damage, float _beElasticity,Vector3 _beShotShake)//同步發射Bounce後的數值
     {
         _prevPos = _pos;
         _prevDir = _dir;
         BounceDamage = _damage;
         BounceBeElasticity = _beElasticity;
-        _beShootShakeValue = _beShotShake;
+        _cameraShakeValue = _beShotShake;
         ShootBounce(_pos, _dir);
     }
+    #endregion
 }

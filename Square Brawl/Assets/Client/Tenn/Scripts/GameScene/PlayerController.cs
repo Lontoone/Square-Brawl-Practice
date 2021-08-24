@@ -605,7 +605,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         if (other.gameObject.CompareTag("Katada") && !Pv.IsMine && !IsShield)//被Katana打到
         {
             Katada _katada = other.gameObject.GetComponent<Katada>();
-            _katada.KatadaCollider(this);
+            _katada.KatanaCollider(this);
         }
         else if (other.gameObject.CompareTag("Shield") && !Pv.IsMine && !IsBeShield)//被Shield打到
         {
