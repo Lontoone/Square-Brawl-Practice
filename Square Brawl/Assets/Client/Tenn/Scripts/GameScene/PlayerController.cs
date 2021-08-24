@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
     }
     /// <summary>
-    /// Player  Control
+    /// Player Control
     /// </summary>
     #region -- Player Control --
     void PlayerMovement()
@@ -325,7 +325,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     #endregion
 
     /// <summary>
-    /// Player Damage And BeBounce Event
+    /// Player Damage And BeBounce
     /// </summary>
     #region -- Player Damage And BeBounce Event --
     public void DamageEvent(float _damage, float _beElasticity, float _dirX, float _dirY, Vector3 _beShootShake)
@@ -363,7 +363,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
     #endregion
 
-
+    /// <summary>
+    /// Player Recoil
+    /// </summary>
     #region -- Player Recoil Event --
     public void PlayerRecoil(float _recoil)
     {
@@ -375,7 +377,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
     #endregion
 
-
+    /// <summary>
+    /// Player Charge
+    /// </summary>
     #region -- Player Charge Event --
     public void ChargeEvent(float _speed, float _elasticity, float _damage, Vector3 _beShotShake)
     {
@@ -390,7 +394,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
     #endregion
 
-
+    /// <summary>
+    /// Player Freeze
+    /// </summary>
     #region -- Player Freeze Event --
     public void FreezeEvent(float _viewDistance, int viewCount, Vector3 _beShootShake)
     {
@@ -430,7 +436,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
     #endregion
 
-
+    /// <summary>
+    /// Bounce
+    /// </summary>
     #region -- Bounce Event --
     public void IsBounceTrue()
     {
@@ -444,7 +452,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
     #endregion
 
-
+    /// <summary>
+    /// Ground Check
+    /// </summary>
     #region -- Ground Check Event --
     void GroundCheckEvent()
     {
@@ -488,7 +498,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
     #endregion
 
-
+    /// <summary>
+    /// Shield
+    /// </summary>
     #region -- ShieldEvent --
     public void IsShieldTrue()
     {
@@ -578,6 +590,10 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
     }
 
+    /// <summary>
+    /// RPC
+    /// </summary>
+    #region -- RPC Event --
     [PunRPC]
     void ChangeColor(Vector3 color)
     {
@@ -731,6 +747,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         IsBeFreeze = false;
         _rb.bodyType = RigidbodyType2D.Dynamic;
     }
+    #endregion
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
