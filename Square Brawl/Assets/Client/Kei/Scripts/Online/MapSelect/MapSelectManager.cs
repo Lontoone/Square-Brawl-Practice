@@ -57,9 +57,9 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
     public void LoadMapList()
     {
         ClearContainer();
+        mapDatas.AddRange(LoadTileHelper.LoadTileMaps());
         if (!Directory.Exists(SaveTile.SAVE_FOLDER.CombinePersistentPath())) { return; }
 
-        mapDatas.AddRange(LoadTileHelper.LoadTileMaps());
         /*
         filePaths = Directory.GetFiles(SaveTile.SAVE_FOLDER.CombinePersistentPath());
         Debug.Log(" [Load Map] " + filePaths.Length);

@@ -47,6 +47,10 @@ public class TileMapSetUpManager : MonoBehaviour
 
     private void SetUpLevelTiles(MapData _mapData)
     {
+        if (_mapData == null)
+        {
+            return;
+        }
         activeTileCells.Clear();
         int _dataCount = 0;
         for (int i = 0; i < TileMapManager.instance.cellCount; i++)
