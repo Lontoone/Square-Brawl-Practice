@@ -22,6 +22,7 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
     }
     public override void OnEnable()
     {
+        base.OnEnable();
         CreatePlayerItem();
         PhotonNetwork.AddCallbackTarget(this);
     }

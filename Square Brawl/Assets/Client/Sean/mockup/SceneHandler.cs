@@ -706,10 +706,17 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         if (OptionSetting.TRANSITIONANIMATION)
         {
-            var time = 0f;
-            yield return new WaitForSeconds(time);
-            m_CharacterSelection.SetActive(true);
-            animator.Play("EnterCharacterSelection");
+            if (m_GameMode.activeSelf)
+            {
+                m_CharacterSelection.SetActive(true);
+                yield return new WaitForSeconds(m_AnimationClips[17].length);
+                animator.Play("BackToCharacterSelection");
+            }
+            else
+            { 
+                m_CharacterSelection.SetActive(true);
+                animator.Play("EnterCharacterSelection");
+            }
         }
         else
         {
@@ -760,12 +767,9 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         if (OptionSetting.TRANSITIONANIMATION)
         {
-            if (m_GameMode.activeSelf)
-            {
-                animator.Play("ExitGameMode");
-                yield return new WaitForSeconds(m_AnimationClips[17].length);
-                m_GameMode.SetActive(false);
-            }
+            animator.Play("ExitGameMode");
+            yield return new WaitForSeconds(m_AnimationClips[17].length);
+            m_GameMode.SetActive(false);
         }
         else
         {
