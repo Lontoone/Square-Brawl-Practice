@@ -77,24 +77,15 @@ public class ResultManager : MonoBehaviour
     {
         resultPanel.SetActive(true);
         resultPanelPos.DOAnchorPos(Vector2.zero, 0.5f);
-        ResetWeapon(_winner);
+        PlayerController.instance.IsBeFreeze = true;
+        SetWinner(_winner);
     }
 
-    void ResetWeapon(Player _winner)
+    void SetWinner(Player _winner)
     {
         WinnerController _item = Instantiate(winnerItem, resultListContainer.transform);
         _item.SetWinner(_winner);
         OnDisableResult?.Invoke();
-
-        /*PhotonNetwork.LocalPlayer.SetCustomProperties(
-                               MyPhotonExtension.WrapToHash(
-                                   new object[] { CustomPropertyCode.WEAPON1CODE, WeaponType.None }
-                               ));
-
-        PhotonNetwork.LocalPlayer.SetCustomProperties(
-                               MyPhotonExtension.WrapToHash(
-                                   new object[] { CustomPropertyCode.WEAPON2CODE, WeaponType.None }
-                               ));*/
     }
 
     public void EndGame()

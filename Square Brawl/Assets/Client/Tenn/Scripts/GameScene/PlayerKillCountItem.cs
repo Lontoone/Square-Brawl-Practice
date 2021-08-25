@@ -34,10 +34,17 @@ public class PlayerKillCountItem : MonoBehaviourPunCallbacks
     public void SetKillCount(Player _p)
     {
         int index = 0;
+        bool isOver = false;
         player = _p;
         index = (int)_p.CustomProperties["KillCount"];
-        KillCountText.text = index.ToString();
-        if (index >= 10)
+        isOver = (bool)_p.CustomProperties["isOver"];
+
+        if (!isOver)
+        {
+            KillCountText.text = index.ToString();
+        }
+
+        if (index >= 3)
         {
             ResultManager.ResultCaller(_p);
         }

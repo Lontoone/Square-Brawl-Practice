@@ -418,7 +418,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         {
             Vector3 _freezeRay = Quaternion.Euler(0, 0, (35 / viewCount) * i) * _freezeLeftRay;
             int mask = LayerMask.GetMask("Player");
+            int mask2 = LayerMask.GetMask("EditorView");
             RaycastHit2D FreezeHit = Physics2D.Raycast(_originPos, _freezeRay, _viewDistance, mask);
+            RaycastHit2D GroundHit = Physics2D.Raycast(_originPos, _freezeRay, _viewDistance, mask2);
             Color color = FreezeHit ? Color.red : Color.green;
             if (FreezeHit)
             {
@@ -427,6 +429,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
                 {
                     _playerController.BeFreezeEvent(_playerController.transform.position, _playerController.transform.rotation, _beShootShakeValue);
                 }
+            }else if (GroundHit)
+            {
+                Debug.Log("OK");
             }
             //Debug.DrawLine(_originPos, _originPos + _freezeRay, color);
         }
@@ -750,7 +755,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         {
             CameraShake.instance.SetShakeValue(_beShotAhake.x, _beShotAhake.y, _beShotAhake.z);
         }
-        _rb.bodyType = RigidbodyType2D.Static;
+        _rb.bodyType = RigidbodyType2D.Kinematic;
+        _rb.velocity=Vector2.zero;
     }
 
     [PunRPC]

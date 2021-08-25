@@ -74,7 +74,7 @@ public class Katada : MonoBehaviour,IPoolObject,IPunObservable
         StartCoroutine(DestroyObj());
     }
 
-    //Katana Collider
+    //對手被Katana碰撞
     public void KatanaCollider(PlayerController _playerController)
     {
         if (_pv.IsMine)

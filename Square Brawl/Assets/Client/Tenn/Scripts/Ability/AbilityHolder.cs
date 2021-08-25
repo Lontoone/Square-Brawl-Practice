@@ -19,7 +19,7 @@ public class AbilityHolder : MonoBehaviour
 
     public Ability[] ability;
 
-    private PlayerController _playerController;
+    //private PlayerController _playerController;
     private PlayerInputManager _inputAction;
     private PhotonView _pv;
     public Player _player;
@@ -55,7 +55,7 @@ public class AbilityHolder : MonoBehaviour
 
     void Awake()
     {
-        _playerController = GetComponentInParent<PlayerController>();
+        //_playerController = GetComponentInParent<PlayerController>();
         _pv = GetComponent<PhotonView>();
         _inputAction = new PlayerInputManager();
         ResultManager.OnDisableResult += OnDisableThis;
@@ -128,7 +128,7 @@ public class AbilityHolder : MonoBehaviour
 
     void Update()
     {
-        if (!_pv.IsMine || _playerController.IsBeFreeze)
+        if (!_pv.IsMine || PlayerController.instance.IsBeFreeze)
         {
             return;
         }

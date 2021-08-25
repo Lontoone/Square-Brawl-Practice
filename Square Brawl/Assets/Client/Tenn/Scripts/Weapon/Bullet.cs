@@ -161,7 +161,7 @@ public class Bullet : MonoBehaviour, IPoolObject,IPunObservable
                     }
                 }
             }
-            else if (hits[i].collider.gameObject.CompareTag("Ground")&& hits[i].collider.gameObject.CompareTag("Saw"))//碰到地面或Saw
+            else if (hits[i].collider.gameObject.CompareTag("Ground")|| hits[i].collider.gameObject.CompareTag("Saw"))//碰到地面或Saw
             {
                 if (_pv.IsMine)
                 {

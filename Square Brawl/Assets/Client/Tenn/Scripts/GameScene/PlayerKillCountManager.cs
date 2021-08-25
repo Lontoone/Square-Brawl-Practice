@@ -11,6 +11,8 @@ public class PlayerKillCountManager : MonoBehaviourPunCallbacks
 {
     private int _killCount;
 
+    private bool isOver;
+
     public Transform playerItemParent;
 
     public PlayerKillCountItem playerItemPrefab;
@@ -35,18 +37,21 @@ public class PlayerKillCountManager : MonoBehaviourPunCallbacks
                 Player _player = PhotonNetwork.PlayerList[i];
                 _item.SetPlayer(_player);
             }
+            _myCustom["isOver"] = false;
+            _myCustom["KillCount"] = 0;
+            PhotonNetwork.SetPlayerCustomProperties(_myCustom);
         }
-        _myCustom["KillCount"] = 0;
-        PhotonNetwork.SetPlayerCustomProperties(_myCustom);
     }
 
     public void SetKillCount()
     {
         _killCount++;
         _myCustom["KillCount"] = _killCount;
+        _myCustom["isOver"] = false;
         PhotonNetwork.SetPlayerCustomProperties(_myCustom);
-        if (_killCount >= 10)
+        if (_killCount >= 3)
         {
+            _myCustom["isOver"] = true;
             _myCustom["KillCount"] = 0;
             PhotonNetwork.SetPlayerCustomProperties(_myCustom);
         }
