@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using DG.Tweening;
 using TMPro;
 
-public class WeaponPreview : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class WeaponPreview : MonoBehaviour
 {
     public int WeaponNumber;
     public VideoPlayer videoPlayer;
@@ -19,7 +19,6 @@ public class WeaponPreview : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public TextMeshProUGUI text;
 
     private Sequence sequence;
-    private bool enterButton = false;
 
     private void PlayPreview()
     {
@@ -53,28 +52,5 @@ public class WeaponPreview : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 .Join(weaponName[WeaponNumber]
                     .DOColor(new Color(1, 1, 1, 0f), 0.3f)
                     .SetEase(Ease.OutCirc));
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        /*if (eventData.button == PointerEventData.InputButton.Right && enterButton == true)
-        {
-            PlayPreview();
-        }*/
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)    //滑鼠移入
-    {
-        PlayPreview();
-        //enterButton = true;
-        //text.DOColor(new Color(0.7f, 0.7f, 0.7f, 1), 0.3f).SetEase(Ease.OutCirc);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)    //滑鼠移出
-    {
-        ExitPreview();
-        //enterButton = false;
-        //text.DOColor(new Color(1, 1, 1, 0), 0.3f).SetEase(Ease.OutCirc);
-        //videoPlayer.clip = myclip[0];
     }
 }

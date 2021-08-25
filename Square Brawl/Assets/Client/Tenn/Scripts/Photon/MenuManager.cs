@@ -17,7 +17,7 @@ public class MenuManager : MonoBehaviour
         {
             menus.Add(_menu);
         }*/
-        OpenMenu("title");
+        //OpenMenu("title");
     }
 
 

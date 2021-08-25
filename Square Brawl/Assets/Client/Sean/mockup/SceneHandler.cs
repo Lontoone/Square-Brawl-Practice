@@ -52,6 +52,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     public static Color32 orange;
     public static Color32 red;
     public static Color32 blue;
+
+    private bool isLoading = false;
     public enum axis {x = 0, y = 1, cons = 2}
     public enum AnimationEnd
     { 
@@ -479,7 +481,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         if (OptionSetting.TRANSITIONANIMATION)
         {
-            yield return new WaitForSeconds(m_AnimationClips[5].length);
+            yield return new WaitUntil(() => { return isLoading == false; });
             m_NameInput.SetActive(true);
             animator.Play("EnterName");
         }
@@ -517,29 +519,29 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         if (OptionSetting.TRANSITIONANIMATION)
         {
             var time = 0f;
-            if (m_NameInput.activeSelf || m_CreateRoom.activeSelf || m_RoomList.activeSelf || m_Loading.activeSelf)
+
+            if (m_NameInput.activeSelf)
             {
-                if (m_NameInput.activeSelf)
-                {
-                    time = m_AnimationClips[3].length;
-                }
-                else if (m_CreateRoom.activeSelf)
-                {
-                    time = m_AnimationClips[9].length;
-                }
-                else if (m_RoomList.activeSelf)
-                {
-                    time = m_AnimationClips[11].length;
-                }
-                else if (m_Loading.activeSelf)
-                {
-                    time = m_AnimationClips[5].length;
-                }
-                yield return new WaitForSeconds(time);
-                m_Loading.SetActive(false);     //Todo : 關掉Room的時候流程問題
-                m_Lobby.SetActive(true);
-                animator.Play("EnterLobby");
+                time = m_AnimationClips[3].length;
             }
+            else if (m_CreateRoom.activeSelf)
+            {
+                time = m_AnimationClips[9].length;
+            }
+            else if (m_RoomList.activeSelf)
+            {
+                time = m_AnimationClips[11].length;
+            }
+            else if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "ExitRoom")
+            {
+                time = m_AnimationClips[13].length;
+            }
+            Debug.LogError("Enter Lobby" + time);
+            yield return new WaitForSeconds(time);
+            yield return new WaitUntil(() => { return isLoading == false; });
+            Debug.LogError("Play Enter Lobby");
+            m_Lobby.SetActive(true);
+            animator.Play("EnterLobby");
         }
         else
         {
@@ -591,6 +593,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         {
             if (m_CreateRoom.activeSelf)
             {
+                Debug.LogError("Exit CreateRoom");
                 animator.Play("ExitCreateRoom");
                 yield return new WaitForSeconds(m_AnimationClips[9].length);
                 m_CreateRoom.SetActive(false);
@@ -648,29 +651,27 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterRoom()
     {
-        if (m_CreateRoom.activeSelf || m_RoomList.activeSelf)
+        if(OptionSetting.TRANSITIONANIMATION)
         {
-            m_Room.SetActive(true);
-            animator.Play("EnterRoom");
-        }
-        else if(OptionSetting.TRANSITIONANIMATION)
-        {
+            Debug.LogError("Enter Room");
+            var time = 0f;
             if (m_CharacterSelection.activeSelf)
             {
-                Debug.LogError("N");
-                var time = 0f;
-                if (m_CharacterSelection.activeSelf)
-                {
-                    time = m_AnimationClips[15].length;
-                }
-                else if (m_Loading.activeSelf)
-                {
-                    time = m_AnimationClips[5].length;
-                }
-                yield return new WaitForSeconds(time);
-                animator.Play("EnterRoom");
-                m_Room.SetActive(true);
+                time = m_AnimationClips[15].length;
             }
+            else if (m_CreateRoom.activeSelf)
+            {
+                time = m_AnimationClips[9].length;
+            }
+            else if (m_RoomList.activeSelf)
+            {
+                time = m_AnimationClips[11].length;
+            }
+            yield return new WaitForSeconds(time);
+            yield return new WaitUntil(() => { return isLoading == false; });
+            animator.Play("EnterRoom");
+            m_Room.SetActive(true);
+            Debug.LogError("Play Enter Room");
         }
         else
         {
@@ -683,9 +684,11 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         if (OptionSetting.TRANSITIONANIMATION)
         {
+            Debug.LogError("Exit Room");
             //Todo : 關掉Room的時候流程問題
             if (m_Room.activeSelf)
             {
+                Debug.LogError("Play Exit Room");
                 animator.Play("ExitRoom");
                 yield return new WaitForSeconds(m_AnimationClips[13].length);
                 m_Room.SetActive(false);
@@ -867,62 +870,51 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterLoading()
     {
-        if (m_CreateRoom.activeSelf || m_RoomList.activeSelf)
-        {
-            m_Loading.SetActive(false);
-        }
-        else
-        {
-            m_Loading.SetActive(true);
-            animator.Play("NoneLoading");
-        }
+        isLoading = true;
 
-
-        if (false)
-        {
-            yield return null;
-        }
-        /*
-        if (m_CreateRoom.activeSelf)
-        { 
-            m_Loading.SetActive(false);
-        }
-        else if (OptionSetting.TRANSITIONANIMATION)
+        if (OptionSetting.TRANSITIONANIMATION)
         {
             var time = 0f;
-            if (m_CreateRoom.activeSelf)
+            if (m_CreateRoom.activeSelf) //create room to room
             {
                 time = m_AnimationClips[9].length;
             }
-            else if (m_RoomList.activeSelf)
+            else if (m_RoomList.activeSelf) // find room to room
             {
                 time = m_AnimationClips[11].length;
             }
-            else if (m_Room.activeSelf)
+            else if (m_Room.activeSelf) // room back to lobby
             {
                 time = m_AnimationClips[13].length;
             }
+            Debug.LogError("Enter Loading" + "\tm_CreateRoom.activeSelf: " + m_CreateRoom.activeSelf + "\tm_Room.activeSelf: " + m_Room.activeSelf);
             yield return new WaitForSeconds(time);
-            m_Loading.SetActive(true);
-            animator.Play("Loading");
+            if (isLoading == true)
+            {
+                Debug.LogError("Play Loading");
+                m_Loading.SetActive(true);
+                animator.Play("Loading");
+            }
         }
         else
         {
             m_Loading.SetActive(true);
             animator.Play("NoneLoading");
-        }*/
+        }
     }
 
     private IEnumerator ExitLoading()
     {
-        //Todo : 關掉Room的時候流程問題
-        if (m_Loading.activeSelf)
+        Debug.LogError("Exit Loading");
+        if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Loading")
         {
-            Debug.LogError("X");
+            Debug.LogError("Play ExitLoading");
             animator.Play("ExitLoading");
             yield return new WaitForSeconds(m_AnimationClips[5].length);
             m_Loading.SetActive(false);
         }
+
+        isLoading = false;
     }
 
     #endregion
