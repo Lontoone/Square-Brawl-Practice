@@ -16,10 +16,14 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
 
     private List<ColorSetButton> colorBtns = new List<ColorSetButton>();
 
-    private void Start()
+    private void Awake()
+    {
+        CreateButtonItem();
+    }
+    public override void OnEnable()
     {
         CreatePlayerItem();
-        CreateButtonItem();
+        PhotonNetwork.AddCallbackTarget(this);
     }
 
     private void CreateButtonItem()

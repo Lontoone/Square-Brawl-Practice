@@ -613,12 +613,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         if (OptionSetting.TRANSITIONANIMATION)
         {
-            if (m_Lobby.activeSelf)
-            {
-                m_RoomList.SetActive(true);
-                animator.Play("EnterRoomList");
-                yield return null;
-            }
+            m_RoomList.SetActive(true);
+            animator.Play("EnterRoomList");
+            yield return null;
+           
         }
         else
         {
