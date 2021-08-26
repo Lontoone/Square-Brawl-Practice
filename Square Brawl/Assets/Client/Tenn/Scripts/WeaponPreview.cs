@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using DG.Tweening;
 using TMPro;
 
-public class WeaponPreview : MonoBehaviour
+public class WeaponPreview : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public int WeaponNumber;
     public VideoPlayer videoPlayer;
@@ -39,8 +39,6 @@ public class WeaponPreview : MonoBehaviour
 
     private void ExitPreview()
     {
-        videoPlayer.clip = myclip[0];
-
         sequence.Kill();
         sequence = DOTween.Sequence();
         sequence.Append(rawImage
@@ -52,5 +50,15 @@ public class WeaponPreview : MonoBehaviour
                 .Join(weaponName[WeaponNumber]
                     .DOColor(new Color(1, 1, 1, 0f), 0.3f)
                     .SetEase(Ease.OutCirc));
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        PlayPreview();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        ExitPreview();
     }
 }
