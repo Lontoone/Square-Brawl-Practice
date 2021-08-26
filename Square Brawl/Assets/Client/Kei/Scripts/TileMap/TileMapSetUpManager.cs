@@ -32,6 +32,9 @@ public class TileMapSetUpManager : MonoBehaviour
     }
     public IEnumerator SetUpLevelCoro(MapData _mapData)
     {
+        if (TileMapManager.instance==null) {
+            yield break;
+        }
         if (TileMapManager.instance.gridCells.Count < TileMapManager.instance.cellCount)
         {
             Debug.Log("Gernerate Grid");
