@@ -8,6 +8,7 @@ public class ColorSetButton : MonoBehaviour
     public Button button;
     public Image colorImage;
     public int colorIndex = 0;
+
     public void Start()
     {
         button.onClick.AddListener(delegate { SetColor(); });
@@ -15,19 +16,22 @@ public class ColorSetButton : MonoBehaviour
     public void SetColor()
     {
         Debug.Log("Set Color " + colorIndex);
-
-        if (!IsColorUsed(colorIndex))
+        bool IsReady = (bool)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.READY];
+        if (!IsReady)
         {
-            colorImage.color = CustomPropertyCode.COLORS[colorIndex];
+            if (!IsColorUsed(colorIndex))
+            {
+                colorImage.color = CustomPropertyCode.COLORS[colorIndex];
 
-            PhotonNetwork.LocalPlayer.SetCustomProperties(
-                                    MyPhotonExtension.WrapToHash(
-                                        new object[] { CustomPropertyCode.TEAM_CODE, colorIndex }
-                                    ));
-        }
-        else
-        {
-            //該顏色已被使用
+                PhotonNetwork.LocalPlayer.SetCustomProperties(
+                                        MyPhotonExtension.WrapToHash(
+                                            new object[] { CustomPropertyCode.TEAM_CODE, colorIndex }
+                                        ));
+            }
+            else
+            {
+                //該顏色已被使用
+            }
         }
     }
 
