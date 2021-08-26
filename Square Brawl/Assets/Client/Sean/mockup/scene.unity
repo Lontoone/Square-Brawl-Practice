@@ -23032,6 +23032,7 @@ GameObject:
   - component: {fileID: 984339053}
   - component: {fileID: 984339054}
   - component: {fileID: 984339056}
+  - component: {fileID: 984339057}
   m_Layer: 0
   m_Name: FFA Button
   m_TagString: Untagged
@@ -23159,6 +23160,51 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &984339057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984339051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1659473246}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1659473246}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &996524613 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1491419796430963907, guid: 645f977df29d9ba4eb2c8e688d673210, type: 3}
@@ -23346,11 +23392,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 260
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -100
+      value: -260
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -33228,11 +33274,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 100
+      value: 260
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -260
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -33595,11 +33641,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 100
+      value: 260
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -100
+      value: -260
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -38795,7 +38841,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1659473247
 RectTransform:
   m_ObjectHideFlags: 0
@@ -45192,11 +45238,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 260
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -260
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 6488358299209334205, guid: d1e24ca8538a8ce4b90e930250e255b8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
