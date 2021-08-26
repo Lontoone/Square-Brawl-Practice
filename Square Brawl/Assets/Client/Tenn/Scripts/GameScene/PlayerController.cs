@@ -583,6 +583,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             transform.position = new Vector3(UnityEngine.Random.Range(-5, 6), 0, 0);
             Pv.RPC("Rpc_Rebirth", RpcTarget.Others, transform.position);
         }
+        LimitInputValue(Vector2.zero);
         _playerHp = 100;
         _uiControl.ReduceHp(_playerHp);
     }
@@ -611,6 +612,12 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             {
                 Vector2 dir = transform.position - other.gameObject.transform.position;
                 DamageEvent(50, 1500, dir.x, dir.y, new Vector3(0.6f, 0.3f, 1));
+                var IsKill = IsKillAnyone();
+                if (IsKill)
+                {
+                    PlayerKillCountManager.instance.ReduceKillCount();
+                    GenerateDieEffect();
+                }
             }
         }
     }
