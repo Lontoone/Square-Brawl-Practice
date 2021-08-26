@@ -537,10 +537,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             {
                 time = m_AnimationClips[13].length;
             }
-            Debug.LogError("Enter Lobby" + time);
             yield return new WaitForSeconds(time);
             yield return new WaitUntil(() => { return isLoading == false; });
-            Debug.LogError("Play Enter Lobby");
             m_Lobby.SetActive(true);
             animator.Play("EnterLobby");
         }
@@ -594,7 +592,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         {
             if (m_CreateRoom.activeSelf)
             {
-                Debug.LogError("Exit CreateRoom");
                 animator.Play("ExitCreateRoom");
                 yield return new WaitForSeconds(m_AnimationClips[9].length);
                 m_CreateRoom.SetActive(false);
@@ -652,7 +649,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         if(OptionSetting.TRANSITIONANIMATION)
         {
-            Debug.LogError("Enter Room");
             var time = 0f;
             if (m_CharacterSelection.activeSelf)
             {
@@ -670,7 +666,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             yield return new WaitUntil(() => { return isLoading == false; });
             animator.Play("EnterRoom");
             m_Room.SetActive(true);
-            Debug.LogError("Play Enter Room");
         }
         else
         {
@@ -687,7 +682,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             //Todo : 關掉Room的時候流程問題
             if (m_Room.activeSelf)
             {
-                Debug.LogError("Play Exit Room");
                 animator.Play("ExitRoom");
                 yield return new WaitForSeconds(m_AnimationClips[13].length);
                 m_Room.SetActive(false);
@@ -890,11 +884,9 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             {
                 time = m_AnimationClips[13].length;
             }
-            Debug.LogError("Enter Loading" + "\tm_CreateRoom.activeSelf: " + m_CreateRoom.activeSelf + "\tm_Room.activeSelf: " + m_Room.activeSelf);
             yield return new WaitForSeconds(time);
             if (isLoading == true)
             {
-                Debug.LogError("Play Loading");
                 m_Loading.SetActive(true);
                 animator.Play("Loading");
             }
@@ -908,10 +900,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator ExitLoading()
     {
-        Debug.LogError("Exit Loading");
         if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Loading")
         {
-            Debug.LogError("Play ExitLoading");
             animator.Play("ExitLoading");
             yield return new WaitForSeconds(m_AnimationClips[5].length);
             m_Loading.SetActive(false);
