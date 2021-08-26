@@ -13,10 +13,11 @@ TagManager:
   - Katada
   - FreezeShoot
   - Shield
-  - GrenadaPos
   - Boundary
   - Saw
   - Undefined
+  - FxTemporaire
+  - SpecicalFirePos
   layers:
   - Default
   - TransparentFX

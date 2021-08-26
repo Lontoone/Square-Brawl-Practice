@@ -171,4 +171,4 @@ MonoBehaviour:
   FieldExplose: 2
   LayerToExplose:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 2560

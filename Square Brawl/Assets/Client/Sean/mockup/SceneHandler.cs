@@ -87,13 +87,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         orange = m_Orange;
         red = m_Red;
         blue = m_Blue;
-        /*if (!Directory.Exists(Path.GetDirectoryName(("maps/").CombinePersistentPath())))
-        {
-            //位置不存在，=>產生位置
-            Directory.CreateDirectory(Path.GetDirectoryName(("maps/").CombinePersistentPath()));
-
-            Debug.Log("Create maps");
-        }*/
     }
 
     void Start()

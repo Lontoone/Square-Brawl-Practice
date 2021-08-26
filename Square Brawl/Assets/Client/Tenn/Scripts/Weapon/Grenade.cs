@@ -100,6 +100,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
     IEnumerator Boom()
     {
         yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(5f);
         _pv.RPC("Rpc_Explose", RpcTarget.All);
         if (_pv.IsMine)
         {
@@ -118,7 +119,7 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
         _pv.RPC("Rpc_DisableObj", RpcTarget.All);
     }
 
-    private void Explose()//爆炸事件
+    /*private void Explose()//爆炸事件
     {
         Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, FieldExplose, LayerToExplose);
         foreach (Collider2D obj in objects)
@@ -138,6 +139,46 @@ public class Grenade : MonoBehaviour, IPoolObject, IPunObservable
                 {
                     PlayerKillCountManager.instance.SetKillCount();
                     _playerController.GenerateDieEffect();
+                }
+            }
+        }
+    }*/
+
+    private void Explose()
+    {
+        Collider2D[] colliding = Physics2D.OverlapCircleAll (this.transform.position, FieldExplose);
+        foreach (Collider2D hit in colliding)
+        {
+            RaycastHit2D[] hit2d = Physics2D.RaycastAll(transform.position, hit.transform.position - transform.position, FieldExplose, LayerToExplose);
+            foreach (RaycastHit2D raycastHit in hit2d)
+            {
+                if (raycastHit.collider != null)
+                {
+                    if (raycastHit.collider.tag == "Ground")
+                    {
+                        break;
+                    }
+                    if (raycastHit.collider.tag == "Player")
+                    {
+                        PlayerController _playerController = raycastHit.collider.GetComponent<PlayerController>();
+                        if (isMaster == _playerController.Pv.IsMine && isMaster)//如果是Master
+                        {
+                            _playerController.BeExplode(GrenadeBeElasticity, transform.position, FieldExplose);
+                        }
+
+                        if (isMaster != _playerController.Pv.IsMine && !_playerController.Pv.IsMine)//如果不是Master
+                        {
+                            _playerController.TakeDamage(GrenadeDamage, _cameraShakeValue.x, _cameraShakeValue.y, _cameraShakeValue.z);
+                            _playerController.BeExplode(GrenadeBeElasticity, transform.position, FieldExplose);
+                            var IsKill = _playerController.IsKillAnyone();
+                            if (IsKill)
+                            {
+                                PlayerKillCountManager.instance.SetKillCount();
+                                _playerController.GenerateDieEffect();
+                            }
+                        }
+                        return;
+                    }
                 }
             }
         }

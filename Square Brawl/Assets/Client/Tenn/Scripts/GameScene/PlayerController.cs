@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     [HeaderAttribute("Other Setting")]
     public Transform FrontSightMidPos;//FrontSightMid Position
-    public Transform FrontSightPos;//FrontSight Position
+    public Transform FreezeFirePos;//Freeze Fire Position
     public DieEffect DieEffectObj;
     private Rigidbody2D _rb;//Player Rigidbody
     private Camera _camera;
@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         FrontSightMidPos = transform.GetChild(0).GetComponent<Transform>();
         if (Pv.IsMine)
         {
-            FrontSightPos = FrontSightMidPos.transform.GetChild(0);
+            FreezeFirePos = GameObject.FindGameObjectWithTag("SpecicalFirePos").transform;
 
             _inputAction.Player.Jump.performed += _ => PlayerJumpDown();
             _inputAction.Player.Jump.canceled += _ => PlayerJumpUp();
@@ -158,6 +158,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
 
         GroundCheckEvent();//Is Grounding?
+
+       //FreezeEvent(2.5f, 5, Vector3.zero);
     }
     void FixedUpdate()
     {
@@ -170,6 +172,11 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         {
             PlayerMovement();//Player Move
             PlayerSpin();//Player Spin
+        }
+        else if (IsBeFreeze)
+        {
+            transform.eulerAngles = Vector3.zero;
+            _rb.angularVelocity = 0;
         }
     }
     /// <summary>
@@ -411,29 +418,31 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
         _beShootShakeValue = _beShootShake;
 
-        _freezeLeftRay = Quaternion.Euler(0, 0, FrontSightPos.eulerAngles.z - 17.5f) * Vector2.right * _viewDistance;
-        Vector3 _originPos = FrontSightPos.transform.position;
+        _freezeLeftRay = Quaternion.Euler(0, 0, FreezeFirePos.eulerAngles.z - 17.5f) * Vector2.right * _viewDistance;
+        Vector3 _originPos = FreezeFirePos.transform.position;
 
         for (int i = 0; i <= viewCount; i++)//扇形檢測區
         {
             Vector3 _freezeRay = Quaternion.Euler(0, 0, (35 / viewCount) * i) * _freezeLeftRay;
-            int mask = LayerMask.GetMask("Player");
-            int mask2 = LayerMask.GetMask("EditorView");
-            RaycastHit2D FreezeHit = Physics2D.Raycast(_originPos, _freezeRay, _viewDistance, mask);
-            RaycastHit2D GroundHit = Physics2D.Raycast(_originPos, _freezeRay, _viewDistance, mask2);
-            Color color = FreezeHit ? Color.red : Color.green;
-            if (FreezeHit)
+            int PlayerMask = LayerMask.GetMask("Player");
+            int GroundMask = LayerMask.GetMask("EditorView");
+            RaycastHit2D GroundHit = Physics2D.Raycast(_originPos, _freezeRay, _viewDistance, GroundMask);
+            if (GroundHit)
             {
-                PlayerController _playerController = FreezeHit.collider.gameObject.GetComponent<PlayerController>();
-                if (!_playerController.Pv.IsMine)
-                {
-                    _playerController.BeFreezeEvent(_playerController.transform.position, _playerController.transform.rotation, _beShootShakeValue);
-                }
-            }else if (GroundHit)
-            {
-                Debug.Log("OK");
+                _viewDistance = Vector2.Distance(GroundHit.point, transform.position); // -0.2f;
             }
-            //Debug.DrawLine(_originPos, _originPos + _freezeRay, color);
+             RaycastHit2D PlayerHit = Physics2D.Raycast(_originPos, _freezeRay, _viewDistance, PlayerMask);
+             //Color color = PlayerHit ? Color.red : Color.green;
+             if (PlayerHit)
+             {
+                 PlayerController _playerController = PlayerHit.collider.gameObject.GetComponent<PlayerController>();
+                 if (!_playerController.Pv.IsMine)
+                 {
+                     _playerController.BeFreezeEvent(_playerController.transform.position, _playerController.transform.rotation, _beShootShakeValue);
+                 }
+             }
+            //Debug.DrawLine(_originPos, GroundHit.point);
+            //Debug.DrawRay(transform.position, _freezeRay * _viewDistance, Color.green);
         }
     }
 
@@ -601,7 +610,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             if (Pv.IsMine)
             {
                 Vector2 dir = transform.position - other.gameObject.transform.position;
-                DamageEvent(20, 1500, dir.x, dir.y, new Vector3(0.6f, 0.3f, 1));
+                DamageEvent(50, 1500, dir.x, dir.y, new Vector3(0.6f, 0.3f, 1));
             }
         }
     }

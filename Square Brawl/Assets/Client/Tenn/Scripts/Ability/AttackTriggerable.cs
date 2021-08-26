@@ -48,7 +48,7 @@ public class AttackTriggerable : MonoBehaviour
     {
         _bulletSpawnPos = GameObject.FindGameObjectWithTag("BulletSpawnPos");
         _bulletMidSpawnPos = GameObject.FindGameObjectWithTag("MidPos");
-        _grenadaSpawnPos = GameObject.FindGameObjectWithTag("GrenadaPos");
+        _grenadaSpawnPos = GameObject.FindGameObjectWithTag("SpecicalFirePos");
         _pv = GetComponent<PhotonView>();
         _audio = GetComponent<AudioSource>();
 

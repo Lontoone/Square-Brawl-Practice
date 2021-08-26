@@ -905,8 +905,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4793369188931507717}
   m_Layer: 0
-  m_Name: GameObject
-  m_TagString: GrenadaPos
+  m_Name: SpecicalFirePos
+  m_TagString: SpecicalFirePos
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1442,7 +1442,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8960
   FrontSightMidPos: {fileID: 0}
-  FrontSightPos: {fileID: 0}
+  FreezeFirePos: {fileID: 0}
   DieEffectObj: {fileID: 7510178680260158390, guid: f6eddf2908cfd0741b6d003ce3971a2f, type: 3}
   Pv: {fileID: 0}
 --- !u!114 &5368340954638313950
