@@ -52,6 +52,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     public static Color32 red;
     public static Color32 blue;
 
+    public static AudioSource menuBGM;
+
     private bool isLoading = false;
     public enum axis {x = 0, y = 1, cons = 2}
     public enum AnimationEnd
@@ -90,6 +92,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     void Start()
     {
         SetUpMapEditor();
+        menuBGM = GetComponent<AudioSource>();
+
         if (PhotonNetwork.IsConnected)
         {
             BackToCharacterSelection();
@@ -115,15 +119,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         }
         StartCoroutine(EnterSceneAnimation());
     }
-
-    /*private void Update()
-    {
-        var length = 0f;
-        var name = "";
-        length = animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
-        name = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
-        Debug.Log(name +": "+ length);
-    }*/
 
     public void EnterPage(string gameObject)
     {

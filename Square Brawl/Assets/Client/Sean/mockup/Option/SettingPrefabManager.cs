@@ -45,7 +45,6 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
 
     public void Start()
     {
-
         m_current_easetype = new Easetype.Current_easetype();
         switch (m_SettingType)
         {
@@ -58,7 +57,6 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
                 m_ListSelection.m_LeftButton.SetActive(false);
                 m_ListSelection.m_RightButton.SetActive(false);
                 m_ListSelection.m_SelectionList[m_ListSelection.m_DefaultElement].enabled = false;
-
 
                 m_SliderParent.AddComponent<ToDotSlider.DotSliderAction>();
                 m_SliderSetting = m_SliderParent.GetComponent<ToDotSlider.DotSliderAction>().SetUp(m_SliderSetting);
@@ -108,6 +106,7 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
 
             case OptionSetting.ChangeType.MusicVolume:
                 OptionSetting.MUSICVOLUME = m_CurrentIndex * 0.1f;
+                SceneHandler.menuBGM.volume = OptionSetting.MUSICVOLUME;
                 break;
 
             case OptionSetting.ChangeType.SFXVolume:

@@ -12,6 +12,9 @@ public class ESC : MonoBehaviour
     [SerializeField] private GameObject buttonGroup;
     [SerializeField] private GameObject option;
     [SerializeField] private Animator animator;
+    [SerializeField] private GameObject roomPrefab;
+    [SerializeField] private GameObject colorSelectionPrefab;
+    [SerializeField] private GameObject weaponSelectionPrefab;
 
     private void Update()
     {
@@ -50,6 +53,7 @@ public class ESC : MonoBehaviour
 
     private IEnumerator Back()
     {
+        EventSystem.current.SetSelectedGameObject(null);
         if (OptionSetting.TRANSITIONANIMATION)
         {
             animator.Play("ExitESC");
