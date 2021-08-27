@@ -50,11 +50,16 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < TileMapSetUpManager.instance.activeTileCells.Count; i++)
         {
             TileCell _cell = TileMapSetUpManager.instance.activeTileCells[i];
-            if (Mathf.Floor(_cell.transform.position.x) == Pos.x&& Mathf.Floor(_cell.transform.position.y) == Pos.y)
+            if (Mathf.Abs(_cell.transform.position.x-Pos.x) <= 0.4f && Mathf.Abs(_cell.transform.position.y - Pos.y) <= 0.4f)
             {
                 Pos = new Vector3(Random.Range(-4, 11), Random.Range(1, 4), 0);
                 i = 0;
             }
+            /*if (Mathf.Floor(_cell.transform.position.x) == Pos.x && Mathf.Floor(_cell.transform.position.y) == Pos.y)
+            {
+                Pos = new Vector3(Random.Range(-4, 11), Random.Range(1, 4), 0);
+                i = 0;
+            }*/
         }
         
         /*for (int i = 0; i < TileMapSetUpManager.instance.activeTileCells.Count; i++)

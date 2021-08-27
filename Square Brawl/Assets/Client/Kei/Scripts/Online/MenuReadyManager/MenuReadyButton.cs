@@ -79,6 +79,25 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         player.SetCustomProperties(MyPhotonExtension.WrapToHash(new object[] { CustomPropertyCode.READY, isReady }));
     }
 
+    public void ColorSetReady(bool _isReady)
+    {
+        if (PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE] == null)
+        {
+            return;
+        }
+        SetReady(_isReady);
+    }
+
+    public void WeaponSetReady(bool _isReady)
+    {
+        if (((int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON1CODE] == 0
+            || (int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON2CODE] == 0))
+        {
+            return;
+        }
+        SetReady(_isReady);
+    }
+
     public void SetReadyLocal(bool _isReady)
     {
         isReady = _isReady;
