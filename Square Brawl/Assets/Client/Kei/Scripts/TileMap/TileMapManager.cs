@@ -16,6 +16,7 @@ public class TileMapManager : MonoBehaviour
     public int cellCount { get { return mapSize.x * mapSize.y; } }
 
     public List<TileCell> gridCells = new List<TileCell>();
+    public List<Vector3> CellsPos = new List<Vector3>();
     public Dictionary<int, CellState> cellStateMap = new Dictionary<int, CellState>();
 
     //Vector2 gridSize = new Vector2(1.05f, 1.05f);

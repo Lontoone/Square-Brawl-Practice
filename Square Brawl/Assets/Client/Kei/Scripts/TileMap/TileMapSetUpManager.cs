@@ -1,7 +1,10 @@
 ﻿using System.Linq;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TileMapSetUpManager : MonoBehaviour
 {
@@ -10,8 +13,9 @@ public class TileMapSetUpManager : MonoBehaviour
     private string levelFileName; //temp
 
     [SerializeField]
-    private List<TileCell> activeTileCells = new List<TileCell>();
+    public List<TileCell> activeTileCells = new List<TileCell>();
 
+    public static TileMapSetUpManager instance;
     //public SpriteRenderer foreground, midground, background;
     private void Start()
     {
@@ -25,7 +29,9 @@ public class TileMapSetUpManager : MonoBehaviour
         MapData _mapData = SaveAndLoad.Load<MapData>(levelFileName.CombinePersistentPath());
         SetUpLevelTiles(_mapData);
         SetUpCellOrientation();*/
+        instance = this;
     }
+
     public void SetUpLevel(MapData _mapData)
     {
         StartCoroutine(SetUpLevelCoro(_mapData));
@@ -67,6 +73,7 @@ public class TileMapSetUpManager : MonoBehaviour
                 //_dataCount++;
                 _dataCount = Mathf.Clamp(_dataCount + 1, 0, _mapData.cellDatas.Count - 1);
                 _cell.gameObject.SetActive(true);
+                //Debug.Log(_cell.transform.position);
             }
             else
             {
@@ -75,9 +82,14 @@ public class TileMapSetUpManager : MonoBehaviour
                 _cell.gameObject.SetActive(false);
             }
         }
-        if (PlayerController.instance != null)
-        {
-            PlayerController.instance.StopBeFreeze();
+
+        if(SceneManager.GetActiveScene().buildIndex == 1)
+        {         
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            /*if (PlayerController.instance != null)
+            {
+                PlayerController.instance.StopBeFreeze();
+            }*/
         }
     }
     private void SetUpCellOrientation()

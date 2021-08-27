@@ -493,7 +493,7 @@ GameObject:
   - component: {fileID: 1394364876}
   m_Layer: 0
   m_Name: TileMap Set up Manger
-  m_TagString: Untagged
+  m_TagString: TileManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

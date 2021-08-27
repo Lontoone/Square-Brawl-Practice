@@ -11,6 +11,8 @@ public class PlayerManager : MonoBehaviour
 
     private GameObject _obj;
 
+    private bool isTest;
+
     void Awake()
     {
         _pv = GetComponent<PhotonView>();
@@ -25,12 +27,46 @@ public class PlayerManager : MonoBehaviour
         if (_pv.IsMine)
         {
             CreatController();
+            /*Debug.Log(tileMap.activeTileCells.Count);
+            for (int i = 0; i < tileMap.activeTileCells.Count; i++)
+            {
+                Debug.Log(tileMap.activeTileCells[i].gameObject.transform.position);
+            }*/
+            for (int i = 0; i < TileMapSetUpManager.instance.activeTileCells.Count; i++)
+            {
+                TileCell _cell = TileMapSetUpManager.instance.activeTileCells[i];
+
+               // Debug.Log(_cell.transform.position);
+            }
         }
     }
 
+
     void CreatController()
     {
-        _obj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), new Vector3(Random.Range(-5,6), 1, 0), Quaternion.identity, 0, new object[] { _pv.ViewID });
+        //Vector3 Pos = new Vector3(Random.Range(-4, 11), Random.Range(1, 4), 0);
+        Vector3 Pos = new Vector3(Random.Range(-4, 11), 1, 0);
+
+        for (int i = 0; i < TileMapSetUpManager.instance.activeTileCells.Count; i++)
+        {
+            TileCell _cell = TileMapSetUpManager.instance.activeTileCells[i];
+            if (Mathf.Floor(_cell.transform.position.x) == Pos.x&& Mathf.Floor(_cell.transform.position.y) == Pos.y)
+            {
+                Pos = new Vector3(Random.Range(-4, 11), Random.Range(1, 4), 0);
+                i = 0;
+            }
+        }
+        
+        /*for (int i = 0; i < TileMapSetUpManager.instance.activeTileCells.Count; i++)
+        {
+            TileCell _cell = TileMapSetUpManager.instance.activeTileCells[i];
+            if (Mathf.Floor(_cell.transform.position.x) == Pos.x)
+            {
+                Pos = new Vector3(Random.Range(-4, 11), 1, 0);
+            }
+            //Debug.Log(_cell.transform.position);
+        }*/
+        _obj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), Pos, Quaternion.identity, 0, new object[] { _pv.ViewID });
         
     }
 

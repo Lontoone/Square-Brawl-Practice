@@ -26,6 +26,7 @@ public class TileCell : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandl
     public void Start()
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        TileMapManager.instance.CellsPos.Add(transform.position);
     }
     public void PointerEnter()
     {

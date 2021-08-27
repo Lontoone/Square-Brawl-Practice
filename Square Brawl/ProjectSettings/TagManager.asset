@@ -18,6 +18,7 @@ TagManager:
   - Undefined
   - FxTemporaire
   - SpecicalFirePos
+  - TileManager
   layers:
   - Default
   - TransparentFX
