@@ -35,6 +35,7 @@ namespace ToDotSlider
             [SerializeField] public Vector3 m_Distance;
             [HideInInspector] public bool onSelect;
             [SerializeField] public int m_SelectedIndex;
+            [SerializeField] public int m_DefaultIndex;
             [HideInInspector] public bool m_IsChangebyDrag;
             [HideInInspector] public bool m_IsChangebyClick;
         }
@@ -76,7 +77,7 @@ namespace ToDotSlider
             dotSlider.m_DotSlider = Generate(dotSlider);
 
             dotSlider.m_SelectedIndex = dotSlider.m_Series / 2;
-            for (int i = 0; i <= dotSlider.m_SelectedIndex; i++)
+            for (int i = 0; i <= dotSlider.m_DefaultIndex; i++)
             {
                 Image[] comps = dotSlider.m_DotSlider[i].GetComponentsInChildren<Image>();
                 comps[1].color = dotSlider.m_Color;
@@ -92,8 +93,9 @@ namespace ToDotSlider
             dotSlider.m_SelectedDot.GetComponent<DragHandler>().SetUp(dotSlider.m_SelectedDot,
                                                                       new Color32(dotSlider.m_Color.r, dotSlider.m_Color.g, dotSlider.m_Color.b ,150), 
                                                                       new Color32(dotSlider.m_DefaultColor.r, dotSlider.m_DefaultColor.g, dotSlider.m_DefaultColor.b, 150), 
-                                                                      dotSlider.m_Series);
-            dotSlider.m_SelectedDot = Instantiate(dotSlider.m_SelectedDot, dotSlider.m_DotSlider[dotSlider.m_Series/2].transform.position, new Quaternion(0, 0, 0, 0), dotSlider.m_Transform);
+                                                                      dotSlider.m_Series,
+                                                                      dotSlider.m_DefaultIndex);
+            dotSlider.m_SelectedDot = Instantiate(dotSlider.m_SelectedDot, dotSlider.m_DotSlider[dotSlider.m_DefaultIndex].transform.position, new Quaternion(0, 0, 0, 0), dotSlider.m_Transform);
             return dotSlider;
         }
 

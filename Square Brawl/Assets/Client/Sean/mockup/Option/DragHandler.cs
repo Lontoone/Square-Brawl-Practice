@@ -21,13 +21,13 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private Sequence m_Dotsequence;
     private bool m_OnDrag = false;
 
-    public void SetUp(GameObject selectedDot, Color32 color, Color32 defaultColor, int series)
+    public void SetUp(GameObject selectedDot, Color32 color, Color32 defaultColor, int series, int defaultSelected)
     {
         m_SelectedDot = selectedDot;
         m_Color = color;
         m_DefaultColor = defaultColor;
         m_Series = series;
-        m_Index = series/2;
+        m_Index = defaultSelected;
         m_Dotsequence = DOTween.Sequence();
     }
 

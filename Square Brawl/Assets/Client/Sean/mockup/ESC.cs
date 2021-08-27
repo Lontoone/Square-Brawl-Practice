@@ -16,6 +16,8 @@ public class ESC : MonoBehaviour
     [SerializeField] private GameObject colorSelectionPrefab;
     [SerializeField] private GameObject weaponSelectionPrefab;
 
+    private bool InOption = false;
+
     private void Update()
     {
         var gamepadStartButtonWasPressed = false;
@@ -40,7 +42,7 @@ public class ESC : MonoBehaviour
             }
             Debug.Log("Esc Was Pressed");
         }
-        else if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadStartButtonWasPressed) && buttonGroup.activeSelf == true)
+        else if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadStartButtonWasPressed) && buttonGroup.activeSelf == true && InOption ==false)
         {
             BackOnClick();
         }
@@ -103,6 +105,8 @@ public class ESC : MonoBehaviour
 
     private IEnumerator EnterOptionAnimation()
     {
+        InOption = true;
+
         var time = 0f;
         if (OptionSetting.TRANSITIONANIMATION)
         {
@@ -145,6 +149,7 @@ public class ESC : MonoBehaviour
         option.GetComponentInChildren<OptionManager>().ExitAnimation();
         yield return new WaitForSeconds(time / 3);
         option.SetActive(false);
+        InOption = false;
     }
 
 }

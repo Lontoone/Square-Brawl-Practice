@@ -52,8 +52,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     public static Color32 red;
     public static Color32 blue;
 
-    public static AudioSource menuBGM;
-
     private bool isLoading = false;
     public enum axis {x = 0, y = 1, cons = 2}
     public enum AnimationEnd
@@ -82,6 +80,22 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         instance = this;
         animator = GetComponent<Animator>();
 
+        var SettingSavePath = Application.persistentDataPath + "/Setting.txt";
+
+        //檢查位置
+        if (!File.Exists(SettingSavePath))
+        {
+            StreamWriter stream = new StreamWriter(SettingSavePath);
+            string json = JsonUtility.ToJson(SaveAndLoadSetting.SetData());
+            stream.Write(json);
+            stream.Close();
+            Debug.Log("Generate SaveFile");
+        }
+        else
+        {
+            SaveAndLoadSetting.Load();
+        }
+
         scene_current_easetype = new Easetype.Current_easetype();
         green = m_Green;
         orange = m_Orange;
@@ -92,7 +106,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     void Start()
     {
         SetUpMapEditor();
-        menuBGM = GetComponent<AudioSource>();
 
         if (PhotonNetwork.IsConnected)
         {
@@ -394,7 +407,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Control.SetActive(true);
         EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform
-            .DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + -to_x, m_Menu.transform.localPosition.y + -to_y, 0), time)
+            .DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + 1920, m_Menu.transform.localPosition.y + -to_y, 0), time)
             .SetEase(scene_current_easetype.GetEasetype(easetype));
         m_Control.transform
             .DOLocalMove(new Vector3(0, m_Control.transform.localPosition.y + to_y, 0), time)
@@ -417,7 +430,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             .DOLocalMove(new Vector3(0, m_Menu.transform.localPosition.y + to_y, 0), time)
             .SetEase(scene_current_easetype.GetEasetype(easetype));
         m_Control.transform
-            .DOLocalMove(new Vector3(-Screen.width, m_Control.transform.localPosition.y + -to_y, 0), time)
+            .DOLocalMove(new Vector3(-1920, m_Control.transform.localPosition.y + -to_y, 0), time)
             .SetEase(scene_current_easetype.GetEasetype(easetype));
         StartCoroutine(m_Menu.GetComponentInChildren<MenuButtonHandler>().EnableButton(0.5f));
         yield return new WaitForSeconds(time / 3);

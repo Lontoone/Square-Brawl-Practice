@@ -181,6 +181,7 @@ public class OptionManager : MonoBehaviour
 
     private void OnDisable()
     {
+        SaveAndLoadSetting.Save();
         m_Input.Disable();
         Debug.Log("OnDisable");
         onPressIndex = 99;

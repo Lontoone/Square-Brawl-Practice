@@ -46,6 +46,8 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
     public void Start()
     {
         m_current_easetype = new Easetype.Current_easetype();
+        SetUpSetting(m_ChangeType);
+
         switch (m_SettingType)
         {
             case SettingType.ListSelection:
@@ -89,28 +91,30 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
                 switch (m_CurrentIndex)
                 {
                     case 0:
-                        OptionSetting.FULLSCREEN = Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+                        Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+                        OptionSetting.FULLSCREEN = 0;
                         break;
 
                     case 1:
-                        OptionSetting.FULLSCREEN = Screen.fullScreenMode = FullScreenMode.Windowed;
+                        Screen.fullScreenMode = FullScreenMode.Windowed;
+                        OptionSetting.FULLSCREEN = 3;
                         break;
                 }
-                OptionSetting.RESOLUTION = Screen.currentResolution;
                 break;
 
             case OptionSetting.ChangeType.Resolution:
-                Screen.SetResolution((int)OptionSetting.resolution[m_CurrentIndex].x, (int)OptionSetting.resolution[m_CurrentIndex].y, OptionSetting.FULLSCREEN);
-                OptionSetting.RESOLUTION = Screen.currentResolution;
+                Screen.SetResolution((int)OptionSetting.resolution[m_CurrentIndex].x, (int)OptionSetting.resolution[m_CurrentIndex].y, (FullScreenMode)OptionSetting.FULLSCREEN);
+                OptionSetting.RESOLUTION = m_CurrentIndex;
                 break;
 
             case OptionSetting.ChangeType.MusicVolume:
                 OptionSetting.MUSICVOLUME = m_CurrentIndex * 0.1f;
-                SceneHandler.menuBGM.volume = OptionSetting.MUSICVOLUME;
+                AudioSourcesManager.instance.ChangeBGMVolume();
                 break;
 
             case OptionSetting.ChangeType.SFXVolume:
                 OptionSetting.SFXVOLUME = m_CurrentIndex * 0.1f;
+                AudioSourcesManager.instance.ChangeSFXVolume();
                 break;
 
             case OptionSetting.ChangeType.ControllerRumble:
@@ -136,6 +140,52 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
                     case 1:
                         OptionSetting.TRANSITIONANIMATION = false;
                         break;
+                }
+                break;
+        }
+    }
+
+    public void SetUpSetting(OptionSetting.ChangeType m_ChangeType)
+    {
+        switch (m_ChangeType)
+        {
+            case OptionSetting.ChangeType.FullScreen:
+                m_ListSelection.m_DefaultElement = (int)OptionSetting.FULLSCREEN;
+                break;
+
+            case OptionSetting.ChangeType.Resolution:
+                m_ListSelection.m_DefaultElement = OptionSetting.RESOLUTION;
+                break;
+
+            case OptionSetting.ChangeType.MusicVolume:
+                m_SliderSetting.m_DefaultIndex = (int)(10 * OptionSetting.MUSICVOLUME);
+                break;
+
+            case OptionSetting.ChangeType.SFXVolume:
+                m_SliderSetting.m_DefaultIndex = (int)(10 * OptionSetting.SFXVOLUME);
+                break;
+
+            case OptionSetting.ChangeType.ControllerRumble:
+                var rumble = OptionSetting.CONTROLLER_RUMBLE;
+                if (rumble)
+                {
+                    m_ListSelection.m_DefaultElement = 0;
+                }
+                else
+                {
+                    m_ListSelection.m_DefaultElement = 1;
+                }
+                break;
+
+            case OptionSetting.ChangeType.TransitionAnimation:
+                var transition = OptionSetting.TRANSITIONANIMATION;
+                if (transition)
+                {
+                    m_ListSelection.m_DefaultElement = 0;
+                }
+                else
+                {
+                    m_ListSelection.m_DefaultElement = 1;
                 }
                 break;
         }

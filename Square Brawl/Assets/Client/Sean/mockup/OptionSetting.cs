@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OptionSetting : MonoBehaviour
+public class OptionSetting
 {
-    public static FullScreenMode FULLSCREEN;
-    public static Resolution RESOLUTION;
+    public static int FULLSCREEN = 0;
+    public static int RESOLUTION = 5;
     public static float MUSICVOLUME = 0.5f;
     public static float SFXVOLUME = 0.5f;
     public static bool CONTROLLER_RUMBLE = true;
@@ -28,5 +28,48 @@ public class OptionSetting : MonoBehaviour
         ControllerRumble,
         TransitionAnimation
     }
+}
 
+public class SaveAndLoadSetting
+{
+    public int FULLSCREEN;
+    public int RESOLUTION;
+    public float MUSICVOLUME;
+    public float SFXVOLUME;
+    public bool CONTROLLER_RUMBLE;
+    public bool TRANSITIONANIMATION;
+
+    public static SaveAndLoadSetting SetData()
+    {
+        SaveAndLoadSetting saveAndLoadSetting = new SaveAndLoadSetting();
+
+        saveAndLoadSetting.RESOLUTION = OptionSetting.RESOLUTION;
+        saveAndLoadSetting.MUSICVOLUME = OptionSetting.MUSICVOLUME;
+        saveAndLoadSetting.SFXVOLUME = OptionSetting.SFXVOLUME;
+        saveAndLoadSetting.CONTROLLER_RUMBLE = OptionSetting.CONTROLLER_RUMBLE;
+        saveAndLoadSetting.TRANSITIONANIMATION = OptionSetting.TRANSITIONANIMATION;
+
+        return saveAndLoadSetting;
+    }
+
+    public static void Save()
+    {
+        var SettingSavePath = Application.persistentDataPath + "/Setting.txt";
+        var data = SetData();
+
+        SaveAndLoad.Save<SaveAndLoadSetting>(data, SettingSavePath);
+    }
+
+    public static void Load()
+    {
+        var SettingSavePath = Application.persistentDataPath + "/Setting.txt";
+        SaveAndLoadSetting saveAndLoadSetting = SaveAndLoad.Load<SaveAndLoadSetting>(SettingSavePath);
+
+        OptionSetting.FULLSCREEN = saveAndLoadSetting.FULLSCREEN;
+        OptionSetting.RESOLUTION = saveAndLoadSetting.RESOLUTION;
+        OptionSetting.MUSICVOLUME = saveAndLoadSetting.MUSICVOLUME;
+        OptionSetting.SFXVOLUME = saveAndLoadSetting.SFXVOLUME;
+        OptionSetting.CONTROLLER_RUMBLE = saveAndLoadSetting.CONTROLLER_RUMBLE;
+        OptionSetting.TRANSITIONANIMATION = saveAndLoadSetting.TRANSITIONANIMATION;
+    }
 }
