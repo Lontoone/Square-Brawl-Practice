@@ -91,7 +91,7 @@ namespace ToSplitChar
                 switch (m_SplitChar.m_Direction)
                 {
 
-                    case Direction.GoUp://todo
+                    case Direction.GoUp://TODO: 上射動畫
                         if (i <= (m_TextLength - 1) / 2)
                         {
                             _moveSequence_char.Append(m_SplitChar.textArray[i].transform
@@ -115,7 +115,7 @@ namespace ToSplitChar
                         }
                         break;
 
-                    case Direction.GoDown://todo
+                    case Direction.GoDown://TODO: 下射動畫
                         if (i <= (m_TextLength - 1) / 2)
                         {
                             _moveSequence_char.Append(m_SplitChar.textArray[i].transform

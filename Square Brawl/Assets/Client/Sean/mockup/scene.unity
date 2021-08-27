@@ -51801,7 +51801,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4681916134587237697}
-  - component: {fileID: 8958972371917333660}
   - component: {fileID: 4076173562298013557}
   m_Layer: 0
   m_Name: WeanponGroup backup
@@ -55326,22 +55325,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8958972371917333660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4681916134587237698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 520cbcc6c0ddcee49a4fd809d197b5ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_GroupParent: {fileID: 4681916134587237697}
-  m_Row: 0
-  m_Column: 0
-  m_Spacing: {x: 0, y: 0}
 --- !u!222 &9005772340265026996
 CanvasRenderer:
   m_ObjectHideFlags: 0

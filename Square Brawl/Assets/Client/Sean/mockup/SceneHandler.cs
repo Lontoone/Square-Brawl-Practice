@@ -702,7 +702,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         if (OptionSetting.TRANSITIONANIMATION)
         {
-            //Todo : 關掉Room的時候流程問題
             if (m_Room.activeSelf)
             {
                 animator.Play("ExitRoom");

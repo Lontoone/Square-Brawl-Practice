@@ -119,7 +119,7 @@ namespace ToDotSlider
                 Object[i].GetComponent<RectTransform>().sizeDelta = new Vector2(dotSlider.m_Distance.x,dotSlider.m_Distance.x);
                 Object[i].AddComponent<DotEvent>();
                 Object[i].GetComponent<DotEvent>().SetUp(Object[i], i,dotSlider.m_Color , dotSlider.m_DefaultColor);
-                m_Object[i] = Instantiate(Object[i], dotSlider.m_Transform.position + dotSlider.m_Distance * i, new Quaternion(0,0,0,0), dotSlider.m_Transform);
+                m_Object[i] = Instantiate(Object[i], dotSlider.m_Transform.position + dotSlider.m_Distance * i, new Quaternion(0,0,0,0), dotSlider.m_Transform);//TODO slider動態位置
 
                 //Generate Small Dot
                 Instantiate(image, m_Object[i].transform.position, new Quaternion(0, 0, 0, 0), m_Object[i].transform);
