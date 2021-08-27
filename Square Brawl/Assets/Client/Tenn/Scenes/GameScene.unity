@@ -535,6 +535,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4436731354323743894, guid: b5c5d4249d0ee304c9ca20797c2c65d0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1948626454}
+    - target: {fileID: 4436731354323743894, guid: b5c5d4249d0ee304c9ca20797c2c65d0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BackToLobby
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436731354323743894, guid: b5c5d4249d0ee304c9ca20797c2c65d0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ResultManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 4907815827557467384, guid: b5c5d4249d0ee304c9ca20797c2c65d0, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -622,6 +634,10 @@ PrefabInstance:
     - target: {fileID: 4907815827557467388, guid: b5c5d4249d0ee304c9ca20797c2c65d0, type: 3}
       propertyPath: m_Name
       value: ESC
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907815828526657012, guid: b5c5d4249d0ee304c9ca20797c2c65d0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5c5d4249d0ee304c9ca20797c2c65d0, type: 3}
@@ -1180,6 +1196,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
+--- !u!114 &1948626454 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1245674675183854158, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
+  m_PrefabInstance: {fileID: 1948626453}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df30f031d8e8ff42ac6ef1a1de9c8fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1950552022
 GameObject:
   m_ObjectHideFlags: 0
@@ -2161,7 +2188,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 20
   m_TargetDisplay: 0
 --- !u!95 &8953404189832349974
 Animator:

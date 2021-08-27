@@ -507,7 +507,14 @@ public class OptionManager : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(m_BackButton);
                 BackButtonAction("Highlighted");
                 ResetDeselected();
-                StartCoroutine(GetComponentInParent<SceneHandler>().ExitOption());
+                if (GetComponentInParent<SceneHandler>() != null)
+                {
+                    StartCoroutine(GetComponentInParent<SceneHandler>().ExitOption());
+                }
+                else if (GetComponentInParent<ESC>() != null)
+                {
+                    GetComponentInParent<ESC>().ExitOption();
+                }
             }
             onPress = true;
         }
@@ -519,7 +526,14 @@ public class OptionManager : MonoBehaviour
         {
             BackButtonAction("Highlighted");
             ResetDeselected();
-            StartCoroutine(GetComponentInParent<SceneHandler>().ExitOption());
+            if (GetComponentInParent<SceneHandler>() != null)
+            {
+                StartCoroutine(GetComponentInParent<SceneHandler>().ExitOption());
+            }
+            else if (GetComponentInParent<ESC>() != null)
+            {
+                GetComponentInParent<ESC>().ExitOption();
+            }
         }
         else
         {

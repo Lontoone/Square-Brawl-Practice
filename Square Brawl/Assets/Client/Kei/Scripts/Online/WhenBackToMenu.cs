@@ -19,5 +19,4 @@ public class WhenBackToMenu : MonoBehaviour
             BackWithDisconnectedEvent?.Invoke();
         }
     }
-
 }

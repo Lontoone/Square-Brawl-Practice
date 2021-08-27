@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
+using Photon.Pun;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
-using BasicTools.ButtonInspector;
 using DG.Tweening;
 using TMPro;
 namespace Easetype { }
@@ -91,23 +89,31 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     void Start()
     {
-        m_Option.SetActive(false);
-        m_MapEditor.SetActive(false);
-        m_Control.SetActive(false);
-        m_OnlineMenu.SetActive(false);
-        m_NameInput.SetActive(false);
-        m_Lobby.SetActive(false);
-        m_CreateRoom.SetActive(false);
-        m_RoomList.SetActive(false);
-        m_Room.SetActive(false);
-        m_CharacterSelection.SetActive(false);
-        m_GameMode.SetActive(false);
-        m_MapSelection.SetActive(false);
-        m_WeaponSelection.SetActive(false);
-        m_ScoreInfo.SetActive(false);
-        m_Loading.SetActive(false);
-        m_Error.SetActive(false);
         SetUpMapEditor();
+        if (PhotonNetwork.IsConnected)
+        {
+            BackToCharacterSelection();
+        }
+        else 
+        {
+            m_Option.SetActive(false);
+            m_MapEditor.SetActive(false);
+            m_Control.SetActive(false);
+            m_OnlineMenu.SetActive(false);
+            m_NameInput.SetActive(false);
+            m_Lobby.SetActive(false);
+            m_CreateRoom.SetActive(false);
+            m_RoomList.SetActive(false);
+            m_Room.SetActive(false);
+            m_CharacterSelection.SetActive(false);
+            m_GameMode.SetActive(false);
+            m_MapSelection.SetActive(false);
+            m_WeaponSelection.SetActive(false);
+            m_ScoreInfo.SetActive(false);
+            m_Loading.SetActive(false);
+            m_Error.SetActive(false);
+        }
+        StartCoroutine(EnterSceneAnimation());
     }
 
     /*private void Update()
@@ -251,9 +257,19 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         }
     }
 
+    public IEnumerator EnterSceneAnimation()
+    {
+        animator.Play("EnterScene");
+        yield return new WaitForSeconds(3.5f);
+        animator.enabled = false;
+    }
+
     public void BackToCharacterSelection()
     {
+        m_Menu.SetActive(false);
         m_OnlineMenu.SetActive(true);
+        m_CharacterSelection.SetActive(true);
+        Launcher.instance.StartGame();
         StartCoroutine(EnterCharacterSelection());
     }
 
@@ -678,7 +694,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         if (OptionSetting.TRANSITIONANIMATION)
         {
-            Debug.LogError("Exit Room");
             //Todo : 關掉Room的時候流程問題
             if (m_Room.activeSelf)
             {

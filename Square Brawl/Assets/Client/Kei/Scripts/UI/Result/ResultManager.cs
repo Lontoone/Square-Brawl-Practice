@@ -141,9 +141,10 @@ public class ResultManager : MonoBehaviour
     IEnumerator LoadScene(int sceneIndex)
     {
         LoadingAnim.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
         operation.allowSceneActivation = false;
-        yield return new WaitForSeconds(2.7f);
+        yield return new WaitForSeconds(1f);
         LoadingAnim.SetTrigger("ExitTrigger");
         yield return new WaitForSeconds(1f);
         operation.allowSceneActivation = true;
