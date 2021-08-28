@@ -92,19 +92,27 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
                 {
                     case 0:
                         Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
-                        OptionSetting.FULLSCREEN = 0;
                         break;
 
                     case 1:
+                        Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+                        break;
+
+                    case 2:
+                        Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
+                        break;
+
+                    case 3:
                         Screen.fullScreenMode = FullScreenMode.Windowed;
-                        OptionSetting.FULLSCREEN = 3;
                         break;
                 }
+                OptionSetting.FULLSCREEN = m_CurrentIndex;
                 break;
 
             case OptionSetting.ChangeType.Resolution:
                 Screen.SetResolution((int)OptionSetting.resolution[m_CurrentIndex].x, (int)OptionSetting.resolution[m_CurrentIndex].y, (FullScreenMode)OptionSetting.FULLSCREEN);
                 OptionSetting.RESOLUTION = m_CurrentIndex;
+                Debug.Log((FullScreenMode)OptionSetting.FULLSCREEN);
                 break;
 
             case OptionSetting.ChangeType.MusicVolume:
@@ -150,7 +158,7 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
         switch (m_ChangeType)
         {
             case OptionSetting.ChangeType.FullScreen:
-                m_ListSelection.m_DefaultElement = (int)OptionSetting.FULLSCREEN;
+                m_ListSelection.m_DefaultElement = OptionSetting.FULLSCREEN;
                 break;
 
             case OptionSetting.ChangeType.Resolution:

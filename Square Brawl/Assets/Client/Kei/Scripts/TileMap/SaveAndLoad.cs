@@ -21,7 +21,7 @@ public class SaveAndLoad : MonoBehaviour
 
 
         StreamWriter stream = new StreamWriter(_path);
-        string json = JsonUtility.ToJson(data);
+        string json = JsonUtility.ToJson(data, true);
         stream.Write(json);
         stream.Close();
     }

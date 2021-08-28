@@ -19,7 +19,7 @@ public class ESCButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExit
         sequence.Append(text.DOFade(1,0.3f));
     }
 
-    private void OffAnimation()
+    public void OffAnimation()
     {
         sequence.Kill();
         sequence = DOTween.Sequence();

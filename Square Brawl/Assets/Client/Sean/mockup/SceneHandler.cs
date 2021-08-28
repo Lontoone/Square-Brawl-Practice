@@ -95,6 +95,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         {
             SaveAndLoadSetting.Load();
         }
+        var resolution = OptionSetting.resolution[OptionSetting.RESOLUTION];
+        Screen.SetResolution((int)resolution.x, (int)resolution.y, (FullScreenMode)OptionSetting.FULLSCREEN);
 
         scene_current_easetype = new Easetype.Current_easetype();
         green = m_Green;

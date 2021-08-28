@@ -16,7 +16,16 @@ public class ESC : MonoBehaviour
     [SerializeField] private GameObject colorSelectionPrefab;
     [SerializeField] private GameObject weaponSelectionPrefab;
 
+    public static ESC instance;
     private bool InOption = false;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
 
     private void Update()
     {
@@ -59,6 +68,10 @@ public class ESC : MonoBehaviour
         if (OptionSetting.TRANSITIONANIMATION)
         {
             animator.Play("ExitESC");
+            foreach (ESCButtonAction action in GetComponentsInChildren<ESCButtonAction>())
+            {
+                action.OffAnimation();
+            }
         }
         else
         {

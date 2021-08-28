@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class OptionSetting
 {
-    public static int FULLSCREEN = 0;
+    public static int FULLSCREEN = 1;
     public static int RESOLUTION = 5;
-    public static float MUSICVOLUME = 0.5f;
-    public static float SFXVOLUME = 0.5f;
+    public static float MUSICVOLUME = 0.4f;
+    public static float SFXVOLUME = 0.4f;
     public static bool CONTROLLER_RUMBLE = true;
     public static bool TRANSITIONANIMATION = true;
 
@@ -34,8 +34,8 @@ public class SaveAndLoadSetting
 {
     public int FULLSCREEN;
     public int RESOLUTION;
-    public float MUSICVOLUME;
-    public float SFXVOLUME;
+    public int MUSICVOLUME;
+    public int SFXVOLUME;
     public bool CONTROLLER_RUMBLE;
     public bool TRANSITIONANIMATION;
 
@@ -43,9 +43,10 @@ public class SaveAndLoadSetting
     {
         SaveAndLoadSetting saveAndLoadSetting = new SaveAndLoadSetting();
 
+        saveAndLoadSetting.FULLSCREEN = OptionSetting.FULLSCREEN;
         saveAndLoadSetting.RESOLUTION = OptionSetting.RESOLUTION;
-        saveAndLoadSetting.MUSICVOLUME = OptionSetting.MUSICVOLUME;
-        saveAndLoadSetting.SFXVOLUME = OptionSetting.SFXVOLUME;
+        saveAndLoadSetting.MUSICVOLUME = (int)(OptionSetting.MUSICVOLUME * 10);
+        saveAndLoadSetting.SFXVOLUME = (int)(OptionSetting.SFXVOLUME * 10);
         saveAndLoadSetting.CONTROLLER_RUMBLE = OptionSetting.CONTROLLER_RUMBLE;
         saveAndLoadSetting.TRANSITIONANIMATION = OptionSetting.TRANSITIONANIMATION;
 
@@ -67,8 +68,8 @@ public class SaveAndLoadSetting
 
         OptionSetting.FULLSCREEN = saveAndLoadSetting.FULLSCREEN;
         OptionSetting.RESOLUTION = saveAndLoadSetting.RESOLUTION;
-        OptionSetting.MUSICVOLUME = saveAndLoadSetting.MUSICVOLUME;
-        OptionSetting.SFXVOLUME = saveAndLoadSetting.SFXVOLUME;
+        OptionSetting.MUSICVOLUME = (float)saveAndLoadSetting.MUSICVOLUME / 10;
+        OptionSetting.SFXVOLUME = (float)saveAndLoadSetting.SFXVOLUME / 10;
         OptionSetting.CONTROLLER_RUMBLE = saveAndLoadSetting.CONTROLLER_RUMBLE;
         OptionSetting.TRANSITIONANIMATION = saveAndLoadSetting.TRANSITIONANIMATION;
     }
