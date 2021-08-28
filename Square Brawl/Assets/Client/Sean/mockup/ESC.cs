@@ -40,6 +40,7 @@ public class ESC : MonoBehaviour
         if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadStartButtonWasPressed) && buttonGroup.activeSelf == false)
         {
             buttonGroup.SetActive(true);
+            AudioSourcesManager.PlaySFX(0);
 
             if (OptionSetting.TRANSITIONANIMATION)
             {
@@ -51,7 +52,7 @@ public class ESC : MonoBehaviour
             }
             Debug.Log("Esc Was Pressed");
         }
-        else if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadStartButtonWasPressed) && buttonGroup.activeSelf == true && InOption ==false)
+        else if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadStartButtonWasPressed) && buttonGroup.activeSelf == true && InOption ==false && animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "EnterESC")
         {
             BackOnClick();
         }
@@ -59,6 +60,7 @@ public class ESC : MonoBehaviour
 
     public void BackOnClick()
     {
+        AudioSourcesManager.PlaySFX(1);
         StartCoroutine(Back());
     }
 
@@ -85,12 +87,14 @@ public class ESC : MonoBehaviour
 
     public void BackToMenu()
     {
+        AudioSourcesManager.PlaySFX(1);
         PhotonNetwork.Disconnect();
         StartCoroutine(MenuBackAction());
     }
 
     public void EnterOption()
     {
+        AudioSourcesManager.PlaySFX(0);
         StartCoroutine(EnterOptionAnimation());
     }
 
@@ -101,6 +105,7 @@ public class ESC : MonoBehaviour
 
     public void ExitGame()
     {
+        AudioSourcesManager.PlaySFX(1);
         Debug.Log("Quitting");
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;

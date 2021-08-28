@@ -38,6 +38,7 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
     private Sequence m_SettingSequence;
     private Easetype.Current_easetype m_current_easetype;
     private int m_CurrentIndex = 0;
+    private int m_LastFrameIndex = 0;
 
     [Space(15)]
     [SerializeField] private GameObject m_SliderParent;
@@ -73,7 +74,11 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
         if (m_SettingType == SettingType.SliderSelection && m_SliderSetting.onSelect == true)
         {
             m_CurrentIndex = m_SliderParent.GetComponent<ToDotSlider.DotSliderAction>().OnLoad(m_SliderSetting);
-            ReturnSettingValue();
+            if (m_CurrentIndex != m_LastFrameIndex)
+            {
+                ReturnSettingValue();
+                m_LastFrameIndex = m_CurrentIndex;
+            }
         }
     }
 
@@ -117,12 +122,13 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
 
             case OptionSetting.ChangeType.MusicVolume:
                 OptionSetting.MUSICVOLUME = m_CurrentIndex * 0.1f;
-                AudioSourcesManager.instance.ChangeBGMVolume();
+                AudioSourcesManager.ChangeBGMVolume();
+                AudioSourcesManager.PlaySFX(2);
                 break;
 
             case OptionSetting.ChangeType.SFXVolume:
                 OptionSetting.SFXVOLUME = m_CurrentIndex * 0.1f;
-                AudioSourcesManager.instance.ChangeSFXVolume();
+                AudioSourcesManager.PlaySFX(2);
                 break;
 
             case OptionSetting.ChangeType.ControllerRumble:

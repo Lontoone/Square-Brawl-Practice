@@ -70,10 +70,12 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         isReady = _isReady;
         if (isReady)
         {
+            AudioSourcesManager.PlaySFX(0);
             OnReady?.Invoke();
         }
         else
         {
+            //AudioSourcesManager.PlaySFX(1);//TODO 初始聲音
             OnCancelReady?.Invoke();
         }
         player.SetCustomProperties(MyPhotonExtension.WrapToHash(new object[] { CustomPropertyCode.READY, isReady }));

@@ -15,6 +15,8 @@ public class ColorSetButton : MonoBehaviour
     }
     public void SetColor()
     {
+        AudioSourcesManager.PlaySFX(2);
+
         Debug.Log("Set Color " + colorIndex);
         bool IsReady = (bool)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.READY];
         if (!IsReady)

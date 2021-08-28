@@ -20,6 +20,8 @@ public class ArrorButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void OnPress()
     {
+        AudioSourcesManager.PlaySFX(2);
+
         animator.Play("Pressed");
     }
 
@@ -30,12 +32,15 @@ public class ArrorButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private IEnumerator Idle()
     {
-        yield return new WaitUntil(() => animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Pressed");
+        //yield return new WaitUntil(() => animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Pressed");
+        yield return null;
         animator.Play("Exit");
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        AudioSourcesManager.PlaySFX(2);
+
         inButton = true;
         Highlighted();
     }

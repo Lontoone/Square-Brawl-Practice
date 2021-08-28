@@ -328,6 +328,7 @@ MonoBehaviour:
   m_AimObject: {fileID: 0}
   to_x: -200
   to_y: 0
+  m_AudioType: 1
   dotweentype: 1
   string_easetype: 0
   string_duration: 0.2

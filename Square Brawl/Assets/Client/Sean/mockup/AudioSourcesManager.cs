@@ -1,30 +1,50 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioSourcesManager : MonoBehaviour
 {
-    [SerializeField] private List<AudioSource> BGM;
-    [SerializeField] private List<AudioSource> SFX;
+    [SerializeField]
+    public static List<AudioSource> BGM= new List<AudioSource>();
+    public static List<AudioClip> SFX = new List<AudioClip>();
 
-    public static AudioSourcesManager instance;
+    public static AudioSource AUDIOSOURCE;
+    private AudioSource bgm;
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        
+        AUDIOSOURCE = GetComponent<AudioSource>();
+        SFX.Add(Resources.Load<AudioClip>("AudioSource/NextSound"));
+        SFX.Add(Resources.Load<AudioClip>("AudioSource/BackSound"));
+        SFX.Add(Resources.Load<AudioClip>("AudioSource/DefaultSound"));
     }
 
     private void Start()
     {
-        ChangeBGMVolume();
-        BGM[0].Play();
+        SetUIBGM();
     }
 
-    public void ChangeBGMVolume()
+    private void OnDestroy()
+    {
+        Destroy(bgm);
+        BGM.Clear();
+    }
+
+    private void SetUIBGM()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            bgm = gameObject.AddComponent<AudioSource>();
+            BGM.Add(bgm);
+            BGM[0].clip = Resources.Load<AudioClip>("AudioSource/BGM/CylinderSixChrisZabriskie");
+            BGM[0].volume = OptionSetting.MUSICVOLUME;
+            BGM[0].loop = true;
+            BGM[0].Play();
+        }
+    }
+
+    public static void ChangeBGMVolume()
     {
         foreach (AudioSource audio in BGM)
         {
@@ -32,11 +52,8 @@ public class AudioSourcesManager : MonoBehaviour
         }
     }
 
-    public void ChangeSFXVolume()
+    public static void PlaySFX(int index)
     {
-        foreach (AudioSource audio in SFX)
-        {
-            audio.volume = OptionSetting.SFXVOLUME;
-        }
+        AUDIOSOURCE.PlayOneShot(SFX[index], OptionSetting.SFXVOLUME);
     }
 }
