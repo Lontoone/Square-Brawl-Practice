@@ -195,6 +195,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 StartCoroutine(EnterLoading());
                 break;
 
+            case "Error":
+                StartCoroutine(EnterError());
+                break;
+
             default:
                 Debug.LogWarning(gameObject + " :switch page error");
                 break;
@@ -261,6 +265,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 StartCoroutine(ExitLoading());
                 break;
 
+            case "Error":
+                StartCoroutine(ExitError());
+                break;
+
             default:
                 Debug.LogWarning(gameObject + " :switch page error");
                 break;
@@ -274,7 +282,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         animator.enabled = false;
     }
 
-    public void BackToCharacterSelection()
+    public void BackToCharacterSelection() //TODO
     {
         m_Menu.SetActive(false);
         m_OnlineMenu.SetActive(true);
@@ -354,7 +362,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             time = 0f;
         }
         m_MapEditor.SetActive(true);
-        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform
             .DOLocalMove(new Vector3(m_Menu.transform.localPosition.x, -1080, 0), time)
             .SetEase(scene_current_easetype.GetEasetype(easetype));
@@ -407,7 +414,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         }
         m_Menu.GetComponentInChildren<MenuButtonHandler>().DisableButton();
         m_Control.SetActive(true);
-        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
         m_Menu.transform
             .DOLocalMove(new Vector3(m_Menu.transform.localPosition.x + 1920, m_Menu.transform.localPosition.y + -to_y, 0), time)
             .SetEase(scene_current_easetype.GetEasetype(easetype));

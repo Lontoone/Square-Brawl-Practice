@@ -391,6 +391,14 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""ready click"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd132d33-5145-428e-a62b-fd478fba19fb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -569,6 +577,28 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""action"": ""back click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d29e72aa-a351-434c-8007-54f45bfcb722"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""ready click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ede6e794-260b-4a09-86d8-a1c2cf2ad254"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""ready click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -600,6 +630,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         m_UI_UIMovement = m_UI.FindAction("UI Movement", throwIfNotFound: true);
         m_UI_confirmclick = m_UI.FindAction("confirm click", throwIfNotFound: true);
         m_UI_backclick = m_UI.FindAction("back click", throwIfNotFound: true);
+        m_UI_readyclick = m_UI.FindAction("ready click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -733,6 +764,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
     private readonly InputAction m_UI_UIMovement;
     private readonly InputAction m_UI_confirmclick;
     private readonly InputAction m_UI_backclick;
+    private readonly InputAction m_UI_readyclick;
     public struct UIActions
     {
         private @PlayerInputManager m_Wrapper;
@@ -740,6 +772,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         public InputAction @UIMovement => m_Wrapper.m_UI_UIMovement;
         public InputAction @confirmclick => m_Wrapper.m_UI_confirmclick;
         public InputAction @backclick => m_Wrapper.m_UI_backclick;
+        public InputAction @readyclick => m_Wrapper.m_UI_readyclick;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -758,6 +791,9 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 @backclick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnBackclick;
                 @backclick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnBackclick;
                 @backclick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnBackclick;
+                @readyclick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnReadyclick;
+                @readyclick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnReadyclick;
+                @readyclick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnReadyclick;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -771,6 +807,9 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 @backclick.started += instance.OnBackclick;
                 @backclick.performed += instance.OnBackclick;
                 @backclick.canceled += instance.OnBackclick;
+                @readyclick.started += instance.OnReadyclick;
+                @readyclick.performed += instance.OnReadyclick;
+                @readyclick.canceled += instance.OnReadyclick;
             }
         }
     }
@@ -808,5 +847,6 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         void OnUIMovement(InputAction.CallbackContext context);
         void OnConfirmclick(InputAction.CallbackContext context);
         void OnBackclick(InputAction.CallbackContext context);
+        void OnReadyclick(InputAction.CallbackContext context);
     }
 }

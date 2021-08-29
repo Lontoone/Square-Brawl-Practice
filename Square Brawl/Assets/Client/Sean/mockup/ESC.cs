@@ -19,6 +19,8 @@ public class ESC : MonoBehaviour
     public static ESC instance;
     private bool InOption = false;
 
+    private GameObject lastSelectedObject;
+
     private void Awake()
     {
         if (instance == null)
@@ -39,6 +41,7 @@ public class ESC : MonoBehaviour
         }
         if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadStartButtonWasPressed) && buttonGroup.activeSelf == false)
         {
+            lastSelectedObject = EventSystem.current.currentSelectedGameObject;
             buttonGroup.SetActive(true);
             AudioSourcesManager.PlaySFX(0);
 
@@ -66,7 +69,7 @@ public class ESC : MonoBehaviour
 
     private IEnumerator Back()
     {
-        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(lastSelectedObject);
         if (OptionSetting.TRANSITIONANIMATION)
         {
             animator.Play("ExitESC");

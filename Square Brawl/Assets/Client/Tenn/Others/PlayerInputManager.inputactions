@@ -378,6 +378,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "ready click",
+                    "type": "Button",
+                    "id": "dd132d33-5145-428e-a62b-fd478fba19fb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -554,6 +562,28 @@
                     "processors": "",
                     "groups": "GamePad",
                     "action": "back click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d29e72aa-a351-434c-8007-54f45bfcb722",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "ready click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ede6e794-260b-4a09-86d8-a1c2cf2ad254",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "ready click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

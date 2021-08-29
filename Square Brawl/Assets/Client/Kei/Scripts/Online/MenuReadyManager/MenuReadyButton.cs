@@ -12,6 +12,8 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
     public UnityEvent OnReady;
     public UnityEvent OnCancelReady;
     public Player player;
+    [HideInInspector]
+    public bool isLocal = false;
 
     public override void OnEnable()
     {
@@ -39,6 +41,8 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
 
         if (_player == PhotonNetwork.LocalPlayer)
         {
+            isLocal = true;
+
             if (setUnReadyOnEnable)
             {
                 SetReadyWithoutAudio(false);
