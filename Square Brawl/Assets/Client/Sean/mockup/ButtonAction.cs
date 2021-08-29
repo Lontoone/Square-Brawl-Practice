@@ -139,7 +139,6 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        AudioSourcesManager.PlaySFX(m_AudioType);
         m_MouseSelectedState = true;
         HighlightedConrtoller();
         HighlightedIcon();
@@ -154,7 +153,6 @@ public class ButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public virtual void OnSelect(BaseEventData eventData)
     {
-        AudioSourcesManager.PlaySFX(m_AudioType);
         m_KeySelectedState = true;
         HighlightedConrtoller();
         HighlightedIcon();

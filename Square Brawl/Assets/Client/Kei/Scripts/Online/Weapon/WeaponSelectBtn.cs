@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-public class WeaponSelectBtn : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IPointerClickHandler, ISubmitHandler
+public class WeaponSelectBtn : MonoBehaviour
 {
     public WeaponType weaponType;
     private Button button;
@@ -59,25 +58,5 @@ public class WeaponSelectBtn : MonoBehaviour, IPointerEnterHandler, ISelectHandl
                                   ));
             }
         }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        AudioSourcesManager.PlaySFX(2);
-    }
-
-    public void OnSelect(BaseEventData eventData)
-    {
-        //AudioSourcesManager.PlaySFX(2);
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        AudioSourcesManager.PlaySFX(2);
-    }
-
-    public void OnSubmit(BaseEventData eventData)
-    {
-        AudioSourcesManager.PlaySFX(2);
     }
 }

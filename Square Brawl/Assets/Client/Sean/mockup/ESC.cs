@@ -32,11 +32,16 @@ public class ESC : MonoBehaviour
     private void Update()
     {
         var gamepadStartButtonWasPressed = false;
+        var gamepadEastButtonWasPressed = false;
         if (Gamepad.current != null)
         {
             if (Gamepad.current.startButton.wasPressedThisFrame)
             {
                 gamepadStartButtonWasPressed = true;
+            }
+            else if (Gamepad.current.buttonEast.wasPressedThisFrame)
+            {
+                gamepadEastButtonWasPressed = true;
             }
         }
         if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadStartButtonWasPressed) && buttonGroup.activeSelf == false)
@@ -55,11 +60,12 @@ public class ESC : MonoBehaviour
             }
             Debug.Log("Esc Was Pressed");
         }
-        else if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadStartButtonWasPressed) && buttonGroup.activeSelf == true && InOption ==false && animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "EnterESC")
+        else if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadEastButtonWasPressed) && buttonGroup.activeSelf == true && InOption ==false && animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "EnterESC")
         {
             BackOnClick();
         }
     }
+
 
     public void BackOnClick()
     {

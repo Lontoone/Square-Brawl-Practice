@@ -216,10 +216,6 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (onPress == false && GetComponent<ButtonAction>() == null)
-        {
-            AudioSourcesManager.PlaySFX(0);
-        }
         m_MouseSelectedState = true;
         if (m_KeySelectedState != true && m_MouseSelectedState == true)
         {
@@ -241,10 +237,6 @@ public class OptionButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public virtual void OnSelect(BaseEventData eventData)
     {
-        if (onPress == false && GetComponent<ButtonAction>() == null)
-        {
-            AudioSourcesManager.PlaySFX(0);
-        }
         m_KeySelectedState = true;
         if (m_MouseSelectedState != true && m_KeySelectedState == true)
         {

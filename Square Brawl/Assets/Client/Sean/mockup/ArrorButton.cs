@@ -19,8 +19,6 @@ public class ArrorButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void OnPress()
     {
-        AudioSourcesManager.PlaySFX(2);
-
         animator.Play("Pressed");
     }
 
@@ -38,7 +36,6 @@ public class ArrorButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        AudioSourcesManager.PlaySFX(2);
         Highlighted();
     }
 

@@ -45,12 +45,12 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
 
             if (setUnReadyOnEnable)
             {
-                SetReadyWithoutAudio(false);
+                SetReady(false);
                 //SetReadyLocal(false);
             }
             else
             {
-                SetReadyWithoutAudio(true);
+                SetReady(true);
                 //SetReadyLocal(true);
             }
             SetMyButtonActive(true);
@@ -70,22 +70,6 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
     }
 
     public void SetReady(bool _isReady)
-    {
-        isReady = _isReady;
-        if (isReady)
-        {
-            AudioSourcesManager.PlaySFX(0);
-            OnReady?.Invoke();
-        }
-        else
-        {
-            AudioSourcesManager.PlaySFX(1);
-            OnCancelReady?.Invoke();
-        }
-        player.SetCustomProperties(MyPhotonExtension.WrapToHash(new object[] { CustomPropertyCode.READY, isReady }));
-    }
-
-    public void SetReadyWithoutAudio(bool _isReady)
     {
         isReady = _isReady;
         if (isReady)
@@ -129,7 +113,7 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         }
         else
         {
-            AudioSourcesManager.PlaySFX(1);
+            AudioSourcesManager.PlaySFX(1);//TODO Set up sound
             OnCancelReady?.Invoke();
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
@@ -10,6 +11,10 @@ public class SetButtonManager : MonoBehaviour
     [SerializeField] private GameObject firstSelectedButton;
 
     public bool m_UseReadyButton = false;
+    public bool m_UseGamePadBackButton = false;
+
+    public Button backButton;
+    public UnityEvent GamePadBackEvent;
 
     private PlayerInputManager input;
     //private MenuReadyButton localReadyButton;
@@ -17,17 +22,23 @@ public class SetButtonManager : MonoBehaviour
 
     private void Awake()
     {
-        if (m_UseReadyButton == true)
+        if (m_UseReadyButton == true || m_UseGamePadBackButton == true)
         {
             input = new PlayerInputManager();
-            input.UI.readyclick.performed += ctx => ReadyByKey();
-            Debug.Log("Set key");
+            if (m_UseReadyButton == true)
+            {
+                input.UI.readyclick.performed += ctx => ReadyByKey();
+            }
+            else if (m_UseGamePadBackButton == true)
+            {
+                input.UI.gamepadbackclick.performed += ctx => BackByGamePad();
+            }
         }
     }
 
     private void OnEnable()
     {
-        if (m_UseReadyButton == true)
+        if (m_UseReadyButton == true || m_UseGamePadBackButton == true)
         {
             input.Enable();
         }
@@ -36,7 +47,7 @@ public class SetButtonManager : MonoBehaviour
 
     private void OnDisable()
     {
-        if (m_UseReadyButton == true)
+        if (m_UseReadyButton == true || m_UseGamePadBackButton == true)
         {
             input.Disable();
         }
@@ -44,7 +55,6 @@ public class SetButtonManager : MonoBehaviour
 
     private void ReadyByKey()
     {
-        Debug.Log("Set ready");
         var obj = GetComponentsInChildren<MenuReadyButton>();
         foreach (MenuReadyButton child in obj)
         {
@@ -55,5 +65,11 @@ public class SetButtonManager : MonoBehaviour
                 Debug.Log(isReady);
             }
         }
+    }
+
+    private void BackByGamePad()
+    {
+        AudioSourcesManager.PlaySFX(1);
+        GamePadBackEvent?.Invoke();
     }
 }

@@ -386,6 +386,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "gamepad back click",
+                    "type": "Button",
+                    "id": "44c38951-96bb-4973-8345-8405565d1461",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -545,6 +553,17 @@
                 },
                 {
                     "name": "",
+                    "id": "6504ad66-7ba9-44c8-b632-0c7f70dc97a1",
+                    "path": "<Keyboard>/numpadEnter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "confirm click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d9851009-37c4-47d0-b7f5-d4d89361ece3",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
@@ -584,6 +603,17 @@
                     "processors": "",
                     "groups": "GamePad",
                     "action": "ready click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9fdb6046-251b-4643-b8f0-0c220a64e8e1",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "gamepad back click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

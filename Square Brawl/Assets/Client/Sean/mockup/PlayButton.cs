@@ -69,7 +69,6 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        AudioSourcesManager.PlaySFX(0);
         m_Arror.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         m_Shadow.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         AimAction.inButton = true;
@@ -86,7 +85,6 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public virtual void OnSelect(BaseEventData eventData)
     {
-        AudioSourcesManager.PlaySFX(0);
         m_Arror.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         m_Shadow.DOColor(new Color32(255, 255, 255, 255), m_aimduration).SetEase(m_PlayButtonCurrentEasetype.GetEasetype(m_AimEasetype));
         AimAction.inButton = true;

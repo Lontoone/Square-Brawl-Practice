@@ -28,7 +28,6 @@ public class ESCButtonAction : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        AudioSourcesManager.PlaySFX(2);
         OnAnimation();
     }
 

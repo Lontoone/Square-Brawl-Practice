@@ -505,6 +505,7 @@ public class OptionManager : MonoBehaviour
             }
             else if (onPressIndex == m_SettingGroup.Length)
             {
+                AudioSourcesManager.PlaySFX(1);
                 EventSystem.current.SetSelectedGameObject(m_BackButton);
                 BackButtonAction("Highlighted");
                 ResetDeselected();
@@ -525,6 +526,7 @@ public class OptionManager : MonoBehaviour
     {
         if (onPressIndex == 99 || onPressIndex == m_SettingGroup.Length)
         {
+            AudioSourcesManager.PlaySFX(1);
             BackButtonAction("Highlighted");
             ResetDeselected();
             if (GetComponentInParent<SceneHandler>() != null)

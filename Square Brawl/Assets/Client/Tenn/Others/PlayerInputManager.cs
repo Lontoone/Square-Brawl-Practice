@@ -399,6 +399,14 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""gamepad back click"",
+                    ""type"": ""Button"",
+                    ""id"": ""44c38951-96bb-4973-8345-8405565d1461"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -558,6 +566,17 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""6504ad66-7ba9-44c8-b632-0c7f70dc97a1"",
+                    ""path"": ""<Keyboard>/numpadEnter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""confirm click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""d9851009-37c4-47d0-b7f5-d4d89361ece3"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
@@ -599,6 +618,17 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                     ""action"": ""ready click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9fdb6046-251b-4643-b8f0-0c220a64e8e1"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""gamepad back click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -631,6 +661,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         m_UI_confirmclick = m_UI.FindAction("confirm click", throwIfNotFound: true);
         m_UI_backclick = m_UI.FindAction("back click", throwIfNotFound: true);
         m_UI_readyclick = m_UI.FindAction("ready click", throwIfNotFound: true);
+        m_UI_gamepadbackclick = m_UI.FindAction("gamepad back click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -765,6 +796,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
     private readonly InputAction m_UI_confirmclick;
     private readonly InputAction m_UI_backclick;
     private readonly InputAction m_UI_readyclick;
+    private readonly InputAction m_UI_gamepadbackclick;
     public struct UIActions
     {
         private @PlayerInputManager m_Wrapper;
@@ -773,6 +805,7 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         public InputAction @confirmclick => m_Wrapper.m_UI_confirmclick;
         public InputAction @backclick => m_Wrapper.m_UI_backclick;
         public InputAction @readyclick => m_Wrapper.m_UI_readyclick;
+        public InputAction @gamepadbackclick => m_Wrapper.m_UI_gamepadbackclick;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -794,6 +827,9 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 @readyclick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnReadyclick;
                 @readyclick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnReadyclick;
                 @readyclick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnReadyclick;
+                @gamepadbackclick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnGamepadbackclick;
+                @gamepadbackclick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnGamepadbackclick;
+                @gamepadbackclick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnGamepadbackclick;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -810,6 +846,9 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
                 @readyclick.started += instance.OnReadyclick;
                 @readyclick.performed += instance.OnReadyclick;
                 @readyclick.canceled += instance.OnReadyclick;
+                @gamepadbackclick.started += instance.OnGamepadbackclick;
+                @gamepadbackclick.performed += instance.OnGamepadbackclick;
+                @gamepadbackclick.canceled += instance.OnGamepadbackclick;
             }
         }
     }
@@ -848,5 +887,6 @@ public class @PlayerInputManager : IInputActionCollection, IDisposable
         void OnConfirmclick(InputAction.CallbackContext context);
         void OnBackclick(InputAction.CallbackContext context);
         void OnReadyclick(InputAction.CallbackContext context);
+        void OnGamepadbackclick(InputAction.CallbackContext context);
     }
 }
