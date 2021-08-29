@@ -11,8 +11,13 @@ public class Credits : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
     private Button button;
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private Animator animator;
+    [SerializeField] private GameObject credit;
+    [SerializeField] private GameObject creditButton;
 
+    private GameObject lastSelectObject;
     private Sequence sequence;
+
+    private bool inCredit = false;
 
     private void EnterAnimation()
     {
@@ -32,13 +37,17 @@ public class Credits : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
                     .SetEase(Ease.OutCirc));
     }
 
-    private void OnClickAnimation()
+    private IEnumerator OnClickAnimation()
     {
+        lastSelectObject = EventSystem.current.currentSelectedGameObject;
+        EventSystem.current.SetSelectedGameObject(null);
+        credit.SetActive(true);
         sequence.Kill();
         sequence = DOTween.Sequence();
         sequence.Append(text.transform
                     .DOPunchScale(new Vector2(0.05f, 0.05f), 0.5f)
                     .SetEase(Ease.OutCirc));
+
         if (OptionSetting.TRANSITIONANIMATION)
         {
             animator.Play("EnterCredit");
@@ -47,23 +56,46 @@ public class Credits : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
         {
             animator.Play("NoneCredit");
         }
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle");
+        inCredit = true;
+        EventSystem.current.SetSelectedGameObject(creditButton);
     }
 
-    public void OnBackAnimation()
+    public void BackToMenu()
     {
+        if (inCredit == true)
+        {
+            StartCoroutine(OnBackAnimation());
+        }
+    }
+
+    public IEnumerator OnBackAnimation()
+    {
+        var time = 0f;
+        EventSystem.current.SetSelectedGameObject(null);
+
         if (OptionSetting.TRANSITIONANIMATION)
         {
             animator.Play("ExitCredit");
+            time = animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
         }
         else
         {
             animator.Play("None");
         }
+        yield return new WaitForSeconds(time);
+        credit.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(lastSelectObject);
+
+        inCredit = false;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        OnClickAnimation();
+        if (inCredit == false)
+        {
+            StartCoroutine(OnClickAnimation());
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -88,6 +120,9 @@ public class Credits : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
 
     public void OnSubmit(BaseEventData eventData)
     {
-        OnClickAnimation();
+        if (inCredit == false)
+        {
+            StartCoroutine(OnClickAnimation());
+        }
     }
 }
