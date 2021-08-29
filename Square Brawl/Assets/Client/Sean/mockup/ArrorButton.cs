@@ -9,7 +9,6 @@ public class ArrorButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     private Animator animator;
     private Button button;
-    private bool inButton = false;
 
     private void Start()
     {
@@ -40,26 +39,21 @@ public class ArrorButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         AudioSourcesManager.PlaySFX(2);
-
-        inButton = true;
         Highlighted();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         StartCoroutine(Idle());
-        inButton = false;
         EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        inButton = true;
         Highlighted();
     }
     public void OnDeselect(BaseEventData eventData)
     {
         StartCoroutine(Idle());
-        inButton = false;
     }
 }
