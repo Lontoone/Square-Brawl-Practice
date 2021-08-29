@@ -41,13 +41,13 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         {
             if (setUnReadyOnEnable)
             {
-                SetReady(false);
-                SetReadyLocal(false);
+                SetReadyWithoutAudio(false);
+                //SetReadyLocal(false);
             }
             else
             {
-                SetReady(true);
-                SetReadyLocal(true);
+                SetReadyWithoutAudio(true);
+                //SetReadyLocal(true);
             }
             SetMyButtonActive(true);
         }
@@ -55,7 +55,7 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         {
             SetMyButtonActive(false);
             //Debug.Log(player.NickName + " ready " + (bool)player.CustomProperties[CustomPropertyCode.READY]);
-            SetReadyLocal((bool)player.CustomProperties[CustomPropertyCode.READY]);
+            SetReadyLocalWithoutAudio((bool)player.CustomProperties[CustomPropertyCode.READY]);
         }
         //SetReadyLocal(false);
     }
@@ -75,7 +75,21 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
         }
         else
         {
-            //AudioSourcesManager.PlaySFX(1);//TODO 初始聲音
+            AudioSourcesManager.PlaySFX(1);
+            OnCancelReady?.Invoke();
+        }
+        player.SetCustomProperties(MyPhotonExtension.WrapToHash(new object[] { CustomPropertyCode.READY, isReady }));
+    }
+
+    public void SetReadyWithoutAudio(bool _isReady)
+    {
+        isReady = _isReady;
+        if (isReady)
+        {
+            OnReady?.Invoke();
+        }
+        else
+        {
             OnCancelReady?.Invoke();
         }
         player.SetCustomProperties(MyPhotonExtension.WrapToHash(new object[] { CustomPropertyCode.READY, isReady }));
@@ -104,6 +118,22 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
     {
         isReady = _isReady;
         //TODO:Change UI
+        if (isReady)
+        {
+            AudioSourcesManager.PlaySFX(0);
+            OnReady?.Invoke();
+        }
+        else
+        {
+            AudioSourcesManager.PlaySFX(1);
+            OnCancelReady?.Invoke();
+        }
+    }
+
+    public void SetReadyLocalWithoutAudio(bool _isReady)
+    {
+        isReady = _isReady;
+
         if (isReady)
         {
             OnReady?.Invoke();

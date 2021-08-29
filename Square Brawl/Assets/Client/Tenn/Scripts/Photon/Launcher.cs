@@ -13,6 +13,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] UnityEngine.UI.InputField roomNameInputField;
     [SerializeField] UnityEngine.UI.Text errorText;
     [SerializeField] UnityEngine.UI.Text roomNameText;
+    [SerializeField] GameObject room;
     [SerializeField] Transform roomListItemPrefab;
     [SerializeField] Transform roomListContent;
     [SerializeField] Transform playerListItemPrefab;
@@ -88,6 +89,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             Destroy(child.gameObject);
         }
+
+        StartCoroutine(SetUpPlayerListItem());
+    }
+
+    private IEnumerator SetUpPlayerListItem()
+    {
+        yield return new WaitUntil(() => room.activeSelf);
 
         Player[] players = PhotonNetwork.PlayerList;
         for (int i = 0; i < players.Length; i++)

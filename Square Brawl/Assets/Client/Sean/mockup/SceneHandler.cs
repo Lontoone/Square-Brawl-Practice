@@ -690,8 +690,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             }
             yield return new WaitForSeconds(time);
             yield return new WaitUntil(() => { return isLoading == false; });
-            animator.Play("EnterRoom");
             m_Room.SetActive(true);
+            animator.Play("EnterRoom");
         }
         else
         {
