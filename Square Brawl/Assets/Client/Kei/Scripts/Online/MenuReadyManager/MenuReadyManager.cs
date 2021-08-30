@@ -71,7 +71,7 @@ public class MenuReadyManager : MonoBehaviourPunCallbacks
     {
         foreach (MenuReadyButton _btn in allReadyButtons)
         {
-            _btn.SetReady(false);
+            _btn.SetReadyWithoutAudio(false);
         }
     }
 }

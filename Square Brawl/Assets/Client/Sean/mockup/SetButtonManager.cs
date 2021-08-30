@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
@@ -67,12 +68,14 @@ public class SetButtonManager : MonoBehaviour
     private void ReadyByKey()
     {
         var obj = GetComponentsInChildren<MenuReadyButton>();
+
         foreach (MenuReadyButton child in obj)
         {
             if (child.isLocal == true)
             {
-                isReady = !isReady;
-                SetReadyByType(child, isReady);
+                SetReadyByType(child);
+
+                //Set ready tip text
                 if (!isReady)
                 {
                     readyTipText = "To Ready";
@@ -86,20 +89,30 @@ public class SetButtonManager : MonoBehaviour
         }
     }
 
-    private void SetReadyByType(MenuReadyButton _btn, bool _isReady)
+    private void SetReadyByType(MenuReadyButton _btn)
     {
         switch (readyType)
         {
             case ReadyType.DefaultReady:
-                _btn.SetReady(_isReady);
+                isReady = !isReady;
+                _btn.SetReady(isReady);
                 break;
 
             case ReadyType.ColorReady:
-                _btn.ColorSetReady(_isReady);
+                if (PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE] != null)
+                {
+                    isReady = !isReady;
+                }
+                _btn.SetReady(isReady);
                 break;
 
             case ReadyType.WeaponReady:
-                _btn.WeaponSetReady(_isReady);
+                if (((int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON1CODE] != 0
+                  && (int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.WEAPON2CODE] != 0))
+                {
+                    isReady = !isReady;
+                }
+                _btn.SetReady(isReady);
                 break;
         }
     }
@@ -108,5 +121,13 @@ public class SetButtonManager : MonoBehaviour
     {
         AudioSourcesManager.PlaySFX(1);
         GamePadBackEvent?.Invoke();
+    }
+
+    public void ResetButton()
+    {
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            EventSystem.current.SetSelectedGameObject(firstSelectedButton);
+        }
     }
 }

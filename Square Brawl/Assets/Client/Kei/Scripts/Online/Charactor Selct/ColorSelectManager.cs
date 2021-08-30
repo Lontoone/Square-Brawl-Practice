@@ -59,7 +59,7 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
             Player _player = PhotonNetwork.PlayerList[i];
             _item.SetPlayer(_player);
             _item.colorCode = -1;
-
+            //TODO when back color didn't reset
         }
     }
 
