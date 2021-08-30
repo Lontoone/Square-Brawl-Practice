@@ -277,9 +277,16 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     public IEnumerator EnterSceneAnimation()
     {
-        animator.Play("EnterScene");
-        yield return new WaitForSeconds(3.5f);
-        animator.enabled = false;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            animator.Play("EnterScene");
+            yield return new WaitForSeconds(3.5f);
+            animator.enabled = false;
+        }
+        else
+        {
+            animator.enabled = false;
+        }
     }
 
     public void BackToCharacterSelection() //TODO

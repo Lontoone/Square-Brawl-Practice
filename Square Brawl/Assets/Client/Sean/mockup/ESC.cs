@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
@@ -174,9 +175,12 @@ public class ESC : MonoBehaviour
             .DOLocalMove(new Vector3(1920, option.transform.localPosition.y, 0), time)
             .SetEase(Ease.OutQuint);
         option.GetComponentInChildren<OptionManager>().ExitAnimation();
+
         yield return new WaitForSeconds(time / 3);
+
         option.SetActive(false);
+        var btn = buttonGroup.GetComponentInChildren<Button>().gameObject;
+        EventSystem.current.SetSelectedGameObject(btn);
         InOption = false;
     }
-
 }
