@@ -17,6 +17,7 @@ public class SetButtonManager : MonoBehaviour
     [SerializeField] private Button backButton;
     public UnityEvent GamePadBackEvent;
 
+    public static string readyTipText;
     private PlayerInputManager input;
     //private MenuReadyButton localReadyButton;
     private bool isReady = false;
@@ -51,6 +52,8 @@ public class SetButtonManager : MonoBehaviour
             input.Enable();
         }
         EventSystem.current.SetSelectedGameObject(firstSelectedButton); //todo text split error
+
+        readyTipText = "To Ready";
     }
 
     private void OnDisable()
@@ -70,6 +73,14 @@ public class SetButtonManager : MonoBehaviour
             {
                 isReady = !isReady;
                 SetReadyByType(child, isReady);
+                if (!isReady)
+                {
+                    readyTipText = "To Ready";
+                }
+                else
+                {
+                    readyTipText = "To UnReady";
+                }
                 Debug.Log(child.player.NickName +" isReady == "+ isReady);
             }
         }
