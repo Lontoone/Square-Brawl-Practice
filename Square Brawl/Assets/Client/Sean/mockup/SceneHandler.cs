@@ -706,16 +706,21 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             yield return new WaitUntil(() => { return isLoading == false; });
             m_Room.SetActive(true);
             animator.Play("EnterRoom");
+            yield return new WaitForSeconds(m_AnimationClips[12].length);
+            ReadyTipAction.isReady = true;
         }
         else
         {
             m_Room.SetActive(true);
             animator.Play("NoneRoom");
+            ReadyTipAction.isReady = true;
         }
     }
 
     private IEnumerator ExitRoom()
     {
+        ReadyTipAction.isReady = false;
+
         if (OptionSetting.TRANSITIONANIMATION)
         {
             if (m_Room.activeSelf)
@@ -744,22 +749,29 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
                 m_CharacterSelection.SetActive(true);
                 yield return new WaitForSeconds(m_AnimationClips[17].length);
                 animator.Play("BackToCharacterSelection");
+                yield return new WaitForSeconds(m_AnimationClips[14].length);
+                ReadyTipAction.isReady = true;
             }
             else
             { 
                 m_CharacterSelection.SetActive(true);
                 animator.Play("EnterCharacterSelection");
+                yield return new WaitForSeconds(m_AnimationClips[14].length);
+                ReadyTipAction.isReady = true;
             }
         }
         else
         {
             m_CharacterSelection.SetActive(true);
             animator.Play("NoneCharacterSelection");
+            ReadyTipAction.isReady = true;
         }
     }
 
     private IEnumerator ExitCharacterSelection()
     {
+        ReadyTipAction.isReady = false;
+
         if (OptionSetting.TRANSITIONANIMATION)
         {
             if (m_CharacterSelection.activeSelf)
@@ -861,17 +873,21 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         if (OptionSetting.TRANSITIONANIMATION)
         {
             m_WeaponSelection.SetActive(true);
-            yield return null;
+            yield return new WaitForSeconds(m_AnimationClips[20].length);
+            ReadyTipAction.isReady = true;
         }
         else
         {
             m_WeaponSelection.SetActive(true);
             animator.Play("NoneWeaponSelection");
+            ReadyTipAction.isReady = true;
         }
     }
 
     private IEnumerator ExitWeaponSelection()
     {
+        ReadyTipAction.isReady = false;
+
         if (OptionSetting.TRANSITIONANIMATION)
         {
             m_WeaponSelection.SetActive(false);
