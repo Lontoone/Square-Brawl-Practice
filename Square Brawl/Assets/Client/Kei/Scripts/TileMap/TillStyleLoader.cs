@@ -24,12 +24,13 @@ public class TillStyleLoader : MonoBehaviour
     public static string s_StyleName;
     public void Start()
     {
+        //currentStyleIndex = -1;
         LoadStyleData();
 
         //TODO:改成preview btn
         styleDatas = Resources.LoadAll<TileImageCollection>(styleDataPaht);
 
-        Switch(0); //error
+        //Switch(0); //error
     }
 
     public void Switch(int _optration)
@@ -103,6 +104,7 @@ public class TillStyleLoader : MonoBehaviour
         {
             string styleName = (string)MyPhotonExtension.ByteArrayToObject((byte[])obj.CustomData);
             s_StyleName = styleName;
+            styleNameText.text = s_StyleName;
             TileImageCollection tileImageCollection = Resources.Load<TileImageCollection>(styleDataPaht + styleName);
             TileStyleManager.instance.ApplyNewStyle(tileImageCollection);
         }

@@ -22,7 +22,10 @@ public class MapSelectionButtonManager : MonoBehaviour
         m_NextStyle.onClick.AddListener(delegate { StartCoroutine(ChangeStyle(1)); });
         m_PreviousMap.onClick.AddListener(delegate { StartCoroutine(ChangeMap(-1)); });
         m_NextMap.onClick.AddListener(delegate { StartCoroutine(ChangeMap(1)); });
+        StartCoroutine(ChangeStyle(0));
+        StartCoroutine(ChangeMap(0));
     }
+
 
     private IEnumerator ChangeStyle(int index)
     {

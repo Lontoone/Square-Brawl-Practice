@@ -28,7 +28,12 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
 
     private static string[] filePaths;
 
-    private static int fileIndex = 0;
+    private int fileIndex = 0;
+
+    private void Start()
+    {
+        fileIndex = -1;
+    }
     public override void OnEnable()
     {
         base.OnEnable();
@@ -38,7 +43,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             LoadMapList();
-            SendData(mapDatas[0]);
+            //SendData(mapDatas[0]);
         }
         else
         {
@@ -85,7 +90,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
 
         if (currentSelectedData == null)
         {
-            currentSelectedData = mapDatas[0];
+            //currentSelectedData = mapDatas[0];
         }
 
     }
