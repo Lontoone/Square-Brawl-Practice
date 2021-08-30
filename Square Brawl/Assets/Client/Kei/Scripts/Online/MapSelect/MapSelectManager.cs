@@ -91,7 +91,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
     }
 
     //Called by PhotonEvent: When
-    private void OnMapDataChanged(EventData obj)
+    private void OnMapDataChanged(EventData obj) //TODO Load Map Animation
     {
         byte eventCode = obj.Code;
         if (eventCode == CustomPropertyCode.UPDATE_MAP_EVENTCODE)

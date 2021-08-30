@@ -77,7 +77,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6594709741883485851}
-  - component: {fileID: 7433250133859372870}
   m_Layer: 0
   m_Name: WeanponGroup
   m_TagString: Untagged
@@ -106,22 +105,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7433250133859372870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6594709741883485848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 520cbcc6c0ddcee49a4fd809d197b5ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_GroupParent: {fileID: 6594709741883485851}
-  m_Row: 0
-  m_Column: 0
-  m_Spacing: {x: 0, y: 0}
 --- !u!1 &7070066418637799284
 GameObject:
   m_ObjectHideFlags: 0

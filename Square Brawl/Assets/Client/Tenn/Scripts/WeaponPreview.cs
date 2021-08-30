@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using DG.Tweening;
 using TMPro;
 
-public class WeaponPreview : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class WeaponPreview : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     public int WeaponNumber;
     public VideoPlayer videoPlayer;
@@ -58,6 +58,16 @@ public class WeaponPreview : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
 
     public void OnPointerExit(PointerEventData eventData)
+    {
+        ExitPreview();
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        PlayPreview();
+    }
+
+    public void OnDeselect(BaseEventData eventData)
     {
         ExitPreview();
     }

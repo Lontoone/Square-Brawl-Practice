@@ -83,6 +83,7 @@ public class TillStyleLoader : MonoBehaviour
 
     private void ChangeStyle(TileImageCollection _data)
     {
+        Debug.Log("Send Style ");
         TileStyleManager.instance.ApplyNewStyle(_data);
 
         //send Data
@@ -93,8 +94,10 @@ public class TillStyleLoader : MonoBehaviour
     }
 
 
-    private void OnMapStyleChanged(EventData obj)
+    private void OnMapStyleChanged(EventData obj) //TODO  Load Style Animation
     {
+        Debug.Log("[OnStyleChanged] ");
+
         byte eventCode = obj.Code;
         if (eventCode == CustomPropertyCode.UPDATE_STYLE_EVENTCODE)
         {
