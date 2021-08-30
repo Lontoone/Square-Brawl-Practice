@@ -11,7 +11,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     private List<RoomListItem> _roomItems = new List<RoomListItem>();
     [SerializeField] UnityEngine.UI.InputField nameInput;
     [SerializeField] UnityEngine.UI.InputField roomNameInputField;
-    [SerializeField] UnityEngine.UI.Text errorText;
+    [SerializeField] TextMeshProUGUI errorText;
     [SerializeField] UnityEngine.UI.Text roomNameText;
     [SerializeField] GameObject room;
     [SerializeField] Transform roomListItemPrefab;
@@ -117,7 +117,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         Debug.Log("failed room");
-        errorText.text = "Room create Failed " + message;
+        var text = message;
+        errorText.text = text.ToUpper();
         MenuManager.instance.OpenMenu("error");
     }
 

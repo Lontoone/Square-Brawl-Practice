@@ -5,6 +5,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 using TMPro;
 namespace Easetype { }
@@ -953,14 +954,34 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterError()
     {
-        m_Error.SetActive(true);
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            m_Error.SetActive(true);
+            animator.Play("EnterError");
+        }
+        else
+        {
+            m_CharacterSelection.SetActive(true);
+            animator.Play("NoneError");
+        }
         yield return null;
     }
 
     private IEnumerator ExitError()
     {
-        m_Error.SetActive(false);
-        yield return null;
+        if (OptionSetting.TRANSITIONANIMATION)
+        {
+            animator.Play("ExitError");
+            yield return new WaitForSeconds(m_AnimationClips[23].length);
+            m_Error.SetActive(false);
+            PhotonNetwork.Disconnect();
+            yield return new WaitWhile(() => { return PhotonNetwork.IsConnected; });
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
+            m_Error.SetActive(false);
+        }
     }
 
     #endregion
