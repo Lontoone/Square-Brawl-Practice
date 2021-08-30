@@ -63,7 +63,7 @@ public class TillStyleLoader : MonoBehaviour
     }
     private void OnDisable()
     {
-        PhotonNetwork.NetworkingClient.EventReceived += OnMapStyleChanged;
+        //PhotonNetwork.NetworkingClient.EventReceived -= OnMapStyleChanged;
     }
 
     public void LoadStyleData()
@@ -104,7 +104,11 @@ public class TillStyleLoader : MonoBehaviour
         {
             string styleName = (string)MyPhotonExtension.ByteArrayToObject((byte[])obj.CustomData);
             s_StyleName = styleName;
-            styleNameText.text = s_StyleName;
+            //Debug.Log(s_StyleName);
+            if (styleNameText != null)
+            {
+                styleNameText.text = s_StyleName;
+            }
             TileImageCollection tileImageCollection = Resources.Load<TileImageCollection>(styleDataPaht + styleName);
             TileStyleManager.instance.ApplyNewStyle(tileImageCollection);
         }

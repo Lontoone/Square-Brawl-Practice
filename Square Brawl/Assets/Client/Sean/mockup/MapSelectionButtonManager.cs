@@ -12,32 +12,37 @@ public class MapSelectionButtonManager : MonoBehaviour
     [SerializeField] private Button m_NextMap;
 
     [Space(15)]
-    [SerializeField] private Animator animator;
+    [SerializeField] public Animator animator;
     [SerializeField] private TillStyleLoader tillStyleLoader;
     [SerializeField] private MapSelectManager mapSelectManager;
 
+    public static MapSelectionButtonManager instance;
+
     private void Start()
     {
-        m_PreviousStyle.onClick.AddListener(delegate { StartCoroutine(ChangeStyle(-1)); });
-        m_NextStyle.onClick.AddListener(delegate { StartCoroutine(ChangeStyle(1)); });
-        m_PreviousMap.onClick.AddListener(delegate { StartCoroutine(ChangeMap(-1)); });
-        m_NextMap.onClick.AddListener(delegate { StartCoroutine(ChangeMap(1)); });
-        StartCoroutine(ChangeStyle(0));
-        StartCoroutine(ChangeMap(0));
+        m_PreviousStyle.onClick.AddListener(delegate { StartCoroutine(ChangeStyle(-1,0.3f)); });
+        m_NextStyle.onClick.AddListener(delegate { StartCoroutine(ChangeStyle(1, 0.3f)); });
+        m_PreviousMap.onClick.AddListener(delegate { StartCoroutine(ChangeMap(-1, 0.3f)); });
+        m_NextMap.onClick.AddListener(delegate { StartCoroutine(ChangeMap(1, 0.3f)); });
     }
 
+    private void OnEnable()
+    {
+        StartCoroutine(ChangeStyle(0, 1));
+        StartCoroutine(ChangeMap(0, 1));
+    }
 
-    private IEnumerator ChangeStyle(int index)
+    private IEnumerator ChangeStyle(int index,float time)
     {
         animator.Play("ChangeStyle");
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(time);
         tillStyleLoader.Switch(index);
     }
 
-    private IEnumerator ChangeMap(int index)
+    private IEnumerator ChangeMap(int index, float time)
     {
         animator.Play("ChangeStyle");
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(time);
         mapSelectManager.Switch(index);
     }
 

@@ -87,6 +87,7 @@ public class Bounce : MonoBehaviour,IPoolObject
 
     public void ShootBounce(Vector2 _pos,Vector2 _dir)//LineRenderer製造Bounce外觀
     {
+        _laserRenderer.positionCount = 1;
         Physics2D.queriesStartInColliders = false;
         _isBounce = true;
         int vertexCounter = 1; 
@@ -108,6 +109,7 @@ public class Bounce : MonoBehaviour,IPoolObject
                 HitGroundPos.Add(_pos);
                 HitGroundLocalPos.Add(gameObject.transform.InverseTransformPoint(_pos));
                 _dir = Vector3.Reflect(_dir, hit.normal);
+                Debug.Log("Ground");
             }
         }
         Physics2D.queriesStartInColliders = true;

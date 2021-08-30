@@ -1,4 +1,5 @@
-﻿using Photon.Realtime;
+﻿using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,14 @@ public class ColorSelectPlayerItemControl : MonoBehaviour
     public Text playerText;
     public int colorCode = 0;
     public MenuReadyButton readyButton;
+
+    private void Start()
+    {
+        PhotonNetwork.LocalPlayer.SetCustomProperties(
+                               MyPhotonExtension.WrapToHash(
+                                   new object[] { CustomPropertyCode.TEAM_CODE, null }
+                               ));
+    }
     public void SetPlayer(Player _p)
     {
         player = _p;
