@@ -10,15 +10,23 @@ public class SetButtonManager : MonoBehaviour
 {
     [SerializeField] private GameObject firstSelectedButton;
 
-    public bool m_UseReadyButton = false;
-    public bool m_UseGamePadBackButton = false;
+    [SerializeField] private bool m_UseReadyButton = false;
+    [SerializeField] private ReadyType readyType;
+    [SerializeField] private bool m_UseGamePadBackButton = false;
 
-    public Button backButton;
+    [SerializeField] private Button backButton;
     public UnityEvent GamePadBackEvent;
 
     private PlayerInputManager input;
     //private MenuReadyButton localReadyButton;
     private bool isReady = false;
+
+    public enum ReadyType
+    { 
+        DefaultReady,
+        ColorReady,
+        WeaponReady
+    }
 
     private void Awake()
     {
@@ -61,9 +69,27 @@ public class SetButtonManager : MonoBehaviour
             if (child.isLocal == true)
             {
                 isReady = !isReady;
-                child.SetReady(isReady);
-                Debug.Log(isReady);
+                SetReadyByType(child, isReady);
+                Debug.Log(child.player.NickName +" isReady == "+ isReady);
             }
+        }
+    }
+
+    private void SetReadyByType(MenuReadyButton _btn, bool _isReady)
+    {
+        switch (readyType)
+        {
+            case ReadyType.DefaultReady:
+                _btn.SetReady(_isReady);
+                break;
+
+            case ReadyType.ColorReady:
+                _btn.ColorSetReady(_isReady);
+                break;
+
+            case ReadyType.WeaponReady:
+                _btn.WeaponSetReady(_isReady);
+                break;
         }
     }
 

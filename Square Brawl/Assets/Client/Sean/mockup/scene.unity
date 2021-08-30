@@ -2216,11 +2216,11 @@ PrefabInstance:
     - target: {fileID: 1375177478715859823, guid: eac8f05063e2828428bfbcba87566b0f, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 1476809236}
+      objectReference: {fileID: 0}
     - target: {fileID: 1375177478715859823, guid: eac8f05063e2828428bfbcba87566b0f, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1866346499}
+      objectReference: {fileID: 0}
     - target: {fileID: 1375177478715859823, guid: eac8f05063e2828428bfbcba87566b0f, type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 
@@ -4342,7 +4342,6 @@ GameObject:
   m_Component:
   - component: {fileID: 181318178}
   - component: {fileID: 181318179}
-  - component: {fileID: 291729492}
   m_Layer: 5
   m_Name: Loading
   m_TagString: Untagged
@@ -4693,6 +4692,8 @@ GameObject:
   - component: {fileID: 195594981}
   - component: {fileID: 195594980}
   - component: {fileID: 195594984}
+  - component: {fileID: 195594986}
+  - component: {fileID: 195594985}
   m_Layer: 5
   m_Name: Confirm
   m_TagString: Untagged
@@ -4764,9 +4765,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.69803923, g: 0.8352941, b: 0.75686276, a: 0.34901962}
-    m_HighlightedColor: {r: 0.34531865, g: 0.754717, b: 0.5217835, a: 0.5882353}
-    m_PressedColor: {r: 0.34100214, g: 0.745283, b: 0.517875, a: 0.6745098}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.12156863, g: 0.7882353, b: 0.4117647, a: 0.2627451}
+    m_PressedColor: {r: 0.09803922, g: 0.6666667, b: 0.34901962, a: 0.34901962}
+    m_SelectedColor: {r: 0.12156863, g: 0.7882353, b: 0.4117647, a: 0.2627451}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -4782,7 +4783,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1153841728}
+  m_TargetGraphic: {fileID: 195594982}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -4811,7 +4812,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.69685113, g: 0.83699995, b: 0.75524646, a: 0.34901962}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4850,6 +4851,70 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enterType: 0
   clickType: 0
+--- !u!95 &195594985
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195594978}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a878f4ad0e4816a4bbc44e2d390ceb92, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &195594986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195594978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 9
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 195594985}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: OnSelect
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 195594985}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: OnSubmit
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!224 &196402084
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5777,7 +5842,7 @@ GameObject:
   - component: {fileID: 232413273}
   - component: {fileID: 232413272}
   m_Layer: 5
-  m_Name: Icon
+  m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6128,6 +6193,7 @@ GameObject:
   - component: {fileID: 255579379}
   - component: {fileID: 255579381}
   - component: {fileID: 255579382}
+  - component: {fileID: 255579383}
   m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
@@ -6207,9 +6273,9 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 697902172}
+    m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 1808394002}
-    m_SelectOnRight: {fileID: 1476809236}
+    m_SelectOnRight: {fileID: 697902172}
   m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -6234,19 +6300,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 255579379}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1022895149}
-        m_TargetAssemblyTypeName: AudioSourcesManager, Assembly-CSharp
-        m_MethodName: PlaySFX
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &255579382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6288,18 +6342,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
-        - m_Target: {fileID: 1022895149}
-          m_TargetAssemblyTypeName: AudioSourcesManager, Assembly-CSharp
-          m_MethodName: PlaySFX
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 2
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -6328,6 +6370,20 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &255579383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255579377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84c126f763b871142af15c0a31feb99f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enterType: 2
+  clickType: 2
 --- !u!114 &260313962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7037,18 +7093,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 287645149}
   m_CullTransparentMesh: 0
---- !u!114 &291729492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 181318176}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fbd0a7ad4027b84084830d77fa87f38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &294196639
 GameObject:
   m_ObjectHideFlags: 0
@@ -12484,6 +12528,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 228875834}
   m_UseReadyButton: 0
+  readyType: 0
   m_UseGamePadBackButton: 1
   backButton: {fileID: 0}
   GamePadBackEvent:
@@ -12829,7 +12874,7 @@ GameObject:
   - component: {fileID: 602639582}
   - component: {fileID: 602639581}
   m_Layer: 5
-  m_Name: Icon
+  m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15343,7 +15388,7 @@ PrefabInstance:
     - target: {fileID: 5913056284738235230, guid: 1c1f3dca20824bd44bdd653126216f7b, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 255579381}
+      objectReference: {fileID: 0}
     - target: {fileID: 5913056284738235230, guid: 1c1f3dca20824bd44bdd653126216f7b, type: 3}
       propertyPath: m_Colors.m_SelectedColor.a
       value: 0.2784314
@@ -15351,7 +15396,7 @@ PrefabInstance:
     - target: {fileID: 5913056284738235230, guid: 1c1f3dca20824bd44bdd653126216f7b, type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 
-      objectReference: {fileID: 1808394002}
+      objectReference: {fileID: 255579381}
     - target: {fileID: 5913056284738235230, guid: 1c1f3dca20824bd44bdd653126216f7b, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
@@ -24363,9 +24408,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.92941177, g: 0.9647059, b: 1, a: 1}
+    m_PressedColor: {r: 0.8, g: 0.9019608, b: 1, a: 1}
+    m_SelectedColor: {r: 0.92941177, g: 0.9647059, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -24825,7 +24870,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.69685113, g: 0.83699995, b: 0.75524646, a: 0.34901962}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -24863,9 +24908,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.69803923, g: 0.8352941, b: 0.75686276, a: 0.34901962}
-    m_HighlightedColor: {r: 0.34531865, g: 0.754717, b: 0.5217835, a: 0.5882353}
-    m_PressedColor: {r: 0.34100214, g: 0.745283, b: 0.517875, a: 0.6745098}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.12292797, g: 0.78800005, b: 0.41069955, a: 0.2627451}
+    m_PressedColor: {r: 0.09938299, g: 0.667, b: 0.347371, a: 0.34901962}
+    m_SelectedColor: {r: 0.11294116, g: 0.7529412, b: 0.38960788, a: 0.25882354}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -24951,6 +24996,8 @@ GameObject:
   - component: {fileID: 1153841729}
   - component: {fileID: 1153841744}
   - component: {fileID: 1153841745}
+  - component: {fileID: 1153841747}
+  - component: {fileID: 1153841746}
   m_Layer: 5
   m_Name: Confirm
   m_TagString: Untagged
@@ -24994,6 +25041,70 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enterType: 0
   clickType: 0
+--- !u!114 &1153841746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153841743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 9
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1153841747}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: OnSelect
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1153841747}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: OnSubmit
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!95 &1153841747
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153841743}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a878f4ad0e4816a4bbc44e2d390ceb92, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1156290678
 GameObject:
   m_ObjectHideFlags: 0
@@ -31829,6 +31940,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 552400297}
   m_UseReadyButton: 0
+  readyType: 0
   m_UseGamePadBackButton: 0
   backButton: {fileID: 0}
   GamePadBackEvent:
@@ -32102,6 +32214,7 @@ GameObject:
   - component: {fileID: 1476809234}
   - component: {fileID: 1476809236}
   - component: {fileID: 1476809237}
+  - component: {fileID: 1476809238}
   m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
@@ -32181,8 +32294,8 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 1866346499}
-    m_SelectOnLeft: {fileID: 255579381}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 1866346499}
     m_SelectOnRight: {fileID: 333842200}
   m_Transition: 0
   m_Colors:
@@ -32208,19 +32321,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1476809234}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1022895149}
-        m_TargetAssemblyTypeName: AudioSourcesManager, Assembly-CSharp
-        m_MethodName: PlaySFX
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1476809237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32262,18 +32363,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
-        - m_Target: {fileID: 1022895149}
-          m_TargetAssemblyTypeName: AudioSourcesManager, Assembly-CSharp
-          m_MethodName: PlaySFX
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 2
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -32302,6 +32391,20 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1476809238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476809232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84c126f763b871142af15c0a31feb99f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enterType: 2
+  clickType: 2
 --- !u!1 &1481428934
 GameObject:
   m_ObjectHideFlags: 0
@@ -36705,11 +36808,15 @@ PrefabInstance:
     - target: {fileID: 2978116163616288612, guid: 70b211c023aa176409fa4070199f7f36, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 255579381}
+      objectReference: {fileID: 0}
     - target: {fileID: 2978116163616288612, guid: 70b211c023aa176409fa4070199f7f36, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 697902172}
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978116163616288612, guid: 70b211c023aa176409fa4070199f7f36, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2978116163616288612, guid: 70b211c023aa176409fa4070199f7f36, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
@@ -39801,7 +39908,7 @@ GameObject:
   - component: {fileID: 1835213273}
   - component: {fileID: 1835213272}
   m_Layer: 5
-  m_Name: Icon
+  m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40298,7 +40405,7 @@ PrefabInstance:
     - target: {fileID: 5913056284738235230, guid: 1c1f3dca20824bd44bdd653126216f7b, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 1476809236}
+      objectReference: {fileID: 0}
     - target: {fileID: 5913056284738235230, guid: 1c1f3dca20824bd44bdd653126216f7b, type: 3}
       propertyPath: m_Colors.m_SelectedColor.a
       value: 0.2784314
@@ -40310,7 +40417,7 @@ PrefabInstance:
     - target: {fileID: 5913056284738235230, guid: 1c1f3dca20824bd44bdd653126216f7b, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
-      objectReference: {fileID: 333842200}
+      objectReference: {fileID: 1476809236}
     - target: {fileID: 5913056284738235230, guid: 1c1f3dca20824bd44bdd653126216f7b, type: 3}
       propertyPath: m_Colors.m_HighlightedColor.a
       value: 0.2784314
@@ -43942,9 +44049,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.92941177, g: 0.9647059, b: 1, a: 1}
+    m_PressedColor: {r: 0.8, g: 0.9019608, b: 1, a: 1}
+    m_SelectedColor: {r: 0.92941177, g: 0.9647059, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -43997,7 +44104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.69803923}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -44960,6 +45067,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 12
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!1 &513925764916863819
 GameObject:
   m_ObjectHideFlags: 0
@@ -45187,6 +45297,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 11
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!222 &513925764989166426
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -45445,6 +45558,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 9
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!114 &513925765316715921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45757,6 +45873,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 6
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!1 &513925765599412515
 GameObject:
   m_ObjectHideFlags: 0
@@ -45891,6 +46010,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 8
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!1 &513925765600931467
 GameObject:
   m_ObjectHideFlags: 0
@@ -46043,6 +46165,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 7
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!114 &513925765789192253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46218,6 +46343,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 10
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!114 &513925765997433737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46465,6 +46593,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 5
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!222 &513925766202456054
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -47242,6 +47373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 2032894302}
   m_UseReadyButton: 1
+  readyType: 0
   m_UseGamePadBackButton: 1
   backButton: {fileID: 0}
   GamePadBackEvent:
@@ -47317,6 +47449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 984339051}
   m_UseReadyButton: 0
+  readyType: 0
   m_UseGamePadBackButton: 1
   backButton: {fileID: 0}
   GamePadBackEvent:
@@ -47347,7 +47480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.69803923}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -47407,16 +47540,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 4
-    m_SelectOnUp: {fileID: 0}
+    m_SelectOnUp: {fileID: 545450005}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 545450005}
     m_SelectOnRight: {fileID: 1238212045965172750}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.6569647, g: 0.812808, b: 0.9647059, a: 0.7882353}
-    m_PressedColor: {r: 0.3529412, g: 0.6627451, b: 0.9647059, a: 0.5176471}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.8509804, g: 0.9254902, b: 1, a: 1}
+    m_PressedColor: {r: 0.702, g: 0.85261947, b: 1, a: 1}
+    m_SelectedColor: {r: 0.85, g: 0.92440945, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -47593,6 +47726,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 753828682}
   m_UseReadyButton: 1
+  readyType: 2
   m_UseGamePadBackButton: 1
   backButton: {fileID: 0}
   GamePadBackEvent:
@@ -47639,9 +47773,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.69803923, g: 0.8352941, b: 0.75686276, a: 0.34901962}
-    m_HighlightedColor: {r: 0.34531865, g: 0.754717, b: 0.5217835, a: 0.5882353}
-    m_PressedColor: {r: 0.34100214, g: 0.745283, b: 0.517875, a: 0.6745098}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.12156863, g: 0.7882353, b: 0.4117647, a: 0.2627451}
+    m_PressedColor: {r: 0.09803922, g: 0.6666667, b: 0.34901962, a: 0.34901962}
+    m_SelectedColor: {r: 0.12156863, g: 0.7882353, b: 0.4117647, a: 0.2627451}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -47657,7 +47791,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1153841728}
+  m_TargetGraphic: {fileID: 1238212045965172751}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -47686,7 +47820,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.69685113, g: 0.83699995, b: 0.75524646, a: 0.34901962}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -47717,6 +47851,8 @@ GameObject:
   - component: {fileID: 1238212045965172750}
   - component: {fileID: 1238212045965172754}
   - component: {fileID: 1238212045965172755}
+  - component: {fileID: 1238212045965172757}
+  - component: {fileID: 1238212045965172756}
   m_Layer: 5
   m_Name: find room Button
   m_TagString: Untagged
@@ -47781,6 +47917,70 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enterType: 0
   clickType: 0
+--- !u!114 &1238212045965172756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238212045965172752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 9
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1238212045965172757}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: OnSelect
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1238212045965172757}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: OnSubmit
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!95 &1238212045965172757
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238212045965172752}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a878f4ad0e4816a4bbc44e2d390ceb92, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1238212045985836310
 GameObject:
   m_ObjectHideFlags: 0
@@ -48060,6 +48260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 1808393998}
   m_UseReadyButton: 0
+  readyType: 0
   m_UseGamePadBackButton: 1
   backButton: {fileID: 0}
   GamePadBackEvent:
@@ -48150,6 +48351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 122807588}
   m_UseReadyButton: 0
+  readyType: 0
   m_UseGamePadBackButton: 1
   backButton: {fileID: 0}
   GamePadBackEvent:
@@ -48239,6 +48441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 2093130027}
   m_UseReadyButton: 0
+  readyType: 0
   m_UseGamePadBackButton: 1
   backButton: {fileID: 0}
   GamePadBackEvent:
@@ -49101,6 +49304,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 653368004}
   m_UseReadyButton: 1
+  readyType: 1
   m_UseGamePadBackButton: 1
   backButton: {fileID: 0}
   GamePadBackEvent:
@@ -49798,6 +50002,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 1238212045797822163}
   m_UseReadyButton: 0
+  readyType: 0
   m_UseGamePadBackButton: 1
   backButton: {fileID: 0}
   GamePadBackEvent:
@@ -50324,6 +50529,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 2
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!222 &1589444701925045414
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -50537,6 +50745,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!222 &1589444702350539646
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -50788,6 +50999,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!114 &1589444703136061168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51080,6 +51294,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 4
+  button: {fileID: 0}
+  bg: {fileID: 0}
+  icon: {fileID: 0}
 --- !u!1 &1608559361904746143 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1770578706631646586, guid: 996dd608507644c48aefec8f517bfc86, type: 3}
@@ -51601,9 +51818,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.92941177, g: 0.9647059, b: 1, a: 1}
+    m_PressedColor: {r: 0.801, g: 0.9005, b: 1, a: 1}
+    m_SelectedColor: {r: 0.929, g: 0.9645, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -56294,6 +56511,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 2205040284567719386}
   m_UseReadyButton: 0
+  readyType: 0
   m_UseGamePadBackButton: 1
   backButton: {fileID: 0}
   GamePadBackEvent:

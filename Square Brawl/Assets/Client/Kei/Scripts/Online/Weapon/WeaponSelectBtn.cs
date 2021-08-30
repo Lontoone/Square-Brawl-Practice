@@ -3,15 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class WeaponSelectBtn : MonoBehaviour
+public class WeaponSelectBtn : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler 
 {
     public WeaponType weaponType;
-    private Button button;
+    [SerializeField] private Button button;
+    [SerializeField] private Image bg;
+    [SerializeField] private Image icon;
+
+    private Color color;
+
     private void Start()
     {
         button = GetComponent<Button>();
         button.onClick.AddListener(delegate { SetWeapon(weaponType); });
+
+        color = CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
     }
     public void SetWeapon(WeaponType _targetWeapon)
     {
@@ -58,5 +66,37 @@ public class WeaponSelectBtn : MonoBehaviour
                                   ));
             }
         }
+    }
+
+    private void ChangeColor()
+    {
+        bg.color = new Color(color.r, color.g, color.b ,0.25f);
+        icon.color = color;
+    }
+
+    private void DefaultColor()
+    {
+        bg.color = new Color(1,1 ,1 , 0.25f);
+        icon.color = new Color(1, 1, 1, 1);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        ChangeColor();
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        ChangeColor();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        DefaultColor();
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        DefaultColor();
     }
 }
