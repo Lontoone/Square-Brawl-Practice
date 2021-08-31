@@ -61,7 +61,7 @@ public class MenuReadyButton : MonoBehaviourPunCallbacks
             //Debug.Log(player.NickName + " ready " + (bool)player.CustomProperties[CustomPropertyCode.READY]);
             if (player != null)
             { 
-                SetReadyLocalWithoutAudio((bool)player.CustomProperties[CustomPropertyCode.READY]);
+                SetReadyLocalWithoutAudio((bool)player.CustomProperties[CustomPropertyCode.READY]); // TODO bug
             }
         }
         //SetReadyLocal(false);

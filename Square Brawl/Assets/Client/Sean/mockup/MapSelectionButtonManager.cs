@@ -17,6 +17,7 @@ public class MapSelectionButtonManager : MonoBehaviour
     [SerializeField] private MapSelectManager mapSelectManager;
 
     public static MapSelectionButtonManager instance;
+    public static bool mapSetUpReady = false;
 
     private void Start()
     {
@@ -28,8 +29,24 @@ public class MapSelectionButtonManager : MonoBehaviour
 
     private void OnEnable()
     {
+        StartCoroutine(SetFirstSelection());
         /*StartCoroutine(ChangeStyle(0, 1));
         StartCoroutine(ChangeMap(0, 1));*/
+    }
+
+    private void OnDisable()
+    {
+        mapSetUpReady = false;
+    }
+
+    private IEnumerator SetFirstSelection()
+    {
+        yield return new WaitUntil(() => TileMapManager.mapIsReady);
+        mapSelectManager.Switch(1);
+        yield return new WaitForSeconds(1f);
+        tillStyleLoader.Switch(2);
+        yield return new WaitForSeconds(1f);
+        mapSetUpReady = true;
     }
 
     private IEnumerator ChangeStyle(int index,float time)
