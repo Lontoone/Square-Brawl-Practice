@@ -35,25 +35,30 @@ public class TillStyleLoader : MonoBehaviour
 
     public void Switch(int _optration)
     {
-        if (prevStyleIcon == null)
-        {
-            return;
-        }
+        if (MapSelectionTrigger.GridFinish)
+        { 
+            if (prevStyleIcon == null)
+            {
+                return;
+            }
 
-        currentStyleIndex = Mathf.Clamp(currentStyleIndex + _optration, 0, styleDatas.Length - 1);
-        ChangeStyle(styleDatas[currentStyleIndex]);
+            currentStyleIndex = Mathf.Clamp(currentStyleIndex + _optration, 0, styleDatas.Length - 1);
+            ChangeStyle(styleDatas[currentStyleIndex]);
 
-        styleNameText.text = styleDatas[currentStyleIndex].name;
+            styleNameText.text = styleDatas[currentStyleIndex].name;
 
-        currentStyleIcon.sprite = styleDatas[currentStyleIndex].GetIcon();
-        if (currentStyleIndex > 0)
-        {
-            prevStyleIcon.sprite = styleDatas[currentStyleIndex - 1].GetIcon();
-            //Debug.Log("prevStyleIcon " + (prevStyleIcon.sprite == null));
-        }
-        if (currentStyleIndex < styleDatas.Length - 1)
-        {
-            nextStyleIcon.sprite = styleDatas[currentStyleIndex + 1].GetIcon();
+            currentStyleIcon.sprite = styleDatas[currentStyleIndex].GetIcon();
+            if (currentStyleIndex > 0)
+            {
+                prevStyleIcon.sprite = styleDatas[currentStyleIndex - 1].GetIcon();
+                //Debug.Log("prevStyleIcon " + (prevStyleIcon.sprite == null));
+            }
+            if (currentStyleIndex < styleDatas.Length - 1)
+            {
+                nextStyleIcon.sprite = styleDatas[currentStyleIndex + 1].GetIcon();
+            }
+
+            MapSelectionTrigger.StyleFinish = true;
         }
     }
 
@@ -97,7 +102,14 @@ public class TillStyleLoader : MonoBehaviour
 
     private void OnMapStyleChanged(EventData obj) //TODO  Load Style Animation
     {
-        Debug.Log("[OnStyleChanged] ");
+        //Debug.LogWarning("Change Style");
+        StartCoroutine(ChangeStyle(obj));
+    }
+
+    private IEnumerator ChangeStyle(EventData obj)
+    {
+        yield return new WaitUntil(() => MapSelectionTrigger.GridFinish);
+        Debug.Log("[OnStyleChanged]");
 
         byte eventCode = obj.Code;
         if (eventCode == CustomPropertyCode.UPDATE_STYLE_EVENTCODE)
@@ -112,6 +124,7 @@ public class TillStyleLoader : MonoBehaviour
             TileImageCollection tileImageCollection = Resources.Load<TileImageCollection>(styleDataPaht + styleName);
             TileStyleManager.instance.ApplyNewStyle(tileImageCollection);
         }
+        MapSelectionTrigger.StyleFinish = true;
+        //yield return null;
     }
-
 }

@@ -98,6 +98,14 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
     //Called by PhotonEvent: When
     private void OnMapDataChanged(EventData obj) //TODO Load Map Animation
     {
+        //Debug.LogWarning("Change Map");
+        StartCoroutine(ChangeMap(obj));
+    }
+
+    private IEnumerator ChangeMap(EventData obj)
+    {
+        yield return new WaitUntil(() => MapSelectionTrigger.StyleFinish);
+
         byte eventCode = obj.Code;
         if (eventCode == CustomPropertyCode.UPDATE_MAP_EVENTCODE)
         {
@@ -106,10 +114,17 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
             MapData _data = (MapData)MyPhotonExtension.ByteArrayToObject((byte[])obj.CustomData);
             currentSelectedData = _data;
 
-            selectText.text = _data.fileName;            
+            selectText.text = _data.fileName;
             setupManager.SetUpLevel(_data);
         }
+
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            MapSelectionTrigger.AllFinish = true;
+        }
     }
+
+
 
     private void PreviewMap()
     {
@@ -133,7 +148,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
         // Hard Code
         if (scene.name == "GridSample")
         {
-            if (mapDatas.Count > 0)
+            if (mapDatas.Count >= 0)
             {
                 //setupManager.SetUpLevel(mapDatas[0]);
                 setupManager.SetUpLevel(currentSelectedData);
@@ -144,17 +159,21 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
 
     public void Switch(int _optration)
     {
-        int _preIndex = fileIndex;
-        //fileIndex = Mathf.Clamp(fileIndex + _optration, 0, filePaths.Length - 1);
-        fileIndex = Mathf.Clamp(fileIndex + _optration, 0, mapDatas.Count - 1);
+        if (MapSelectionTrigger.StyleFinish)
+        {
+            int _preIndex = fileIndex;
+            //fileIndex = Mathf.Clamp(fileIndex + _optration, 0, filePaths.Length - 1);
+            fileIndex = Mathf.Clamp(fileIndex + _optration, 0, mapDatas.Count - 1);
 
-        if (_preIndex == fileIndex) { return; }
+            if (_preIndex == fileIndex) { return; }
 
-        MapData _data = mapDatas[fileIndex];
-        var _byteData = MyPhotonExtension.ObjectToByteArray(_data);
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
-        PhotonNetwork.RaiseEvent(CustomPropertyCode.UPDATE_MAP_EVENTCODE, _byteData, raiseEventOptions, SendOptions.SendReliable);
+            MapData _data = mapDatas[fileIndex];
+            var _byteData = MyPhotonExtension.ObjectToByteArray(_data);
+            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
+            PhotonNetwork.RaiseEvent(CustomPropertyCode.UPDATE_MAP_EVENTCODE, _byteData, raiseEventOptions, SendOptions.SendReliable);
 
+            MapSelectionTrigger.MapFinish = true;
+        }
     }
 
     private void SendData(MapData _data)

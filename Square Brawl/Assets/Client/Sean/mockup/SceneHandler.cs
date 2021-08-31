@@ -840,7 +840,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             animator.Play("EnterLoading");
             yield return new WaitForSeconds(0.5f);
             m_MapSelection.SetActive(true);
-            yield return new WaitUntil(() => MapSelectionButtonManager.mapSetUpReady);
+            yield return new WaitUntil(() => MapSelectionTrigger.AllFinish);
             animator.Play("ExitLoading");
             yield return new WaitForSeconds(m_AnimationClips[5].length);
             m_Loading.SetActive(false);
@@ -848,7 +848,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         else
         {
             m_MapSelection.SetActive(true);
-            yield return new WaitUntil(() => TileMapManager.mapIsReady);
+            yield return new WaitUntil(() => MapSelectionTrigger.AllFinish);
             animator.Play("NoneMapSelection");
         }
     }

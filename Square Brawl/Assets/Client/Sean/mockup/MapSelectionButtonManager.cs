@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -17,7 +18,6 @@ public class MapSelectionButtonManager : MonoBehaviour
     [SerializeField] private MapSelectManager mapSelectManager;
 
     public static MapSelectionButtonManager instance;
-    public static bool mapSetUpReady = false;
 
     private void Start()
     {
@@ -34,19 +34,33 @@ public class MapSelectionButtonManager : MonoBehaviour
         StartCoroutine(ChangeMap(0, 1));*/
     }
 
-    private void OnDisable()
-    {
-        mapSetUpReady = false;
-    }
-
     private IEnumerator SetFirstSelection()
     {
-        yield return new WaitUntil(() => TileMapManager.mapIsReady);
-        mapSelectManager.Switch(1);
-        yield return new WaitForSeconds(1f);
-        tillStyleLoader.Switch(2);
-        yield return new WaitForSeconds(1f);
-        mapSetUpReady = true;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            yield return new WaitUntil(() => MapSelectionTrigger.GridFinish);
+            tillStyleLoader.Switch(2);
+            mapSelectManager.Switch(1);
+            yield return new WaitUntil(() => MapSelectionTrigger.MapFinish);
+            MapSelectionTrigger.AllFinish = true;
+        }
+        else
+        {
+            //Use a part of TileMapSetUpManager SetUpLevelCoro
+            if (TileMapManager.instance == null)
+            {
+                yield break;
+            }
+            if (TileMapManager.instance.gridCells.Count < TileMapManager.instance.cellCount)
+            {
+                Debug.Log("Gernerate Grid");
+                if (!TileMapManager.instance.generated)
+                    TileMapManager.instance.GenerateGrid(false);
+
+                yield return new WaitForSeconds(1.5f);
+                Debug.Log("Gernerate Grid - finished");
+            }
+        }
     }
 
     private IEnumerator ChangeStyle(int index,float time)

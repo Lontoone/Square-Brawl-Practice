@@ -9,7 +9,6 @@ public class TileMapManager : MonoBehaviour
     public static TileMapManager instance;
     public GameObject cellPrefab;
     public bool generated = false;
-    public static bool mapIsReady = false;
 
     public SpriteRenderer firstCell;
 
@@ -46,7 +45,6 @@ public class TileMapManager : MonoBehaviour
     private void OnDisable()
     {
         generated = false;
-        mapIsReady = false;
         Destroy(instance);
     }
     public void Start()
@@ -122,7 +120,7 @@ public class TileMapManager : MonoBehaviour
         }
 
         Debug.Log("Do generate map - finished");
-        mapIsReady = true;
+        MapSelectionTrigger.GridFinish = true;
     }
 
     public Vector2Int CellToVector2(Transform cell)
