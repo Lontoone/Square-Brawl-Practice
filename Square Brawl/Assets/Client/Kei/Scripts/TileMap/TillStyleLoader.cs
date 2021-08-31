@@ -16,7 +16,7 @@ public class TillStyleLoader : MonoBehaviour
     public Image nextStyleIcon;
     public Image prevStyleIcon;
 
-    private int currentStyleIndex = 0;
+    public static int currentStyleIndex = 0;
     private TileImageCollection[] styleDatas;
 
     private const string styleDataPaht = "TileData/";
@@ -24,7 +24,7 @@ public class TillStyleLoader : MonoBehaviour
     public static string s_StyleName;
     public void Start()
     {
-        //currentStyleIndex = -1;
+        currentStyleIndex = -1;
         LoadStyleData();
 
         //TODO:改成preview btn

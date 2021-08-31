@@ -15,13 +15,6 @@ public class ColorSelectPlayerItemControl : MonoBehaviour
     public int colorCode = 0;
     public MenuReadyButton readyButton;
 
-    private void Start()
-    {
-        PhotonNetwork.LocalPlayer.SetCustomProperties(
-                               MyPhotonExtension.WrapToHash(
-                                   new object[] { CustomPropertyCode.TEAM_CODE, null }
-                               ));
-    }
     public void SetPlayer(Player _p)
     {
         player = _p;

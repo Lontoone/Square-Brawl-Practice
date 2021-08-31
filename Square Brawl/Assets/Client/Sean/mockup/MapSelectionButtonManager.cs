@@ -28,8 +28,8 @@ public class MapSelectionButtonManager : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(ChangeStyle(0, 1));
-        StartCoroutine(ChangeMap(0, 1));
+        /*StartCoroutine(ChangeStyle(0, 1));
+        StartCoroutine(ChangeMap(0, 1));*/
     }
 
     private IEnumerator ChangeStyle(int index,float time)

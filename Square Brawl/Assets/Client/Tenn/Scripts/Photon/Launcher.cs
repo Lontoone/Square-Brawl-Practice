@@ -250,11 +250,11 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     public void WeaponSelect()
     {
-        //if (MapSelectManager.fileIndex >= 0 && TillStyleLoader.currentStyleIndex >= 0)
-        //{
+        if (MapSelectManager.fileIndex >= 0 && TillStyleLoader.currentStyleIndex >= 0)
+        {
             MenuManager.instance.OpenMenu("weapon");
             SyncMenu("weapon");
-        //}
+        }
     }
 
 

@@ -131,15 +131,17 @@ public class TileStyleManager : MonoBehaviour
     private void SetTillImage(TileCell _cell, int _conditionCode, int _frontOrder = 4, int _midOrder = 3, int _hindOrder = 2)
     {
         //Debug.Log(_cell.grid_index + " " + imageCollection.name);
-        _cell.spriteRenderer.sprite = imageCollection.GetSprite(_conditionCode);
-        _cell.hindSpriteRenderer.sprite = imageCollection.GetHindSprite(_conditionCode);
-        _cell.frontSpriteRenderer.sprite = imageCollection.GetFrontSprite(_conditionCode);
-        _cell.OpenCellSprite();
+        if (_cell != null)
+        {
+            _cell.spriteRenderer.sprite = imageCollection.GetSprite(_conditionCode);
+            _cell.hindSpriteRenderer.sprite = imageCollection.GetHindSprite(_conditionCode);
+            _cell.frontSpriteRenderer.sprite = imageCollection.GetFrontSprite(_conditionCode);
+            _cell.OpenCellSprite();
 
-        _cell.spriteRenderer.sortingOrder = _midOrder;
-        _cell.hindSpriteRenderer.sortingOrder = _hindOrder;
-        _cell.frontSpriteRenderer.sortingOrder = _frontOrder;
-
+            _cell.spriteRenderer.sortingOrder = _midOrder;
+            _cell.hindSpriteRenderer.sortingOrder = _hindOrder;
+            _cell.frontSpriteRenderer.sortingOrder = _frontOrder;
+        }
     }
 
     public void ApplyNewStyle(TileImageCollection _data)

@@ -28,7 +28,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
 
     private static string[] filePaths;
 
-    private int fileIndex = 0;
+    public static int fileIndex = 0;
 
     private void Start()
     {
