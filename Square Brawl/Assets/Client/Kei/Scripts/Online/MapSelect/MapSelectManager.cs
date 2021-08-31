@@ -147,11 +147,21 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
     {
         // Hard Code
         if (scene.name == "GridSample")
-        {
-            if (mapDatas.Count >= 0)
+        {   if (SceneManager.GetActiveScene().name == "scene")
             {
-                //setupManager.SetUpLevel(mapDatas[0]);
-                setupManager.SetUpLevel(currentSelectedData);
+                if (mapDatas.Count >= 0)
+                {
+                    //setupManager.SetUpLevel(mapDatas[0]);
+                    setupManager.SetUpLevel(currentSelectedData);
+                }
+            }
+            else
+            {
+                if (mapDatas.Count > 0)
+                {
+                    //setupManager.SetUpLevel(mapDatas[0]);
+                    setupManager.SetUpLevel(currentSelectedData);
+                }
             }
         }
     }

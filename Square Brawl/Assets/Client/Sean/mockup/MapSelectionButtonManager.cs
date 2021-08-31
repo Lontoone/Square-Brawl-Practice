@@ -44,23 +44,6 @@ public class MapSelectionButtonManager : MonoBehaviour
             yield return new WaitUntil(() => MapSelectionTrigger.MapFinish);
             MapSelectionTrigger.AllFinish = true;
         }
-        else
-        {
-            //Use a part of TileMapSetUpManager SetUpLevelCoro
-            if (TileMapManager.instance == null)
-            {
-                yield break;
-            }
-            if (TileMapManager.instance.gridCells.Count < TileMapManager.instance.cellCount)
-            {
-                Debug.Log("Gernerate Grid");
-                if (!TileMapManager.instance.generated)
-                    TileMapManager.instance.GenerateGrid(false);
-
-                yield return new WaitForSeconds(1.5f);
-                Debug.Log("Gernerate Grid - finished");
-            }
-        }
     }
 
     private IEnumerator ChangeStyle(int index,float time)
