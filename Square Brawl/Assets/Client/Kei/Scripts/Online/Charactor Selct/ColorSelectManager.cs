@@ -57,7 +57,7 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
         {
             ColorSelectPlayerItemControl _item = Instantiate(playerItemPrefab, parent: playerItemContainer);
             Player _player = PhotonNetwork.PlayerList[i];
-            _item.SetPlayer(_player);
+            _item.ColorSetPlayer(_player);
             _item.colorCode = -1;
             //TODO when back color didn't reset
         }

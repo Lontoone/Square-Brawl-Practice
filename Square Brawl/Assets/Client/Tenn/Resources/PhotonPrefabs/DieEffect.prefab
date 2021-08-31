@@ -9360,5 +9360,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 989e9a002f079494fa599726d54b85e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _effect: {fileID: 568645479241407338}
+  Effect: {fileID: 568645479241407338}
+  Aduio: {fileID: 4053363482068876525}
   color: {r: 0, g: 0, b: 0, a: 0}

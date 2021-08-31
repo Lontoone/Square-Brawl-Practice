@@ -38,7 +38,7 @@ public class AttackTriggerable : MonoBehaviour
 
     private GameObject _bulletSpawnPos;
     private GameObject _bulletMidSpawnPos;
-    private GameObject _grenadaSpawnPos;
+    private GameObject _specicalSpawnPos;
 
     public AudioSource _audio;
 
@@ -46,9 +46,12 @@ public class AttackTriggerable : MonoBehaviour
     //private const byte PLAY_SOUND_EVENT=0;
     private void Start()
     {
-        _bulletSpawnPos = GameObject.FindGameObjectWithTag("BulletSpawnPos");
-        _bulletMidSpawnPos = GameObject.FindGameObjectWithTag("MidPos");
-        _grenadaSpawnPos = GameObject.FindGameObjectWithTag("SpecicalFirePos");
+        /* _bulletSpawnPos = GameObject.FindGameObjectWithTag("BulletSpawnPos");
+         _bulletMidSpawnPos = GameObject.FindGameObjectWithTag("MidPos");
+         _grenadaSpawnPos = GameObject.FindGameObjectWithTag("SpecicalFirePos");*/
+        _bulletSpawnPos = transform.parent.GetChild(0).GetChild(0).gameObject;
+        _bulletMidSpawnPos = transform.parent.GetChild(0).gameObject;
+        _specicalSpawnPos = transform.parent.GetChild(0).GetChild(1).gameObject;
         _pv = GetComponent<PhotonView>();
         _audio = GetComponent<AudioSource>();
 
@@ -178,7 +181,7 @@ public class AttackTriggerable : MonoBehaviour
 
     public void GrenadeFire()
     {
-        GameObject _grenadeObj = ObjectsPool.Instance.SpawnFromPool(Name, _grenadaSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
+        GameObject _grenadeObj = ObjectsPool.Instance.SpawnFromPool(Name, _specicalSpawnPos.transform.position, _bulletSpawnPos.transform.rotation, null);
         Grenade _grenade = _grenadeObj.GetComponent<Grenade>();
         _grenade.GrenadeEvent(ExploseEffectName, WeaponSpeed, WeaponDamage, WeaponScaleValue, BeElasticity,BeShootShakeValue);
         CameraShake.instance.SetShakeValue(ShootShakeValue.x, ShootShakeValue.y, ShootShakeValue.z);
