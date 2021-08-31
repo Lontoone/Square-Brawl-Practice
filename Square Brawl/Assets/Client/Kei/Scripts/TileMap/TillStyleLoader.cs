@@ -68,7 +68,7 @@ public class TillStyleLoader : MonoBehaviour
     }
     private void OnDisable()
     {
-        //PhotonNetwork.NetworkingClient.EventReceived -= OnMapStyleChanged;
+        PhotonNetwork.NetworkingClient.EventReceived -= OnMapStyleChanged;
     }
 
     public void LoadStyleData()
@@ -102,7 +102,7 @@ public class TillStyleLoader : MonoBehaviour
 
     private void OnMapStyleChanged(EventData obj) //TODO  Load Style Animation
     {
-        //Debug.LogWarning("Change Style");
+        Debug.LogWarning("Change Style");
         StartCoroutine(ChangeStyle(obj));
     }
 

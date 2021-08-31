@@ -2465,18 +2465,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuName: loading
   open: 0
---- !u!114 &8953404190114524993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8953404190114524999}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fbd0a7ad4027b84084830d77fa87f38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &8953404190114524998
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2508,7 +2496,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8953404190114524998}
   - component: {fileID: 8953404190114524992}
-  - component: {fileID: 8953404190114524993}
   m_Layer: 5
   m_Name: Loading
   m_TagString: Untagged

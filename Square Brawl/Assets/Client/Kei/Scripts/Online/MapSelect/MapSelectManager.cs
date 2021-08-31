@@ -98,7 +98,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
     //Called by PhotonEvent: When
     private void OnMapDataChanged(EventData obj) //TODO Load Map Animation
     {
-        //Debug.LogWarning("Change Map");
+        Debug.LogWarning("Change Map");
         StartCoroutine(ChangeMap(obj));
     }
 
