@@ -48,6 +48,8 @@ public class SetButtonManager : MonoBehaviour
 
     private void OnEnable()
     {
+        isReady = false;
+
         if (m_UseReadyButton == true || m_UseGamePadBackButton == true)
         {
             input.Enable();
