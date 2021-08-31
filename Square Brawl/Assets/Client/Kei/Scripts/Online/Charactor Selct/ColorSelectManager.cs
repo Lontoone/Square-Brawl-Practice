@@ -70,16 +70,18 @@ public class ColorSelectManager : MonoBehaviourPunCallbacks
         //  =>find the matching player item and update
         if (changedProps.TryGetValue(CustomPropertyCode.TEAM_CODE, out _data))
         {
-            int _colorCode = (int)_data;
-            ColorSelectPlayerItemControl _item = FindObjectsOfType<ColorSelectPlayerItemControl>().ToList().Find(x => x.player == targetPlayer);
-            if (_item == null)
-            {
-                Debug.Log("Cant find the item");
-                return;
+            if (_data != null)
+            { 
+                int _colorCode = (int)_data;
+                ColorSelectPlayerItemControl _item = FindObjectsOfType<ColorSelectPlayerItemControl>().ToList().Find(x => x.player == targetPlayer);
+                if (_item == null)
+                {
+                    Debug.Log("Cant find the item");
+                    return;
+                }
+                _item.SetColor(CustomPropertyCode.COLORS[_colorCode]);
+                _item.colorCode = _colorCode;
             }
-            _item.SetColor(CustomPropertyCode.COLORS[_colorCode]);
-            _item.colorCode = _colorCode;
-
         }
     }
 
