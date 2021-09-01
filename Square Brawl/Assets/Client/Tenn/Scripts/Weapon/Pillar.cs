@@ -101,6 +101,7 @@ public class Pillar : Grenade, IPoolObject
         base.OnCollisionEnter2D(other);
         if (other.gameObject.CompareTag("Ground") && !_isGrow)//碰到地面
         {
+            _pillarSound.volume = OptionSetting.SFXVOLUME;
             _pillarSound.Play();
             if (_pv.IsMine)
             {
