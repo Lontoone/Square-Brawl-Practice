@@ -132,8 +132,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             m_ScoreInfo.SetActive(false);
             m_Loading.SetActive(false);
             m_Error.SetActive(false);
+            StartCoroutine(EnterSceneAnimation());
         }
-        StartCoroutine(EnterSceneAnimation());
     }
 
     public void EnterPage(string gameObject)
@@ -293,9 +293,11 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     public void BackToCharacterSelection() //TODO
     {
         m_Menu.SetActive(false);
+        OptionSetting.TRANSITIONANIMATION = false;
         m_OnlineMenu.SetActive(true);
         m_CharacterSelection.SetActive(true);
         Launcher.instance.StartGame();
+        OptionSetting.TRANSITIONANIMATION = true;
         StartCoroutine(EnterCharacterSelection());
     }
 

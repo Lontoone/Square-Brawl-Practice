@@ -138,6 +138,12 @@ public class ResultManager : MonoBehaviour
         //SceneManager.LoadScene(0);
         StartCoroutine(LoadScene(0));
     }
+
+    public void BackToCharacterSelection()
+    {
+        StartCoroutine(LoadScene(0));
+    }
+
     IEnumerator LoadScene(int sceneIndex)
     {
         LoadingAnim.gameObject.SetActive(true);
