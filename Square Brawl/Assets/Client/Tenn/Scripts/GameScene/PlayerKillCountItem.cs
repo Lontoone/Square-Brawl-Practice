@@ -36,8 +36,11 @@ public class PlayerKillCountItem : MonoBehaviourPunCallbacks
         int index = 0;
         bool isOver = false;
         player = _p;
-        index = (int)_p.CustomProperties["KillCount"];
-        isOver = (bool)_p.CustomProperties["isOver"];
+        if (_p.CustomProperties["KillCount"] != null)
+        {
+            index = (int)_p.CustomProperties["KillCount"];
+            isOver = (bool)_p.CustomProperties["isOver"];
+        }
 
         if (!isOver)
         {

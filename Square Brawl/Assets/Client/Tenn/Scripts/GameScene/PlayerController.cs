@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public DieEffect DieEffectObj;
     private Rigidbody2D _rb;//Player Rigidbody
     private Camera _camera;
+    private AudioSource _hurtAudio;
 
     [HeaderAttribute("Sync Setting")]
     private float _newDirZ;
@@ -83,6 +84,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         Pv = GetComponent<PhotonView>();
         _inputAction = new PlayerInputManager();
         _rb = GetComponent<Rigidbody2D>();
+        _hurtAudio = GetComponent<AudioSource>();
+        _hurtAudio.volume = OptionSetting.SFXVOLUME;
         _bodySprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
         _hpSprite = transform.GetChild(6).GetChild(0).GetComponent<Image>();
         _playerManager = PhotonView.Find((int)Pv.InstantiationData[0]).GetComponent<PlayerManager>();
@@ -729,6 +732,10 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             GamePadShakeEvent(1f, 1f, 0.5f);
             Invoke("Rebirth", 3f);
             gameObject.SetActive(false);
+        }
+        else if (_playerHp > 0 && Pv.IsMine)
+        {
+            _hurtAudio.Play();
         }
     }
 
