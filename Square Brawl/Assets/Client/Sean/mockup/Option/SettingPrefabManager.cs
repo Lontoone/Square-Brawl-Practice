@@ -11,7 +11,7 @@ using TMPro;
 namespace Easetype { }
 namespace ToDotSlider { }
 
-public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+public class SettingPrefabManager : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     [SerializeField] public int m_Index;
     [SerializeField] private Button m_Header;
@@ -74,6 +74,7 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
         if (m_SettingType == SettingType.SliderSelection && m_SliderSetting.onSelect == true)
         {
             m_CurrentIndex = m_SliderParent.GetComponent<ToDotSlider.DotSliderAction>().OnLoad(m_SliderSetting);
+
             if (m_CurrentIndex != m_LastFrameIndex)
             {
                 ReturnSettingValue();
@@ -223,6 +224,19 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
             }
         }
     }
+
+    public void OnSelected()
+    {
+        m_SliderSetting.onSelect = true;
+        ColorIn(m_Dot);
+    }
+
+    public void DeSelected()
+    {
+        m_SliderSetting.onSelect = false;
+        ColorOut(m_Dot);
+    }
+
     public void LeftOnClick()
     {
         DecreaseIndex(m_ListSelection);
@@ -286,15 +300,13 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
         Debug.Log("OnclickAnimation");
     }
 
-    public virtual void OnPointerEnter(PointerEventData eventData)
+    /*public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        
         ColorIn(m_Dot);
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        
         ColorOut(m_Dot);
     }
 
@@ -308,6 +320,6 @@ public class SettingPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointe
     {
         m_SliderSetting.onSelect = false;
         ColorOut(m_Dot);
-    }
+    }*/
 }
 

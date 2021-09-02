@@ -9,10 +9,8 @@ using DG.Tweening;
 using TMPro;
 namespace Easetype { }
 
-public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+public class SettingGroupPrefabManager : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
-    [HideInInspector]
-    public int SelectedIndex;
     [SerializeField] private GameObject m_SettingGroupPrefab;
     [SerializeField] public GameObject m_SettingList;
     [SerializeField] private GameObject[] m_SettingPrefab;
@@ -29,8 +27,10 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
     private Sequence m_Sequence;
     private Vector3[] pos;
     private Vector2 vec;
+    private int selectedIndex = 0;
 
     public bool onSelect = false;
+    public bool isSelected = false;
     public bool onPress;
 
     void Start()
@@ -155,6 +155,39 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
                                .SetEase(m_CurrentEasetype.GetEasetype(m_Easetype));
     }
 
+    public void SetSelect(int num)
+    {
+        selectedIndex += num;
+
+        if (selectedIndex < 0)
+        {
+            selectedIndex = m_SettingPrefab.Length - 1;
+        }
+        else if (selectedIndex >= m_SettingPrefab.Length)
+        {
+            selectedIndex = 0;
+        }
+
+        for (int i = 0; i < m_SettingPrefab.Length; i++)
+        {
+            var settingPrefab = m_SettingPrefab[selectedIndex].GetComponent<SettingPrefabManager>();
+
+            if (i == selectedIndex)
+            {
+                settingPrefab.OnSelected();
+                Debug.Log("1");
+            }
+            else
+            {
+                settingPrefab.DeSelected();
+                Debug.Log("0");
+            }
+        }
+
+        EventSystem.current.SetSelectedGameObject(m_SettingPrefab[selectedIndex]);
+    }
+
+    /*
     public void OnPointerEnter(PointerEventData eventData)
     {
         onSelect = true;
@@ -173,6 +206,6 @@ public class SettingGroupPrefabManager : MonoBehaviour, IPointerEnterHandler, IP
     public virtual void OnDeselect(BaseEventData eventData)
     {
         onSelect = false;
-    }
+    }*/
 }
 

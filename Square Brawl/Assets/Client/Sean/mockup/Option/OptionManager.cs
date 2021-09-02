@@ -71,7 +71,7 @@ public class OptionManager : MonoBehaviour
             m_BackButtonPos = m_BackButton.transform.localPosition;
         }
 
-        ///Set Layout
+        //Set Layout
         m_BarLength = barLength;
         m_BarSpacing = ((m_LastPos.transform.localPosition.x - m_FirstPos.transform.localPosition.x) - m_BarLength) / (m_SettingGroup.Length - 1);
 
@@ -89,101 +89,18 @@ public class OptionManager : MonoBehaviour
     {
         KeyMove();
         BackButtonAnimation();
-        switch (m_LayoutType)
-        { 
-            case LayoutType.OnSelect:
-                var trigger = 0;
-                for (int i = 0; i < m_SettingGroup.Length; i++)
-                {
-                    if (m_SettingGroup[i].GetComponent<SettingGroupPrefabManager>().onSelect == true)
-                    {
-                        onSelectIndex = i;
-                        trigger++;
-                    }
-                }
-                if (trigger == 0 && onPressIndex == 99)
-                {
-                    onSelectIndex = 99;
-                    for (int i = 0; i < m_SettingGroup.Length; i++)
-                    {
-                        m_SettingGroup[i].transform.localPosition = m_SettingGroupPos[i];
-                    }
-                }
-
-                if (onSelectIndex != 99)
-                {
-                    for (int i = 1; i < m_SettingGroup.Length; i++)
-                    {
-                        if (i - 1 == onSelectIndex)
-                        {
-                            m_SettingGroup[i].transform.localPosition = m_SettingGroup[i - 1].transform.localPosition + new Vector3(m_BarLength, 0);
-                        }
-                        else
-                        {
-                            m_SettingGroup[i].transform.localPosition = m_SettingGroup[i - 1].transform.localPosition + new Vector3(m_BarSpacing, 0);
-                        }
-                    }
-                }
-                break;
-
-            case LayoutType.OnPress:
-                if (onPressIndex != 99)
-                {
-                    if (onPressIndex == m_SettingGroup.Length)
-                    {
-                        onPress = false;
-                        onPressIndex = 99;
-                        StartCoroutine(ResetPosition());
-                    }
-                    else
-                    {
-                        for (int i = 0; i < m_SettingGroup.Length; i++)
-                        {
-                            if (i + 1 == onPressIndex)
-                            {
-                                m_SettingGroup[i].transform.DOLocalMoveX(m_SettingGroupPos[i].x - m_MoveSpacing, 0.5f);
-                                if ((i - 1) >= 0)
-                                {
-                                    m_SettingGroup[i - 1].transform.DOLocalMoveX(m_SettingGroupPos[i - 1].x - (m_MoveSpacing / 2), 0.5f);
-                                }
-                            }
-                            else if (i == onPressIndex)
-                            {
-                                m_SettingGroup[i].transform.DOLocalMoveX(m_SettingGroupPos[i].x, 0.5f);
-                            }
-                            else if (i - 1 == onPressIndex)
-                            {
-                                m_SettingGroup[i].transform.DOLocalMoveX(m_SettingGroupPos[i].x + m_MoveSpacing, 0.5f);
-                                if ((i + 1) < m_SettingGroup.Length)
-                                {
-                                    m_SettingGroup[i + 1].transform.DOLocalMoveX(m_SettingGroupPos[i + 1].x + (m_MoveSpacing / 2), 0.5f);
-                                }
-                            }
-                            else if (i > onPressIndex + 2 || i < onPressIndex - 2)
-                            {
-                                m_SettingGroup[i].transform.DOLocalMoveX(m_SettingGroupPos[i].x, 0.5f);
-                            }
-                        }
-                    }
-                }
-                break;
-
-            case LayoutType.Off:
-                break;
-        }
+        CutstomLayout(m_LayoutType);
     }
 
     private void OnEnable()
     {
         m_Input.Enable();
-        //ResetDeselected();
     }
 
     private void OnDisable()
     {
         SaveAndLoadSetting.Save();
         m_Input.Disable();
-        Debug.Log("OnDisable");
         onPressIndex = 99;
         onSelectIndex = 99;
         backOnSelect = false;
@@ -298,7 +215,93 @@ public class OptionManager : MonoBehaviour
         }
     }
 
-    // Used in button onclick 
+    private void CutstomLayout(LayoutType layout)
+    {
+        switch (layout)
+        {
+            case LayoutType.OnSelect:
+                var trigger = 0;
+                for (int i = 0; i < m_SettingGroup.Length; i++)
+                {
+                    if (m_SettingGroup[i].GetComponent<SettingGroupPrefabManager>().onSelect == true)
+                    {
+                        onSelectIndex = i;
+                        trigger++;
+                    }
+                }
+                if (trigger == 0 && onPressIndex == 99)
+                {
+                    onSelectIndex = 99;
+                    for (int i = 0; i < m_SettingGroup.Length; i++)
+                    {
+                        m_SettingGroup[i].transform.localPosition = m_SettingGroupPos[i];
+                    }
+                }
+
+                if (onSelectIndex != 99)
+                {
+                    for (int i = 1; i < m_SettingGroup.Length; i++)
+                    {
+                        if (i - 1 == onSelectIndex)
+                        {
+                            m_SettingGroup[i].transform.localPosition = m_SettingGroup[i - 1].transform.localPosition + new Vector3(m_BarLength, 0);
+                        }
+                        else
+                        {
+                            m_SettingGroup[i].transform.localPosition = m_SettingGroup[i - 1].transform.localPosition + new Vector3(m_BarSpacing, 0);
+                        }
+                    }
+                }
+                break;
+
+            case LayoutType.OnPress:
+                if (onPressIndex != 99)
+                {
+                    if (onPressIndex == m_SettingGroup.Length)
+                    {
+                        onPress = false;
+                        onPressIndex = 99;
+                        StartCoroutine(ResetPosition());
+                    }
+                    else
+                    {
+                        for (int i = 0; i < m_SettingGroup.Length; i++)
+                        {
+                            if (i + 1 == onPressIndex)
+                            {
+                                m_SettingGroup[i].transform.DOLocalMoveX(m_SettingGroupPos[i].x - m_MoveSpacing, 0.5f);
+                                if ((i - 1) >= 0)
+                                {
+                                    m_SettingGroup[i - 1].transform.DOLocalMoveX(m_SettingGroupPos[i - 1].x - (m_MoveSpacing / 2), 0.5f);
+                                }
+                            }
+                            else if (i == onPressIndex)
+                            {
+                                m_SettingGroup[i].transform.DOLocalMoveX(m_SettingGroupPos[i].x, 0.5f);
+                            }
+                            else if (i - 1 == onPressIndex)
+                            {
+                                m_SettingGroup[i].transform.DOLocalMoveX(m_SettingGroupPos[i].x + m_MoveSpacing, 0.5f);
+                                if ((i + 1) < m_SettingGroup.Length)
+                                {
+                                    m_SettingGroup[i + 1].transform.DOLocalMoveX(m_SettingGroupPos[i + 1].x + (m_MoveSpacing / 2), 0.5f);
+                                }
+                            }
+                            else if (i > onPressIndex + 2 || i < onPressIndex - 2)
+                            {
+                                m_SettingGroup[i].transform.DOLocalMoveX(m_SettingGroupPos[i].x, 0.5f);
+                            }
+                        }
+                    }
+                }
+                break;
+
+            case LayoutType.Off:
+                break;
+        }
+    }
+    
+    // Used in button onclick
     public void SetPressedIndex(int Index)
     {
         onPressIndex = Index;
@@ -331,33 +334,35 @@ public class OptionManager : MonoBehaviour
     {
         
         for (int i = 0; i < m_SettingGroup.Length; i++)
-
         {
-            if (i == onPressIndex && m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>() != null)
+            var settingGroup = m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>();
+            var settingGroupButtonAction = m_SettingGroup[i].GetComponentInChildren<ButtonAction>();
+            var settingGroupOptionButtonAction = m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>();
+
+            if (i == onPressIndex && settingGroup != null)
             {
-                m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>().SettingIn();
+                settingGroup.SettingIn();
             }
             else
             {
-                if (m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>() != null)
+                if (settingGroup != null)
                 {
-                    m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>().SettingOut();
+                    settingGroup.SettingOut();
+                    settingGroup.isSelected = false;
                 }
 
-                if (m_SettingGroup[i].GetComponentInChildren<ButtonAction>() != null)
+                if (settingGroupButtonAction != null)
                 {
-                    var obj = m_SettingGroup[i].GetComponentInChildren<ButtonAction>();
-                    obj.SplitCharAction.IdleChar(obj.m_Char);
-                    obj.IdleIcon();
-                    obj.m_MouseSelectedState = false;
-                    obj.m_KeySelectedState = false;
+                    settingGroupButtonAction.SplitCharAction.IdleChar(settingGroupButtonAction.m_Char);
+                    settingGroupButtonAction.IdleIcon();
+                    settingGroupButtonAction.m_MouseSelectedState = false;
+                    settingGroupButtonAction.m_KeySelectedState = false;
                 }
-                else if (m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>() != null)
+                else if (settingGroupOptionButtonAction != null)
                 {
-                    var obj = m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>();
-                    obj.UnPress();
-                    obj.m_MouseSelectedState = false;
-                    obj.m_KeySelectedState = false;
+                    settingGroupOptionButtonAction.UnPress();
+                    settingGroupOptionButtonAction.m_MouseSelectedState = false;
+                    settingGroupOptionButtonAction.m_KeySelectedState = false;
                 }
             }
         }
@@ -394,7 +399,7 @@ public class OptionManager : MonoBehaviour
                 {
                     onSelectIndex = 0;
                 }
-                else if (moveValue.x > 0)
+                else if (moveValue.x > 0.05)
                 {
                     onSelectIndex++;
                     if (onSelectIndex > m_SettingGroup.Length)
@@ -402,7 +407,7 @@ public class OptionManager : MonoBehaviour
                         onSelectIndex = 0;
                     }
                 }
-                else if (moveValue.x < 0)
+                else if (moveValue.x < -0.05)
                 {
                     onSelectIndex--;
                     if (onSelectIndex < 0)
@@ -414,8 +419,8 @@ public class OptionManager : MonoBehaviour
 
             //Change onPressIndex
             else
-            {
-                if (moveValue.x > 0)
+            {/*
+                if (moveValue.x > 0.05)
                 {
                     onPressIndex++;
                     if (onPressIndex > m_SettingGroup.Length)
@@ -423,7 +428,7 @@ public class OptionManager : MonoBehaviour
                         onPressIndex = 0;
                     }
                 }
-                else if (moveValue.x < 0)
+                else if (moveValue.x < -0.05)
                 {
                     onPressIndex--;
                     if (onPressIndex < 0)
@@ -432,8 +437,18 @@ public class OptionManager : MonoBehaviour
                     }
                 }
                 onSelectIndex = onPressIndex;
+                */
+                if (moveValue.y > 0.05)
+                {
+                    m_SettingGroup[onPressIndex].GetComponent<SettingGroupPrefabManager>().SetSelect(-1);
+                }
+                else if (moveValue.y < -0.05)
+                {
+                    m_SettingGroup[onPressIndex].GetComponent<SettingGroupPrefabManager>().SetSelect(1);
+                }
             }
         }
+
         //Move onSelected
         if (onSelectThisFrame == true && onPress != true)
         {
@@ -462,6 +477,7 @@ public class OptionManager : MonoBehaviour
             }
         }
 
+        /*
         //Move onPressed
         else if(onSelectThisFrame == true && onPress == true)
         {
@@ -481,25 +497,28 @@ public class OptionManager : MonoBehaviour
                 if (i == onPressIndex)
                 {
                     m_SettingGroup[i].GetComponentInChildren<OptionButtonAction>().OnPress();
+                    m_SettingGroup[i].GetComponentInChildren<SettingGroupPrefabManager>().isSelected = true;
                 }
                 ResetDeselected();
             }
-        }
+        }*/
     }
 
     private void KeyPressed()
     {
         if (onPressIndex != 99)
         {
-
+            //Set Press Setting Prefab
         }
         else if (onSelectIndex != 99)
         {
+            //Set Press Option Group
             onPressIndex = onSelectIndex;
             if (onPressIndex < m_SettingGroup.Length)
             {
                 EventSystem.current.SetSelectedGameObject(m_SettingGroup[onPressIndex]);
                 m_SettingGroup[onPressIndex].GetComponentInChildren<OptionButtonAction>().OnPress();
+                m_SettingGroup[onPressIndex].GetComponentInChildren<SettingGroupPrefabManager>().isSelected = true;
                 ResetDeselected();
                 BackButtonAction("Idle");
             }
@@ -524,9 +543,10 @@ public class OptionManager : MonoBehaviour
 
     private void KeyUnSelected()
     {
+        AudioSourcesManager.PlaySFX(1);
+
         if (onPressIndex == 99 || onPressIndex == m_SettingGroup.Length)
         {
-            AudioSourcesManager.PlaySFX(1);
             BackButtonAction("Highlighted");
             ResetDeselected();
             if (GetComponentInParent<SceneHandler>() != null)

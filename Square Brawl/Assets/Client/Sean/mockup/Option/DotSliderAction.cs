@@ -45,8 +45,8 @@ namespace ToDotSlider
         
 
        
-        private bool firstInput;
-        private bool press;
+        private bool firstInput = true;
+        private bool press = false;
 
         public DotSlider SetUp(DotSlider dotSlider)
         {
@@ -76,7 +76,7 @@ namespace ToDotSlider
             m_Sequence = DOTween.Sequence();
             dotSlider.m_DotSlider = Generate(dotSlider);
 
-            dotSlider.m_SelectedIndex = dotSlider.m_Series / 2;
+            //dotSlider.m_SelectedIndex = dotSlider.m_Series / 2;
             for (int i = 0; i <= dotSlider.m_DefaultIndex; i++)
             {
                 Image[] comps = dotSlider.m_DotSlider[i].GetComponentsInChildren<Image>();
@@ -135,9 +135,10 @@ namespace ToDotSlider
             {
                 //dotSlider.m_SelectedDot.GetComponent<DragHandler>().UpdateSetUp(dotSlider.m_DotSlider[0], dotSlider.m_DotSlider[dotSlider.m_Series - 1]);
                 MoveSelected(dotSlider);
-
+                Debug.Log("dotSlider.m_IsChangebyClick" + dotSlider.m_IsChangebyClick);
                 if (dotSlider.m_IsChangebyClick == true)
                 {
+                    Debug.Log("dotSlider.m_IsChangebyClick" + dotSlider.m_IsChangebyClick);
                     for (int i = 0; i < dotSlider.m_Series; i++)
                     {
                         Image[] comps = dotSlider.m_DotSlider[i].GetComponentsInChildren<Image>();
@@ -236,27 +237,28 @@ namespace ToDotSlider
             }
             if (Keyboard.current != null)
             {
-                    if ((Keyboard.current.rightArrowKey.wasPressedThisFrame || Keyboard.current.dKey.wasPressedThisFrame) && dotSlider.m_SelectedIndex < dotSlider.m_Series)
+                if ((Keyboard.current.rightArrowKey.wasPressedThisFrame || Keyboard.current.dKey.wasPressedThisFrame) && dotSlider.m_SelectedIndex < dotSlider.m_Series)
+                {
+                    dotSlider.m_SelectedIndex++;
+                    if (dotSlider.m_SelectedIndex >= dotSlider.m_Series)
                     {
-                        dotSlider.m_SelectedIndex++;
-                        if (dotSlider.m_SelectedIndex >= dotSlider.m_Series)
-                        {
-                            dotSlider.m_SelectedIndex = dotSlider.m_Series - 1;
-                        }
-                        //Debug.Log("++");
-                        dotSlider.m_IsChangebyClick = true;
+                        dotSlider.m_SelectedIndex = dotSlider.m_Series - 1;
                     }
-                    else if ((Keyboard.current.leftArrowKey.wasPressedThisFrame || Keyboard.current.aKey.wasPressedThisFrame) && dotSlider.m_SelectedIndex >= 0)
+                    //Debug.Log("++");
+                    dotSlider.m_IsChangebyClick = true;
+                }
+                else if ((Keyboard.current.leftArrowKey.wasPressedThisFrame || Keyboard.current.aKey.wasPressedThisFrame) && dotSlider.m_SelectedIndex >= 0)
+                {
+                    dotSlider.m_SelectedIndex--;
+                    if (dotSlider.m_SelectedIndex < 0)
                     {
-                        dotSlider.m_SelectedIndex--;
-                        if (dotSlider.m_SelectedIndex < 0)
-                        {
-                            dotSlider.m_SelectedIndex = 0;
-                        }
-                        //Debug.Log("--");
-                        dotSlider.m_IsChangebyClick = true;
+                        dotSlider.m_SelectedIndex = 0;
                     }
+                    //Debug.Log("--");
+                    dotSlider.m_IsChangebyClick = true;
+                }
             }
+            Debug.LogError("dotSlider.m_IsChangebyClick" + dotSlider.m_IsChangebyClick);
         }
     }
 }
