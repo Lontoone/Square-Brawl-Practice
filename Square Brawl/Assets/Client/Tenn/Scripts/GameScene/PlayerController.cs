@@ -85,7 +85,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         _inputAction = new PlayerInputManager();
         _rb = GetComponent<Rigidbody2D>();
         _hurtAudio = GetComponent<AudioSource>();
-        _hurtAudio.volume = OptionSetting.SFXVOLUME;
         _bodySprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
         _hpSprite = transform.GetChild(6).GetChild(0).GetComponent<Image>();
         _playerManager = PhotonView.Find((int)Pv.InstantiationData[0]).GetComponent<PlayerManager>();
@@ -735,6 +734,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
         else if (_playerHp > 0 && Pv.IsMine)
         {
+            _hurtAudio.volume = OptionSetting.SFXVOLUME;
             _hurtAudio.Play();
         }
     }
