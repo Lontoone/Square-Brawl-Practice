@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     private bool _canSpin;//Player Can Spin?
     private bool _canLeftSticeSpin;
 
-    public Color DieEffectColor;
+    public Color MasterColor;
 
     private SpriteRenderer _bodySprite;
     private Image _hpSprite;
@@ -66,6 +66,15 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     private Rigidbody2D _rb;//Player Rigidbody
     private Camera _camera;
     private AudioSource _hurtAudio;
+
+    [HeaderAttribute("Invincible Setting")]
+    private bool _isInvincible;
+    private bool _isChangeColor;
+    private float Color_t;
+
+    public SpriteRenderer _playerSprite;
+    public SpriteRenderer _firePointSprite;
+    public Image _HpUISprite;
 
     [HeaderAttribute("Sync Setting")]
     private float _newDirZ;
@@ -136,6 +145,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             _inputAction.Player.GamePadRotation.performed += ctx => GamePadSpin(ctx.ReadValue<Vector2>());
             SetColor();
         }
+        _isInvincible = true;
+        Invoke("ResetIsInvincible", 2f);
     }
 
     /// <summary>
@@ -143,7 +154,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     /// </summary>
     private void SetColor()
     {
-        Color _color = DieEffectColor = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color =
+        Color _color = MasterColor = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color =
             CustomPropertyCode.COLORS[(int)PhotonNetwork.LocalPlayer.CustomProperties[CustomPropertyCode.TEAM_CODE]];
 
         transform.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(_color.r, _color.g, _color.b, 0.5f);
@@ -158,6 +169,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         {
             FrontSightMidPos.transform.rotation = Quaternion.Lerp(FrontSightMidPos.transform.rotation, _newShootPointDir, 15 * Time.deltaTime);
         }
+
+        InvincibleEvent();
 
         GroundCheckEvent();//Is Grounding?
 
@@ -348,7 +361,10 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     #region -- Player Damage And BeBounce Event --
     public void DamageEvent(float _damage, float _beElasticity, float _dirX, float _dirY, Vector3 _beShootShake)
     {
-        TakeDamage(_damage, _beShootShake.x, _beShootShake.y, _beShootShake.z);//傷害，並同步到客戶端
+        if (!_isInvincible)
+        {
+            TakeDamage(_damage, _beShootShake.x, _beShootShake.y, _beShootShake.z);//傷害，並同步到客戶端
+        }
         BeBounce(_beElasticity, _dirX, _dirY);//被射到往後彈的力，並同步到客戶端
     }
 
@@ -376,8 +392,56 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     public void TakeDamage(float _damage, float _shakeTime, float _shakePower, float _decrease)//傷害，並同步到客戶端
     {
-        CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
-        Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage, _shakeTime, _shakePower, _decrease);
+        if (!_isInvincible)
+        {
+            CameraShake.instance.SetShakeValue(_shakeTime, _shakePower, _decrease);
+            Pv.RPC("Rpc_TakeDamage", RpcTarget.All, _damage, _shakeTime, _shakePower, _decrease);
+        }
+    }
+    #endregion
+
+    /// <summary>
+    /// Player Damage And BeBounce
+    /// </summary>
+    #region -- Player Invincible Event --
+    void InvincibleEvent()
+    {
+        if (_isInvincible)
+        {
+            if (!_isChangeColor)
+            {
+                _playerSprite.color = _firePointSprite.color = _HpUISprite.color
+                = Color.Lerp(_playerSprite.color, 
+                new Color(MasterColor.r, MasterColor.g,MasterColor.b, 0.3f), 10 * Time.deltaTime);
+
+                Color_t = Mathf.Lerp(Color_t, 0.7f, 10 * Time.deltaTime);
+                if (Color_t > .69f)
+                {
+                    Color_t = 0;
+                    _isChangeColor = true;
+                }
+            }
+            else
+            {
+                _playerSprite.color = _firePointSprite.color = _HpUISprite.color
+                = Color.Lerp(_playerSprite.color, 
+                new Color(MasterColor.r, MasterColor.g, MasterColor.b, 1), 10 * Time.deltaTime);
+
+                Color_t = Mathf.Lerp(Color_t, 0.7f, 10 * Time.deltaTime);
+                if (Color_t > .69f)
+                {
+                    Color_t = 0;
+                    _isChangeColor = false;
+                }
+            }
+        }
+        else
+        {
+            _playerSprite.color = _firePointSprite.color = _HpUISprite.color
+            = Color.Lerp(_playerSprite.color, 
+            new Color(MasterColor.r, MasterColor.g, MasterColor.b, 1), 10 * Time.deltaTime);
+            _isChangeColor = false;
+        }
     }
     #endregion
 
@@ -570,8 +634,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public void GenerateDieEffect()//產生死亡特效與設定特效顏色，並同步到客戶端
     {
         DieEffect dieEffectObj = Instantiate(DieEffectObj, transform.position, Quaternion.identity);
-        dieEffectObj.SetColor(DieEffectColor);
-        Pv.RPC("Rpc_GenerateDieEffect", RpcTarget.Others, new Vector3(DieEffectColor.r, DieEffectColor.g, DieEffectColor.b));
+        dieEffectObj.SetColor(MasterColor);
+        Pv.RPC("Rpc_GenerateDieEffect", RpcTarget.Others, new Vector3(MasterColor.r, MasterColor.g, MasterColor.b));
     }
 
     /// <summary>
@@ -594,11 +658,17 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
                 }
             }
             transform.position = Pos;
+            Invoke("ResetIsInvincible", 2f);
             Pv.RPC("Rpc_Rebirth", RpcTarget.Others, transform.position);
         }
         LimitInputValue(Vector2.zero);
         _playerHp = 100;
         _uiControl.ReduceHp(_playerHp);
+    }
+
+    void ResetIsInvincible()
+    {
+        Pv.RPC("Rpc_ResetIsInvincible", RpcTarget.All);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -624,7 +694,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             if (Pv.IsMine)
             {
                 Vector2 dir = transform.position - other.gameObject.transform.position;
-                DamageEvent(50, 1500, dir.x, dir.y, new Vector3(0.6f, 0.3f, 1));
+                DamageEvent(50, 1000, dir.x, dir.y, new Vector3(0.6f, 0.3f, 1));
                 var IsKill = IsKillAnyone();
                 if (IsKill)
                 {
@@ -653,6 +723,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             {
                 CameraShake.instance.SetShakeValue(0.6f, 0.3f, 1);
                 GamePadShakeEvent(0.5f, 0.5f, 0.5f);
+                 GenerateDieEffect();
                 Pv.RPC("Rpc_OnBoundary", RpcTarget.All);
             }
         }
@@ -665,7 +736,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     [PunRPC]
     void ChangeColor(Vector3 color)//同步顏色
     {
-        Color _color = DieEffectColor = new Color(color.x, color.y, color.z);
+        Color _color = MasterColor = new Color(color.x, color.y, color.z);
         transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color = _color;
         transform.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(_color.r, _color.g, _color.b, 0.5f);
         _uiControl.PlayerHpImg.color = _color;
@@ -730,6 +801,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         {
             GamePadShakeEvent(1f, 1f, 0.5f);
             Invoke("Rebirth", 3f);
+            _isInvincible = true;
             gameObject.SetActive(false);
         }
         else if (_playerHp > 0 && Pv.IsMine)
@@ -798,6 +870,12 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
         IsBeFreeze = false;
         _rb.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+    [PunRPC]
+    void Rpc_ResetIsInvincible()
+    {
+        _isInvincible = false;
     }
     #endregion
 
