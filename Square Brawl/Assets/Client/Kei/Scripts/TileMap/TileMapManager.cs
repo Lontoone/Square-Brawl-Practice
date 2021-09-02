@@ -120,6 +120,7 @@ public class TileMapManager : MonoBehaviour
         }
 
         Debug.Log("Do generate map - finished");
+        yield return null;
         MapSelectionTrigger.GridFinish = true;
     }
 

@@ -9,11 +9,24 @@ public class MapSelectionTrigger : MonoBehaviour
     public static bool MapFinish = false;
     public static bool AllFinish = false;
 
+    private void OnEnable()
+    {
+        GridFinish = false;
+        StyleFinish = false;
+        MapFinish = false;
+        AllFinish = false;
+    }
+
     private void OnDisable()
     {
         GridFinish = false;
         StyleFinish = false;
         MapFinish = false;
         AllFinish = false;
+    }
+
+    private void Update()
+    {
+        Debug.Log("GridFinish: " + GridFinish +"\t"+ "StyleFinish: " + StyleFinish + "\t" + "MapFinish: " + MapFinish + "\t" + "AllFinish: " + AllFinish);
     }
 }

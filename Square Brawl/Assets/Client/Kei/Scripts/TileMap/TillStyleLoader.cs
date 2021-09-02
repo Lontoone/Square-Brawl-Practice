@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
@@ -124,7 +125,8 @@ public class TillStyleLoader : MonoBehaviour
             TileImageCollection tileImageCollection = Resources.Load<TileImageCollection>(styleDataPaht + styleName);
             TileStyleManager.instance.ApplyNewStyle(tileImageCollection);
         }
+
+        yield return null;
         MapSelectionTrigger.StyleFinish = true;
-        //yield return null;
     }
 }

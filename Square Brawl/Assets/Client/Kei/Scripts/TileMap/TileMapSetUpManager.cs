@@ -38,6 +38,8 @@ public class TileMapSetUpManager : MonoBehaviour
     }
     public IEnumerator SetUpLevelCoro(MapData _mapData)
     {
+        var ifNeedGenerated = false;
+
         if (TileMapManager.instance==null) {
             yield break;
         }
@@ -47,11 +49,16 @@ public class TileMapSetUpManager : MonoBehaviour
             if (!TileMapManager.instance.generated)
                 TileMapManager.instance.GenerateGrid(false);
 
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitUntil(() => MapSelectionTrigger.GridFinish);
             Debug.Log("Gernerate Grid - finished");
+            SetUpLevelTiles(_mapData);
+            SetUpCellOrientation();
         }
-        SetUpLevelTiles(_mapData);
-        SetUpCellOrientation();
+        else 
+        {
+            SetUpLevelTiles(_mapData);
+            SetUpCellOrientation();
+        }
     }
 
     private void SetUpLevelTiles(MapData _mapData)

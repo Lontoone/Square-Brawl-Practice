@@ -120,6 +120,7 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
 
         if (!PhotonNetwork.IsMasterClient)
         {
+            yield return null;
             MapSelectionTrigger.AllFinish = true;
         }
     }

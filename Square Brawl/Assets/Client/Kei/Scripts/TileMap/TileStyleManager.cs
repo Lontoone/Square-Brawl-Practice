@@ -133,7 +133,7 @@ public class TileStyleManager : MonoBehaviour
         //Debug.Log(_cell.grid_index + " " + imageCollection.name);
         if (_cell != null)
         {
-            _cell.spriteRenderer.sprite = imageCollection.GetSprite(_conditionCode);
+            _cell.spriteRenderer.sprite = imageCollection.GetSprite(_conditionCode); //TODO Bugs occur irregularly
             _cell.hindSpriteRenderer.sprite = imageCollection.GetHindSprite(_conditionCode);
             _cell.frontSpriteRenderer.sprite = imageCollection.GetFrontSprite(_conditionCode);
             _cell.OpenCellSprite();
