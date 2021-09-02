@@ -1348,7 +1348,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7234813298915431271}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1429,7 +1429,7 @@ MonoBehaviour:
   SpinForce: -20
   SpinInGroundForce: -5
   FrontSightAngle: 0
-  IsBeFreeze: 0
+  IsBeFreeze: 1
   _isCharge: 0
   IsShield: 0
   IsBeShield: 0

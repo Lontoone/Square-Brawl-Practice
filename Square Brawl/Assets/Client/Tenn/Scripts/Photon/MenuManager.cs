@@ -110,5 +110,6 @@ public class MenuManager : MonoBehaviour
         previousMenu.Push("title");
         previousMenu.Push("room");
         previousMenu.Push("characterselection");
+        Debug.Log(PhotonNetwork.CurrentRoom.Name);
     }
 }

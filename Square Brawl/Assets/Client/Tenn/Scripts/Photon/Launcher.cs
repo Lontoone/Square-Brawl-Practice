@@ -20,7 +20,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] Transform playerListContent;
     [SerializeField] GameObject StartGameButton;
 
-    private bool _hasSetName = false;
+    public bool _hasSetName = false;
+
+    public static string roomName;
 
     public void Awake()
     {
@@ -75,7 +77,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         if (string.IsNullOrEmpty(roomNameInputField.text)) { return; }
         PhotonNetwork.CreateRoom(roomNameInputField.text);
-
+        roomName = roomNameInputField.text;
         //避免玩家在等待server時亂點其他按鈕s
         MenuManager.instance.OpenMenu("loading");
         Debug.Log("Createed room");

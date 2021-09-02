@@ -302,11 +302,16 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Menu.SetActive(false);
         OptionSetting.TRANSITIONANIMATION = false;
         m_OnlineMenu.SetActive(true);
-        m_CharacterSelection.SetActive(true);
+        //m_CharacterSelection.SetActive(true);
+        m_Room.SetActive(true);
         MenuManager.instance.BackToCharacterSelection();
-        Launcher.instance.StartGame();
+        //Launcher.instance.StartGame();
         OptionSetting.TRANSITIONANIMATION = true;
-        StartCoroutine(EnterCharacterSelection());
+        Launcher.instance.OnJoinedRoom();
+        Launcher.instance._hasSetName = true;
+        //PhotonNetwork.CreateRoom(Launcher.roomName);
+        //StartCoroutine(EnterCharacterSelection());
+        StartCoroutine(EnterRoom());
     }
 
     #region -- Option --
