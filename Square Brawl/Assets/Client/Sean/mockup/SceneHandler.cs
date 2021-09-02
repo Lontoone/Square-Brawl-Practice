@@ -296,6 +296,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         OptionSetting.TRANSITIONANIMATION = false;
         m_OnlineMenu.SetActive(true);
         m_CharacterSelection.SetActive(true);
+        MenuManager.instance.BackToCharacterSelection();
         Launcher.instance.StartGame();
         OptionSetting.TRANSITIONANIMATION = true;
         StartCoroutine(EnterCharacterSelection());

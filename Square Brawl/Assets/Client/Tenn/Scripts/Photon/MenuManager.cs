@@ -23,15 +23,6 @@ public class MenuManager : MonoBehaviour
 
     public List<Menu> menus = new List<Menu>();
 
-    public void Update()
-    {
-        //press "B" to go back previous menu:
-        if (Keyboard.current.bKey.wasPressedThisFrame)
-        {
-            BackToPreviousMenu();
-        }
-    }
-
     public void BackToPreviousMenu()
     {
         Debug.Log(previousMenu.Count);
@@ -98,7 +89,6 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-
     public void OpenMenu(Menu menu)
     {
         for (int i = 0; i < menus.Count; i++)
@@ -113,5 +103,12 @@ public class MenuManager : MonoBehaviour
     public void CloseMenu(Menu menu)
     {
         menu.Close();
+    }
+
+    public void BackToCharacterSelection()
+    {
+        previousMenu.Push("title");
+        previousMenu.Push("room");
+        previousMenu.Push("characterselection");
     }
 }
