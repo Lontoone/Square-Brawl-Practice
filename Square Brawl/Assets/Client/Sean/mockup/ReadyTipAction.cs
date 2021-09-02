@@ -27,7 +27,7 @@ public class ReadyTipAction : MonoBehaviour
     {
         if (isReady == true)//TODO 問animation 要怎麼包含到有animator的子物件
         {
-            Debug.Log("0");
+            //Debug.Log("0");
             text.text = SetButtonManager.readyTipText;
             if (Gamepad.current != null)
             {
