@@ -11,47 +11,32 @@ public class ButtonAudioManager : MonoBehaviour, IPointerEnterHandler, IPointerE
     [Range(0, 2)]
     public int clickType;
 
-    private int count = 0;
-
-    /*private bool pressByMouse = false;
-
-    private void Update()
-    {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            pressByMouse = true;
-        }
-        else
-        {
-            pressByMouse = false;
-        }
-        Debug.Log(pressByMouse);
-    }*/
+    private bool isMouseEnter = false;
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        //Don't play sound when first click, fix OnSelect conflict 
-        if (count != 0)
-        {
-            AudioSourcesManager.PlaySFX(clickType);
-        }
-        count++;
+        AudioSourcesManager.PlaySFX(clickType);
         Debug.Log("click");
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        isMouseEnter = true;
         AudioSourcesManager.PlaySFX(enterType);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        count = 0;
+        isMouseEnter = false;
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        AudioSourcesManager.PlaySFX(enterType);
+        //Don't play sound when first click, fix OnSelect conflict 
+        if (!isMouseEnter)
+        { 
+            AudioSourcesManager.PlaySFX(enterType);
+        }
         Debug.Log("selected");
     }
 
