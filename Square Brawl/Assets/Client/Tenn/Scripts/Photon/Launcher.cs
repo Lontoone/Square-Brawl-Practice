@@ -28,7 +28,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
-        //MenuManager.instance.OpenMenu("loading");
+        if (!SceneHandler.isBackToCharacterSelection)
+        { 
+            MenuManager.instance.OpenMenu("loading");
+        }
     }
     public override void OnEnable()
     {

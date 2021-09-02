@@ -12,6 +12,8 @@ public class AudioSourcesManager : MonoBehaviour
     public static AudioSource AUDIOSOURCE;
     private AudioSource bgm;
 
+    public static bool audioLock = false;
+
     private void Awake()
     {
         AUDIOSOURCE = GetComponent<AudioSource>();

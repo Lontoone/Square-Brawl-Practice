@@ -46,6 +46,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     [SerializeField] private AnimationClip[] m_AnimationClips;
 
     public static SceneHandler instance;
+    public static bool isBackToCharacterSelection = false;
     private Animator animator;
 
     public static Color32 green;
@@ -112,6 +113,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
         if (PhotonNetwork.IsConnected)
         {
+            isBackToCharacterSelection = true;
             BackToCharacterSelection();
         }
         else 
@@ -134,6 +136,11 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             m_Error.SetActive(false);
             StartCoroutine(EnterSceneAnimation());
         }
+    }
+
+    private void OnDisable()
+    {
+        isBackToCharacterSelection = false;
     }
 
     public void EnterPage(string gameObject)
