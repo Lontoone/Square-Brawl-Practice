@@ -15,7 +15,7 @@ public class ReadyTipAction : MonoBehaviour
     private void OnEnable()
     {
         animator = GetComponent<Animator>();
-        animator.Play("Idle");//TODO 問animation 要怎麼包含到有animator的子物件
+        animator.Play("Idle");
     }
 
     void Update()
@@ -25,9 +25,8 @@ public class ReadyTipAction : MonoBehaviour
 
     private void SetAnimation()
     {
-        if (isReady == true)//TODO 問animation 要怎麼包含到有animator的子物件
+        if (isReady == true)
         {
-            //Debug.Log("0");
             text.text = SetButtonManager.readyTipText;
             if (Gamepad.current != null)
             {
