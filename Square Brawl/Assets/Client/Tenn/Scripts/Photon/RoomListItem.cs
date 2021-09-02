@@ -1,4 +1,5 @@
-﻿using Photon.Realtime;
+﻿using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,9 @@ public class RoomListItem : MonoBehaviour
 
     public void OnClick()
     {
-        Launcher.instance.JoinRoom(info);
+        if (info.IsOpen)
+        {
+            Launcher.instance.JoinRoom(info);
+        }
     }
 }

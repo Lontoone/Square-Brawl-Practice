@@ -312,6 +312,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         //PhotonNetwork.CreateRoom(Launcher.roomName);
         //StartCoroutine(EnterCharacterSelection());
         StartCoroutine(EnterRoom());
+        PhotonNetwork.CurrentRoom.IsOpen = true;
     }
 
     #region -- Option --

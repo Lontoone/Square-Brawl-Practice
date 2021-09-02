@@ -22,8 +22,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public bool _hasSetName = false;
 
-    public static string roomName;
-
     public void Awake()
     {
         instance = this;
@@ -77,7 +75,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         if (string.IsNullOrEmpty(roomNameInputField.text)) { return; }
         PhotonNetwork.CreateRoom(roomNameInputField.text);
-        roomName = roomNameInputField.text;
         //避免玩家在等待server時亂點其他按鈕s
         MenuManager.instance.OpenMenu("loading");
         Debug.Log("Createed room");
@@ -136,7 +133,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void JoinRoom(RoomInfo info)
     {
         PhotonNetwork.JoinRoom(info.Name);
-        MenuManager.instance.OpenMenu("loading");
+        //MenuManager.instance.OpenMenu("loading");
     }
 
 
@@ -205,8 +202,15 @@ public class Launcher : MonoBehaviourPunCallbacks
                                                                                 CustomPropertyCode.ROOM_MENU,
                                                                                 "characterselection"
                                                                             }));*/
+            PhotonNetwork.CurrentRoom.IsOpen = false;
         }
     }
+
+    public void OpenRoom()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = true;
+    }
+
     public void ConfirmPlayerName()
     {
         if (nameInput.text != "")
