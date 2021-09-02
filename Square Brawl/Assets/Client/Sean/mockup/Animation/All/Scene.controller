@@ -984,7 +984,7 @@ AnimatorStateMachine:
     m_Position: {x: 1395, y: 2185, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7390512900785636990}
-    m_Position: {x: 1430, y: 2250, z: 0}
+    m_Position: {x: 1440, y: 2250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8775265802790608943}
     m_Position: {x: 1465, y: 2315, z: 0}
@@ -1147,7 +1147,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: NoneMapSelection
+  m_Name: BackToGameMode
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []

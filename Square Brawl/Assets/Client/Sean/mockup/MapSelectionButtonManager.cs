@@ -18,6 +18,14 @@ public class MapSelectionButtonManager : MonoBehaviour
     [SerializeField] private MapSelectManager mapSelectManager;
 
     public static MapSelectionButtonManager instance;
+    private int defaultStyleIndex = 2;
+    private int defaultMapIndex = 1;
+
+    private void Awake()
+    {
+        defaultStyleIndex = 2;
+        defaultMapIndex = 1;
+    }
 
     private void Start()
     {
@@ -34,13 +42,19 @@ public class MapSelectionButtonManager : MonoBehaviour
         StartCoroutine(ChangeMap(0, 1));*/
     }
 
+    private void OnDisable()
+    {
+        defaultStyleIndex = 0;
+        defaultMapIndex = 0;
+    }
+
     private IEnumerator SetFirstSelection()
     {
         if (PhotonNetwork.IsMasterClient)
         {
             yield return new WaitUntil(() => MapSelectionTrigger.GridFinish);
-            tillStyleLoader.Switch(2);
-            mapSelectManager.Switch(1);
+            tillStyleLoader.Switch(defaultStyleIndex);
+            mapSelectManager.FirstSwitch(defaultMapIndex);
             yield return new WaitUntil(() => MapSelectionTrigger.MapFinish);
             MapSelectionTrigger.AllFinish = true;
         }

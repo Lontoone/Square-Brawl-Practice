@@ -796,10 +796,19 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         if (OptionSetting.TRANSITIONANIMATION)
         {
             var time = 0f;
-
-            yield return new WaitForSeconds(time);
-            animator.Play("EnterGameMode");
-            m_GameMode.SetActive(true);
+            if (m_MapSelection.activeSelf)
+            {
+                time = m_AnimationClips[19].length;
+                yield return new WaitForSeconds(time);
+                m_GameMode.SetActive(true);
+                animator.Play("BackToGameMode");
+            }
+            else 
+            {
+                yield return new WaitForSeconds(time);
+                m_GameMode.SetActive(true);
+                animator.Play("EnterGameMode");
+            }
         }
         else
         {
@@ -828,29 +837,20 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterMapSelection()
     {
-        if (OptionSetting.TRANSITIONANIMATION)
+        var time = 0f;
+        if (m_WeaponSelection.activeSelf)
         {
-            var time = 0f;
-            if (m_WeaponSelection.activeSelf)
-            {
-                time = m_AnimationClips[21].length;
-            }
-            yield return new WaitForSeconds(time);
-            m_Loading.SetActive(true);
-            animator.Play("EnterLoading");
-            yield return new WaitForSeconds(0.5f);
-            m_MapSelection.SetActive(true);
-            yield return new WaitUntil(() => MapSelectionTrigger.AllFinish);
-            animator.Play("ExitLoading");
-            yield return new WaitForSeconds(m_AnimationClips[5].length);
-            m_Loading.SetActive(false);
+            time = m_AnimationClips[21].length;
         }
-        else
-        {
-            m_MapSelection.SetActive(true);
-            yield return new WaitUntil(() => MapSelectionTrigger.AllFinish);
-            animator.Play("NoneMapSelection");
-        }
+        yield return new WaitForSeconds(time);
+        m_Loading.SetActive(true);
+        animator.Play("EnterLoading");
+        yield return new WaitForSeconds(0.5f);
+        m_MapSelection.SetActive(true);
+        yield return new WaitUntil(() => MapSelectionTrigger.AllFinish);
+        animator.Play("ExitLoading");
+        yield return new WaitForSeconds(m_AnimationClips[5].length);
+        m_Loading.SetActive(false);
     }
 
     private IEnumerator ExitMapSelection()
@@ -875,7 +875,14 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     {
         if (OptionSetting.TRANSITIONANIMATION)
         {
+            var time = 0f;
+            if (m_MapSelection.activeSelf)
+            {
+                time = m_AnimationClips[19].length;
+            }
+            yield return new WaitForSeconds(time);
             m_WeaponSelection.SetActive(true);
+            animator.Play("EnterWeaponSelection");
             yield return new WaitForSeconds(m_AnimationClips[20].length);
             ReadyTipAction.isReady = true;
         }
@@ -893,8 +900,9 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
         if (OptionSetting.TRANSITIONANIMATION)
         {
+            animator.Play("ExitWeaponSelection");
+            yield return new WaitForSeconds(m_AnimationClips[21].length);
             m_WeaponSelection.SetActive(false);
-            yield return null;
         }
         else
         {
@@ -951,16 +959,23 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         else
         {
             m_Loading.SetActive(true);
-            animator.Play("NoneLoading");
+            animator.Play("Loading");
         }
     }
 
     private IEnumerator ExitLoading()
     {
-        if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Loading")
+        if (OptionSetting.TRANSITIONANIMATION)
         {
-            animator.Play("ExitLoading");
-            yield return new WaitForSeconds(m_AnimationClips[5].length);
+            if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Loading")
+            {
+                animator.Play("ExitLoading");
+                yield return new WaitForSeconds(m_AnimationClips[5].length);
+                m_Loading.SetActive(false);
+            }
+        }
+        else
+        {
             m_Loading.SetActive(false);
         }
 

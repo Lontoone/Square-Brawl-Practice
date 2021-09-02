@@ -173,10 +173,22 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
         if (MapSelectionTrigger.StyleFinish)
         {
             int _preIndex = fileIndex;
-            //fileIndex = Mathf.Clamp(fileIndex + _optration, 0, filePaths.Length - 1);
             fileIndex = Mathf.Clamp(fileIndex + _optration, 0, mapDatas.Count - 1);
 
             if (_preIndex == fileIndex) { return; }
+
+            MapData _data = mapDatas[fileIndex];
+            var _byteData = MyPhotonExtension.ObjectToByteArray(_data);
+            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
+            PhotonNetwork.RaiseEvent(CustomPropertyCode.UPDATE_MAP_EVENTCODE, _byteData, raiseEventOptions, SendOptions.SendReliable);
+        }
+    }
+
+    public void FirstSwitch(int _optration)
+    {
+        if (MapSelectionTrigger.StyleFinish)
+        {
+            fileIndex = Mathf.Clamp(fileIndex + _optration, 0, mapDatas.Count - 1);
 
             MapData _data = mapDatas[fileIndex];
             var _byteData = MyPhotonExtension.ObjectToByteArray(_data);

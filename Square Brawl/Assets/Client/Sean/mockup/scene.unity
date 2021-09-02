@@ -19343,6 +19343,14 @@ PrefabInstance:
       value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 2978116163616288613, guid: 70b211c023aa176409fa4070199f7f36, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978116163616288613, guid: 70b211c023aa176409fa4070199f7f36, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978116163616288613, guid: 70b211c023aa176409fa4070199f7f36, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -21191,6 +21199,14 @@ PrefabInstance:
     - target: {fileID: 1375177478715859794, guid: eac8f05063e2828428bfbcba87566b0f, type: 3}
       propertyPath: m_SizeDelta.y
       value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 1375177478715859794, guid: eac8f05063e2828428bfbcba87566b0f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1375177478715859794, guid: eac8f05063e2828428bfbcba87566b0f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1375177478715859794, guid: eac8f05063e2828428bfbcba87566b0f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -32575,7 +32591,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5023285544409377569, guid: b120b20d16d237a4cb1e6e955f998030, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 92.77557
       objectReference: {fileID: 0}
     - target: {fileID: 5023285544409377569, guid: b120b20d16d237a4cb1e6e955f998030, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -32595,7 +32611,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5023285544430362810, guid: b120b20d16d237a4cb1e6e955f998030, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 402.4929
       objectReference: {fileID: 0}
     - target: {fileID: 5023285544430362810, guid: b120b20d16d237a4cb1e6e955f998030, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -32611,7 +32627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5023285544432506827, guid: b120b20d16d237a4cb1e6e955f998030, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 235.37172
       objectReference: {fileID: 0}
     - target: {fileID: 5023285544432506827, guid: b120b20d16d237a4cb1e6e955f998030, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -35264,7 +35280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -36919,7 +36935,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1394780762
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36953,7 +36969,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -40160,7 +40176,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284966759
+    rgba: 6776679
   m_fontColor: {r: 0.404, g: 0.404, b: 0.404, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -43302,7 +43318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -44133,7 +44149,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4288187008
+    rgba: 9996928
   m_fontColor: {r: 0.5019608, g: 0.5411765, b: 0.59607846, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -52373,7 +52389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
+  m_ShowMaskGraphic: 0
 --- !u!114 &2026138655
 MonoBehaviour:
   m_ObjectHideFlags: 0

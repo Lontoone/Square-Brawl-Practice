@@ -16,9 +16,16 @@ public class WeaponSelectManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        CreatePlayerItem();
-        //CreateButtonItem();
+        //CreatePlayerItem();
     }
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        CreatePlayerItem();
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
 
     private void CreatePlayerItem()
     {
