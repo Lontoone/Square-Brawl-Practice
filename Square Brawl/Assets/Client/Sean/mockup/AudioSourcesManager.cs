@@ -53,9 +53,9 @@ public class AudioSourcesManager : MonoBehaviour
     public static void PlayBGM()
     {
         var volumeScale = 1f;
-
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
+            BGM[0].volume = OptionSetting.MUSICVOLUME;
             BGM[0].Play();
             currentIndex = 0;
         }

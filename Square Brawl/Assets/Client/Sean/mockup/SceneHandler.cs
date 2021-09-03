@@ -871,7 +871,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         yield return new WaitForSeconds(0.5f);
         m_MapSelection.SetActive(true);
         yield return new WaitUntil(() => MapSelectionTrigger.AllFinish);
-        AudioSourcesManager.SetUpBGM();
+        //AudioSourcesManager.SetUpBGM();
         animator.Play("ExitLoading");
         yield return new WaitForSeconds(m_AnimationClips[5].length);
         m_Loading.SetActive(false);
@@ -879,6 +879,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator ExitMapSelection()
     {
+        AudioSourcesManager.StopBGM();
         if (OptionSetting.TRANSITIONANIMATION)
         {
             animator.Play("ExitMapSelection");
@@ -889,6 +890,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         {
             m_MapSelection.SetActive(false);
         }
+        AudioSourcesManager.PlayBGM();
     }
 
     #endregion
