@@ -48,9 +48,14 @@ public class AudioSourcesManager : MonoBehaviour
         }
     }
 
+    private void SetUpBGM()
+    { 
+    
+    }
+
     public static void ChangeBGM(string styleName)
     {
-        var bgm = Resources.Load<AudioClip>("AudioSource/BGM/" + styleName + "/" + styleName);
+        var bgm = Resources.Load<AudioClip>("BGM/" + styleName + "/" + styleName);
 
         sequence.Kill();
         sequence = DOTween.Sequence();
@@ -60,8 +65,8 @@ public class AudioSourcesManager : MonoBehaviour
             sequence.Append(BGM[0].DOFade(0, 1f));
             BGM[0].clip = bgm;
             sequence.Append(BGM[0].DOFade(OptionSetting.MUSICVOLUME, 1f));
+            BGM[0].Play();
         }
-        
     }
 
     public static void ChangeBGMVolume()
