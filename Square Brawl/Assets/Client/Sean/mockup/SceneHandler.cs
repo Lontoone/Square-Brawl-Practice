@@ -113,6 +113,10 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
         if (PhotonNetwork.IsConnected)
         {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.CurrentRoom.IsOpen = true;
+            }
             isBackToCharacterSelection = true;
             BackToCharacterSelection();
         }
@@ -312,7 +316,6 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         //PhotonNetwork.CreateRoom(Launcher.roomName);
         //StartCoroutine(EnterCharacterSelection());
         StartCoroutine(EnterRoom());
-        PhotonNetwork.CurrentRoom.IsOpen = true;
     }
 
     #region -- Option --
