@@ -98,6 +98,7 @@ public class ESC : MonoBehaviour
     public void BackToMenu()
     {
         AudioSourcesManager.PlaySFX(1);
+        AudioSourcesManager.StopBGM();
         PhotonNetwork.Disconnect();
         StartCoroutine(MenuBackAction());
     }

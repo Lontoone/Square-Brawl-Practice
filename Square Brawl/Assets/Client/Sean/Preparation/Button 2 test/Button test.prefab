@@ -205,7 +205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -430,7 +430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -640,10 +640,10 @@ MonoBehaviour:
   m_button: {fileID: 4324815020589852934}
   m_Icon: {fileID: 0}
   m_button_text: {fileID: 4906136465232805579}
-  m_transform: {fileID: 2357606972631434510}
   m_AimObject: {fileID: 0}
   to_x: 300
   to_y: 0
+  m_AudioType: 0
   dotweentype: 0
   string_easetype: 0
   string_duration: 1
@@ -659,6 +659,8 @@ MonoBehaviour:
     m_Easetype: 12
     m_Duration: 0.08
     m_Outdistance: 5
+  m_MouseSelectedState: 0
+  m_KeySelectedState: 0
 --- !u!114 &2258553339206323217
 MonoBehaviour:
   m_ObjectHideFlags: 0

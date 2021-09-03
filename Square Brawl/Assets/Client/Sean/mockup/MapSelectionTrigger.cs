@@ -24,9 +24,4 @@ public class MapSelectionTrigger : MonoBehaviour
         MapFinish = false;
         AllFinish = false;
     }
-
-    private void Update()
-    {
-        Debug.Log("GridFinish: " + GridFinish +"\t"+ "StyleFinish: " + StyleFinish + "\t" + "MapFinish: " + MapFinish + "\t" + "AllFinish: " + AllFinish);
-    }
 }

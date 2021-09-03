@@ -134,6 +134,7 @@ public class ResultManager : MonoBehaviour
 
     public void BackToLobby()
     {
+        AudioSourcesManager.StopBGM();
         PhotonNetwork.Disconnect();
         //SceneManager.LoadScene(0);
         StartCoroutine(LoadScene(0));
@@ -141,6 +142,7 @@ public class ResultManager : MonoBehaviour
 
     public void BackToCharacterSelection()
     {
+        AudioSourcesManager.StopBGM();
         StartCoroutine(LoadScene(0));
     }
 

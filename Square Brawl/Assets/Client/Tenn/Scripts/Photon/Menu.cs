@@ -19,13 +19,13 @@ public class Menu : MonoBehaviour
 
     public void Open()
     {
-        Debug.Log("open" + menuName);
+        //Debug.Log("open" + menuName);
         open = true;
         SceneHandler.instance.EnterPage(gameObject.name);
     }
     public void Close()
     {
-        Debug.Log("close" + gameObject.name);
+        //Debug.Log("close" + gameObject.name);
         open = false;
         SceneHandler.instance.ExitPage(gameObject.name);
     }

@@ -140,11 +140,14 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
             m_Error.SetActive(false);
             StartCoroutine(EnterSceneAnimation());
         }
+
+        AudioSourcesManager.PlayBGM();
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         isBackToCharacterSelection = false;
+        AudioSourcesManager.BGMFadeOut();
     }
 
     public void EnterPage(string gameObject)
@@ -301,20 +304,16 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         }
     }
 
-    public void BackToCharacterSelection() //TODO
+    public void BackToCharacterSelection() 
     {
         m_Menu.SetActive(false);
         OptionSetting.TRANSITIONANIMATION = false;
         m_OnlineMenu.SetActive(true);
-        //m_CharacterSelection.SetActive(true);
         m_Room.SetActive(true);
         MenuManager.instance.BackToCharacterSelection();
-        //Launcher.instance.StartGame();
         OptionSetting.TRANSITIONANIMATION = true;
         Launcher.instance.OnJoinedRoom();
         Launcher.instance._hasSetName = true;
-        //PhotonNetwork.CreateRoom(Launcher.roomName);
-        //StartCoroutine(EnterCharacterSelection());
         StartCoroutine(EnterRoom());
     }
 
