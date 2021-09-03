@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             SetColor();
         }
         _isInvincible = true;
-        Invoke("ResetIsInvincible", 4f);
+        Invoke("ResetIsInvincible", 6f);
         Invoke("StopBeFreeze", 4f);
     }
 
