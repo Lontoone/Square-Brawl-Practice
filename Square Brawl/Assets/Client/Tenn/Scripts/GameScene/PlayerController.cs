@@ -129,7 +129,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
         _bodySprite.sprite = Resources.Load<Sprite>("PlayerStyle/" + TillStyleLoader.s_StyleName + "/PlayerBody");
         _hpSprite.sprite = Resources.Load<Sprite>("PlayerStyle/" + TillStyleLoader.s_StyleName + "/PlayerUI");
-        //_hpSprite.sprite = Resources.Load<Sprite>("PlayerStyle/" + TillStyleLoader.s_StyleName + "/PlayerUI");
 
         _playerHp = 100;
         _canSpin = true;
