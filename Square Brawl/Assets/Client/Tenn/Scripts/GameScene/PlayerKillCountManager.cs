@@ -58,7 +58,7 @@ public class PlayerKillCountManager : MonoBehaviourPunCallbacks
         _myCustom["KillCount"] = _killCount;
         _myCustom["isOver"] = false;
         PhotonNetwork.SetPlayerCustomProperties(_myCustom);
-        if (_killCount >= 1)
+        if (_killCount >= 10)
         {
             _myCustom["isOver"] = true;
             _myCustom["KillCount"] = 0;
