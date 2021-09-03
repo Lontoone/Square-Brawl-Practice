@@ -34,7 +34,7 @@ public class ResultManager : MonoBehaviour
     {
        // GeneratePlayerList();
         endGameMenu.SetActive(false);
-        //resultPanel.SetActive(false);
+        resultPanel.SetActive(false);
 
         //Load map data for random loop:
         if (PhotonNetwork.IsMasterClient)

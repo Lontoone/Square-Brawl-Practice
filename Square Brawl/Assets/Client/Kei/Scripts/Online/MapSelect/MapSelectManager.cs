@@ -39,7 +39,6 @@ public class MapSelectManager : MonoBehaviourPunCallbacks
         base.OnEnable();
         PhotonNetwork.NetworkingClient.EventReceived += OnMapDataChanged;
         SceneManager.sceneLoaded += OnCellGridSceneLoaded;
-        AudioSourcesManager.SetUpBGM();
         if (PhotonNetwork.IsMasterClient)
         {
             LoadMapList();
