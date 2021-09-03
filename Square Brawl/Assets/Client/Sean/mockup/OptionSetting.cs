@@ -6,8 +6,8 @@ public class OptionSetting
 {
     public static int FULLSCREEN = 1;
     public static int RESOLUTION = 5;
-    public static float MUSICVOLUME = 0.4f;
-    public static float SFXVOLUME = 0.4f;
+    public static float MUSICVOLUME = 0.3f;
+    public static float SFXVOLUME = 0.3f;
     public static bool CONTROLLER_RUMBLE = true;
     public static bool TRANSITIONANIMATION = true;
 
