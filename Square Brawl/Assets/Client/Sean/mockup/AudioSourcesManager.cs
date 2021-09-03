@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class AudioSourcesManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class AudioSourcesManager : MonoBehaviour
 
     public static AudioSource AUDIOSOURCE;
     private AudioSource bgm;
+    public static Sequence sequence;
 
     public static bool audioLock = false;
 
@@ -44,6 +46,22 @@ public class AudioSourcesManager : MonoBehaviour
             BGM[0].loop = true;
             BGM[0].Play();
         }
+    }
+
+    public static void ChangeBGM(string styleName)
+    {
+        var bgm = Resources.Load<AudioClip>("AudioSource/BGM/" + styleName + "/" + styleName);
+
+        sequence.Kill();
+        sequence = DOTween.Sequence();
+        
+        if (bgm != null)
+        {
+            sequence.Append(BGM[0].DOFade(0, 1f));
+            BGM[0].clip = bgm;
+            sequence.Append(BGM[0].DOFade(OptionSetting.MUSICVOLUME, 1f));
+        }
+        
     }
 
     public static void ChangeBGMVolume()
