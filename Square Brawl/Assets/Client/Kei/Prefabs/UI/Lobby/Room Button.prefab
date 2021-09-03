@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.087, g: 0.319, b: 0.145, a: 0.6313726}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -167,6 +167,7 @@ GameObject:
   - component: {fileID: 7433918226048932976}
   - component: {fileID: 7433918226048932979}
   - component: {fileID: 5916783390818430097}
+  - component: {fileID: 3541186396552429615}
   m_Layer: 5
   m_Name: Room Button
   m_TagString: Untagged
@@ -301,3 +302,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 7433918225589797912}
+--- !u!114 &3541186396552429615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7433918226048932989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84c126f763b871142af15c0a31feb99f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enterType: 2
+  clickType: 2

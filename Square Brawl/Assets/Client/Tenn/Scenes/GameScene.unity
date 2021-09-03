@@ -1939,6 +1939,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 1938
       objectReference: {fileID: 0}
+    - target: {fileID: 1804880392, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1804880392, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1804880392, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1804880392, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1245674675183854157, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -1990,6 +2006,22 @@ PrefabInstance:
     - target: {fileID: 1245674675183854159, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
       propertyPath: m_Name
       value: ResultManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131903162262990765, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131903162262990765, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131903162262990765, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131903162262990765, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40ef41c4889cf16448e82d88a1c605a9, type: 3}

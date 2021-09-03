@@ -47,7 +47,7 @@ public class PlayerKillCountItem : MonoBehaviourPunCallbacks
             KillCountText.text = index.ToString();
         }
 
-        if (index >= 10)
+        if (index >= 1)
         {
             ResultManager.ResultCaller(_p);
         }
