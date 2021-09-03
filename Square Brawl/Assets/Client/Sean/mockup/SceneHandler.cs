@@ -15,7 +15,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
     private Gamepad gamepad = Gamepad.current;
     private Keyboard keyboard = Keyboard.current;
     [SerializeField] private GameObject m_Menu;
-    [SerializeField] private GameObject m_Option;
+    [SerializeField] public GameObject m_Option;
     [SerializeField] private GameObject m_MapEditor;
     [SerializeField] private GameObject m_Control;
     [SerializeField] private GameObject m_OnlineMenu;
@@ -47,6 +47,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     public static SceneHandler instance;
     public static bool isBackToCharacterSelection = false;
+    public static bool inOption = false;
     private Animator animator;
 
     public static Color32 green;
@@ -321,6 +322,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
 
     private IEnumerator EnterOption()
     {
+        inOption = true;
+
         var time = 0f;
         if (OptionSetting.TRANSITIONANIMATION)
         {
@@ -365,6 +368,8 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         m_Option.GetComponentInChildren<OptionManager>().ExitAnimation();
         yield return new WaitForSeconds(time / 3);
         m_Option.SetActive(false);
+
+        inOption = false;
     }
 
     #endregion

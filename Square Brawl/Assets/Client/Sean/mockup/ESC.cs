@@ -34,6 +34,8 @@ public class ESC : MonoBehaviour
     {
         var gamepadStartButtonWasPressed = false;
         var gamepadEastButtonWasPressed = false;
+
+        
         if (Gamepad.current != null)
         {
             if (Gamepad.current.startButton.wasPressedThisFrame)
@@ -45,7 +47,9 @@ public class ESC : MonoBehaviour
                 gamepadEastButtonWasPressed = true;
             }
         }
-        if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadStartButtonWasPressed) && buttonGroup.activeSelf == false)
+        if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadStartButtonWasPressed) 
+            && buttonGroup.activeSelf == false 
+            && SceneHandler.inOption == false)
         {
             lastSelectedObject = EventSystem.current.currentSelectedGameObject;
             buttonGroup.SetActive(true);
@@ -61,7 +65,10 @@ public class ESC : MonoBehaviour
             }
             Debug.Log("Esc Was Pressed");
         }
-        else if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadEastButtonWasPressed) && buttonGroup.activeSelf == true && InOption ==false && animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "EnterESC")
+        else if ((Keyboard.current.escapeKey.wasPressedThisFrame || gamepadEastButtonWasPressed) 
+                && buttonGroup.activeSelf == true 
+                && InOption ==false && animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "EnterESC" 
+                && SceneHandler.inOption == false)
         {
             BackOnClick();
         }
