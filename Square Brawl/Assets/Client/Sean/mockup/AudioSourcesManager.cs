@@ -13,6 +13,7 @@ public class AudioSourcesManager : MonoBehaviour
     public static AudioSource AUDIOSOURCE;
     private AudioSource bgm;
     public static Sequence sequence;
+    public static int currentIndex = 0;
 
     public static bool audioLock = false;
 
@@ -39,18 +40,26 @@ public class AudioSourcesManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
-            bgm = gameObject.AddComponent<AudioSource>();
+            for (int i = 0; i < 10; i++)
+            {
+                bgm = gameObject.AddComponent<AudioSource>();
+            }
             BGM.Add(bgm);
             BGM[0].clip = Resources.Load<AudioClip>("AudioSource/BGM/CylinderSixChrisZabriskie");
             BGM[0].volume = OptionSetting.MUSICVOLUME;
             BGM[0].loop = true;
             BGM[0].Play();
+            currentIndex = 0;
         }
     }
 
-    private void SetUpBGM()
-    { 
-    
+    public static void SetUpBGM()
+    {
+        var bgm = Resources.LoadAll<AudioClip>("BGM/");
+        for (int i = 1; i < bgm.Length; i++)
+        {
+            BGM[i].clip = bgm[i - 1];
+        }
     }
 
     public static void ChangeBGM(string styleName)
@@ -59,13 +68,16 @@ public class AudioSourcesManager : MonoBehaviour
 
         sequence.Kill();
         sequence = DOTween.Sequence();
-        
-        if (bgm != null)
+
+        for (int i = 0; i < BGM.Count; i++)
         {
-            sequence.Append(BGM[0].DOFade(0, 1f));
-            BGM[0].clip = bgm;
-            sequence.Append(BGM[0].DOFade(OptionSetting.MUSICVOLUME, 1f));
-            BGM[0].Play();
+            if (BGM[i].clip.name == styleName)
+            {
+                sequence.Append(BGM[currentIndex].DOFade(0, 1f))
+                        .Append(BGM[i].DOFade(OptionSetting.MUSICVOLUME, 1f));
+            }
+                BGM[i].Play();
+                currentIndex = i;
         }
     }
 
