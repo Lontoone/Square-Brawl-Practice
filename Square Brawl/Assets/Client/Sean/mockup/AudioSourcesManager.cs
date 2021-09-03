@@ -43,11 +43,12 @@ public class AudioSourcesManager : MonoBehaviour
             for (int i = 0; i < 10; i++)
             {
                 bgm = gameObject.AddComponent<AudioSource>();
+                BGM.Add(bgm);
+                BGM[i].volume = OptionSetting.MUSICVOLUME;
+                BGM[i].loop = true;
+                BGM[i].playOnAwake = false;
             }
-            BGM.Add(bgm);
             BGM[0].clip = Resources.Load<AudioClip>("AudioSource/BGM/CylinderSixChrisZabriskie");
-            BGM[0].volume = OptionSetting.MUSICVOLUME;
-            BGM[0].loop = true;
             BGM[0].Play();
             currentIndex = 0;
         }
@@ -56,15 +57,16 @@ public class AudioSourcesManager : MonoBehaviour
     public static void SetUpBGM()
     {
         var bgm = Resources.LoadAll<AudioClip>("BGM/");
-        for (int i = 1; i < bgm.Length; i++)
+
+        for (int i = 1; i <= bgm.Length; i++)
         {
             BGM[i].clip = bgm[i - 1];
         }
     }
 
-    public static void ChangeBGM(string styleName)
+    public static IEnumerator ChangeBGM(string styleName)
     {
-        var bgm = Resources.Load<AudioClip>("BGM/" + styleName + "/" + styleName);
+        var nextIndex = 0;
 
         sequence.Kill();
         sequence = DOTween.Sequence();
@@ -73,12 +75,17 @@ public class AudioSourcesManager : MonoBehaviour
         {
             if (BGM[i].clip.name == styleName)
             {
-                sequence.Append(BGM[currentIndex].DOFade(0, 1f))
-                        .Append(BGM[i].DOFade(OptionSetting.MUSICVOLUME, 1f));
+                nextIndex = i;
             }
-                BGM[i].Play();
-                currentIndex = i;
         }
+        sequence.Append(BGM[currentIndex].DOFade(0, 0.3f));
+        yield return new WaitForSeconds(0.5f);
+
+        BGM[currentIndex].Stop();
+        BGM[nextIndex].Play();
+
+        sequence.Append(BGM[nextIndex].DOFade(OptionSetting.MUSICVOLUME, 0.5f));
+        currentIndex = nextIndex;
     }
 
     public static void ChangeBGMVolume()

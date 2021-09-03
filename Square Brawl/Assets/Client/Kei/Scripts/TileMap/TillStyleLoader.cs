@@ -121,7 +121,7 @@ public class TillStyleLoader : MonoBehaviour
             if (styleNameText != null)
             {
                 styleNameText.text = s_StyleName;
-                AudioSourcesManager.ChangeBGM(s_StyleName);
+                StartCoroutine(AudioSourcesManager.ChangeBGM(s_StyleName));
                 Debug.Log(s_StyleName);
             }
             TileImageCollection tileImageCollection = Resources.Load<TileImageCollection>(styleDataPaht + styleName);

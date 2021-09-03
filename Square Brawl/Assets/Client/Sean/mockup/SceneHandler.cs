@@ -867,6 +867,7 @@ public class SceneHandler : MonoBehaviour//, ISelectHandler, IDeselectHandler
         yield return new WaitForSeconds(0.5f);
         m_MapSelection.SetActive(true);
         yield return new WaitUntil(() => MapSelectionTrigger.AllFinish);
+        AudioSourcesManager.SetUpBGM();
         animator.Play("ExitLoading");
         yield return new WaitForSeconds(m_AnimationClips[5].length);
         m_Loading.SetActive(false);
